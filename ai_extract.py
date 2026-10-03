@@ -51,7 +51,7 @@ def main():
         "catalysts (upcoming events), or risks. Then summarize.\n\n"
         "Rules:\n"
         "- Output ONLY valid JSON, no markdown fences, no commentary.\n"
-        "- Every item: headline, summary (1-2 sentences, in Chinese), date from pubDate "
+        "- Every item: headline, summary (1-2 sentences, in English), date from pubDate "
         "(YYYY-MM-DD), impact high|medium|low, horizon short|medium|long, confidence 0-1.\n"
         "- Skip duplicates and irrelevant items.\n\n"
         "Schema:\n"

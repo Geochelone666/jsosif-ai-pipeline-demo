@@ -13,7 +13,7 @@ News RSS ──→ Gemini extract / classify ─────┘
 ```
 
 - **Quant**: 1D/1W/1M/YTD/1Y returns, annualized volatility, beta vs SPY, max drawdown, Sharpe, P/E, P/B, EV/EBITDA, revenue growth, MA50/MA200, RSI(14), MACD. Cross-checked against raw CSV with independent recomputation.
-- **AI research**: Google News RSS (25 headlines) → Gemini structured extraction into tailwinds / headwinds / catalysts / risks, each with date, impact, horizon, confidence, and source URLs.
+- **AI research**: Google News RSS (25 headlines) → Gemini structured extraction into tailwinds / headwinds / catalysts / risks, each with an English summary, date, impact, horizon, and confidence. The report matches headlines to RSS source URLs.
 - **Free sources only**: yfinance, Google News RSS, SEC EDGAR, FRED (optional key). No paid APIs.
 
 ## Repo contents
@@ -29,16 +29,23 @@ News RSS ──→ Gemini extract / classify ─────┘
 ## Run it
 
 ```bash
+python3 -m pip install pandas numpy yfinance
 python3 quant.py        # quant metrics
 python3 ai_extract.py   # AI extraction (needs Gemini API key via env)
+python3 comparables.py
+python3 earnings.py
+python3 fred.py         # optional FRED_API_KEY; otherwise skipped
+python3 edgar.py
 python3 regenerate_report.py
 ```
+
+The scripts use the shared `data_utils.py` helper. AI extraction requires the Gemini CLI configured at the absolute `CLI` path in `ai_extract.py`; adjust that path for your environment. Report generation reuses local JSON snapshots and does not fetch data.
 
 ## Limitations
 
 - Single asset (NVDA), one-off local run.
 - Free-tier data: delayed quotes, RSS coverage not guaranteed, AI items need human review.
-- Free-tier Gemini grounding (`google_search` tool) returns 429 — the demo works around it with RSS + plain-text extraction.
+- Free-tier Gemini grounding (`google_search` tool) returned 429 in the original run — the demo works around it with RSS + plain-text extraction.
 - Not investment advice.
 
 ## Status

@@ -15,7 +15,7 @@ for it in rss:
 def section(name, items):
     out = [f"## {name}\n"]
     if not items:
-        out.append("（本轮无条目）\n")
+        out.append("(No items in this run)\n")
         return "\n".join(out)
     for it in items:
         srcs = " ".join(f"<{u}>" for u in it.get("sources", []) if u)
@@ -24,9 +24,9 @@ def section(name, items):
             srcs = f"<{u}>" if u else ""
         out.append(
             f"### {it['headline']}\n"
-            f"- 摘要：{it['summary']}\n"
-            f"- 日期：{it['date']}｜影响：{it['impact']}｜期限：{it['horizon']}｜置信度：{it['confidence']}\n"
-            + (f"- 来源：{srcs}\n" if srcs else "")
+            f"- Summary: {it['summary']}\n"
+            f"- Date: {it['date']} | Impact: {it['impact']} | Horizon: {it['horizon']} | Confidence: {it['confidence']}\n"
+            + (f"- Sources: {srcs}\n" if srcs else "")
         )
     return "\n".join(out)
 
@@ -38,7 +38,7 @@ def fmt(v, d=4):
 q = q  # metrics dict
 quant_table = f"""## QUANTITATIVE
 
-| 指标 | 数值 |
+| Metric | Value |
 |---|---:|
 | Close | {fmt(q.get('Close'))} |
 | Return 1D (%) | {fmt(q.get('Return 1D (%)'))} |
@@ -78,14 +78,14 @@ for sec in ("tailwinds", "headwinds", "catalysts", "risks"):
 report = f"""# NVDA Intelligence Demo
 
 - ticker: **NVDA**
-- 报告 as_of: **2026-10-03**
-- 行情 as_of: **{quant.get('as_of','2026-10-02')}**
-- Quant 数据源：yfinance（NVDA/SPY 日线 + info 基本面）
-- AI 模型：**gemini-3.5-flash-lite**（Google News RSS 抓取 25 条 → AI 抽取分类；grounding 在免费档不可用，改用 RSS+AI 两步法）
+- Report as_of: **2026-10-03**
+- Market data as_of: **{quant.get('as_of','2026-10-02')}**
+- Quant sources: yfinance (NVDA/SPY daily prices + info fundamentals)
+- AI model: **gemini-3.5-flash-lite** (25 Google News RSS headlines -> AI extraction and classification; free-tier grounding unavailable, using RSS + AI)
 
 {quant_table}
-计算口径：yfinance auto_adjust=True 日收盘价；1Y 收益已用 Decimal 从原始 CSV 独立复算验证通过。
-行情样本数：NVDA/SPY 各 252 个交易日。
+Methodology: yfinance daily closes with auto_adjust=True; 1Y return independently recomputed from raw CSV using Decimal and verified.
+Market data sample: 252 trading days each for NVDA/SPY.
 
 {section('TAILWINDS', ai['tailwinds'])}
 {section('HEADWINDS', ai['headwinds'])}
@@ -95,13 +95,59 @@ report = f"""# NVDA Intelligence Demo
 
 """ + "\n".join(f"- {u}" for u in all_sources) + """
 
-## Demo 说明与限制
+## Demo notes and limitations
 
-- 单资产本地一次性演示；AI 条目需人工抽查；RSS 覆盖率不保证。
-- 免费档 Gemini grounding（google_search 工具）返回 429，改用 Google News RSS + 纯文本 AI 抽取的两步法跑通。
-- 行情或基本面缺失均标 N/A，没有补造数字。报告不构成投资建议。
+- Single-asset, one-off local demo; AI items require human spot checks; RSS coverage is not guaranteed.
+- Free-tier Gemini grounding (google_search tool) returned 429; the demo uses Google News RSS + plain-text AI extraction.
+- Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
 """
 
 with open("NVDA-intelligence-20261003.md", "w", encoding="utf-8") as f:
     f.write(report)
 print("report regenerated,", len(report), "chars")
+
+from data_utils import ROOT, number
+
+REPORT = ROOT / 'NVDA-intelligence-20261003.md'
+
+def load(name):
+    with (ROOT / name).open(encoding='utf-8') as stream:
+        return json.load(stream)
+
+def fmt(value, percent=False):
+    value = number(value)
+    return 'N/A' if value is None else f'{value * (100 if percent else 1):,.2f}'
+
+def amount(data):
+    if data is None:
+        return 'N/A'
+    return f'{fmt(data.get("value"))} {data.get("unit", "N/A")}; period {data.get("period", "N/A")}; fiscal year/reporting period {data.get("fiscal_year", "N/A")}/{data.get("fiscal_period", "N/A")}'
+
+def append_free_source_sections():
+    peers, earnings, macro, edgar = [load(name + '.json') for name in ('comparables', 'earnings', 'fred', 'edgar')]
+    quant, info = load('quant.json'), load('info.json')
+    q = quant['metrics']
+    growth, ret = number(q.get('Revenue growth (%)')), number(q.get('Return 1Y (%)'))
+    nvda = {'ticker': 'NVDA', 'pe': q.get('P/E (trailing)'), 'pb': q.get('P/B'), 'ev_ebitda': q.get('EV/EBITDA'), 'revenue_growth': growth / 100 if growth is not None else None, 'mktcap': info.get('marketCap'), 'ret_1y': ret / 100 if ret is not None else None}
+    out = ['## PEER COMPARABLES', '', '| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (USD) | 1Y return (%) |', '|---|---:|---:|---:|---:|---:|---:|']
+    for row in [nvda] + peers['peers']:
+        cells = [row['ticker'], fmt(row['pe']), fmt(row['pb']), fmt(row['ev_ebitda']), fmt(row['revenue_growth'], True), fmt(row['mktcap']), fmt(row['ret_1y'], True)]
+        if row['ticker'] == 'NVDA':
+            cells = [f'**{cell}**' for cell in cells]
+        out.append('| ' + ' | '.join(cells) + ' |')
+    out += ['', f'Peers fetched as_of: {peers["as_of"]}; NVDA reuses existing data (market data as_of: {quant.get("as_of")}); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.', '', '## EARNINGS CALENDAR', '', f'- Last reported earnings: {earnings["last_earnings"] or "N/A"}', f'- Next expected earnings: {earnings["next_earnings"] or "N/A"} (yfinance; expected dates may change)', '', '## MACRO (FRED)', '']
+    if not macro['available']:
+        out.append('No FRED API key configured; skipped')
+    else:
+        out += [f'Fetched as_of: {macro["as_of"]}', '', '| Metric | series_id | Latest value | Observation date |', '|---|---|---:|---|']
+        out += [f'| {row["name"]} | {row["series_id"]} | {fmt(row["value"])} | {row["date"] or "N/A"} |' for row in macro['indicators']]
+    filing = edgar['latest_filing'] or {}
+    out += ['', '## LATEST FILING (EDGAR)', '', f'- Form: {filing.get("form", "N/A")}', f'- Filing date: {filing.get("filing_date", "N/A")}', f'- Revenue (latest available single quarter): {amount(edgar["revenue"])}', f'- Net income (latest available single quarter): {amount(edgar["net_income"])}', f'- SEC link: {filing.get("url", "N/A")}', '', 'SEC requests use the demo placeholder contact email contact@example.com. Financial values use directly reported periods of approximately three months, without deriving quarters from cumulative values; fiscal year/period labels come from original facts and may refer to later comparative statements.', '', 'API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-application-programming-interfaces), [FRED observations](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).', '']
+    original = REPORT.read_text(encoding='utf-8')
+    marker = '## SOURCES\n'
+    assert original.count(marker) == 1
+    REPORT.write_text(original.replace(marker, '\n'.join(out) + '\n' + marker), encoding='utf-8')
+    print(f'report: {REPORT}; {len(REPORT.read_text(encoding="utf-8").splitlines())} lines')
+
+
+append_free_source_sections()
