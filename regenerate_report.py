@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-"""Regenerate the NVDA intelligence report with quant + AI results."""
+"""Regenerate the selected ticker intelligence report with quant + AI results."""
 import json
+from data_utils import ROOT, ticker_arg, ticker_file
+TICKER = ticker_arg()
+def read_snapshot(name):
+    return json.loads((ROOT / ticker_file(TICKER, name)).read_text(encoding="utf-8"))
 
-quant = json.load(open("quant.json", encoding="utf-8"))
+quant = read_snapshot("quant.json")
 q = quant["metrics"]
-ai = json.load(open("ai-intel.json", encoding="utf-8"))
-rss = json.load(open("rss-items.json", encoding="utf-8"))
+ai = read_snapshot("ai-intel.json")
+rss = read_snapshot("rss-items.json")
 
 # map rss links by headline for sources
 link_by_headline = {}
@@ -15,7 +19,7 @@ for it in rss:
 def section(name, items):
     out = [f"## {name}\n"]
     if not items:
-        out.append("(No items in this run)\n")
+        out.append(f"{('N/A: ' + ai['error']) if ai.get('error') else 'No items in this run'}\n")
         return "\n".join(out)
     for it in items:
         srcs = " ".join(f"<{u}>" for u in it.get("sources", []) if u)
@@ -75,17 +79,18 @@ for sec in ("tailwinds", "headwinds", "catalysts", "risks"):
         if u and u not in seen:
             seen.add(u); all_sources.append(u)
 
-report = f"""# NVDA Intelligence Demo
+report = f"""# {TICKER} Intelligence Demo
 
-- ticker: **NVDA**
+- ticker: **{TICKER}**
 - Report as_of: **2026-10-03**
-- Market data as_of: **{quant.get('as_of','2026-10-02')}**
-- Quant sources: yfinance (NVDA/SPY daily prices + info fundamentals)
+- Market data as_of: **{quant.get('as_of') or 'N/A'}**
+- Quant sources: {', '.join(quant.get('sources', [])) or 'N/A'}
+- AI status: **{'N/A: ' + ai['error'] if ai.get('error') else 'Available'}**
 - AI model: **gemini-3.5-flash-lite** (25 Google News RSS headlines -> AI extraction and classification; free-tier grounding unavailable, using RSS + AI)
 
 {quant_table}
-Methodology: yfinance daily closes with auto_adjust=True; 1Y return independently recomputed from raw CSV using Decimal and verified.
-Market data sample: 252 trading days each for NVDA/SPY.
+Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
+Market data sample: {quant.get('history_count', {})}.
 
 {section('TAILWINDS', ai['tailwinds'])}
 {section('HEADWINDS', ai['headwinds'])}
@@ -97,21 +102,21 @@ Market data sample: 252 trading days each for NVDA/SPY.
 
 ## Demo notes and limitations
 
-- Single-asset, one-off local demo; AI items require human spot checks; RSS coverage is not guaranteed.
+- Multi-ticker local demo; AI items require human spot checks; RSS coverage is not guaranteed.
 - Free-tier Gemini grounding (google_search tool) returned 429; the demo uses Google News RSS + plain-text AI extraction.
 - Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
 """
 
-with open("NVDA-intelligence-20261003.md", "w", encoding="utf-8") as f:
+with (ROOT / f"{TICKER}-intelligence-20261003.md").open("w", encoding="utf-8") as f:
     f.write(report)
 print("report regenerated,", len(report), "chars")
 
 from data_utils import ROOT, number
 
-REPORT = ROOT / 'NVDA-intelligence-20261003.md'
+REPORT = ROOT / f'{TICKER}-intelligence-20261003.md'
 
 def load(name):
-    with (ROOT / name).open(encoding='utf-8') as stream:
+    with (ROOT / (name if name == 'fred.json' else ticker_file(TICKER, name))).open(encoding='utf-8') as stream:
         return json.load(stream)
 
 def fmt(value, percent=False):
@@ -128,16 +133,16 @@ def append_free_source_sections():
     quant, info = load('quant.json'), load('info.json')
     q = quant['metrics']
     growth, ret = number(q.get('Revenue growth (%)')), number(q.get('Return 1Y (%)'))
-    nvda = {'ticker': 'NVDA', 'pe': q.get('P/E (trailing)'), 'pb': q.get('P/B'), 'ev_ebitda': q.get('EV/EBITDA'), 'revenue_growth': growth / 100 if growth is not None else None, 'mktcap': info.get('marketCap'), 'ret_1y': ret / 100 if ret is not None else None}
+    nvda = {'ticker': TICKER, 'pe': q.get('P/E (trailing)'), 'pb': q.get('P/B'), 'ev_ebitda': q.get('EV/EBITDA'), 'revenue_growth': growth / 100 if growth is not None else None, 'mktcap': info.get('marketCap'), 'ret_1y': ret / 100 if ret is not None else None}
     out = ['## PEER COMPARABLES', '', '| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (USD) | 1Y return (%) |', '|---|---:|---:|---:|---:|---:|---:|']
     for row in [nvda] + peers['peers']:
         cells = [row['ticker'], fmt(row['pe']), fmt(row['pb']), fmt(row['ev_ebitda']), fmt(row['revenue_growth'], True), fmt(row['mktcap']), fmt(row['ret_1y'], True)]
-        if row['ticker'] == 'NVDA':
+        if row['ticker'] == TICKER:
             cells = [f'**{cell}**' for cell in cells]
         out.append('| ' + ' | '.join(cells) + ' |')
-    out += ['', f'Peers fetched as_of: {peers["as_of"]}; NVDA reuses existing data (market data as_of: {quant.get("as_of")}); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.', '', '## EARNINGS CALENDAR', '', f'- Last reported earnings: {earnings["last_earnings"] or "N/A"}', f'- Next expected earnings: {earnings["next_earnings"] or "N/A"} (yfinance; expected dates may change)', '', '## MACRO (FRED)', '']
+    out += ['', f'Peers fetched as_of: {peers["as_of"]}; {TICKER} reuses existing data (market data as_of: {quant.get("as_of")}); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.', '', '## EARNINGS CALENDAR', '', f'- Last reported earnings: {earnings["last_earnings"] or "N/A"}', f'- Next expected earnings: {earnings["next_earnings"] or "N/A"} (yfinance; expected dates may change)', '', '## MACRO (FRED)', '']
     if not macro['available']:
-        out.append('No FRED API key configured; skipped')
+        out.append('N/A: no FRED API key configured; skipped')
     else:
         out += [f'Fetched as_of: {macro["as_of"]}', '', '| Metric | series_id | Latest value | Observation date |', '|---|---|---:|---|']
         out += [f'| {row["name"]} | {row["series_id"]} | {fmt(row["value"])} | {row["date"] or "N/A"} |' for row in macro['indicators']]

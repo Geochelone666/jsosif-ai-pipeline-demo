@@ -2,15 +2,16 @@
 from datetime import date, timedelta
 import pandas as pd
 import yfinance as yf
-from data_utils import number, save
+from data_utils import number, save, ticker_arg, ticker_file
 
-PEERS = ('AMD', 'AVGO', 'MSFT', 'TSM')
+PEERS = {'NVDA': ['AMD', 'AVGO', 'MSFT', 'TSM'], 'MSFT': ['AAPL', 'GOOGL', 'AMZN', 'NVDA'], 'AAPL': ['MSFT', 'GOOGL', 'AMZN', 'NVDA']}
 FIELDS = {'pe': 'trailingPE', 'pb': 'priceToBook', 'ev_ebitda': 'enterpriseToEbitda', 'revenue_growth': 'revenueGrowth', 'mktcap': 'marketCap'}
 
 def main():
+    symbol_arg = ticker_arg()
     today = date.today()
     peers = []
-    for symbol in PEERS:
+    for symbol in PEERS[symbol_arg]:
         row = {'ticker': symbol, **dict.fromkeys(FIELDS), 'ret_1y': None}
         ticker = yf.Ticker(symbol)
         try:
@@ -32,7 +33,7 @@ def main():
             print(f'{symbol} history unavailable: {type(exc).__name__}')
         peers.append(row)
         print(f'{symbol}: {sum(row[k] is not None for k in (*FIELDS, "ret_1y"))}/6 numeric fields', flush=True)
-    save('comparables.json', {'as_of': today.isoformat(), 'peers': peers})
+    save(ticker_file(symbol_arg, 'comparables.json'), {'as_of': today.isoformat(), 'peers': peers})
     print(f'comparables: {len(peers)} rows, 7 fields/row')
 
 if __name__ == '__main__':

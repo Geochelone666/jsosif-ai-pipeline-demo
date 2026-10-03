@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Fetch Google News RSS for NVDA, then Gemini (plain, no grounding) structured extraction."""
+"""Fetch Google News RSS for the selected ticker, then Gemini (plain, no grounding) structured extraction."""
+from email.utils import parsedate_to_datetime
 import html
 import json
 import subprocess
@@ -26,6 +27,12 @@ def fetch_rss(query, n=25):
             headline, source = title.rsplit(" - ", 1)
         else:
             headline, source = title, ""
+        pub_date = it.findtext("pubDate") or ""
+        try:
+            if parsedate_to_datetime(pub_date).date().isoformat() > "2026-10-03":
+                continue
+        except (ValueError, TypeError):
+            continue
         items.append({
             "headline": headline,
             "source": source,
@@ -36,54 +43,65 @@ def fetch_rss(query, n=25):
 
 
 def main():
-    items = fetch_rss("NVDA stock", 25)
-    print(f"RSS items: {len(items)}", flush=True)
-    with open("rss-items.json", "w", encoding="utf-8") as f:
-        json.dump(items, f, ensure_ascii=False, indent=1)
+    import os
+    import time
+    from data_utils import ROOT, save, ticker_arg, ticker_file
+    ticker = ticker_arg()
+    keys = ('tailwinds', 'headwinds', 'catalysts', 'risks')
+    data = {'ticker': ticker, 'as_of': '2026-10-03', **{k: [] for k in keys}}
+    items = []
+    try:
+        items = fetch_rss(f"{ticker} stock", 25)
+        save(ticker_file(ticker, 'rss-items.json'), items)
+        prompt = (
+            f"Analyze these {ticker} news headlines for a student investment fund. "
+            "Output only valid JSON in English. Do not invent facts or dates; skip duplicates and irrelevant items. "
+            "Classify into tailwinds, headwinds, catalysts, risks. Each item must have headline (copied exactly), "
+            "summary (1-2 sentences), date (YYYY-MM-DD from pubDate), impact (high/medium/low), "
+            "horizon (short/medium/long), confidence (0-1). Schema: "
+            + json.dumps(data) + " Headlines: " + json.dumps(items)
+        )
+        prompt_path = ROOT / ticker_file(ticker, 'ai-prompt.txt')
+        prompt_path.write_text(prompt, encoding='utf-8')
+        last_call = ROOT / '.last-ai-call'
+        for attempt in range(2):
+            delay = max(0, 20 - (time.time() - float(last_call.read_text()))) if last_call.exists() else 0
+            if delay:
+                time.sleep(delay)
+            last_call.write_text(str(time.time()))
+            res = subprocess.run(
+                [os.environ.get('GEMINI_CLI', CLI), '--model', 'gemini-3.5-flash-lite',
+                 '--json-output', '--prompt', '@' + str(prompt_path)],
+                capture_output=True, text=True, timeout=180,
+            )
+            if res.returncode == 0:
+                env = json.loads(res.stdout)
+                extracted = json.loads(env['text'])
+                assert extracted['ticker'] == ticker
+                for key in keys:
+                    assert isinstance(extracted[key], list)
+                    for item in extracted[key]:
+                        assert all(field in item for field in ('headline', 'summary', 'date', 'impact', 'horizon', 'confidence'))
+                        assert item['headline'] in {it['headline'] for it in items}
+                source_dates = {it["headline"]: parsedate_to_datetime(it["pubDate"]).date().isoformat() for it in items}
+                for key in keys:
+                    for item in extracted[key]:
+                        item["date"] = source_dates[item["headline"]]
+                data = extracted
+                save(ticker_file(ticker, 'ai-envelope.json'), env)
+                break
+            if attempt == 0:
+                print('AI request failed; retrying after 90 seconds', flush=True)
+                time.sleep(90)
+            else:
+                raise RuntimeError('Gemini failed twice; AI unavailable')
+    except Exception as exc:
+        data = {'ticker': ticker, 'as_of': '2026-10-03', **{k: [] for k in keys}, 'error': str(exc)}
+        print(f'AI N/A: {exc}', flush=True)
+    save(ticker_file(ticker, 'rss-items.json'), items)
+    save(ticker_file(ticker, 'ai-intel.json'), data)
+    print(f"AI extraction: {sum(len(data[k]) for k in keys)} items", flush=True)
 
-    lines = "\n".join(
-        f"- [{it['pubDate']}] ({it['source']}) {it['headline']}" for it in items
-    )
-    prompt = (
-        "You are a financial research assistant for a student investment fund. "
-        "Below are recent news headlines about NVIDIA (NVDA).\n\n"
-        "Classify each item into tailwinds (positive), headwinds (negative), "
-        "catalysts (upcoming events), or risks. Then summarize.\n\n"
-        "Rules:\n"
-        "- Output ONLY valid JSON, no markdown fences, no commentary.\n"
-        "- Every item: headline, summary (1-2 sentences, in English), date from pubDate "
-        "(YYYY-MM-DD), impact high|medium|low, horizon short|medium|long, confidence 0-1.\n"
-        "- Skip duplicates and irrelevant items.\n\n"
-        "Schema:\n"
-        '{"ticker":"NVDA","as_of":"2026-10-03","tailwinds":[],"headwinds":[],'
-        '"catalysts":[],"risks":[]}\n'
-        "Each element: "
-        '{"headline":str,"summary":str,"date":str,"impact":str,"horizon":str,"confidence":float}\n\n'
-        f"Headlines:\n{lines}"
-    )
-    with open("/tmp/nvda-ai-prompt.txt", "w", encoding="utf-8") as f:
-        f.write(prompt)
 
-    res = subprocess.run(
-        [CLI, "--model", "gemini-3.5-flash-lite", "--json-output",
-         "--prompt", "@/tmp/nvda-ai-prompt.txt"],
-        capture_output=True, text=True, timeout=180,
-    )
-    print("CLI rc:", res.returncode, flush=True)
-    if res.returncode != 0:
-        print("STDERR:", res.stderr[:600])
-        raise SystemExit(1)
-    env = json.loads(res.stdout)
-    with open("ai-envelope.json", "w", encoding="utf-8") as f:
-        json.dump(env, f, ensure_ascii=False, indent=1)
-    data = json.loads(env["text"])
-    for k in ("ticker", "as_of", "tailwinds", "headwinds", "catalysts", "risks"):
-        assert k in data, f"missing key {k}"
-    with open("ai-intel.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=1)
-    n = sum(len(data[k]) for k in ("tailwinds", "headwinds", "catalysts", "risks"))
-    print(f"AI extraction OK: {n} items")
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

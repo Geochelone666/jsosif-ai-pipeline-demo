@@ -2,12 +2,13 @@
 from datetime import date
 import pandas as pd
 import yfinance as yf
-from data_utils import save
+from data_utils import save, ticker_arg, ticker_file
 
 def main():
+    symbol = ticker_arg()
     today = date.today()
-    data = {'ticker': 'NVDA', 'last_earnings': None, 'next_earnings': None, 'source': 'yfinance'}
-    ticker = yf.Ticker('NVDA')
+    data = {'ticker': symbol, 'last_earnings': None, 'next_earnings': None, 'source': 'yfinance'}
+    ticker = yf.Ticker(symbol)
     try:
         dates = ticker.get_earnings_dates(limit=12)
         past, future = [], []
@@ -30,7 +31,7 @@ def main():
             data['next_earnings'] = min(future).isoformat() if future else None
         except Exception as exc:
             print(f'calendar unavailable: {type(exc).__name__}')
-    save('earnings.json', data)
+    save(ticker_file(symbol, 'earnings.json'), data)
     print(f'earnings: {sum(data[k] is not None for k in ("last_earnings", "next_earnings"))}/2 date fields')
 
 if __name__ == '__main__':

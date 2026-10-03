@@ -2,16 +2,16 @@
 from datetime import date
 import json
 from urllib.request import Request, urlopen
-from data_utils import number, save
+from data_utils import number, save, ticker_arg, ticker_file
 
-CIK = '1045810'
+CIKS = {'NVDA': '1045810', 'MSFT': '789019', 'AAPL': '320193'}
 HEADERS = {'User-Agent': 'JSOSIF-demo contact@example.com (demo placeholder contact)', 'Accept': 'application/json'}
 
 def fetch(url):
     with urlopen(Request(url, headers=HEADERS), timeout=30) as response:
         return json.load(response)
 
-def quarter_value(concept):
+def quarter_value(concept, CIK):
     data = fetch(f'https://data.sec.gov/api/xbrl/companyconcept/CIK{CIK.zfill(10)}/us-gaap/{concept}.json')
     candidates = []
     for obs in data.get('units', {}).get('USD', []):
@@ -29,7 +29,9 @@ def quarter_value(concept):
     return {'value': number(obs['val']), 'period': f'{obs["start"]}/{obs["end"]}', 'unit': 'USD', 'fiscal_year': obs.get('fy'), 'fiscal_period': obs.get('fp')}
 
 def main():
-    data = {'ticker': 'NVDA', 'cik': CIK, 'latest_filing': None, 'revenue': None, 'net_income': None}
+    symbol = ticker_arg()
+    CIK = CIKS[symbol]
+    data = {'ticker': symbol, 'cik': CIK, 'latest_filing': None, 'revenue': None, 'net_income': None}
     try:
         recent = fetch(f'https://data.sec.gov/submissions/CIK{CIK.zfill(10)}.json')['filings']['recent']
         matches = [i for i, form in enumerate(recent['form']) if form in ('10-Q', '10-K') and recent['filingDate'][i] <= date.today().isoformat()]
@@ -41,10 +43,12 @@ def main():
         print(f'SEC submissions unavailable: {type(exc).__name__}')
     for field, concept in [('revenue', 'Revenues'), ('net_income', 'NetIncomeLoss')]:
         try:
-            data[field] = quarter_value(concept)
+            data[field] = quarter_value(concept, CIK)
+            if field == 'revenue' and data[field] is None:
+                data[field] = quarter_value('RevenueFromContractWithCustomerExcludingAssessedTax', CIK)
         except Exception as exc:
             print(f'SEC {concept} unavailable: {type(exc).__name__}')
-    save('edgar.json', data)
+    save(ticker_file(symbol, 'edgar.json'), data)
     print(f'EDGAR: {sum(data[k] is not None for k in ("latest_filing", "revenue", "net_income"))}/3 data fields')
 
 if __name__ == '__main__':

@@ -20,3 +20,14 @@ def save(name, data):
     with path.open(encoding='utf-8') as stream:
         json.load(stream)
     print(f'{name}: JSON OK, {len(data)} top-level fields', flush=True)
+
+SUPPORTED = ('NVDA', 'MSFT', 'AAPL')
+
+def ticker_arg():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--ticker', type=str.upper, choices=SUPPORTED, default='NVDA')
+    return parser.parse_args().ticker
+
+def ticker_file(ticker, name):
+    return f'{ticker.lower()}-{name}'
