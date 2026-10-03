@@ -91,7 +91,13 @@ Peers fetched as_of: 2026-10-03; NVDA reuses existing data (market data as_of: 2
 
 ## MACRO (FRED)
 
-No FRED API key configured; skipped
+Fetched as_of: 2026-10-03
+
+| Metric | series_id | Latest value | Observation date |
+|---|---|---:|---|
+| Unemployment Rate (%) | UNRATE | 4.20 | 2026-09-01 |
+| Consumer Price Index | CPIAUCSL | 334.13 | 2026-08-01 |
+| Federal Funds Effective Rate (%) | FEDFUNDS | 3.75 | 2026-09-01 |
 
 ## LATEST FILING (EDGAR)
 
