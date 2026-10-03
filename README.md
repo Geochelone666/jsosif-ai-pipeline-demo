@@ -26,6 +26,12 @@ News RSS ──→ Gemini extract / classify ─────┘
 | `comparables.py` / `earnings.py` / `fred.py` / `edgar.py` | Peer comps, earnings calendar, macro (FRED), latest SEC filing |
 | `regenerate_report.py` | Assembles the Markdown report |
 
+## Intelligence page prototype
+
+A static mockup of the future dashboard Intelligence page (open `intelligence-mockup.html` in a browser):
+
+![Intelligence page prototype](intelligence-nvda-desktop.png)
+
 ## Run it
 
 ```bash
