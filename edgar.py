@@ -4,7 +4,7 @@ import json
 from urllib.request import Request, urlopen
 from data_utils import number, save, ticker_arg, ticker_file
 
-CIKS = {'NVDA': '1045810', 'MSFT': '789019', 'AAPL': '320193'}
+CIKS = {'GOOGL': '1652044', 'AMZN': '1018724', 'TSLA': '1318605', 'NVDA': '1045810', 'MSFT': '789019', 'AAPL': '320193'}
 HEADERS = {'User-Agent': 'JSOSIF-demo contact@example.com (demo placeholder contact)', 'Accept': 'application/json'}
 
 def fetch(url):
@@ -48,6 +48,11 @@ def main():
                 data[field] = quarter_value('RevenueFromContractWithCustomerExcludingAssessedTax', CIK)
         except Exception as exc:
             print(f'SEC {concept} unavailable: {type(exc).__name__}')
+            if field == 'revenue':
+                try:
+                    data[field] = quarter_value('RevenueFromContractWithCustomerExcludingAssessedTax', CIK)
+                except Exception as fallback_exc:
+                    print(f'SEC revenue fallback unavailable: {type(fallback_exc).__name__}')
     save(ticker_file(symbol, 'edgar.json'), data)
     print(f'EDGAR: {sum(data[k] is not None for k in ("latest_filing", "revenue", "net_income"))}/3 data fields')
 

@@ -20,7 +20,7 @@ News RSS ──→ Gemini extract / classify ─────┘
 
 | File | What |
 |---|---|
-| `INDEX.md` | Links and summaries for NVDA, MSFT and AAPL (start here) |
+| `INDEX.md` | Links and summaries for NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA (start here) |
 | `quant.py` | Market data + metrics → `{ticker}-quant.json` |
 | `ai_extract.py` | RSS fetch + Gemini extraction → `{ticker}-ai-intel.json` |
 | `comparables.py` / `earnings.py` / `fred.py` / `edgar.py` | Peer comps, earnings calendar, macro (FRED), latest SEC filing |
@@ -28,7 +28,7 @@ News RSS ──→ Gemini extract / classify ─────┘
 
 ## Intelligence page prototype
 
-A static mockup of the future dashboard Intelligence page (open `intelligence-mockup.html` in a browser):
+A static mockup of the future dashboard Intelligence page (open `intelligence-mockup.html` in a browser). The mockup currently shows NVDA, MSFT and AAPL; all six ticker reports are available in `INDEX.md`.
 
 ![Intelligence page prototype](intelligence-nvda-desktop.png)
 
@@ -37,7 +37,7 @@ A static mockup of the future dashboard Intelligence page (open `intelligence-mo
 ```bash
 python3 -m pip install pandas numpy yfinance
 python3 fred.py  # once, or reuse the existing fred.json snapshot
-for ticker in NVDA MSFT AAPL; do
+for ticker in NVDA MSFT AAPL GOOGL AMZN TSLA; do
     python3 quant.py --ticker "$ticker"
     python3 ai_extract.py --ticker "$ticker"
     python3 comparables.py --ticker "$ticker"
@@ -47,13 +47,13 @@ for ticker in NVDA MSFT AAPL; do
 done
 ```
 
-All six ticker scripts default to NVDA when `--ticker` is omitted. Outputs are written beside the scripts: lowercase ticker JSON files (for example `msft-quant.json`) and uppercase report names (`MSFT-intelligence-20261003.md`). Shared macro data stays in `fred.json`. AI calls are spaced at least 20 seconds apart; failed requests retry once after 90 seconds, then the AI sections show N/A. `run_phase1.py` runs all three tickers in sequence using the existing FRED snapshot.
+All six ticker scripts default to NVDA when `--ticker` is omitted. Outputs are written beside the scripts: lowercase ticker JSON files (for example `msft-quant.json`) and uppercase report names (`MSFT-intelligence-20261003.md`). Shared macro data stays in `fred.json`. AI calls are spaced at least 20 seconds apart; failed requests retry once after 90 seconds, then the AI sections show N/A. `run_phase1.py` runs all six tickers in sequence using the existing FRED snapshot.
 
 The scripts use the shared `data_utils.py` helper. AI extraction requires the Gemini CLI configured at the absolute `CLI` path in `ai_extract.py`; set `GEMINI_CLI` to override it for your environment. Report generation reuses local JSON snapshots and does not fetch data.
 
 ## Limitations
 
-- Supports NVDA, MSFT and AAPL; report date is fixed to this demo snapshot (2026-10-03).
+- Supports NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA; report date is fixed to this demo snapshot (2026-10-03).
 - Free-tier data: delayed quotes, RSS coverage not guaranteed, AI items need human review.
 - Free-tier Gemini grounding (`google_search` tool) returned 429 in the original run — the demo works around it with RSS + plain-text extraction.
 - Not investment advice.

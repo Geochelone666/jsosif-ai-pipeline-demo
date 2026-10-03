@@ -8,7 +8,7 @@ from data_utils import ROOT, save
 sections = ('QUANTITATIVE', 'TAILWINDS', 'HEADWINDS', 'CATALYSTS', 'RISKS', 'PEER COMPARABLES', 'EARNINGS CALENDAR', 'MACRO (FRED)', 'LATEST FILING (EDGAR)', 'SOURCES')
 results = {}
 index = ['# Intelligence reports', '', 'Snapshot date: 2026-10-03. Missing data is N/A.', '']
-for ticker in ('NVDA', 'MSFT', 'AAPL'):
+for ticker in ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA'):
     report_name = f'{ticker}-intelligence-20261003.md'
     report = (ROOT / report_name).read_text()
     quant = json.loads((ROOT / f'{ticker.lower()}-quant.json').read_text())
@@ -27,19 +27,19 @@ for ticker in ('NVDA', 'MSFT', 'AAPL'):
     count_text = 'N/A' if ai.get('error') else str(count)
     index.append(f'- [{ticker}]({report_name}): close {close_text}; 1Y return {ret_text}; AI items {count_text}.')
     results[ticker] = {'sections_passed': True, 'quant_matches_json': True, 'ai_items': count_text, 'market_errors': quant['errors'], 'ai_error': ai.get('error')}
-# Independent arithmetic from raw NVDA CSV, using the recorded boundary date.
-quant = json.loads((ROOT / 'nvda-quant.json').read_text())
+# Independent arithmetic from raw GOOGL CSV, using the recorded boundary date.
+quant = json.loads((ROOT / 'googl-quant.json').read_text())
 v = quant['verification']
 if v:
-    with (ROOT / 'NVDA-yfinance.csv').open() as stream:
+    with (ROOT / 'GOOGL-yfinance.csv').open() as stream:
         rows = list(csv.DictReader(stream))
     base = next(Decimal(row['Close']) for row in rows if row['Date'].startswith(v['base_date']))
     end = next(Decimal(row['Close']) for row in rows if row['Date'].startswith(quant['as_of']))
     computed = (end - base) / base * 100
     assert abs(computed - Decimal(str(quant['metrics']['Return 1Y (%)']))) < Decimal('1e-10')
-    results['independent_nvda_1Y'] = {'base_close': str(base), 'end_close': str(end), 'return_pct': str(computed), 'passed': True}
+    results['independent_googl_1Y'] = {'base_close': str(base), 'end_close': str(end), 'return_pct': str(computed), 'passed': True}
 else:
-    results['independent_nvda_1Y'] = {'passed': False, 'reason': 'N/A: market data unavailable'}
+    results['independent_googl_1Y'] = {'passed': False, 'reason': 'N/A: market data unavailable'}
 (ROOT / 'INDEX.md').write_text('\n'.join(index) + '\n')
 save('phase1-validation.json', results)
 print(json.dumps(results, indent=2))

@@ -4,7 +4,7 @@ import pandas as pd
 import yfinance as yf
 from data_utils import number, save, ticker_arg, ticker_file
 
-PEERS = {'NVDA': ['AMD', 'AVGO', 'MSFT', 'TSM'], 'MSFT': ['AAPL', 'GOOGL', 'AMZN', 'NVDA'], 'AAPL': ['MSFT', 'GOOGL', 'AMZN', 'NVDA']}
+PEERS = {'GOOGL': ['META', 'AMZN', 'MSFT', 'AAPL'], 'AMZN': ['GOOGL', 'META', 'MSFT', 'AAPL'], 'TSLA': ['F', 'GM', 'RIVN', 'LCID'], 'NVDA': ['AMD', 'AVGO', 'MSFT', 'TSM'], 'MSFT': ['AAPL', 'GOOGL', 'AMZN', 'NVDA'], 'AAPL': ['MSFT', 'GOOGL', 'AMZN', 'NVDA']}
 FIELDS = {'pe': 'trailingPE', 'pb': 'priceToBook', 'ev_ebitda': 'enterpriseToEbitda', 'revenue_growth': 'revenueGrowth', 'mktcap': 'marketCap'}
 
 def main():

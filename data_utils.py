@@ -21,7 +21,7 @@ def save(name, data):
         json.load(stream)
     print(f'{name}: JSON OK, {len(data)} top-level fields', flush=True)
 
-SUPPORTED = ('NVDA', 'MSFT', 'AAPL')
+SUPPORTED = ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA')
 
 def ticker_arg():
     import argparse

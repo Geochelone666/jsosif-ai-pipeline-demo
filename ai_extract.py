@@ -69,32 +69,38 @@ def main():
             if delay:
                 time.sleep(delay)
             last_call.write_text(str(time.time()))
-            res = subprocess.run(
-                [os.environ.get('GEMINI_CLI', CLI), '--model', 'gemini-3.5-flash-lite',
-                 '--json-output', '--prompt', '@' + str(prompt_path)],
-                capture_output=True, text=True, timeout=180,
-            )
-            if res.returncode == 0:
-                env = json.loads(res.stdout)
-                extracted = json.loads(env['text'])
-                assert extracted['ticker'] == ticker
-                for key in keys:
-                    assert isinstance(extracted[key], list)
-                    for item in extracted[key]:
-                        assert all(field in item for field in ('headline', 'summary', 'date', 'impact', 'horizon', 'confidence'))
-                        assert item['headline'] in {it['headline'] for it in items}
-                source_dates = {it["headline"]: parsedate_to_datetime(it["pubDate"]).date().isoformat() for it in items}
-                for key in keys:
-                    for item in extracted[key]:
-                        item["date"] = source_dates[item["headline"]]
-                data = extracted
-                save(ticker_file(ticker, 'ai-envelope.json'), env)
-                break
+            try:
+                res = subprocess.run(
+                    [os.environ.get('GEMINI_CLI', CLI), '--model', 'gemini-3.5-flash-lite',
+                     '--json-output', '--prompt', '@' + str(prompt_path)],
+                    capture_output=True, text=True, timeout=180,
+                )
+                if res.returncode != 0:
+                    raise RuntimeError(f'Gemini exit {res.returncode}: {res.stderr.strip()[:500]}')
+                if res.returncode == 0:
+                    env = json.loads(res.stdout)
+                    extracted = json.loads(env['text'])
+                    assert extracted['ticker'] == ticker
+                    for key in keys:
+                        assert isinstance(extracted[key], list)
+                        for item in extracted[key]:
+                            assert all(field in item for field in ('headline', 'summary', 'date', 'impact', 'horizon', 'confidence'))
+                            assert item['headline'] in {it['headline'] for it in items}
+                    source_dates = {it["headline"]: parsedate_to_datetime(it["pubDate"]).date().isoformat() for it in items}
+                    for key in keys:
+                        for item in extracted[key]:
+                            item["date"] = source_dates[item["headline"]]
+                    data = extracted
+                    save(ticker_file(ticker, 'ai-envelope.json'), env)
+                    break
+            except Exception as exc:
+                failure = f'{type(exc).__name__}: {str(exc) or "Invalid Gemini response"}'
+                print(failure, flush=True)
             if attempt == 0:
                 print('AI request failed; retrying after 90 seconds', flush=True)
                 time.sleep(90)
             else:
-                raise RuntimeError('Gemini failed twice; AI unavailable')
+                raise RuntimeError('Gemini failed twice; AI unavailable: ' + failure)
     except Exception as exc:
         data = {'ticker': ticker, 'as_of': '2026-10-03', **{k: [] for k in keys}, 'error': str(exc)}
         print(f'AI N/A: {exc}', flush=True)
