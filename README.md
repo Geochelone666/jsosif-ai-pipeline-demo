@@ -26,6 +26,10 @@ News RSS ──→ Gemini extract / classify ─────┘
 | `comparables.py` / `earnings.py` / `fred.py` / `edgar.py` | Peer comps, earnings calendar, macro (FRED), latest SEC filing |
 | `regenerate_report.py` | Assembles the Markdown report |
 
+## Six-asset dashboard
+
+Open [`index.html`](index.html) in a browser for the six-asset dashboard covering NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA. The page uses an embedded data snapshot. Rerunning the pipeline does not automatically refresh it; regenerate or update the embedded snapshot in `index.html` to see new data on the dashboard.
+
 ## Intelligence page prototype
 
 A static mockup of the future dashboard Intelligence page (open `intelligence-mockup.html` in a browser). The mockup currently shows NVDA, MSFT and AAPL; all six ticker reports are available in `INDEX.md`.
