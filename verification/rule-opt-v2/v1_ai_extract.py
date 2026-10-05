@@ -45,29 +45,24 @@ def fetch_rss(query, n=25):
 KEYS = ('tailwinds', 'headwinds', 'catalysts', 'risks')
 MODEL = 'gemini-3.5-flash-lite'
 ALIASES = {
-    'NVDA': ('nvidia', '英伟达', '輝達'), 'MSFT': ('microsoft', '微软', '微軟', 'azure'), 'AAPL': ('apple', '苹果', '蘋果'),
-    'GOOGL': ('alphabet', 'google', 'goog', '谷歌'), 'AMZN': ('amazon', 'amazon.com', 'aws', '亚马逊', '亞馬遜'), 'TSLA': ('tesla', '特斯拉'),
+    'NVDA': ('nvidia',), 'MSFT': ('microsoft',), 'AAPL': ('apple',),
+    'GOOGL': ('alphabet', 'google'), 'AMZN': ('amazon', 'aws'), 'TSLA': ('tesla',),
 }
-# Specific corporate events precede generic earnings/market vocabulary.
 EVENTS = {
-    'acquisition': r'acquisition|acquir(?:e[sd]?|ing)|merger|takeover|buyout|收购|并购',
-    'stock_split': r'stock splits?|share splits?|splits? (?:into|its)|spin[ -]?offs?|spins? off|拆分|拆股|分拆',
-    'buyback': r'buy[ -]?backs?|repurchases?|share repurchase authorization|回购',
-    'dividend': r'dividends?|派息|股息',
-    'guidance': r'guidance|outlook|forecast|指引|展望',
-    'lawsuit': r'lawsuits?|sues?|suing|antitrust|litigation|court|liability|诉讼|反垄断',
-    'product': r'launch(?:es|ed|ing)?|unveils?|release|iphone|robotaxi|fsd|推出|发布',
-    'partnership': r'deals?|partnership|signs|agreement|contract|合作|协议',
-    'analyst': r'analysts?|price target|upgrad(?:e[sd]?|ing)|downgrad(?:e[sd]?|ing)|conviction list|tactical ideas|top .*pick|fair value|valued|评级|目标价|fair value boost',
-    'workforce': r'layoffs?|job cuts|裁员',
-    'earnings': r'(?:beats?|miss(?:es)?|tops?|exceeds?) .{0,25}estimates?|earnings|revenue|profits?|quarterly results|deliver(?:ies|ed)|delivery numbers|registrations|财报|营收|利润',
-    'ownership': r'(?:stock|shares) (?:sold|purchased|bought) by|(?:sells?|buys?) \$[\d,]+ in|insider (?:sale|purchase)|持股|增持|减持',
-    'calendar': r'mark your calendars?|scheduled (?:for|on)',
-    'risk': r'flags? .*risk|approval risks?|accounts receivable|memory chip crunch',
-    'market_move': r'stock|shares|premarket|market cap|股价|股票',
+    'earnings': r'earnings|revenue|profits?|quarterly results|deliveries|delivery numbers',
+    'acquisition': r'acquisition|acquires?|merger|takeover|buyout',
+    'guidance': r'guidance|outlook|forecast',
+    'lawsuit': r'lawsuit|sues?|suing|antitrust|litigation|court|liability',
+    'dividend': r'dividends?', 'buyback': r'buyback|repurchase',
+    'product': r'launch|unveils?|release|iphone|robotaxi|fsd',
+    'partnership': r'deal|partnership|signs|agreement|contract',
+    'analyst': r'analyst|price target|upgrades?|downgrades?|conviction list|tactical ideas|top .*pick|fair value|valued',
+    'workforce': r'layoffs?|job cuts',
+    'stock_split': r'stock split',
+    'market_move': r'stock|shares|premarket|market cap',
 }
-POSITIVE = r'jump(?:s|ed|ing)?|gain(?:s|ed|ing)?|climb(?:s|ed|ing)?|pop(?:s|ped)?|higher|surge(?:s|d)?|rall(?:y|ies|ied)|ris(?:e[sn]?|ing)|up|record highs?|all.time highs?|upgrad(?:e[sd]?|ing)|wins?|green light|bullish|better.than.expected|conviction list|top .*pick|optimism|best quarter|上涨|大涨|上调|超预期'
-NEGATIVE = r'fall(?:s|ing)?|fell|slip(?:s|ped)?|drop(?:s|ped)?|tumbl(?:ing|es?)|sink(?:s|ing)?|sank|slide[sd]?|down|lower(?:s|ed)?|downgrad(?:e[sd]?|ing)|worst|pressure|threat|warnings?|doubts|lawsuit|antitrust|layoffs?|post.ipo low|selloff|retreats?|下跌|下调|不及预期'
+POSITIVE = r'jumps?|gains?|climbs?|pops?|higher|surges?|rall(?:y|ies)|record high|all.time high|upgrades?|wins?|green light|bullish|better.than.expected|buyback|repurchase|conviction list|top .*pick'
+NEGATIVE = r'falls?|slips?|drops?|tumbling|lowers?|downgrades?|worst|pressure|threat|warnings?|doubts|lawsuit|antitrust|layoffs?|post.ipo low'
 
 
 def metadata(item):
@@ -85,59 +80,20 @@ def classify_rule(item, ticker):
     headline = item['headline']
     text = headline.lower()
     companies = [symbol for symbol, names in ALIASES.items()
-                 if any(re.search((r'\b' + re.escape(name) + r'\b') if name.isascii() else re.escape(name), text)
+                 if any(re.search(r'\b' + re.escape(name) + r'\b', text)
                         for name in (*names, symbol.lower()))]
     event = next((name for name, pattern in EVENTS.items()
-                  if re.search(r'(?<![a-z0-9])(?:' + pattern + r')(?![a-z0-9])', text)), 'unknown')
-    if event == 'unknown' and re.search(r'\b(?:falls?|rises?|gains?|drops?)\s+\d+(?:\.\d+)?%', text):
-        event = 'market_move'
-    # A competitor's price move is not a target-company price move.
-    other_subject = False
-    if event == 'market_move' and not text.startswith('stocks making'):
-        subject = re.split(r'\b(?:stock|shares)\b', text, maxsplit=1)[0]
-        other_subject = not any(re.search(r'\b'+re.escape(name)+r'\b', subject) if name.isascii() else name in subject for name in (*ALIASES.get(ticker, ()), ticker.lower()))
-    # A factual lead remains classifiable when followed by a commentary question.
-    # Leading questions and conditional claims remain AI candidates.
-    lead = re.split(r"[.!]\s+(?=[A-Z])|:\s+(?=(?:Is|What's|What is))|\s[-–—]\s+(?=(?:What|Still|Here))", headline)[0].lower()
-    pos = bool(re.search(r'\b(?:' + POSITIVE + r')\b', lead))
-    neg = bool(re.search(r'\b(?:' + NEGATIVE + r')\b', lead))
-    pos = pos or any(word in lead for word in ('上涨', '大涨', '上调', '超预期'))
-    neg = neg or any(word in lead for word in ('下跌', '下调', '不及预期'))
-    # Evaluate forecasts within the lead, without treating calendar month May as speculation.
-    speculation_text = re.sub(r'\b(?:in|since|during|of) may\b', '', lead)
-    ambiguous = bool(re.search(r'\?|\b(?:could|may|might|prediction|predicts|predicted|will|expected to)\b', speculation_text))
-    # Calendar May and relational expressions are not directional signals.
-    if re.search(r'\b(?:falls? (?:just )?shy|near(?:ly)? .*high|back at .*record)\b', lead):
-        ambiguous = True
+                  if re.search(r'\b(?:' + pattern + r')\b', text)), 'unknown')
+    pos = bool(re.search(r'\b(?:' + POSITIVE + r')\b', text))
+    neg = bool(re.search(r'\b(?:' + NEGATIVE + r')\b', text))
+    # Questions, conditional predictions and conflicting signals need interpretation.
+    ambiguous = bool(re.search(r'\?|\b(?:could|may|might|prediction|predicts|will|expected to)\b', text))
     sentiment = ('positive' if pos else 'negative') if pos != neg and not ambiguous else 'unknown'
-    # Earnings beats/misses and guidance/rating revisions require event-local verbs.
-    if not ambiguous:
-        if event == 'earnings':
-            beat = bool(re.search(r'\b(?:beats?|tops?|exceeds?)\b.{0,35}\b(?:estimates?|expectations?|consensus)\b', lead))
-            miss = bool(re.search(r'\b(?:miss(?:es)?|below)\b.{0,35}\b(?:estimates?|expectations?|consensus)\b', lead))
-            if beat != miss:
-                sentiment = 'unknown' if (beat and neg) or (miss and pos) else 'positive' if beat else 'negative'
-        elif event in ('guidance', 'analyst'):
-            raised = bool(re.search(r'\b(?:rais(?:e[sd]?|ing)|boost(?:s|ed)?|hik(?:e[sd]?|ing)|upgrad(?:e[sd]?|ing))\b', lead))
-            cut = bool(re.search(r'\b(?:cuts?|lower(?:s|ed)?|slash(?:es|ed)?|downgrad(?:e[sd]?|ing))\b', lead))
-            if raised != cut and not (pos and neg):
-                sentiment = 'positive' if raised else 'negative'
-        if sentiment == 'unknown' and not pos and not neg and event in ('dividend', 'acquisition', 'partnership', 'product', 'buyback', 'stock_split', 'earnings', 'ownership', 'calendar', 'analyst'):
-            sentiment = 'neutral'
-    if not ambiguous and not (pos and neg) and event == 'risk':
-        sentiment = 'negative'
-    if not ambiguous and event == 'market_move' and text.startswith('stocks making the biggest moves'):
+    if sentiment == 'unknown' and not ambiguous and not pos and not neg and event in ('dividend', 'acquisition', 'partnership', 'product'):
         sentiment = 'neutral'
-    method = 'rule' if event != 'unknown' and sentiment != 'unknown' and ticker in companies and not other_subject and metadata(item)['date'] else 'unknown'
+    method = 'rule' if event != 'unknown' and sentiment != 'unknown' and ticker in companies and metadata(item)['date'] else 'unknown'
     category = 'tailwinds' if sentiment == 'positive' else 'headwinds' if sentiment == 'negative' else 'catalysts'
-    # Announcements are discrete catalysts even when a market reaction is included.
-    if event in ('product', 'buyback', 'stock_split', 'dividend', 'acquisition', 'ownership', 'calendar') and sentiment != 'negative':
-        category = 'catalysts'
-    if event == 'analyst' and not re.search(r'\b(?:upgrad(?:e[sd]?|ing)|downgrad(?:e[sd]?|ing)|rais(?:e[sd]?|ing)|lower(?:s|ed)?|top .*pick|conviction list)\b', lead):
-        category = 'catalysts'
-    if event == 'risk':
-        category = 'risks'
-    if sentiment == 'negative' and event == 'lawsuit' and re.search(r'\b(?:lawsuits?|sues?|suing|antitrust|litigation|court)\b', lead):
+    if sentiment == 'negative' and event == 'lawsuit':
         category = 'risks'
     result = {'headline': headline, 'summary': headline, 'impact': 'medium',
               'horizon': 'short', 'confidence': 0.8 if method == 'rule' else 0.0,
