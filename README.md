@@ -60,8 +60,10 @@ The scripts use the shared `data_utils.py` helper. AI extraction requires the Ge
 After generating the reports, or directly against the committed snapshots, run:
 
 ```bash
-python3 validate_phase1.py
+REPORT_AS_OF=2026-10-05 python3 validate_phase1.py
 ```
+
+The command above validates the committed 2026-10-05 reports. For reports generated on another date, set `REPORT_AS_OF` to that date (`YYYY-MM-DD`). If omitted, the validator defaults to the current date and looks for `{TICKER}-intelligence-YYYYMMDD.md` for all six tickers; it does not automatically select the latest committed reports.
 
 This offline check uses only the Python standard library. It checks that all six reports contain the required sections and that their quantitative table values match the ticker JSON snapshots at the expected precision. When GOOGL verification data is available, it also independently recomputes the 1Y return from `GOOGL-yfinance.csv`; otherwise that check is recorded as unavailable.
 
