@@ -55,6 +55,18 @@ All six ticker scripts default to NVDA when `--ticker` is omitted. Outputs are w
 
 The scripts use the shared `data_utils.py` helper. AI extraction requires the Gemini CLI configured at the absolute `CLI` path in `ai_extract.py`; set `GEMINI_CLI` to override it for your environment. Report generation reuses local JSON snapshots and does not fetch data.
 
+## Validate local reports
+
+After generating the reports, or directly against the committed snapshots, run:
+
+```bash
+python3 validate_phase1.py
+```
+
+This offline check uses only the Python standard library. It checks that all six reports contain the required sections and that their quantitative table values match the ticker JSON snapshots at the expected precision. When GOOGL verification data is available, it also independently recomputes the 1Y return from `GOOGL-yfinance.csv`; otherwise that check is recorded as unavailable.
+
+A successful run rewrites `INDEX.md` with report links and summaries and `phase1-validation.json` with the results. Missing files or failed assertions stop the script with a nonzero exit status.
+
 ## Limitations
 
 - Supports NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA; report date is fixed to this demo snapshot (2026-10-03).
