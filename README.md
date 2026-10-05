@@ -69,7 +69,8 @@ A successful run rewrites `INDEX.md` with report links and summaries and `phase1
 
 ## Limitations
 
-- Supports NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA; report date is fixed to this demo snapshot (2026-10-03).
+- Supports NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA. Latest market refresh: 2026-10-05 (intraday); see [INDEX.md](INDEX.md). News and other non-market sections retain their existing snapshots.
+- `REPORT_AS_OF=2026-10-05 python quant.py --ticker NVDA` and `REPORT_AS_OF=2026-10-05 python regenerate_report.py --ticker NVDA` select the market cutoff and report date. `validate_phase1.py` uses the same variable to validate reports and rebuild INDEX.md.
 - Free-tier data: delayed quotes, RSS coverage not guaranteed, AI items need human review.
 - Free-tier Gemini grounding (`google_search` tool) returned 429 in the original run — the demo works around it with RSS + plain-text extraction.
 - Not investment advice.

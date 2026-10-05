@@ -1,28 +1,31 @@
-import json, io, urllib.request
+import json, io, urllib.request, os
+from datetime import date, timedelta
 from pathlib import Path
 import pandas as pd
 import numpy as np
 import yfinance as yf
 from data_utils import ticker_arg, ticker_file
 TICKER=ticker_arg()
+AS_OF = os.environ.get('REPORT_AS_OF', date.today().isoformat())
+END = (date.fromisoformat(AS_OF) + timedelta(days=1)).isoformat()
 P=Path(__file__).parent
 errors=[]; sources=[]; series={}; info={}
 for symbol in [TICKER,'SPY']:
     try:
-        h=yf.Ticker(symbol).history(start='2025-10-02',end='2026-10-04',auto_adjust=True,timeout=30)
+        h=yf.Ticker(symbol).history(start='2025-10-02',end=END,auto_adjust=True,timeout=30)
         if h.empty: raise ValueError('empty history')
         h.index=pd.to_datetime(h.index).tz_localize(None).normalize()
-        series[symbol]=h['Close'].dropna().loc[:'2026-10-03']
+        series[symbol]=h['Close'].dropna().loc[:AS_OF]
         sources.append(f'https://finance.yahoo.com/quote/{symbol}/history/')
         h.to_csv(P/f'{symbol}-yfinance.csv')
     except Exception as e:
         errors.append(f'{symbol} yfinance: {e}')
         try:
-            url=f'https://stooq.com/q/d/l/?s={symbol.lower()}.us&i=d&d1=20251002&d2=20261003'
+            url=f'https://stooq.com/q/d/l/?s={symbol.lower()}.us&i=d&d1=20251002&d2={AS_OF.replace('-', '')}'
             raw=urllib.request.urlopen(url,timeout=30).read().decode()
             (P/f'{symbol}-stooq.csv').write_text(raw)
             h=pd.read_csv(io.StringIO(raw),parse_dates=['Date']).set_index('Date').sort_index()
-            series[symbol]=h['Close'].dropna().loc[:'2026-10-03']; sources.append(url)
+            series[symbol]=h['Close'].dropna().loc[:AS_OF]; sources.append(url)
             if series[symbol].empty: raise ValueError('empty stooq')
         except Exception as e: errors.append(f'{symbol} stooq: {e}')
 try:
@@ -30,7 +33,7 @@ try:
     sources.append(f'https://finance.yahoo.com/quote/{TICKER}/key-statistics/')
 except Exception as e: errors.append(f'info: {e}')
 (P/ticker_file(TICKER, 'info.json')).write_text(json.dumps(info,indent=2,default=str))
-result={'ticker':TICKER,'errors':errors,'sources':sources,'metrics':{},'as_of':None,'verification':None}
+result={'ticker':TICKER,'errors':errors,'sources':sources,'metrics':{},'as_of':None,'verification':None,'fetched_at':__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),'requested_as_of':AS_OF}
 m=result['metrics']
 if TICKER in series and len(series[TICKER])>1:
     c=series[TICKER]; end=c.index[-1]; result['as_of']=str(end.date()); last=float(c.iloc[-1]); m['Close']=last

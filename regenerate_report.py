@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Regenerate the selected ticker intelligence report with quant + AI results."""
 import json
+import os
+from datetime import date
 from data_utils import ROOT, ticker_arg, ticker_file
 TICKER = ticker_arg()
+AS_OF = os.environ.get('REPORT_AS_OF', date.today().isoformat())
+STAMP = AS_OF.replace('-', '')
 def read_snapshot(name):
     return json.loads((ROOT / ticker_file(TICKER, name)).read_text(encoding="utf-8"))
 
@@ -82,9 +86,12 @@ for sec in ("tailwinds", "headwinds", "catalysts", "risks"):
 report = f"""# {TICKER} Intelligence Demo
 
 - ticker: **{TICKER}**
-- Report as_of: **2026-10-03**
+- Report as_of: **{AS_OF}**
 - Market data as_of: **{quant.get('as_of') or 'N/A'}**
 - Quant sources: {', '.join(quant.get('sources', [])) or 'N/A'}
+- AI analysis snapshot as_of: **{ai.get('as_of', 'N/A')}** (retained; this run refreshes market data only)
+- Snapshot note: the report-date daily bar may be intraday until the US market closes; its Close field is provisional. News, peers, earnings, EDGAR and macro sections reuse their existing snapshots.
+- Market data fetched_at (UTC): **{quant.get('fetched_at', 'N/A')}**
 - AI status: **{'N/A: ' + ai['error'] if ai.get('error') else 'Available'}**
 - AI model: **gemini-3.5-flash-lite** (25 Google News RSS headlines -> AI extraction and classification; free-tier grounding unavailable, using RSS + AI)
 
@@ -107,13 +114,13 @@ Market data sample: {quant.get('history_count', {})}.
 - Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
 """
 
-with (ROOT / f"{TICKER}-intelligence-20261003.md").open("w", encoding="utf-8") as f:
+with (ROOT / f"{TICKER}-intelligence-{STAMP}.md").open("w", encoding="utf-8") as f:
     f.write(report)
 print("report regenerated,", len(report), "chars")
 
 from data_utils import ROOT, number
 
-REPORT = ROOT / f'{TICKER}-intelligence-20261003.md'
+REPORT = ROOT / f'{TICKER}-intelligence-{STAMP}.md'
 
 def load(name):
     with (ROOT / (name if name == 'fred.json' else ticker_file(TICKER, name))).open(encoding='utf-8') as stream:

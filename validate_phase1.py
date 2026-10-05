@@ -3,13 +3,17 @@ from decimal import Decimal
 import csv
 import json
 import re
+import os
+from datetime import date
+AS_OF = os.environ.get("REPORT_AS_OF", date.today().isoformat())
+STAMP = AS_OF.replace("-", "")
 from data_utils import ROOT, save
 
 sections = ('QUANTITATIVE', 'TAILWINDS', 'HEADWINDS', 'CATALYSTS', 'RISKS', 'PEER COMPARABLES', 'EARNINGS CALENDAR', 'MACRO (FRED)', 'LATEST FILING (EDGAR)', 'SOURCES')
 results = {}
-index = ['# Intelligence reports', '', 'Snapshot date: 2026-10-03. Missing data is N/A.', '']
+index = ['# Intelligence reports', '', f'Snapshot date: {AS_OF}. Missing data is N/A. Report-date daily prices may be intraday and provisional. News and other non-market sections retain existing snapshots.', '']
 for ticker in ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA'):
-    report_name = f'{ticker}-intelligence-20261003.md'
+    report_name = f'{ticker}-intelligence-{STAMP}.md'
     report = (ROOT / report_name).read_text()
     quant = json.loads((ROOT / f'{ticker.lower()}-quant.json').read_text())
     ai = json.loads((ROOT / f'{ticker.lower()}-ai-intel.json').read_text())
