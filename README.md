@@ -60,10 +60,8 @@ The scripts use the shared `data_utils.py` helper. AI extraction requires the Ge
 After generating the reports, or directly against the committed snapshots, run:
 
 ```bash
-REPORT_AS_OF=2026-10-05 python3 validate_phase1.py
+python3 validate_phase1.py
 ```
-
-The command above validates the committed 2026-10-05 reports. For reports generated on another date, set `REPORT_AS_OF` to that date (`YYYY-MM-DD`). If omitted, the validator defaults to the current date and looks for `{TICKER}-intelligence-YYYYMMDD.md` for all six tickers; it does not automatically select the latest committed reports.
 
 This offline check uses only the Python standard library. It checks that all six reports contain the required sections and that their quantitative table values match the ticker JSON snapshots at the expected precision. When GOOGL verification data is available, it also independently recomputes the 1Y return from `GOOGL-yfinance.csv`; otherwise that check is recorded as unavailable.
 
@@ -80,3 +78,9 @@ A successful run rewrites `INDEX.md` with report links and summaries and `phase1
 ## Status
 
 Prototype for architecture discussion. If the team agrees on the direction, this gets rebuilt properly with a real intelligence database and broader asset coverage.
+
+## Rule-first extraction
+
+`ai_extract.py` now classifies clear headlines locally and sends only ambiguous headlines to the existing Flash-Lite CLI. RSS metadata remains authoritative. Existing report fields are retained; additive `extraction_method` values are `rule`, `ai`, or `unknown`. Unresolved items are retained in `unclassified`, with counts in `extraction_stats`. Rule summaries copy the headline; impact and horizon use conservative defaults.
+
+Run `python3 -m unittest -v test_ai_extract` and see [verification results](verification/rule-first/RESULTS.md). Current fixture rule coverage is 27.9%, below the 70% goal; historical AI category agreement is not ground-truth accuracy.

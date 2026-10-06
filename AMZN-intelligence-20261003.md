@@ -21,7 +21,7 @@
 | Beta vs SPY | 1.4400 |
 | Max drawdown (%) | -21.7362 |
 | Sharpe (rf=0) | 0.5267 |
-| P/E (trailing) | 19.96 |
+| P/E (trailing) | 20.23 |
 | P/B | 4.92 |
 | EV/EBITDA | 16.82 |
 | Revenue growth (%) | 19.60 |
@@ -40,62 +40,52 @@ Market data sample: {'AMZN': 252, 'SPY': 252}.
 ## TAILWINDS
 
 ### Amazon, Top Warship Builder Added To Goldman's Conviction List
-- Summary: Goldman Sachs has added Amazon to its high-conviction list, highlighting strong institutional confidence in the company's growth vectors.
+- Summary: Goldman Sachs added Amazon to its high-conviction list, signaling strong institutional backing and positive near-term prospects.
 - Date: 2026-10-01 | Impact: high | Horizon: medium | Confidence: 0.9
 - Sources: <https://news.google.com/rss/articles/CBMiqgFBVV95cUxPdHdmU2RRYmhlU0pha05lM2p1TkZvS19OT1RjVWdEanVlck53dmpKaEoyeDU5UDAwWU9vLXVMM3hKdWNSVWs0c1NuVEo1aEFvejdhMWJrWWp5S3VNNEVJMU9lQnVuWDhlSGNsSzlpYV9XNENEYjRSbUlvTGNsNXplN2RxVHJvX3FOcXVCUW8xd0thQTJuOUhJSDVoVDVRVlVyaURNUE05S2R2UQ?oc=5>
 
-### Amazon Stock Has 46% Upside. Muse and Dots Threats Are ‘Overstated.’
-- Summary: The headline presents an opinion that Amazon has 46% upside and that Muse and Dots threats are overstated.
-- Date: 2026-09-30 | Impact: high | Horizon: long | Confidence: 0.85
-- Sources: <https://news.google.com/rss/articles/CBMiggFBVV95cUxQOUU3aFNpc3Q5aGlia0h3eDg3U1JjSHN1Qy1wWEZaZVpnY28tMnhNN3pEc0o3eFVSVFdON1ZtZ05DMC1YaWQtVy1zRjFJcldKZ2Z1clR4Vy1xeXA3RDUxUllXMkZfM1VZT1B5am5KOFNJM3R6MzJzQzBCZTBRcndyQUZB?oc=5>
+### Amazon Signs 20 Year Nuclear Power Deal. That's Great News for This Nuclear Stock
+- Summary: Amazon secured a long-term nuclear power agreement to sustainably fuel its energy-intensive data centers and cloud operations.
+- Date: 2026-10-01 | Impact: high | Horizon: long | Confidence: 0.95
+- Sources: <https://news.google.com/rss/articles/CBMiwAFBVV95cUxObndyaTA1SWZvX1U4RmhIcUYtekpHdlRPZE9LNkJZd3VZMjltM3J6RF9aZkJqd2JTUHpYYTBHWHVJMDFwQU03Rmp4czQ5M1p6dzZraWZqSWR0X0FMTWRlSDFWTTlqTkZmclNQYU5QNzI5MlUtMnVqdE0taHVGSE1Oa1Fick5zWTE1eEtpS0p0a1NaM3B1UjNacGgzNENFeFVIcWhhSTFOakFaVVJQUWJ0cDQ3OHVtYmdSSFBJb2lubFc?oc=5>
 
 ## HEADWINDS
 
-### AMZN Stock Drops Nearly 2% After-Hours — Senate Panel Reportedly Probes Amazon Over Alleged Chinese Influence
-- Summary: A Senate panel is investigating Amazon regarding alleged Chinese influence, creating regulatory headwinds and pressuring the stock.
-- Date: 2026-10-02 | Impact: medium | Horizon: short | Confidence: 0.8
-- Sources: <https://news.google.com/rss/articles/CBMizAFBVV95cUxQRVNXWXAtNWVsUWRhdDVTMWxDTjJtUWwxNFpzN2hIcUk4M3RMeThoMVo4NkwzQ0JuRVl2ZlE0TjZYVVY3ZDYzZU9jTmNpQjFIWlJUa2YyWkpvaktuWHphMXdyUW9WczVvNU5YU1psOTBRakpsV2lNamZXcVVBODdrRTlmRGgwN3ZheW9GZUEyY2Q4dGhJU3RJTVE2R3Bpd09fanAxaWZEbXFCaTUtS0taMlE4QW1PWWQwcWJ2d0lKaFd3WGZPaVNZeHd1dWY?oc=5>
-
 ### Could Amazon Stock Survive AI Spending Outrunning Its Cash?
-- Summary: Concerns are mounting regarding whether massive capital expenditures on artificial intelligence initiatives will outpace operating cash flows.
+- Summary: Analysts express caution regarding whether heavy capital expenditures on artificial intelligence infrastructure could outpace cash generation.
 - Date: 2026-09-30 | Impact: medium | Horizon: medium | Confidence: 0.75
 - Sources: <https://news.google.com/rss/articles/CBMiuwFBVV95cUxQR0NzUGZhY05seEZXRWdESXNCTktRMThkTXQtYXhxZkZTanRQT2ZKVjY0VHlJcUtrWFJLYWktVFVJS3VyNDZ0QzVkR3Y3X2JsMEdkZVY5YkhvXzQ4R2ZnUWU3eVRST0xndUdvQVpXczJoOWxhU056WllLM2lzMjlWQ29DSUloMnNxM0NDRGViS2p0T0VGNWVFZ0FxTFZSOEdWOG1mNVg2WUdiLXRxcEZuM2x1ZHRUdzVISEow?oc=5>
 
 ## CATALYSTS
 
 ### Amazon Stock (AMZN) Pops Up 1.8% as AWS Chief Pledges $1 Billion Fund to Ease AI Data Center Pushback from Locals
-- Summary: The headline reports that the AWS chief pledged a $1 billion fund to address local opposition to AI data centers.
-- Date: 2026-10-02 | Impact: medium | Horizon: medium | Confidence: 0.85
+- Summary: AWS announced a $1 billion initiative to mitigate local opposition and infrastructure pushback against expanding AI data centers.
+- Date: 2026-10-02 | Impact: medium | Horizon: short | Confidence: 0.85
 - Sources: <https://news.google.com/rss/articles/CBMi1gFBVV95cUxNYUYtdVVWOXFPc1BGdExseWs0VUpWbGtwT2l0SXZ1TWlmUVc0MkF6VmZYUjdQSWJMd0QydU5lY1RBZWRaLTJaU0NENWdzVzdzdE5OTnhhUVZBVEZhRzJVUE5CekNGTmlQSGMwZ3I0eVZnenRPQktVRUlvekg1Y2lyclVzRno5aXdNZGt3TU8yUkVqSVhWNXZvMVBSei1fNDY2cy1pbG92ZUJ4ZW9saFhSdFY4d0NPUG5uTzlyRlhBLXBUR3k1OEtUenV6VWRQUEYtLTdmRUhn?oc=5>
 
-### AMZN Inches Higher Premarket: Amazon Reportedly Seeks To Offload $8B Of Nvidia Chips To Investors
-- Summary: Reports indicate Amazon is seeking to offload $8 billion of Nvidia chips to third-party investors, impacting how AI infrastructure is financed.
-- Date: 2026-10-02 | Impact: medium | Horizon: short | Confidence: 0.8
-- Sources: <https://news.google.com/rss/articles/CBMiogFBVV95cUxNVF9xYld4bkxmSlhqcjBpWHdBQjFhdXNwRG9rM0h0U1g3N1lUN05mdk1Yc1JvOC1pU2NLUGZ4SzdEWnY1aVo4dHZzR0tEOG05dzJEOE1Wa0JlZE5QcWhZaW9oOWhKdHp1Z0JmUTZWVmlZNy1mMnI3azhOTEFXRXlFbjM3R2Q0QWgyX0c1TmdzZWRFMjN5eXpDdFNheTF2WEk1ckE?oc=5>
+### Synopsys Stock Rallies After AI Deals With OpenAI and Amazon
+- Summary: New strategic partnerships involving AI position Amazon to further integrate advanced software development and cloud capabilities.
+- Date: 2026-10-01 | Impact: medium | Horizon: medium | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMisgFBVV95cUxQeFdaa3gza0dSRlZUcm5uQko0dzViWTNkWmpkMWJ0VXMtTDlKdnd5empzVFF1V2Y1a3hnczRHaXBJckJkMDdEaWdfUVFMSzNiSlZlT09lZzZmODJqbFl0YkNrSUVLdEduQl82QXdjdTNEeWxRUEJldWFVcHhtTWJxRkI1V0F5eU5GYWxZeTcwS0VhNTJWWVNPNWlaYnJmZzRjcGVtSURyOC1hOXRRVm5nelV3?oc=5>
 
 ## RISKS
 
-### AMZN Stock Dips Overnight After Breaching $3 Trillion Market Cap: Retail Gets Buzzing About Bezos’ Share Sale
-- Summary: Profit-taking and retail discussion surrounding founder Jeff Bezos's share sales following the $3 trillion milestone could introduce volatility.
-- Date: 2026-10-02 | Impact: low | Horizon: short | Confidence: 0.7
-- Sources: <https://news.google.com/rss/articles/CBMitAFBVV95cUxNVHZ1T2JiXzhsbzJVTkxnQ1A5VDBvYkJPVWxhbkp5Yi1jQkVGNmRMSnFzdl9Bc2YzcTh1SFJhN2paYmdVRVJwcENRVl9uV0ZIWkdRRHR2ekxDWUFEOUpZY2xYbDBmRlJjcmZodVJXS01DQ3FvZnFYMnVTd1F3a3lPTEFsb3g0X255dmtyMFNqdkxSSzNSWmpVdG1yWGxRMHZibjM0Ym1UWXNnV2V4UmRnOGdvWnY?oc=5>
-
 ### Amazon (AMZN) Stock Could Be 43% Undervalued After AI Tax Break Scrutiny
-- Summary: Increased scrutiny regarding tax breaks utilized for AI infrastructure investments poses potential financial and compliance risks.
-- Date: 2026-09-30 | Impact: medium | Horizon: medium | Confidence: 0.75
+- Summary: Increased regulatory and tax scrutiny surrounding AI investments and data center incentives poses potential compliance and valuation risks.
+- Date: 2026-09-30 | Impact: medium | Horizon: medium | Confidence: 0.7
 - Sources: <https://news.google.com/rss/articles/CBMixAFBVV95cUxOclJHanp6RXBLM2k2R0xTelJxdWdEOTM1NTI5aS1iOThrTXhpc2VUQXNqOU1vUUFyQ3NXMlBpeklzRmp1U0ZHWGpOSS1JR3EtcU9mOUVHWUcwZ1hZR2VPY3BZVkpIQ3Q3QnhheE9UYzZRc0tIVWVZZ19tVU0yM0RQaWx3eGJuVWhUUTB1SGtPbzBNWS14cHVobkh3bnFQN2VfRDBrX205M1NGSnBla2ZITk42UXlZQkVNVGdrOS1XZ2tzZmxy0gHKAUFVX3lxTE1ubU13akRIaDQ2eWlVQ3VKNzBvNWxwQURvNlQ2Zi1Fc1VjVUVCYWphTUw1RldUQWNjbThFWmdiTkN2VEZTdnhtQ0c5WEpyaENYeFVCVFQ1YUd2dTdRSllSaGw0dnBJUnpPSzJkdGlIeVZrQ3BGUDRCVWp2WTVYQ1VaemlsMGdwS2NKc0dWUVM4MnZUclpKd2JPbDVqTHg5WlRXZ3lCYVZHbEllQnFBSDd0OG5PdURNeDFpZ3NqNWc4WjhZMFJ4X0FSZ1E?oc=5>
 
 ## PEER COMPARABLES
 
 | ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (USD) | 1Y return (%) |
 |---|---:|---:|---:|---:|---:|---:|
-| **AMZN** | **19.96** | **4.92** | **16.82** | **19.60** | **2,712,973,606,912.00** | **13.09** |
-| GOOGL | 16.98 | 6.75 | 23.66 | 24.20 | 4,200,982,642,688.00 | 40.17 |
-| META | 27.32 | 7.10 | 17.12 | 28.00 | 1,854,788,337,664.00 | 0.48 |
-| MSFT | 28.58 | 8.69 | 20.05 | 17.70 | 3,842,942,959,616.00 | 1.17 |
-| AAPL | 37.88 | 45.34 | 29.12 | 16.40 | 4,869,931,925,504.00 | 30.25 |
+| **AMZN** | **20.23** | **4.92** | **16.82** | **19.60** | **2,712,973,606,912.00** | **13.09** |
+| GOOGL | 17.24 | 6.75 | 23.66 | 24.20 | 4,200,982,642,688.00 | 40.17 |
+| META | 27.43 | 7.10 | 17.12 | 28.00 | 1,854,788,337,664.00 | 0.48 |
+| MSFT | 28.83 | 8.69 | 20.05 | 17.70 | 3,842,942,959,616.00 | 1.17 |
+| AAPL | 38.27 | 45.34 | 29.12 | 16.40 | 4,869,931,925,504.00 | 30.25 |
 
-Peers fetched as_of: 2026-10-03; AMZN reuses existing data (market data as_of: 2026-10-02); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
+Peers fetched as_of: 2026-10-05; AMZN reuses existing data (market data as_of: 2026-10-02); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
 
 ## EARNINGS CALENDAR
 
@@ -127,12 +117,10 @@ API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-app
 ## SOURCES
 
 - https://news.google.com/rss/articles/CBMiqgFBVV95cUxPdHdmU2RRYmhlU0pha05lM2p1TkZvS19OT1RjVWdEanVlck53dmpKaEoyeDU5UDAwWU9vLXVMM3hKdWNSVWs0c1NuVEo1aEFvejdhMWJrWWp5S3VNNEVJMU9lQnVuWDhlSGNsSzlpYV9XNENEYjRSbUlvTGNsNXplN2RxVHJvX3FOcXVCUW8xd0thQTJuOUhJSDVoVDVRVlVyaURNUE05S2R2UQ?oc=5
-- https://news.google.com/rss/articles/CBMiggFBVV95cUxQOUU3aFNpc3Q5aGlia0h3eDg3U1JjSHN1Qy1wWEZaZVpnY28tMnhNN3pEc0o3eFVSVFdON1ZtZ05DMC1YaWQtVy1zRjFJcldKZ2Z1clR4Vy1xeXA3RDUxUllXMkZfM1VZT1B5am5KOFNJM3R6MzJzQzBCZTBRcndyQUZB?oc=5
-- https://news.google.com/rss/articles/CBMizAFBVV95cUxQRVNXWXAtNWVsUWRhdDVTMWxDTjJtUWwxNFpzN2hIcUk4M3RMeThoMVo4NkwzQ0JuRVl2ZlE0TjZYVVY3ZDYzZU9jTmNpQjFIWlJUa2YyWkpvaktuWHphMXdyUW9WczVvNU5YU1psOTBRakpsV2lNamZXcVVBODdrRTlmRGgwN3ZheW9GZUEyY2Q4dGhJU3RJTVE2R3Bpd09fanAxaWZEbXFCaTUtS0taMlE4QW1PWWQwcWJ2d0lKaFd3WGZPaVNZeHd1dWY?oc=5
+- https://news.google.com/rss/articles/CBMiwAFBVV95cUxObndyaTA1SWZvX1U4RmhIcUYtekpHdlRPZE9LNkJZd3VZMjltM3J6RF9aZkJqd2JTUHpYYTBHWHVJMDFwQU03Rmp4czQ5M1p6dzZraWZqSWR0X0FMTWRlSDFWTTlqTkZmclNQYU5QNzI5MlUtMnVqdE0taHVGSE1Oa1Fick5zWTE1eEtpS0p0a1NaM3B1UjNacGgzNENFeFVIcWhhSTFOakFaVVJQUWJ0cDQ3OHVtYmdSSFBJb2lubFc?oc=5
 - https://news.google.com/rss/articles/CBMiuwFBVV95cUxQR0NzUGZhY05seEZXRWdESXNCTktRMThkTXQtYXhxZkZTanRQT2ZKVjY0VHlJcUtrWFJLYWktVFVJS3VyNDZ0QzVkR3Y3X2JsMEdkZVY5YkhvXzQ4R2ZnUWU3eVRST0xndUdvQVpXczJoOWxhU056WllLM2lzMjlWQ29DSUloMnNxM0NDRGViS2p0T0VGNWVFZ0FxTFZSOEdWOG1mNVg2WUdiLXRxcEZuM2x1ZHRUdzVISEow?oc=5
 - https://news.google.com/rss/articles/CBMi1gFBVV95cUxNYUYtdVVWOXFPc1BGdExseWs0VUpWbGtwT2l0SXZ1TWlmUVc0MkF6VmZYUjdQSWJMd0QydU5lY1RBZWRaLTJaU0NENWdzVzdzdE5OTnhhUVZBVEZhRzJVUE5CekNGTmlQSGMwZ3I0eVZnenRPQktVRUlvekg1Y2lyclVzRno5aXdNZGt3TU8yUkVqSVhWNXZvMVBSei1fNDY2cy1pbG92ZUJ4ZW9saFhSdFY4d0NPUG5uTzlyRlhBLXBUR3k1OEtUenV6VWRQUEYtLTdmRUhn?oc=5
-- https://news.google.com/rss/articles/CBMiogFBVV95cUxNVF9xYld4bkxmSlhqcjBpWHdBQjFhdXNwRG9rM0h0U1g3N1lUN05mdk1Yc1JvOC1pU2NLUGZ4SzdEWnY1aVo4dHZzR0tEOG05dzJEOE1Wa0JlZE5QcWhZaW9oOWhKdHp1Z0JmUTZWVmlZNy1mMnI3azhOTEFXRXlFbjM3R2Q0QWgyX0c1TmdzZWRFMjN5eXpDdFNheTF2WEk1ckE?oc=5
-- https://news.google.com/rss/articles/CBMitAFBVV95cUxNVHZ1T2JiXzhsbzJVTkxnQ1A5VDBvYkJPVWxhbkp5Yi1jQkVGNmRMSnFzdl9Bc2YzcTh1SFJhN2paYmdVRVJwcENRVl9uV0ZIWkdRRHR2ekxDWUFEOUpZY2xYbDBmRlJjcmZodVJXS01DQ3FvZnFYMnVTd1F3a3lPTEFsb3g0X255dmtyMFNqdkxSSzNSWmpVdG1yWGxRMHZibjM0Ym1UWXNnV2V4UmRnOGdvWnY?oc=5
+- https://news.google.com/rss/articles/CBMisgFBVV95cUxQeFdaa3gza0dSRlZUcm5uQko0dzViWTNkWmpkMWJ0VXMtTDlKdnd5empzVFF1V2Y1a3hnczRHaXBJckJkMDdEaWdfUVFMSzNiSlZlT09lZzZmODJqbFl0YkNrSUVLdEduQl82QXdjdTNEeWxRUEJldWFVcHhtTWJxRkI1V0F5eU5GYWxZeTcwS0VhNTJWWVNPNWlaYnJmZzRjcGVtSURyOC1hOXRRVm5nelV3?oc=5
 - https://news.google.com/rss/articles/CBMixAFBVV95cUxOclJHanp6RXBLM2k2R0xTelJxdWdEOTM1NTI5aS1iOThrTXhpc2VUQXNqOU1vUUFyQ3NXMlBpeklzRmp1U0ZHWGpOSS1JR3EtcU9mOUVHWUcwZ1hZR2VPY3BZVkpIQ3Q3QnhheE9UYzZRc0tIVWVZZ19tVU0yM0RQaWx3eGJuVWhUUTB1SGtPbzBNWS14cHVobkh3bnFQN2VfRDBrX205M1NGSnBla2ZITk42UXlZQkVNVGdrOS1XZ2tzZmxy0gHKAUFVX3lxTE1ubU13akRIaDQ2eWlVQ3VKNzBvNWxwQURvNlQ2Zi1Fc1VjVUVCYWphTUw1RldUQWNjbThFWmdiTkN2VEZTdnhtQ0c5WEpyaENYeFVCVFQ1YUd2dTdRSllSaGw0dnBJUnpPSzJkdGlIeVZrQ3BGUDRCVWp2WTVYQ1VaemlsMGdwS2NKc0dWUVM4MnZUclpKd2JPbDVqTHg5WlRXZ3lCYVZHbEllQnFBSDd0OG5PdURNeDFpZ3NqNWc4WjhZMFJ4X0FSZ1E?oc=5
 
 ## Demo notes and limitations

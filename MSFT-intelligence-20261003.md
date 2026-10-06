@@ -21,7 +21,7 @@
 | Beta vs SPY | 0.9623 |
 | Max drawdown (%) | -34.4984 |
 | Sharpe (rf=0) | 0.1964 |
-| P/E (trailing) | 28.58 |
+| P/E (trailing) | 28.83 |
 | P/B | 8.69 |
 | EV/EBITDA | 20.05 |
 | Revenue growth (%) | 17.70 |
@@ -40,67 +40,47 @@ Market data sample: {'MSFT': 252, 'SPY': 252}.
 ## TAILWINDS
 
 ### MSFT Stock Posts Best Quarter Since 1998 As Azure Growth Revives AI Optimism
-- Summary: Microsoft recorded its strongest quarterly performance since 1998, driven by robust Azure cloud growth that renewed market optimism around enterprise AI adoption.
+- Summary: Microsoft delivered its strongest quarterly performance in decades, driven by robust Azure cloud acceleration and renewed enthusiasm for enterprise AI monetization.
 - Date: 2026-10-02 | Impact: high | Horizon: medium | Confidence: 0.95
-- Sources: <https://news.google.com/rss/articles/CBMimgFBVV95cUxONkk0VjNmTWxrMGdyVUQwTEtZNGhyNU1kdTVlQ29iVHRJcE9VOGVhOVR0eW5DbVYxYjlEM2tHNHpvbFk4cDlFalZHQlVMdktqY0FuZ1FLTzlNazBqaXhJRzU5V3F4Ymc2M2E2OENyUVJHYy1DYnZ1R0h6c3N2RjlpM3NKU0FKZXdGOVZ2RkpMMFRnRlVCNnpMbW9R?oc=5>
-
-### Microsoft: A Multi-Year Compounder With Seat Growth And Azure Acceleration (NASDAQ:MSFT)
-- Summary: Analysis highlights Microsoft's structural positioning as a long-term compounder benefiting from consistent seat expansion and accelerating cloud momentum.
-- Date: 2026-10-01 | Impact: medium | Horizon: long | Confidence: 0.9
-- Sources: <https://news.google.com/rss/articles/CBMitAFBVV95cUxOejNMeGtZSnl5ZE1SSjVmekdrZ0VRSkM5aE9sWi1vVm5hUjBHWVFOTm55c0ZudWtQNGpsdmxsV2FxTkI3eTl5N2VuUldiSzJIX2NXYWhScVpuQWdDVTBWaHRsOWowbTR4OF82YXdHT2lSN2ZUQjBnUmJSa1ZTdUprT2NLTndnU1k2Zk45dk54N3Vzd3dvdGxvSl9PTExTUTV4SmQ1b24tcWFjYnh4bVNvRTB2T1k?oc=5>
+- Sources: <https://news.google.com/rss/articles/CBMi0wFBVV95cUxNVlQySWVVSnVIV0dGRkdzb1BQdERtVWVrcGJkWEpHcm56TVpTS25CQmJrRHgtcmJtcVJNY01QVS1NQmhJWS1tYVZuTmk2XzctWFlPNmUtMkloTnd5OFlpY2dGSVEyTEIyaXVXcC1IY2Y2dm1GNXJ2eTQzd0w4VUVIMVpUalM2OU1xWW0tQVBGV2stbzdsNk15OFUzZ010RWlvWUh3SlVVTzZDOW8wZ0Q4SWhUbEJWak9kYkZnNlUyODBOVDF2cXdoV1dKanhqZEdRd0Nn?oc=5>
 
 ## HEADWINDS
 
 ### Microsoft (MSFT) Stock Looks Fully Valued Despite Fresh AI Liability Warnings
-- Summary: Despite introducing new AI security features, analysts suggest Microsoft's shares are fully valued while confronting lingering liability and regulatory concerns regarding artificial intelligence.
+- Summary: Shares appear fully priced relative to near-term earnings potential, while emerging regulatory and liability warnings around artificial intelligence create cautious sentiment.
 - Date: 2026-10-01 | Impact: medium | Horizon: medium | Confidence: 0.85
 - Sources: <https://news.google.com/rss/articles/CBMixwFBVV95cUxPR05lWGFGem5SaXNDZ2lLblgwUW4xY1MtYU5kQkhYRjczWlRKRjRjbklPR0FtTzlnRHlHOVFPZUZsTDZvZVBma0hxUXBPWDJnZmVJQmJxaHlUSlpGcEp3bDloRUFscTFGSGFxZ2xxUmZCdnlIZzBBUEtMX01Ta1BaSVFtQ2NtdnhORndtSXM0NW1Dck5rZ2FqVWdXc29aazJ1YzhlWlhzMVcyTk5CelhDMHBadmUtd0F6Um0zOGhoQ2NqbnlGQjVF0gHMAUFVX3lxTE1vLWdUcGJvRGtrTktXWmdJVTFMVjluazNFMXo1dFhvWi1Hby1RTmFKWGVpYlAtWFpWQ2I1Z3dPRG1XYlpHOTlFV0lsUTdxZ09LcGZ5TldtNUNPU2F1Tmg2SE1DOEpBWjlGMno1U0RfeUhNZFlqdE9keVVmLW1Kc3h1WG93Mk4wMmpuR0ZGVjRTYWRtSE5ieFp3SXpZVXBXRDJZc2VSa1pIczA1dGdkYUpBQ0pqX3Axb3RXMlJ1SlB6ODZrTXFGRjl5aE44bQ?oc=5>
 
-### MSFT Stock Slides 4.5% — Microsoft Price Target Revision By Stifel And Xbox Pricing Changes In Focus
-- Summary: The stock experienced a pullback following downward price target revisions by analysts at Stifel alongside consumer pushback and adjustments regarding Xbox hardware and service pricing.
-- Date: 2026-10-01 | Impact: medium | Horizon: short | Confidence: 0.8
-- Sources: <https://news.google.com/rss/articles/CBMiywFBVV95cUxQZEw4S3hVeDJ3WDNfME96RWNyaFltN1VTR3djVjFtNWFJNG10UHA1M2FKaWtEV2xZMFRudV92MzJpcEFuNzkwWDZjNnN2TmtBQTZ4VF80d0NJYlRCMzRPeXd1TFI5ZGFTNVgyOXhHSXhVQ1dieGNqY3lCMUlpVE9zcmh3X3BkMzBjSS1zTHhwa2JualpwRXNxSnVkUWUtaTE0T2dJTWVEQ3llM0FvRFVmeU55aEEzVXphd3VaNm1ZNzlsNlpuaWc0S1BLdw?oc=5>
-
 ## CATALYSTS
 
-### Microsoft Stock (NASDAQ:MSFT) Notches Up Ahead of the Surface Show
-- Summary: Share prices ticked upward in anticipation of Microsoft's upcoming hardware event showcasing new Surface devices.
-- Date: 2026-10-02 | Impact: low | Horizon: short | Confidence: 0.75
-- Sources: <https://news.google.com/rss/articles/CBMimAFBVV95cUxQOXNrclpVd29ncEhjS1NtakxDQkF2MnUzdjhVd3FEcWwwZUp6Ti13bjlaRFRLN2FTNFhMZmViTmxYTEtJQ0JyR0FocHhVTVdFVldIRi1kNkNQZTRRcWtQRkloN3RGT2NaNDd4dGEzMW9CX0V6NTZiQmYxdkgyYkdDeWdRWEtTOE5ibHphc1NiYkRlVk5YNEJKQQ?oc=5>
-
 ### MSFT Stock Lands On Wells Fargo’s Q4 ‘Tactical Ideas List’ – Analyst Sees A 41% Upside Potential
-- Summary: Wells Fargo added Microsoft to its high-conviction tactical ideas list for the fourth quarter, signaling potential near-term outperformance.
-- Date: 2026-10-01 | Impact: high | Horizon: medium | Confidence: 0.85
-- Sources: <https://news.google.com/rss/articles/CBMi5gFBVV95cUxPVnYzV2pMTkM4cDV1R2JZV3Jtb2d3S2IwNGxkQno1azkwTlc2WUxVUTRITWpLS01mdjdhX1NYTDRqWFBQSS14MU9IN3NmSHlJLTFDZzA2U2NmbDhlNEdwa2pZLWJtM2JMQm1FTTZpZHNKZXJBa25GRGRhU0FZQTRleDdCTnpKbS0zcHpUVThuRHBKNHBkVzc3bnVnbER6US1NaWlzN2hTM19tOFdYS2pFVFVBRjAzc0EtRklIWkxnZVZiNXBzYmkyRndpWDl6VWN4RHNleDNBWFR6ZnJWNVhVSGpLQXlfQQ?oc=5>
+- Summary: Wells Fargo added Microsoft to its tactical ideas list for the fourth quarter, highlighting substantial upside catalyst potential based on projected institutional demand.
+- Date: 2026-10-01 | Impact: high | Horizon: short | Confidence: 0.9
+- Sources: <https://news.google.com/rss/articles/CBMimAFBVV95cUxQRFdhVzF5TzBoS083cTBCbV9oRWFJSlFmdFlIekI2WWJjUnNlRkc4UW9UQkR3Y3RQajNXb3dnYXo5LW9iOEhjTUpZUW5fZl9Zb2tvUWdwYXpuNnRVejk1VkR4MlA3Sjc3TlU4X25nam9NUUd1YUxRek13Q25FaHc0OWtkSFV0Z3doUUxGWkpValc2YS1KeGM3aw?oc=5>
 
-### OpenAI’s Future IPO Keeps Me Buying Microsoft
-- Summary: Speculation and strategic positioning surrounding a potential future initial public offering by OpenAI continue to serve as a vital catalyst for long-term investors.
-- Date: 2026-10-02 | Impact: medium | Horizon: long | Confidence: 0.7
-- Sources: <https://news.google.com/rss/articles/CBMikgFBVV95cUxOMXRZQlVjYm90Um1RUjVrUXBtM1pMd2ZWNkp4OWY1VTN5SzR0NHZhT2s4VXZWelJYV25JcjRMdHZvRWRTNmlJeXRIWTNHS3ZHV09teVlGTklqbjlfYXhiLWVJM29HeVhqQTFRMXNWaDJ5ZFFobmtoX3RPQlZIYkpiSGJ5WnRHb3l3Q0NCai12ZlVxdw?oc=5>
+### MSFT Stock Gains 3% — Microsoft Unveils AI Cybersecurity Model To Combat Real-Time Threats
+- Summary: The introduction of a new AI-powered cybersecurity model expands Microsoft's security product portfolio and provides a fresh commercial catalyst for enterprise software sales.
+- Date: 2026-09-28 | Impact: medium | Horizon: medium | Confidence: 0.85
+- Sources: <https://news.google.com/rss/articles/CBMizAFBVV95cUxNTFlWbjc0Z3pmZUF6cHo1SjFBelRydXNMRVFWbEIxeHlOUFFCcy0xRHQzY2hGWU5yVktWREQ1MHZVT25FQmVFdWVwNHYxV1haY2xqcEs0VmVlZjhOSFBpX0dyX3E2VThqZVlWOVgzUV9rYnVhWHFCVnZrYWJ5czFwTU92MEkzeExzLVNFQ3ZIRkp1LTRmb09BUUNYRm9sM1JaWFpzNV92YUNRaUxhMllFdVA3NU1jRGV5ODZ4YUlLbDNWRFpEOFo1X2xGSmU?oc=5>
 
 ## RISKS
 
-### Microsoft's 10-K Makes Me Second-Guess My Own Bull Case (NASDAQ:MSFT)
-- Summary: A closer reading of Microsoft's regulatory filings has surfaced operational or structural disclosures that lead some long-term bulls to reassess their thesis.
-- Date: 2026-09-29 | Impact: medium | Horizon: long | Confidence: 0.75
-- Sources: <https://news.google.com/rss/articles/CBMimgFBVV95cUxNbVVrTmNCckhnakVJWlJfa3Q5LV9YT2dDUDZPVkFiM2NuUF9LM3M2UExEdG1VRlJiWHN6M1l6eHh2b001Rml6bXZTSUhGV0tCWktVZkdzLTJ3bVluU0dDNXllVWxodFdiazBvakJrSjl5bjU5WXB6UlA0dm1ONTJSZUFaVlIzOGlaX2Qxb3BlSFZPb3JiOVN3bGl3?oc=5>
-
 ### Microsoft Layoffs Coming Next Week? MSFT Stock Climbs Overnight, Retail Stays Bullish
-- Summary: Unconfirmed reports of impending workforce reductions have sparked discussions regarding internal cost pressures and operational restructuring.
-- Date: 2026-10-01 | Impact: low | Horizon: short | Confidence: 0.65
+- Summary: Reports of upcoming workforce reductions point to potential operational restructuring, which can introduce short-term organizational disruption despite positive retail investor sentiment.
+- Date: 2026-10-01 | Impact: medium | Horizon: short | Confidence: 0.75
 - Sources: <https://news.google.com/rss/articles/CBMi4AFBVV95cUxPWXlYNXpOMTFteXlTcElkZ3dGb1hiRzZPMWVmaXctRkt1TVZPQ2xGanNzekFrTHRweUNlR0NMNUk0WmtiUXduWVEtWi0yQkZSeHhZZk45LUU0YVN2a283bWlzTjV4cnVGQ1NBN09FRnluMUFUaWJkVGVCM3BWTUQyWXAxNWVmR2hxR0RoY3ZrTnNXbVNNLV9adGpkeE5YeFFhV0MyNUJQcnNCMGt5bFdfUDBMZ0x1Nm0wUFpOSzRnV2JhRFp1VEQ2TlZLRUZZazRTek9KVi04aVNVNDBLQS0wUg?oc=5>
 
 ## PEER COMPARABLES
 
 | ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (USD) | 1Y return (%) |
 |---|---:|---:|---:|---:|---:|---:|
-| **MSFT** | **28.58** | **8.69** | **20.05** | **17.70** | **3,842,942,959,616.00** | **1.17** |
-| AAPL | 37.88 | 45.34 | 29.12 | 16.40 | 4,869,931,925,504.00 | 30.25 |
-| GOOGL | 16.98 | 6.75 | 23.66 | 24.20 | 4,200,982,642,688.00 | 40.17 |
-| AMZN | 19.96 | 4.92 | 16.82 | 19.60 | 2,712,973,606,912.00 | 13.09 |
-| NVDA | 29.17 | 24.67 | 27.90 | 105.90 | 5,649,190,617,088.00 | 24.15 |
+| **MSFT** | **28.83** | **8.69** | **20.05** | **17.70** | **3,842,942,959,616.00** | **1.17** |
+| AAPL | 38.27 | 45.34 | 29.12 | 16.40 | 4,869,931,925,504.00 | 30.25 |
+| GOOGL | 17.24 | 6.75 | 23.66 | 24.20 | 4,200,982,642,688.00 | 40.17 |
+| AMZN | 20.23 | 4.92 | 16.82 | 19.60 | 2,712,973,606,912.00 | 13.09 |
+| NVDA | 29.58 | 24.67 | 27.90 | 105.90 | 5,649,190,617,088.00 | 24.15 |
 
-Peers fetched as_of: 2026-10-03; MSFT reuses existing data (market data as_of: 2026-10-02); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
+Peers fetched as_of: 2026-10-05; MSFT reuses existing data (market data as_of: 2026-10-02); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
 
 ## EARNINGS CALENDAR
 
@@ -131,14 +111,10 @@ API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-app
 
 ## SOURCES
 
-- https://news.google.com/rss/articles/CBMimgFBVV95cUxONkk0VjNmTWxrMGdyVUQwTEtZNGhyNU1kdTVlQ29iVHRJcE9VOGVhOVR0eW5DbVYxYjlEM2tHNHpvbFk4cDlFalZHQlVMdktqY0FuZ1FLTzlNazBqaXhJRzU5V3F4Ymc2M2E2OENyUVJHYy1DYnZ1R0h6c3N2RjlpM3NKU0FKZXdGOVZ2RkpMMFRnRlVCNnpMbW9R?oc=5
-- https://news.google.com/rss/articles/CBMitAFBVV95cUxOejNMeGtZSnl5ZE1SSjVmekdrZ0VRSkM5aE9sWi1vVm5hUjBHWVFOTm55c0ZudWtQNGpsdmxsV2FxTkI3eTl5N2VuUldiSzJIX2NXYWhScVpuQWdDVTBWaHRsOWowbTR4OF82YXdHT2lSN2ZUQjBnUmJSa1ZTdUprT2NLTndnU1k2Zk45dk54N3Vzd3dvdGxvSl9PTExTUTV4SmQ1b24tcWFjYnh4bVNvRTB2T1k?oc=5
+- https://news.google.com/rss/articles/CBMi0wFBVV95cUxNVlQySWVVSnVIV0dGRkdzb1BQdERtVWVrcGJkWEpHcm56TVpTS25CQmJrRHgtcmJtcVJNY01QVS1NQmhJWS1tYVZuTmk2XzctWFlPNmUtMkloTnd5OFlpY2dGSVEyTEIyaXVXcC1IY2Y2dm1GNXJ2eTQzd0w4VUVIMVpUalM2OU1xWW0tQVBGV2stbzdsNk15OFUzZ010RWlvWUh3SlVVTzZDOW8wZ0Q4SWhUbEJWak9kYkZnNlUyODBOVDF2cXdoV1dKanhqZEdRd0Nn?oc=5
 - https://news.google.com/rss/articles/CBMixwFBVV95cUxPR05lWGFGem5SaXNDZ2lLblgwUW4xY1MtYU5kQkhYRjczWlRKRjRjbklPR0FtTzlnRHlHOVFPZUZsTDZvZVBma0hxUXBPWDJnZmVJQmJxaHlUSlpGcEp3bDloRUFscTFGSGFxZ2xxUmZCdnlIZzBBUEtMX01Ta1BaSVFtQ2NtdnhORndtSXM0NW1Dck5rZ2FqVWdXc29aazJ1YzhlWlhzMVcyTk5CelhDMHBadmUtd0F6Um0zOGhoQ2NqbnlGQjVF0gHMAUFVX3lxTE1vLWdUcGJvRGtrTktXWmdJVTFMVjluazNFMXo1dFhvWi1Hby1RTmFKWGVpYlAtWFpWQ2I1Z3dPRG1XYlpHOTlFV0lsUTdxZ09LcGZ5TldtNUNPU2F1Tmg2SE1DOEpBWjlGMno1U0RfeUhNZFlqdE9keVVmLW1Kc3h1WG93Mk4wMmpuR0ZGVjRTYWRtSE5ieFp3SXpZVXBXRDJZc2VSa1pIczA1dGdkYUpBQ0pqX3Axb3RXMlJ1SlB6ODZrTXFGRjl5aE44bQ?oc=5
-- https://news.google.com/rss/articles/CBMiywFBVV95cUxQZEw4S3hVeDJ3WDNfME96RWNyaFltN1VTR3djVjFtNWFJNG10UHA1M2FKaWtEV2xZMFRudV92MzJpcEFuNzkwWDZjNnN2TmtBQTZ4VF80d0NJYlRCMzRPeXd1TFI5ZGFTNVgyOXhHSXhVQ1dieGNqY3lCMUlpVE9zcmh3X3BkMzBjSS1zTHhwa2JualpwRXNxSnVkUWUtaTE0T2dJTWVEQ3llM0FvRFVmeU55aEEzVXphd3VaNm1ZNzlsNlpuaWc0S1BLdw?oc=5
-- https://news.google.com/rss/articles/CBMimAFBVV95cUxQOXNrclpVd29ncEhjS1NtakxDQkF2MnUzdjhVd3FEcWwwZUp6Ti13bjlaRFRLN2FTNFhMZmViTmxYTEtJQ0JyR0FocHhVTVdFVldIRi1kNkNQZTRRcWtQRkloN3RGT2NaNDd4dGEzMW9CX0V6NTZiQmYxdkgyYkdDeWdRWEtTOE5ibHphc1NiYkRlVk5YNEJKQQ?oc=5
-- https://news.google.com/rss/articles/CBMi5gFBVV95cUxPVnYzV2pMTkM4cDV1R2JZV3Jtb2d3S2IwNGxkQno1azkwTlc2WUxVUTRITWpLS01mdjdhX1NYTDRqWFBQSS14MU9IN3NmSHlJLTFDZzA2U2NmbDhlNEdwa2pZLWJtM2JMQm1FTTZpZHNKZXJBa25GRGRhU0FZQTRleDdCTnpKbS0zcHpUVThuRHBKNHBkVzc3bnVnbER6US1NaWlzN2hTM19tOFdYS2pFVFVBRjAzc0EtRklIWkxnZVZiNXBzYmkyRndpWDl6VWN4RHNleDNBWFR6ZnJWNVhVSGpLQXlfQQ?oc=5
-- https://news.google.com/rss/articles/CBMikgFBVV95cUxOMXRZQlVjYm90Um1RUjVrUXBtM1pMd2ZWNkp4OWY1VTN5SzR0NHZhT2s4VXZWelJYV25JcjRMdHZvRWRTNmlJeXRIWTNHS3ZHV09teVlGTklqbjlfYXhiLWVJM29HeVhqQTFRMXNWaDJ5ZFFobmtoX3RPQlZIYkpiSGJ5WnRHb3l3Q0NCai12ZlVxdw?oc=5
-- https://news.google.com/rss/articles/CBMimgFBVV95cUxNbVVrTmNCckhnakVJWlJfa3Q5LV9YT2dDUDZPVkFiM2NuUF9LM3M2UExEdG1VRlJiWHN6M1l6eHh2b001Rml6bXZTSUhGV0tCWktVZkdzLTJ3bVluU0dDNXllVWxodFdiazBvakJrSjl5bjU5WXB6UlA0dm1ONTJSZUFaVlIzOGlaX2Qxb3BlSFZPb3JiOVN3bGl3?oc=5
+- https://news.google.com/rss/articles/CBMimAFBVV95cUxQRFdhVzF5TzBoS083cTBCbV9oRWFJSlFmdFlIekI2WWJjUnNlRkc4UW9UQkR3Y3RQajNXb3dnYXo5LW9iOEhjTUpZUW5fZl9Zb2tvUWdwYXpuNnRVejk1VkR4MlA3Sjc3TlU4X25nam9NUUd1YUxRek13Q25FaHc0OWtkSFV0Z3doUUxGWkpValc2YS1KeGM3aw?oc=5
+- https://news.google.com/rss/articles/CBMizAFBVV95cUxNTFlWbjc0Z3pmZUF6cHo1SjFBelRydXNMRVFWbEIxeHlOUFFCcy0xRHQzY2hGWU5yVktWREQ1MHZVT25FQmVFdWVwNHYxV1haY2xqcEs0VmVlZjhOSFBpX0dyX3E2VThqZVlWOVgzUV9rYnVhWHFCVnZrYWJ5czFwTU92MEkzeExzLVNFQ3ZIRkp1LTRmb09BUUNYRm9sM1JaWFpzNV92YUNRaUxhMllFdVA3NU1jRGV5ODZ4YUlLbDNWRFpEOFo1X2xGSmU?oc=5
 - https://news.google.com/rss/articles/CBMi4AFBVV95cUxPWXlYNXpOMTFteXlTcElkZ3dGb1hiRzZPMWVmaXctRkt1TVZPQ2xGanNzekFrTHRweUNlR0NMNUk0WmtiUXduWVEtWi0yQkZSeHhZZk45LUU0YVN2a283bWlzTjV4cnVGQ1NBN09FRnluMUFUaWJkVGVCM3BWTUQyWXAxNWVmR2hxR0RoY3ZrTnNXbVNNLV9adGpkeE5YeFFhV0MyNUJQcnNCMGt5bFdfUDBMZ0x1Nm0wUFpOSzRnV2JhRFp1VEQ2TlZLRUZZazRTek9KVi04aVNVNDBLQS0wUg?oc=5
 
 ## Demo notes and limitations

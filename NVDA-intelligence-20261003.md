@@ -17,11 +17,11 @@
 | Return 1M (%) | 4.3678 |
 | Return YTD (%) | 25.7359 |
 | Return 1Y (%) | 24.1519 |
-| Annualized volatility (%) | 37.7209 |
+| Annualized volatility (%) | 37.7210 |
 | Beta vs SPY | 1.8806 |
 | Max drawdown (%) | -20.2144 |
 | Sharpe (rf=0) | 0.7633 |
-| P/E (trailing) | 29.17 |
+| P/E (trailing) | 29.58 |
 | P/B | 24.67 |
 | EV/EBITDA | 27.90 |
 | Revenue growth (%) | 105.90 |
@@ -39,53 +39,58 @@ Market data sample: {'NVDA': 252, 'SPY': 252}.
 
 ## TAILWINDS
 
-### Nvidia stock hits new all-time high, market cap at $5.7 trillion
-- Summary: Nvidia's market capitalization reached $5.7 trillion as shares hit a record high, driven by continued strong momentum in AI chip demand.
-- Date: 2026-10-02 | Impact: high | Horizon: medium | Confidence: 0.95
-- Sources: <https://news.google.com/rss/articles/CBMivgFBVV95cUxPRVh0ZkJ2cXBWRFg3bFpiVHphckdSTjlvYi1pTzJWYnhYRFV2c21WSFZWbkozNG00V3pwdWE4dXhqc2VMcmNvdk9aQkxsSVpZV3NjSU9yd05UMjluQXB2LXdwMV9UaDZjZVZDME5ZS2ZURUZkY1oweGdPNzJjam9QM0lTNktKeHZ2aFc0bnQxV2RwVVhENGlGNFFmdjcxUGpJZXZUQnk2aWhZSWpkV25vZmtjNThqLWZqWUg0dUF3?oc=5>
-
-### Nvidia Stock Climbs After Morgan Stanley Names It a 'Top Semiconductor Pick'
-- Summary: Morgan Stanley designated Nvidia as a top semiconductor pick, noting that current AI trends strongly play to the company's competitive strengths.
-- Date: 2026-10-02 | Impact: medium | Horizon: short | Confidence: 0.9
+### Nvidia Stock Gains After Morgan Stanley Names It a 'Top Semiconductor Pick'
+- Summary: Morgan Stanley designated Nvidia as a top semiconductor pick, highlighting how current AI trends play directly to the company's competitive strengths and driving pre-market share gains.
+- Date: 2026-10-02 | Impact: high | Horizon: short | Confidence: 0.95
 - Sources: <https://news.google.com/rss/articles/CBMioAFBVV95cUxOd05BNkoxZ1c4V0h5cGpUSWNmNS1jQXJaVjhxYzBTQnVSM2cwYTJPclMyNll6TnFxOHJQVjlOUzgxWlVGcGh3N2tBaU5jNWRCV29WaHBHWDNzWGFOdGFQRGVMT2RDbnRhTkRBT0RGakdVakxRTDRGVHZsWHRwek9teHUzcm8wcVBSellUSEZHYXM0NUhtc1NHRVFDdVI4YzQt?oc=5>
+
+### NVIDIA Stock Price to Rally Another 52%, Predicts Cantor Fitzgerald
+- Summary: Analyst firm Cantor Fitzgerald issued a bullish price target predicting an additional 52% rally for NVIDIA, underpinned by strong underlying fundamentals and demand.
+- Date: 2026-10-01 | Impact: medium | Horizon: medium | Confidence: 0.85
+- Sources: <https://news.google.com/rss/articles/CBMingFBVV95cUxOUVBZd0NQcnVZa2l6SGZORy1GNmVBSEVTN1ZQYU9UNk5MMWZQVC00eHh3R2J6d0lQZkZJQVNHeWxCbjhhaWFENEhnOWV5UF9fLUxoRFI4VERBWWo4YWtBSFpUZEM0X3VaMVFva1hXNU5tOFFrM2h3Q0szLWVSeW1yMmV4UGJXVlhLRmoyUUdpNElhaklENThIXzV4Sk84QQ?oc=5>
 
 ## HEADWINDS
 
+### Nvidia earnings: Stock jumps as revenue expected to grow 70%, but 'extreme' memory costs pressure margins
+- Summary: While robust revenue growth projections provide upward momentum, exceptionally high memory costs continue to exert downward pressure on overall profit margins.
+- Date: 2026-08-26 | Impact: medium | Horizon: medium | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMimgFBVV95cUxNX3Yxbi1BZ2o0UlJoUlkxZFRrYlQ4LU5vZGFjWGdYdEs2YVZXZUE2ZFNuNkdEXzZvV1k5T1dfM1FBV1prdWJZSjJVOW1WUzlycXlVdmh6Qzd3ZFl4S2ZlUy1BYXdSWmdsVHZWQVFZa0x2aFd5aFJCWWpsTzNfYUt1a1NzS29xN3ByWU95TU1VbVUzQVZGQWlybWdB?oc=5>
+
 ### NVDA Stock Eyes Worst First Half Since 2022: Retail Patience Wears Thin As Board Member Trims Stake For Third Time This Year
-- Summary: Despite recent highs, retail sentiment has faced tests as insider selling continues, with a board member trimming their stake for the third time this year.
-- Date: 2026-10-02 | Impact: medium | Horizon: medium | Confidence: 0.8
+- Summary: Retail sentiment shows signs of fatigue after a challenging first half, compounded by multiple insider share sales from a board member.
+- Date: 2026-10-03 | Impact: low | Horizon: short | Confidence: 0.75
 - Sources: <https://news.google.com/rss/articles/CBMilgJBVV95cUxORzhNMG5sbTZPeXlsLUFWb0xrc05MRGNQcW9aS3VrOTF5RFRYdFRuQkZvRFFFdkdyNzNiaGNodWdJdjJHZE9oYUNnUWxoclN6LTU4YTRIRnR6NnZKRDV5ZVVSWWJPdGNsdFZZM01rZ1V2ajlPcTFHczdBUElKSUtJbEptTFc5V1JKQXZMbHpkeWxDazRpZGc3eHhDVkxuSXN0OE51QmI3bU1FN2pWMEFVODlFT2Q5SVVrXzNQQktFSjR1dkRFWlBpRlF4V2JuZW1rSFZtSU9sWnU5bXBRaDJxbjVGN3M2cGg4dG5SVWY4d2h6SENzbGlkdGk2dUVvWmtDRmZudmVhOHlmeTNGU0F0S2NWNFdSZw?oc=5>
 
 ## CATALYSTS
 
-### Stock Market Today, Sept. 30: Nvidia Authorizes $150B Buyback, Lifting Total to $235B
-- Summary: Nvidia announced an additional $150 billion share repurchase authorization, bringing its total buyback program to $235 billion and providing strong support for shareholder value.
-- Date: 2026-09-30 | Impact: high | Horizon: long | Confidence: 0.98
-- Sources: <https://news.google.com/rss/articles/CBMilgFBVV95cUxOUlUzUXJNRTI3elQwZjlxVFpTa2IwTWtfeFpUQjdlV0gzb1ZndkFkNXhQODVHd2FVM3FwMWJ0VG1nY0UyWmZNNjYtRHNqeXBkTkhGelB5cE13Y1p6T3VtN1lEekdOSm5vVHM2TXByLVYxcVY3T0J4NllCQmJZeVhSNG9YcmwzRlpoMXFnR1MweEMzckNzeWc?oc=5>
+### Nvidia Stock Pops on $150 Billion Buyback Plan
+- Summary: NVIDIA announced a massive $150 billion share repurchase authorization increase, providing substantial capital return to shareholders and acting as a major price catalyst.
+- Date: 2026-09-28 | Impact: high | Horizon: long | Confidence: 0.98
+- Sources: <https://news.google.com/rss/articles/CBMi1wFBVV95cUxQUXBYNlhKejlDUkZYX1FSZ1Joc1JQSVh4YV9BSThTcU9xT0lXMDMweUVDOThpdVM3VkpVYVp6TWpCbENVUzZycXFwM0l6TW1hNzFZTGl1ZHBtQnQ4cmh2Y2NqX0JxSVQ3SHdNMHRsdUVKNWVybWs3RUQwZUU2SU5WQnkzVGRySV92LS1OYlBaWlRybHJxTWJ2cklja1VneUZSOUU0NVRsTnRJTGYzM3dwbUVrRkFHNUZualJnWjR6cVFHbVh1UW9VVmxIOElnQjk4MzEtU3g3TQ?oc=5>
 
-### CoreWeave Unleashes Nvidia's Vera Rubin, Analyst Sees Room to Run
-- Summary: The deployment and integration of Nvidia's Vera Rubin architecture by partners like CoreWeave are opening up new avenues for analyst upgrades and growth.
-- Date: 2026-10-02 | Impact: high | Horizon: long | Confidence: 0.85
-- Sources: <https://news.google.com/rss/articles/CBMi1gFBVV95cUxPS19TZUtZUnZ5QVZNWUJmWDR6enJJZk5SWWo0dlZFckxfVktDMkNUQVF6UHI0VkQ4eEhwRm9OX1VWbHVORFdOazU2X29Oc0xrS1lXc3pkVlpCa1pObW5xUUJJbEdQMGh1XzVhLTV0S0dqQXdJa3RqSFFvbkI5RGRjMk5LcmZhUlJPMVBYNlUydkZrbU5obHhwZkVBRGpUWC1hdlZKbTN4QWpZX21qalNPRExvSUVLZ081NEk1RkJFZEhSbDdRYjdXRnhOTWZBQ1Z2aEtER2xR?oc=5>
+### Nvidia stock hits new all-time high, market cap at $5.7 trillion
+- Summary: Continued buying momentum pushed Nvidia's stock to a fresh all-time high, elevating its total market capitalization to $5.7 trillion.
+- Date: 2026-10-02 | Impact: high | Horizon: short | Confidence: 0.99
+- Sources: <https://news.google.com/rss/articles/CBMivgFBVV95cUxPRVh0ZkJ2cXBWRFg3bFpiVHphckdSTjlvYi1pTzJWYnhYRFV2c21WSFZWbkozNG00V3pwdWE4dXhqc2VMcmNvdk9aQkxsSVpZV3NjSU9yd05UMjluQXB2LXdwMV9UaDZjZVZDME5ZS2ZURUZkY1oweGdPNzJjam9QM0lTNktKeHZ2aFc0bnQxV2RwVVhENGlGNFFmdjcxUGpJZXZUQnk2aWhZSWpkV25vZmtjNThqLWZqWUg0dUF3?oc=5>
 
 ## RISKS
 
 ### Nvidia Stock Has Become Deeply Undervalued, But Watch Out For Accounts Receivable (NVDA)
-- Summary: While valuation metrics look attractive to some analysts, potential risks regarding accounts receivable growth warrant closer scrutiny from investors.
-- Date: 2026-10-02 | Impact: medium | Horizon: medium | Confidence: 0.75
+- Summary: An analysis of Nvidia's financials points to potential concerns regarding accounts receivable levels that investors should monitor closely alongside valuation metrics.
+- Date: 2026-10-02 | Impact: medium | Horizon: medium | Confidence: 0.7
 - Sources: <https://news.google.com/rss/articles/CBMivgFBVV95cUxOS19ad1o0b1dUeUtRUldmMlZWQTBha2sxUXMwWGxMU0NjX1dWVjVaZHMyOHlhMmZEdEZ4VktPZDR1cFRYSFZUTVJrNk1xZ2Q0R1BUbDkwbFk2N2Z6OFRhYnFoUEdJaHFaeERpbEFsLVFnTmlkX3h5MlE1cmZyVFZGZnBLeV9qenJfekxLUk9jR19GRDF0cC1vbHAycGZubTA4a2I5VzgzU3Q5QW9MandFcmlWXzBnRnl0bFM0RXFB?oc=5>
 
 ## PEER COMPARABLES
 
 | ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (USD) | 1Y return (%) |
 |---|---:|---:|---:|---:|---:|---:|
-| **NVDA** | **29.17** | **24.67** | **27.90** | **105.90** | **5,649,190,617,088.00** | **24.15** |
-| AMD | 156.14 | 15.39 | 107.30 | 50.10 | 1,034,842,210,304.00 | 273.48 |
+| **NVDA** | **29.58** | **24.67** | **27.90** | **105.90** | **5,649,190,617,088.00** | **24.15** |
+| AMD | 161.71 | 15.39 | 107.30 | 50.10 | 1,034,842,210,304.00 | 273.48 |
 | AVGO | 45.36 | 17.01 | 33.12 | 85.50 | 1,695,307,005,952.00 | 5.80 |
-| MSFT | 28.58 | 8.69 | 20.05 | 17.70 | 3,842,942,959,616.00 | 1.17 |
-| TSM | 34.23 | 97.22 | 5.43 | 36.00 | 2,452,061,159,424.00 | 65.83 |
+| MSFT | 28.83 | 8.69 | 20.05 | 17.70 | 3,842,942,959,616.00 | 1.17 |
+| TSM | 34.36 | 97.33 | 5.43 | 36.00 | 2,452,061,159,424.00 | 65.83 |
 
-Peers fetched as_of: 2026-10-03; NVDA reuses existing data (market data as_of: 2026-10-02); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
+Peers fetched as_of: 2026-10-05; NVDA reuses existing data (market data as_of: 2026-10-02); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
 
 ## EARNINGS CALENDAR
 
@@ -116,11 +121,12 @@ API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-app
 
 ## SOURCES
 
-- https://news.google.com/rss/articles/CBMivgFBVV95cUxPRVh0ZkJ2cXBWRFg3bFpiVHphckdSTjlvYi1pTzJWYnhYRFV2c21WSFZWbkozNG00V3pwdWE4dXhqc2VMcmNvdk9aQkxsSVpZV3NjSU9yd05UMjluQXB2LXdwMV9UaDZjZVZDME5ZS2ZURUZkY1oweGdPNzJjam9QM0lTNktKeHZ2aFc0bnQxV2RwVVhENGlGNFFmdjcxUGpJZXZUQnk2aWhZSWpkV25vZmtjNThqLWZqWUg0dUF3?oc=5
 - https://news.google.com/rss/articles/CBMioAFBVV95cUxOd05BNkoxZ1c4V0h5cGpUSWNmNS1jQXJaVjhxYzBTQnVSM2cwYTJPclMyNll6TnFxOHJQVjlOUzgxWlVGcGh3N2tBaU5jNWRCV29WaHBHWDNzWGFOdGFQRGVMT2RDbnRhTkRBT0RGakdVakxRTDRGVHZsWHRwek9teHUzcm8wcVBSellUSEZHYXM0NUhtc1NHRVFDdVI4YzQt?oc=5
+- https://news.google.com/rss/articles/CBMingFBVV95cUxOUVBZd0NQcnVZa2l6SGZORy1GNmVBSEVTN1ZQYU9UNk5MMWZQVC00eHh3R2J6d0lQZkZJQVNHeWxCbjhhaWFENEhnOWV5UF9fLUxoRFI4VERBWWo4YWtBSFpUZEM0X3VaMVFva1hXNU5tOFFrM2h3Q0szLWVSeW1yMmV4UGJXVlhLRmoyUUdpNElhaklENThIXzV4Sk84QQ?oc=5
+- https://news.google.com/rss/articles/CBMimgFBVV95cUxNX3Yxbi1BZ2o0UlJoUlkxZFRrYlQ4LU5vZGFjWGdYdEs2YVZXZUE2ZFNuNkdEXzZvV1k5T1dfM1FBV1prdWJZSjJVOW1WUzlycXlVdmh6Qzd3ZFl4S2ZlUy1BYXdSWmdsVHZWQVFZa0x2aFd5aFJCWWpsTzNfYUt1a1NzS29xN3ByWU95TU1VbVUzQVZGQWlybWdB?oc=5
 - https://news.google.com/rss/articles/CBMilgJBVV95cUxORzhNMG5sbTZPeXlsLUFWb0xrc05MRGNQcW9aS3VrOTF5RFRYdFRuQkZvRFFFdkdyNzNiaGNodWdJdjJHZE9oYUNnUWxoclN6LTU4YTRIRnR6NnZKRDV5ZVVSWWJPdGNsdFZZM01rZ1V2ajlPcTFHczdBUElKSUtJbEptTFc5V1JKQXZMbHpkeWxDazRpZGc3eHhDVkxuSXN0OE51QmI3bU1FN2pWMEFVODlFT2Q5SVVrXzNQQktFSjR1dkRFWlBpRlF4V2JuZW1rSFZtSU9sWnU5bXBRaDJxbjVGN3M2cGg4dG5SVWY4d2h6SENzbGlkdGk2dUVvWmtDRmZudmVhOHlmeTNGU0F0S2NWNFdSZw?oc=5
-- https://news.google.com/rss/articles/CBMilgFBVV95cUxOUlUzUXJNRTI3elQwZjlxVFpTa2IwTWtfeFpUQjdlV0gzb1ZndkFkNXhQODVHd2FVM3FwMWJ0VG1nY0UyWmZNNjYtRHNqeXBkTkhGelB5cE13Y1p6T3VtN1lEekdOSm5vVHM2TXByLVYxcVY3T0J4NllCQmJZeVhSNG9YcmwzRlpoMXFnR1MweEMzckNzeWc?oc=5
-- https://news.google.com/rss/articles/CBMi1gFBVV95cUxPS19TZUtZUnZ5QVZNWUJmWDR6enJJZk5SWWo0dlZFckxfVktDMkNUQVF6UHI0VkQ4eEhwRm9OX1VWbHVORFdOazU2X29Oc0xrS1lXc3pkVlpCa1pObW5xUUJJbEdQMGh1XzVhLTV0S0dqQXdJa3RqSFFvbkI5RGRjMk5LcmZhUlJPMVBYNlUydkZrbU5obHhwZkVBRGpUWC1hdlZKbTN4QWpZX21qalNPRExvSUVLZ081NEk1RkJFZEhSbDdRYjdXRnhOTWZBQ1Z2aEtER2xR?oc=5
+- https://news.google.com/rss/articles/CBMi1wFBVV95cUxQUXBYNlhKejlDUkZYX1FSZ1Joc1JQSVh4YV9BSThTcU9xT0lXMDMweUVDOThpdVM3VkpVYVp6TWpCbENVUzZycXFwM0l6TW1hNzFZTGl1ZHBtQnQ4cmh2Y2NqX0JxSVQ3SHdNMHRsdUVKNWVybWs3RUQwZUU2SU5WQnkzVGRySV92LS1OYlBaWlRybHJxTWJ2cklja1VneUZSOUU0NVRsTnRJTGYzM3dwbUVrRkFHNUZualJnWjR6cVFHbVh1UW9VVmxIOElnQjk4MzEtU3g3TQ?oc=5
+- https://news.google.com/rss/articles/CBMivgFBVV95cUxPRVh0ZkJ2cXBWRFg3bFpiVHphckdSTjlvYi1pTzJWYnhYRFV2c21WSFZWbkozNG00V3pwdWE4dXhqc2VMcmNvdk9aQkxsSVpZV3NjSU9yd05UMjluQXB2LXdwMV9UaDZjZVZDME5ZS2ZURUZkY1oweGdPNzJjam9QM0lTNktKeHZ2aFc0bnQxV2RwVVhENGlGNFFmdjcxUGpJZXZUQnk2aWhZSWpkV25vZmtjNThqLWZqWUg0dUF3?oc=5
 - https://news.google.com/rss/articles/CBMivgFBVV95cUxOS19ad1o0b1dUeUtRUldmMlZWQTBha2sxUXMwWGxMU0NjX1dWVjVaZHMyOHlhMmZEdEZ4VktPZDR1cFRYSFZUTVJrNk1xZ2Q0R1BUbDkwbFk2N2Z6OFRhYnFoUEdJaHFaeERpbEFsLVFnTmlkX3h5MlE1cmZyVFZGZnBLeV9qenJfekxLUk9jR19GRDF0cC1vbHAycGZubTA4a2I5VzgzU3Q5QW9MandFcmlWXzBnRnl0bFM0RXFB?oc=5
 
 ## Demo notes and limitations
