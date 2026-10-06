@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Fetch Google News RSS for the selected ticker, then rule-first extraction with Flash-Lite fallback."""
 from email.utils import parsedate_to_datetime
+import sys
+from pathlib import Path as _Path
+sys.path.insert(0, str(_Path(__file__).resolve().parents[2] / 'scripts'))
 import html
 import json
 import subprocess
@@ -162,7 +165,7 @@ def extract(items, ticker, call_ai=None):
 def call_gemini(items, ticker):
     import os
     import time
-    from data_utils import ROOT, save, ticker_file
+    from data_utils import DATA, save, ticker_file
     prompt = (
         f'Classify relevant {ticker} news into tailwinds, headwinds, catalysts, risks. '
         'Return JSON with ticker and those four arrays. Skip irrelevant news. '
@@ -172,9 +175,9 @@ def call_gemini(items, ticker):
         'sentiment positive/negative/neutral/unknown. Do not infer facts absent from headlines. '
         'News: ' + json.dumps(items)
     )
-    path = ROOT / ticker_file(ticker, 'ai-prompt.txt')
+    path = DATA / ticker_file(ticker, 'ai-prompt.txt')
     path.write_text(prompt, encoding='utf-8')
-    last_call = ROOT / '.last-ai-call'
+    last_call = DATA / '.last-ai-call'
     try:
         delay = max(0, 20 - (time.time() - float(last_call.read_text())))
     except (OSError, ValueError):

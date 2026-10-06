@@ -3,7 +3,10 @@ import json
 import math
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent  # repo root (this file lives in scripts/)
+DATA = ROOT / 'data'
+REPORTS = ROOT / 'reports'
+SCRIPTS = ROOT / 'scripts'
 
 def number(value):
     if isinstance(value, bool):
@@ -15,7 +18,7 @@ def number(value):
         return None
 
 def save(name, data):
-    path = ROOT / name
+    path = DATA / name
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False) + '\n', encoding='utf-8')
     with path.open(encoding='utf-8') as stream:
         json.load(stream)

@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Pipeline run artifacts (regenerable)
+*.log
+*.stdout
+.last-ai-call
+
+# One-off audit / check artifacts
+*-check2*.json
+*-check3*.json
+*-check2*.md
+*-check3*.md
+*-live-check3.xml
+e2e-*.md
+local-remote-*.json
+remote-*.json
+source-sync-*.json
+peer-missing-*.json
+date-filter-audit-*.json
+pipeline-*.log
+*-run.log
+refresh-*.log
+gemini-error-*.txt
+gemini-envelope-*.json
+README-main-check3.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

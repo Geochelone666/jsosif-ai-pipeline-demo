@@ -1,9 +1,9 @@
 """Run the six ticker pipelines in sequence, reusing the FRED snapshot."""
 import subprocess
 import sys
-from data_utils import ROOT
+from data_utils import ROOT, SCRIPTS
 
 for ticker in ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA'):
     for script in ('quant', 'ai_extract', 'comparables', 'earnings', 'edgar', 'regenerate_report'):
         print(f'RUN {ticker} {script}', flush=True)
-        subprocess.run([sys.executable, str(ROOT / f'{script}.py'), '--ticker', ticker], check=True, cwd=ROOT)
+        subprocess.run([sys.executable, str(SCRIPTS / f'{script}.py'), '--ticker', ticker], check=True, cwd=ROOT)

@@ -3,12 +3,12 @@
 import json
 import os
 from datetime import date
-from data_utils import ROOT, ticker_arg, ticker_file
+from data_utils import DATA, REPORTS, ticker_arg, ticker_file
 TICKER = ticker_arg()
 AS_OF = os.environ.get('REPORT_AS_OF', date.today().isoformat())
 STAMP = AS_OF.replace('-', '')
 def read_snapshot(name):
-    return json.loads((ROOT / ticker_file(TICKER, name)).read_text(encoding="utf-8"))
+    return json.loads((DATA / ticker_file(TICKER, name)).read_text(encoding="utf-8"))
 
 quant = read_snapshot("quant.json")
 q = quant["metrics"]
@@ -114,16 +114,16 @@ Market data sample: {quant.get('history_count', {})}.
 - Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
 """
 
-with (ROOT / f"{TICKER}-intelligence-{STAMP}.md").open("w", encoding="utf-8") as f:
+with (REPORTS / f"{TICKER}-intelligence-{STAMP}.md").open("w", encoding="utf-8") as f:
     f.write(report)
 print("report regenerated,", len(report), "chars")
 
-from data_utils import ROOT, number
+from data_utils import DATA, REPORTS, number
 
-REPORT = ROOT / f'{TICKER}-intelligence-{STAMP}.md'
+REPORT = REPORTS / f'{TICKER}-intelligence-{STAMP}.md'
 
 def load(name):
-    with (ROOT / (name if name == 'fred.json' else ticker_file(TICKER, name))).open(encoding='utf-8') as stream:
+    with (DATA / (name if name == 'fred.json' else ticker_file(TICKER, name))).open(encoding='utf-8') as stream:
         return json.load(stream)
 
 def fmt(value, percent=False):

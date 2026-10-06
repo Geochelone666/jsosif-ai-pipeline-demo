@@ -7,16 +7,16 @@ import os
 from datetime import date
 AS_OF = os.environ.get("REPORT_AS_OF", date.today().isoformat())
 STAMP = AS_OF.replace("-", "")
-from data_utils import ROOT, save
+from data_utils import DATA, REPORTS, ROOT, save
 
 sections = ('QUANTITATIVE', 'TAILWINDS', 'HEADWINDS', 'CATALYSTS', 'RISKS', 'PEER COMPARABLES', 'EARNINGS CALENDAR', 'MACRO (FRED)', 'LATEST FILING (EDGAR)', 'SOURCES')
 results = {}
 index = ['# Intelligence reports', '', f'Snapshot date: {AS_OF}. Missing data is N/A. Report-date daily prices may be intraday and provisional. News and other non-market sections retain existing snapshots.', '']
 for ticker in ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA'):
     report_name = f'{ticker}-intelligence-{STAMP}.md'
-    report = (ROOT / report_name).read_text()
-    quant = json.loads((ROOT / f'{ticker.lower()}-quant.json').read_text())
-    ai = json.loads((ROOT / f'{ticker.lower()}-ai-intel.json').read_text())
+    report = (REPORTS / report_name).read_text()
+    quant = json.loads((DATA / f'{ticker.lower()}-quant.json').read_text())
+    ai = json.loads((DATA / f'{ticker.lower()}-ai-intel.json').read_text())
     assert all(f'## {section}\n' in report for section in sections)
     table = report.split('## QUANTITATIVE\n', 1)[1].split('Methodology:', 1)[0]
     for key, value in quant['metrics'].items():
@@ -32,10 +32,10 @@ for ticker in ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA'):
     index.append(f'- [{ticker}]({report_name}): close {close_text}; 1Y return {ret_text}; AI items {count_text}.')
     results[ticker] = {'sections_passed': True, 'quant_matches_json': True, 'ai_items': count_text, 'market_errors': quant['errors'], 'ai_error': ai.get('error')}
 # Independent arithmetic from raw GOOGL CSV, using the recorded boundary date.
-quant = json.loads((ROOT / 'googl-quant.json').read_text())
+quant = json.loads((DATA / 'googl-quant.json').read_text())
 v = quant['verification']
 if v:
-    with (ROOT / 'GOOGL-yfinance.csv').open() as stream:
+    with (DATA / 'GOOGL-yfinance.csv').open() as stream:
         rows = list(csv.DictReader(stream))
     base = next(Decimal(row['Close']) for row in rows if row['Date'].startswith(v['base_date']))
     end = next(Decimal(row['Close']) for row in rows if row['Date'].startswith(quant['as_of']))

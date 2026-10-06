@@ -4,11 +4,11 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 import yfinance as yf
-from data_utils import ticker_arg, ticker_file
+from data_utils import DATA, ticker_arg, ticker_file
 TICKER=ticker_arg()
 AS_OF = os.environ.get('REPORT_AS_OF', date.today().isoformat())
 END = (date.fromisoformat(AS_OF) + timedelta(days=1)).isoformat()
-P=Path(__file__).parent
+P = DATA
 errors=[]; sources=[]; series={}; info={}
 for symbol in [TICKER,'SPY']:
     try:
