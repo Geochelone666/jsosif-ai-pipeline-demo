@@ -80,13 +80,13 @@ A successful run rewrites `INDEX.md` with report links and summaries and `data/p
 
 ## Six-asset dashboard
 
-Open [`docs/index.html`](docs/index.html) in a browser for the six-asset dashboard covering NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA. The page uses an embedded data snapshot. Rerunning the pipeline does not automatically refresh it; regenerate or update the embedded snapshot in `docs/index.html` to see new data on the dashboard.
+Open [`docs/index.html`](docs/index.html) in a browser — or [view it live](https://geochelone666.github.io/jsosif-ai-pipeline-demo/) — for the six-asset dashboard covering NVDA, MSFT, AAPL, GOOGL, AMZN and TSLA. The page uses an embedded data snapshot. Rerunning the pipeline does not automatically refresh it; regenerate or update the embedded snapshot in `docs/index.html` to see new data on the dashboard.
 
 ## Intelligence page prototype
 
-A static mockup of the future dashboard Intelligence page (open `docs/intelligence-mockup.html` in a browser). The mockup currently shows NVDA, MSFT and AAPL; all six ticker reports are in [`reports/`](reports/).
+A static mockup of the future dashboard Intelligence page (open `docs/intelligence-mockup.html` in a browser, or [view it live](https://geochelone666.github.io/jsosif-ai-pipeline-demo/intelligence-mockup.html)). The mockup currently shows NVDA, MSFT and AAPL; all six ticker reports are in [`reports/`](reports/).
 
-![Intelligence page prototype](docs/intelligence-nvda-desktop.png)
+![Intelligence page prototype](docs/demo-screenshot.png)
 
 ## Limitations
 
