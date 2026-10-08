@@ -6,7 +6,7 @@ CNQ.TO, CSCO, JPM, BMO.TO, COST, V, JWEL.TO, VRTX, ENB, PFE, CP.TO, ATD.TO, SCHW
 
 `scripts/universe.py` is the shared pipeline universe. All ticker scripts default to CNQ.TO. Exchange suffixes are preserved in filenames and data requests.
 
-The root `*-ai-prompt.txt` files are templates with empty headline lists; add sourced headlines before using them. No news, prices, or reports have been fabricated or fetched for the new holdings. Existing data, reports, and verification fixtures are historical artifacts of the previous universe.
+The `prompts/` directory contains the 25 `*-ai-prompt.txt` templates with empty headline lists; add sourced headlines before using them. No news, prices, or reports have been fabricated or fetched for the new holdings. Existing data, reports, and verification fixtures are historical artifacts of the previous universe.
 
 ## Run
 
@@ -14,12 +14,11 @@ The root `*-ai-prompt.txt` files are templates with empty headline lists; add so
 pip install -r requirements.txt
 python3 scripts/run_phase1.py
 python3 scripts/validate_phase1.py
-python3 build-mockup.py
 ```
 
 The pipeline writes per-ticker snapshots to `data/` and reports to `reports/`. It reuses `data/fred.json`; macro refresh is optional. AI extraction requires a configured Gemini CLI (`GEMINI_CLI`). SEC issuer mappings are resolved from the SEC ticker directory; unavailable mappings are recorded as N/A. Sector peer lists in `scripts/comparables.py` are empty pending configuration. International listings never use the US Stooq fallback.
 
-Open `docs/index.html` or `docs/intelligence-mockup.html` for the 25-holding dashboard. New holdings initially show unavailable data. Run `build-mockup.py` after refreshing snapshots to update both pages.
+Open `docs/index.html` or `docs/intelligence-mockup.html` for the 25-holding dashboard.
 
 ## Offline checks
 
