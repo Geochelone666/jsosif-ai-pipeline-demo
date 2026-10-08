@@ -1,0 +1,47 @@
+{
+  "ticker": "DIS",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/DIS/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/DIS/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 104.75,
+    "Return 1D (%)": 0.6921092272918594,
+    "Return 1W (%)": -0.14299477950141526,
+    "Return 1M (%)": -0.5317610593259858,
+    "Return YTD (%)": -7.222778916506467,
+    "Return 1Y (%)": -5.565807288738123,
+    "Annualized volatility (%)": 26.89679160483724,
+    "Max drawdown (%)": -20.245083866478662,
+    "Sharpe (rf=0)": -0.07920039178052313,
+    "Beta vs SPY": 0.656062556170612,
+    "MA50": 104.7370002746582,
+    "Close vs MA50 (%)": 0.012411779321253036,
+    "MA200": 103.22835666656493,
+    "Close vs MA200 (%)": 1.4740555624169094,
+    "RSI (14, Wilder)": 50.42439025096717,
+    "MACD (12,26)": -0.3729539036483658,
+    "MACD signal (9)": -0.2093905578629492,
+    "MACD histogram": -0.1635633457854166,
+    "P/E (trailing)": 21.597939,
+    "P/B": 1.6469607,
+    "EV/EBITDA": 10.843,
+    "Revenue growth (%)": 6.800000000000001
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 110.9238052368164,
+    "end_close": 104.75,
+    "manual_1Y_pct": -5.565807288738122,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:16:21.408204+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "DIS": 255,
+    "SPY": 255
+  }
+}

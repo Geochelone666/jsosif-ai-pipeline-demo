@@ -24,12 +24,12 @@ def save(name, data):
         json.load(stream)
     print(f'{name}: JSON OK, {len(data)} top-level fields', flush=True)
 
-SUPPORTED = ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA')
+from universe import SUPPORTED
 
 def ticker_arg():
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ticker', type=str.upper, choices=SUPPORTED, default='NVDA')
+    parser.add_argument('--ticker', type=str.upper, choices=SUPPORTED, default=SUPPORTED[0])
     return parser.parse_args().ticker
 
 def ticker_file(ticker, name):

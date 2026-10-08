@@ -1,0 +1,47 @@
+{
+  "ticker": "PFE",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/PFE/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/PFE/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 28.0,
+    "Return 1D (%)": 1.8181818181818077,
+    "Return 1W (%)": -1.823283483230509,
+    "Return 1M (%)": -1.5817249591277616,
+    "Return YTD (%)": 18.25388111492947,
+    "Return 1Y (%)": 14.060533401603603,
+    "Annualized volatility (%)": 21.034667952503806,
+    "Max drawdown (%)": -15.724287268696713,
+    "Sharpe (rf=0)": 0.7326629235482761,
+    "Beta vs SPY": 0.2938380100874413,
+    "MA50": 27.49739990234375,
+    "Close vs MA50 (%)": 1.8278095363242208,
+    "MA200": 25.859941301345824,
+    "Close vs MA200 (%)": 8.275574463669798,
+    "RSI (14, Wilder)": 52.16709225154033,
+    "MACD (12,26)": 0.10118876610350114,
+    "MACD signal (9)": 0.21398159242885045,
+    "MACD histogram": -0.11279282632534932,
+    "P/E (trailing)": 36.842106,
+    "P/B": 1.8731602,
+    "EV/EBITDA": 8.227,
+    "Revenue growth (%)": 2.6
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 24.548368453979492,
+    "end_close": 28.0,
+    "manual_1Y_pct": 14.0605334016036,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:13:21.411146+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "PFE": 255,
+    "SPY": 255
+  }
+}

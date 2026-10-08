@@ -1,0 +1,47 @@
+{
+  "ticker": "JPM",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/JPM/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/JPM/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 329.5799865722656,
+    "Return 1D (%)": -0.5131647589034838,
+    "Return 1W (%)": 0.11917319114007618,
+    "Return 1M (%)": -7.644367501920069,
+    "Return YTD (%)": 4.254110003345879,
+    "Return 1Y (%)": 9.177282116064589,
+    "Annualized volatility (%)": 22.489093638344052,
+    "Max drawdown (%)": -15.471735654053731,
+    "Sharpe (rf=0)": 0.5043701085912078,
+    "Beta vs SPY": 0.791053626732981,
+    "MA50": 349.09154357910154,
+    "Close vs MA50 (%)": -5.589237942228964,
+    "MA200": 318.89900939941407,
+    "Close vs MA200 (%)": 3.3493290534100995,
+    "RSI (14, Wilder)": 33.81123807051078,
+    "MACD (12,26)": -5.705810621255182,
+    "MACD signal (9)": -4.78115809483261,
+    "MACD histogram": -0.9246525264225722,
+    "P/E (trailing)": 14.193798,
+    "P/B": 2.4779146,
+    "EV/EBITDA": null,
+    "Revenue growth (%)": 30.4
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 301.8759765625,
+    "end_close": 329.5799865722656,
+    "manual_1Y_pct": 9.177282116064584,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:10:57.399472+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "JPM": 255,
+    "SPY": 255
+  }
+}

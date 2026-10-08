@@ -1,0 +1,47 @@
+{
+  "ticker": "COST",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/COST/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/COST/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 942.25,
+    "Return 1D (%)": 0.7021639209608743,
+    "Return 1W (%)": 3.505280686685386,
+    "Return 1M (%)": 2.8949276048149786,
+    "Return YTD (%)": 9.748903333772919,
+    "Return 1Y (%)": 3.601616574085398,
+    "Annualized volatility (%)": 19.971339377611187,
+    "Max drawdown (%)": -18.19934195406505,
+    "Sharpe (rf=0)": 0.27745796604110107,
+    "Beta vs SPY": -0.10327780720745341,
+    "MA50": 932.0941979980469,
+    "Close vs MA50 (%)": 1.089568202845359,
+    "MA200": 960.5879614257813,
+    "Close vs MA200 (%)": -1.9090351078898227,
+    "RSI (14, Wilder)": 60.92197954661774,
+    "MACD (12,26)": 0.9060685510480653,
+    "MACD signal (9)": -4.186676918094922,
+    "MACD histogram": 5.092745469142987,
+    "P/E (trailing)": 45.062172,
+    "P/B": 11.665696,
+    "EV/EBITDA": 28.201,
+    "Revenue growth (%)": 11.1
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 909.4935302734375,
+    "end_close": 942.25,
+    "manual_1Y_pct": 3.6016165740853956,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:11:40.053406+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "COST": 255,
+    "SPY": 255
+  }
+}

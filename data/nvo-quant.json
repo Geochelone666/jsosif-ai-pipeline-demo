@@ -1,0 +1,47 @@
+{
+  "ticker": "NVO",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/NVO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/NVO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 38.2599983215332,
+    "Return 1D (%)": 1.9451094217435072,
+    "Return 1W (%)": 0.9232352295696078,
+    "Return 1M (%)": -17.896996621618854,
+    "Return YTD (%)": -21.049513547042807,
+    "Return 1Y (%)": -31.93831116349348,
+    "Annualized volatility (%)": 45.77270985906121,
+    "Max drawdown (%)": -43.66989458259625,
+    "Sharpe (rf=0)": -0.6101948814246083,
+    "Beta vs SPY": 1.0265596410335371,
+    "MA50": 43.803438339233395,
+    "Close vs MA50 (%)": -12.655262298747683,
+    "MA200": 44.458646278381345,
+    "Close vs MA200 (%)": -13.942502697978732,
+    "RSI (14, Wilder)": 34.6926770724247,
+    "MACD (12,26)": -1.9714175496740154,
+    "MACD signal (9)": -1.965720368732339,
+    "MACD histogram": -0.005697180941676372,
+    "P/E (trailing)": 9.354523,
+    "P/B": 5.086423,
+    "EV/EBITDA": 1.505,
+    "Revenue growth (%)": 2.1
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 56.213706970214844,
+    "end_close": 38.2599983215332,
+    "manual_1Y_pct": -31.93831116349348,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:17:40.156008+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "NVO": 255,
+    "SPY": 255
+  }
+}

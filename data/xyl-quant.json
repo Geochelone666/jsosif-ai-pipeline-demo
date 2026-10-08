@@ -1,0 +1,47 @@
+{
+  "ticker": "XYL",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/XYL/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/XYL/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 101.81999969482422,
+    "Return 1D (%)": -2.6298173549063497,
+    "Return 1W (%)": 0.5431056285074565,
+    "Return 1M (%)": -3.661654515267454,
+    "Return YTD (%)": -24.39703727840571,
+    "Return 1Y (%)": -30.29954519944176,
+    "Annualized volatility (%)": 25.31880267915163,
+    "Max drawdown (%)": -33.119246490927864,
+    "Sharpe (rf=0)": -1.3030158648616643,
+    "Beta vs SPY": 0.7819403756410975,
+    "MA50": 110.89102722167969,
+    "Close vs MA50 (%)": -8.180127602859866,
+    "MA200": 119.7234729385376,
+    "Close vs MA200 (%)": -14.954020965382853,
+    "RSI (14, Wilder)": 37.41636728244724,
+    "MACD (12,26)": -2.4159219488453374,
+    "MACD signal (9)": -2.5930183930571005,
+    "MACD histogram": 0.17709644421176307,
+    "P/E (trailing)": 24.242859,
+    "P/B": 2.281425,
+    "EV/EBITDA": 13.367,
+    "Revenue growth (%)": 1.5
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 146.08226013183594,
+    "end_close": 101.81999969482422,
+    "manual_1Y_pct": -30.29954519944176,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:15:21.861868+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "XYL": 255,
+    "SPY": 255
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "ticker": "TSLA",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/TSLA/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/TSLA/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 377.0400085449219,
+    "Return 1D (%)": 1.7404712136779743,
+    "Return 1W (%)": 5.480485569698157,
+    "Return 1M (%)": 6.484416754226863,
+    "Return YTD (%)": -16.161165275838606,
+    "Return 1Y (%)": -12.281594973939391,
+    "Annualized volatility (%)": 45.65075840223598,
+    "Max drawdown (%)": -39.10345301895269,
+    "Sharpe (rf=0)": -0.1768112263408589,
+    "Beta vs SPY": 2.2162579234075097,
+    "MA50": 348.8639978027344,
+    "Close vs MA50 (%)": 8.07650285488033,
+    "MA200": 392.6179493713379,
+    "Close vs MA200 (%)": -3.9677097930340466,
+    "RSI (14, Wilder)": 58.03988850244403,
+    "MACD (12,26)": 2.762538033415467,
+    "MACD signal (9)": 3.2181124684166327,
+    "MACD histogram": -0.4555744350011657,
+    "P/E (trailing)": 349.1111,
+    "P/B": 17.142078,
+    "EV/EBITDA": 133.601,
+    "Revenue growth (%)": 25.5
+  },
+  "as_of": "2026-10-05",
+  "verification": {
+    "base_date": "2025-10-03",
+    "base_close": 429.8299865722656,
+    "end_close": 377.0400085449219,
+    "manual_1Y_pct": -12.281594973939395,
+    "passed": true
+  },
+  "fetched_at": "2026-10-05T16:09:15.516459+00:00",
+  "requested_as_of": "2026-10-05",
+  "history_count": {
+    "TSLA": 253,
+    "SPY": 253
+  }
+}

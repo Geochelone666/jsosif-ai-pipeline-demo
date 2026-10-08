@@ -1,0 +1,47 @@
+{
+  "ticker": "NVDA",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/NVDA/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/NVDA/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 236.82029724121094,
+    "Return 1D (%)": 1.2268862280018666,
+    "Return 1W (%)": 3.478238490618679,
+    "Return 1M (%)": 2.9194696896200023,
+    "Return YTD (%)": 27.278531203639833,
+    "Return 1Y (%)": 26.52578458556476,
+    "Annualized volatility (%)": 37.784360231458635,
+    "Max drawdown (%)": -20.21437866121676,
+    "Sharpe (rf=0)": 0.8452896210947647,
+    "Beta vs SPY": 1.884376537820282,
+    "MA50": 218.7233139038086,
+    "Close vs MA50 (%)": 8.273916033185724,
+    "MA200": 200.67666229248047,
+    "Close vs MA200 (%)": 18.01088105404711,
+    "RSI (14, Wilder)": 65.44032644463573,
+    "MACD (12,26)": 4.056095546278868,
+    "MACD signal (9)": 2.985829677515875,
+    "MACD histogram": 1.0702658687629936,
+    "P/E (trailing)": 29.939356,
+    "P/B": 24.97314,
+    "EV/EBITDA": 27.896,
+    "Revenue growth (%)": 105.89999999999999
+  },
+  "as_of": "2026-10-05",
+  "verification": {
+    "base_date": "2025-10-03",
+    "base_close": 187.17156982421875,
+    "end_close": 236.82029724121094,
+    "manual_1Y_pct": 26.525784585564754,
+    "passed": true
+  },
+  "fetched_at": "2026-10-05T16:08:48.551250+00:00",
+  "requested_as_of": "2026-10-05",
+  "history_count": {
+    "NVDA": 253,
+    "SPY": 253
+  }
+}

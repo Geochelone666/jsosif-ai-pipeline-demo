@@ -21,6 +21,8 @@ for symbol in [TICKER,'SPY']:
     except Exception as e:
         errors.append(f'{symbol} yfinance: {e}')
         try:
+            if '.' in symbol:
+                raise ValueError('US Stooq fallback unavailable for international listing')
             url=f'https://stooq.com/q/d/l/?s={symbol.lower()}.us&i=d&d1=20251002&d2={AS_OF.replace('-', '')}'
             raw=urllib.request.urlopen(url,timeout=30).read().decode()
             (P/f'{symbol}-stooq.csv').write_text(raw)

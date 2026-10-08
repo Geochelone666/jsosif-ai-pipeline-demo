@@ -1,10 +1,11 @@
-"""Four fixed peers; growth and return are fractions, not percentages."""
+"""Optional configured peers; growth and return are fractions, not percentages."""
 from datetime import date, timedelta
 import pandas as pd
 import yfinance as yf
-from data_utils import number, save, ticker_arg, ticker_file
+from data_utils import number, save, ticker_arg, ticker_file, SUPPORTED
 
-PEERS = {'GOOGL': ['META', 'AMZN', 'MSFT', 'AAPL'], 'AMZN': ['GOOGL', 'META', 'MSFT', 'AAPL'], 'TSLA': ['F', 'GM', 'RIVN', 'LCID'], 'NVDA': ['AMD', 'AVGO', 'MSFT', 'TSM'], 'MSFT': ['AAPL', 'GOOGL', 'AMZN', 'NVDA'], 'AAPL': ['MSFT', 'GOOGL', 'AMZN', 'NVDA']}
+# Configure sector peers separately; never reuse the old technology peers.
+PEERS = {ticker: [] for ticker in SUPPORTED}
 FIELDS = {'pe': 'trailingPE', 'pb': 'priceToBook', 'ev_ebitda': 'enterpriseToEbitda', 'revenue_growth': 'revenueGrowth', 'mktcap': 'marketCap'}
 
 def main():

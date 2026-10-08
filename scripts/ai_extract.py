@@ -48,6 +48,8 @@ ALIASES = {
     'NVDA': ('nvidia', '英伟达', '輝達'), 'MSFT': ('microsoft', '微软', '微軟', 'azure'), 'AAPL': ('apple', '苹果', '蘋果'),
     'GOOGL': ('alphabet', 'google', 'goog', '谷歌'), 'AMZN': ('amazon', 'amazon.com', 'aws', '亚马逊', '亞馬遜'), 'TSLA': ('tesla', '特斯拉'),
 }
+from universe import COMPANIES
+ALIASES.update({ticker: (name.lower(),) for ticker, name in COMPANIES.items()})
 # Specific corporate events precede generic earnings/market vocabulary.
 EVENTS = {
     'acquisition': r'acquisition|acquir(?:e[sd]?|ing)|merger|takeover|buyout|收购|并购',
@@ -244,7 +246,7 @@ def main():
     ticker = ticker_arg()
     items = []
     try:
-        items = fetch_rss(f'{ticker} stock', 25)
+        items = fetch_rss(f'{COMPANIES[ticker]} {ticker} stock', 25)
         data = extract(items, ticker, call_gemini)
     except Exception as exc:
         data = extract(items, ticker)

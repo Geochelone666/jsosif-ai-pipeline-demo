@@ -1,0 +1,47 @@
+{
+  "ticker": "MC.PA",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/MC.PA/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/MC.PA/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 385.6000061035156,
+    "Return 1D (%)": 1.233922888512451,
+    "Return 1W (%)": -2.2807906388219945,
+    "Return 1M (%)": -10.13749694273043,
+    "Return YTD (%)": -39.24222602782213,
+    "Return 1Y (%)": -26.855990017255383,
+    "Annualized volatility (%)": 30.028984720061853,
+    "Max drawdown (%)": -41.0024992898988,
+    "Sharpe (rf=0)": -0.8804468723576655,
+    "Beta vs SPY": 0.6319467594732558,
+    "MA50": 434.665,
+    "Close vs MA50 (%)": -11.288002000732611,
+    "MA200": 487.923052520752,
+    "Close vs MA200 (%)": -20.971144095079296,
+    "RSI (14, Wilder)": 31.904314000212068,
+    "MACD (12,26)": -14.950378561823527,
+    "MACD signal (9)": -14.845281531568526,
+    "MACD histogram": -0.10509703025500094,
+    "P/E (trailing)": 17.705105,
+    "P/B": 2.8128984,
+    "EV/EBITDA": 10.805,
+    "Revenue growth (%)": -2.9000000000000004
+  },
+  "as_of": "2026-10-06",
+  "verification": {
+    "base_date": "2025-10-06",
+    "base_close": 527.17919921875,
+    "end_close": 385.6000061035156,
+    "manual_1Y_pct": -26.855990017255383,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:18:02.150513+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "MC.PA": 258,
+    "SPY": 255
+  }
+}

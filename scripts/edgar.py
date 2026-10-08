@@ -4,7 +4,15 @@ import json
 from urllib.request import Request, urlopen
 from data_utils import number, save, ticker_arg, ticker_file
 
-CIKS = {'GOOGL': '1652044', 'AMZN': '1018724', 'TSLA': '1318605', 'NVDA': '1045810', 'MSFT': '789019', 'AAPL': '320193'}
+def resolve_cik(symbol):
+    # SEC uses the US listing symbol for Canadian dual listings.
+    sec_symbol = symbol.removesuffix('.TO')
+    if symbol.endswith('.PA'):
+        return None
+    entries = fetch('https://www.sec.gov/files/company_tickers.json')
+    return next((str(row['cik_str']) for row in entries.values()
+                 if row['ticker'].upper() == sec_symbol), None)
+
 HEADERS = {'User-Agent': 'JSOSIF-demo contact@example.com (demo placeholder contact)', 'Accept': 'application/json'}
 
 def fetch(url):
@@ -30,8 +38,16 @@ def quarter_value(concept, CIK):
 
 def main():
     symbol = ticker_arg()
-    CIK = CIKS[symbol]
+    try:
+        CIK = resolve_cik(symbol)
+    except Exception as exc:
+        CIK = None
+        print(f'SEC ticker lookup unavailable: {type(exc).__name__}')
     data = {'ticker': symbol, 'cik': CIK, 'latest_filing': None, 'revenue': None, 'net_income': None}
+    if CIK is None:
+        data['error'] = 'N/A: SEC issuer mapping unavailable for this listing'
+        save(ticker_file(symbol, 'edgar.json'), data)
+        return
     try:
         recent = fetch(f'https://data.sec.gov/submissions/CIK{CIK.zfill(10)}.json')['filings']['recent']
         matches = [i for i, form in enumerate(recent['form']) if form in ('10-Q', '10-K') and recent['filingDate'][i] <= date.today().isoformat()]

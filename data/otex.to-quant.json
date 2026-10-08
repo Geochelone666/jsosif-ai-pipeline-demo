@@ -1,0 +1,47 @@
+{
+  "ticker": "OTEX.TO",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/OTEX.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/OTEX.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 33.0,
+    "Return 1D (%)": 2.1671850757701616,
+    "Return 1W (%)": 3.415857592604432,
+    "Return 1M (%)": -0.3623156272787309,
+    "Return YTD (%)": -23.641016515409586,
+    "Return 1Y (%)": -35.2656370033454,
+    "Annualized volatility (%)": 37.42068230494549,
+    "Max drawdown (%)": -47.692430081585535,
+    "Sharpe (rf=0)": -0.9798159336875951,
+    "Beta vs SPY": 0.6999035290076584,
+    "MA50": 33.20964427947998,
+    "Close vs MA50 (%)": -0.6312752937541077,
+    "MA200": 33.12715289115906,
+    "Close vs MA200 (%)": -0.3838328382062439,
+    "RSI (14, Wilder)": 55.1175446628782,
+    "MACD (12,26)": -0.18183446304634288,
+    "MACD signal (9)": -0.2878633360256536,
+    "MACD histogram": 0.10602887297931074,
+    "P/E (trailing)": 9.243698,
+    "P/B": 1.3680462,
+    "EV/EBITDA": 7.763,
+    "Revenue growth (%)": 2.9000000000000004
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 50.977561950683594,
+    "end_close": 33.0,
+    "manual_1Y_pct": -35.26563700334539,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:17:01.296784+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "OTEX.TO": 255,
+    "SPY": 255
+  }
+}

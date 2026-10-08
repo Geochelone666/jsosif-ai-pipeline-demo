@@ -1,0 +1,47 @@
+{
+  "ticker": "PEP",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/PEP/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/PEP/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 123.7300033569336,
+    "Return 1D (%)": -1.5750503078188482,
+    "Return 1W (%)": -2.359531119765357,
+    "Return 1M (%)": -10.099543001334855,
+    "Return YTD (%)": -11.164683928895979,
+    "Return 1Y (%)": -8.556358299205924,
+    "Annualized volatility (%)": 21.07877943655674,
+    "Max drawdown (%)": -25.217639547445494,
+    "Sharpe (rf=0)": -0.3213284528174059,
+    "Beta vs SPY": -0.23324713969546398,
+    "MA50": 135.30126556396485,
+    "Close vs MA50 (%)": -8.552220231495788,
+    "MA200": 144.24828704833985,
+    "Close vs MA200 (%)": -14.224282389246156,
+    "RSI (14, Wilder)": 22.197113102148123,
+    "MACD (12,26)": -3.214125043239008,
+    "MACD signal (9)": -2.8200017173816616,
+    "MACD histogram": -0.39412332585734644,
+    "P/E (trailing)": 16.475367,
+    "P/B": 7.6485133,
+    "EV/EBITDA": 11.347,
+    "Revenue growth (%)": 6.4
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 135.30738830566406,
+    "end_close": 123.7300033569336,
+    "manual_1Y_pct": -8.556358299205922,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:15:40.942374+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "PEP": 255,
+    "SPY": 255
+  }
+}

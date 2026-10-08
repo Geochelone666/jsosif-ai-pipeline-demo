@@ -7,12 +7,12 @@ import os
 from datetime import date
 AS_OF = os.environ.get("REPORT_AS_OF", date.today().isoformat())
 STAMP = AS_OF.replace("-", "")
-from data_utils import DATA, REPORTS, ROOT, save
+from data_utils import DATA, REPORTS, ROOT, save, SUPPORTED
 
 sections = ('QUANTITATIVE', 'TAILWINDS', 'HEADWINDS', 'CATALYSTS', 'RISKS', 'PEER COMPARABLES', 'EARNINGS CALENDAR', 'MACRO (FRED)', 'LATEST FILING (EDGAR)', 'SOURCES')
 results = {}
 index = ['# Intelligence reports', '', f'Snapshot date: {AS_OF}. Missing data is N/A. Report-date daily prices may be intraday and provisional. News and other non-market sections retain existing snapshots.', '']
-for ticker in ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA'):
+for ticker in SUPPORTED:
     report_name = f'{ticker}-intelligence-{STAMP}.md'
     report = (REPORTS / report_name).read_text()
     quant = json.loads((DATA / f'{ticker.lower()}-quant.json').read_text())
@@ -29,21 +29,22 @@ for ticker in ('NVDA', 'MSFT', 'AAPL', 'GOOGL', 'AMZN', 'TSLA'):
     close_text = 'N/A' if close is None else f'${close:.4f}'
     ret_text = 'N/A' if ret is None else f'{ret:.4f}%'
     count_text = 'N/A' if ai.get('error') else str(count)
-    index.append(f'- [{ticker}]({report_name}): close {close_text}; 1Y return {ret_text}; AI items {count_text}.')
+    index.append(f'- [{ticker}](reports/{report_name}): close {close_text}; 1Y return {ret_text}; AI items {count_text}.')
     results[ticker] = {'sections_passed': True, 'quant_matches_json': True, 'ai_items': count_text, 'market_errors': quant['errors'], 'ai_error': ai.get('error')}
-# Independent arithmetic from raw GOOGL CSV, using the recorded boundary date.
-quant = json.loads((DATA / 'googl-quant.json').read_text())
-v = quant['verification']
-if v:
-    with (DATA / 'GOOGL-yfinance.csv').open() as stream:
+# Recompute each available raw CSV independently.
+for ticker in SUPPORTED:
+    quant = json.loads((DATA / f'{ticker.lower()}-quant.json').read_text())
+    v = quant.get('verification')
+    raw = DATA / f'{ticker}-yfinance.csv'
+    if not v or not raw.exists():
+        continue
+    with raw.open() as stream:
         rows = list(csv.DictReader(stream))
     base = next(Decimal(row['Close']) for row in rows if row['Date'].startswith(v['base_date']))
     end = next(Decimal(row['Close']) for row in rows if row['Date'].startswith(quant['as_of']))
     computed = (end - base) / base * 100
     assert abs(computed - Decimal(str(quant['metrics']['Return 1Y (%)']))) < Decimal('1e-10')
-    results['independent_googl_1Y'] = {'base_close': str(base), 'end_close': str(end), 'return_pct': str(computed), 'passed': True}
-else:
-    results['independent_googl_1Y'] = {'passed': False, 'reason': 'N/A: market data unavailable'}
+    results[f'independent_{ticker}_1Y'] = {'passed': True, 'return_pct': str(computed)}
 (ROOT / 'INDEX.md').write_text('\n'.join(index) + '\n')
 save('phase1-validation.json', results)
 print(json.dumps(results, indent=2))

@@ -1,0 +1,47 @@
+{
+  "ticker": "AAPL",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/AAPL/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/AAPL/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 333.4237976074219,
+    "Return 1D (%)": -0.07977608919557122,
+    "Return 1W (%)": -1.4705072041415912,
+    "Return 1M (%)": 4.204705545954868,
+    "Return YTD (%)": 22.979244103471743,
+    "Return 1Y (%)": 29.701370493330593,
+    "Annualized volatility (%)": 24.72896495785326,
+    "Max drawdown (%)": -13.798523953754415,
+    "Sharpe (rf=0)": 1.2054241947052033,
+    "Beta vs SPY": 0.6874930181185513,
+    "MA50": 322.3690057373047,
+    "Close vs MA50 (%)": 3.4292353400517728,
+    "MA200": 289.0967665863037,
+    "Close vs MA200 (%)": 15.332939051701654,
+    "RSI (14, Wilder)": 54.42491389574973,
+    "MACD (12,26)": 3.5387218837686873,
+    "MACD signal (9)": 4.578819069938447,
+    "MACD histogram": -1.0400971861697599,
+    "P/E (trailing)": 38.235664,
+    "P/B": 45.300953,
+    "EV/EBITDA": 29.125,
+    "Revenue growth (%)": 16.400000000000002
+  },
+  "as_of": "2026-10-05",
+  "verification": {
+    "base_date": "2025-10-03",
+    "base_close": 257.07037353515625,
+    "end_close": 333.4237976074219,
+    "manual_1Y_pct": 29.701370493330586,
+    "passed": true
+  },
+  "fetched_at": "2026-10-05T16:09:07.410271+00:00",
+  "requested_as_of": "2026-10-05",
+  "history_count": {
+    "AAPL": 253,
+    "SPY": 253
+  }
+}

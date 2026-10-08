@@ -1,0 +1,47 @@
+{
+  "ticker": "ACN",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/ACN/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/ACN/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 196.63999938964844,
+    "Return 1D (%)": 1.6752872778777128,
+    "Return 1W (%)": 7.236736993956061,
+    "Return 1M (%)": 5.312766765259314,
+    "Return YTD (%)": -25.198626770430867,
+    "Return 1Y (%)": -20.116201274954705,
+    "Annualized volatility (%)": 48.28311229321115,
+    "Max drawdown (%)": -56.50679297666878,
+    "Sharpe (rf=0)": -0.22407245269865322,
+    "Beta vs SPY": 0.2444941657320772,
+    "MA50": 182.4801986694336,
+    "Close vs MA50 (%)": 7.759636839208839,
+    "MA200": 192.38680477142333,
+    "Close vs MA200 (%)": 2.210751731792815,
+    "RSI (14, Wilder)": 57.070401487036335,
+    "MACD (12,26)": 4.035727501176694,
+    "MACD signal (9)": 2.974540227507216,
+    "MACD histogram": 1.0611872736694785,
+    "P/E (trailing)": 14.259608,
+    "P/B": 3.7126403,
+    "EV/EBITDA": 8.353,
+    "Revenue growth (%)": 6.2
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 246.1575469970703,
+    "end_close": 196.63999938964844,
+    "manual_1Y_pct": -20.1162012749547,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:14:40.841200+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "ACN": 255,
+    "SPY": 255
+  }
+}

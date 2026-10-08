@@ -1,0 +1,47 @@
+{
+  "ticker": "ENB",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/ENB/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/ENB/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 45.88999938964844,
+    "Return 1D (%)": -1.3966512958577204,
+    "Return 1W (%)": -1.2906050057130192,
+    "Return 1M (%)": -8.384908664693747,
+    "Return YTD (%)": -0.17835446884406636,
+    "Return 1Y (%)": -3.4485526217470586,
+    "Annualized volatility (%)": 17.803296964091356,
+    "Max drawdown (%)": -19.846160550103566,
+    "Sharpe (rf=0)": -0.10918401909268298,
+    "Beta vs SPY": -0.12408689519986298,
+    "MA50": 49.59016456604004,
+    "Close vs MA50 (%)": -7.46149001273031,
+    "MA200": 51.115725917816164,
+    "Close vs MA200 (%)": -10.223324494245956,
+    "RSI (14, Wilder)": 29.233489518445822,
+    "MACD (12,26)": -1.0893113303802622,
+    "MACD signal (9)": -1.0643805938525113,
+    "MACD histogram": -0.024930736527750907,
+    "P/E (trailing)": 24.540106,
+    "P/B": 2.4338882,
+    "EV/EBITDA": 12.775,
+    "Revenue growth (%)": 97.1
+  },
+  "as_of": "2026-10-07",
+  "verification": {
+    "base_date": "2025-10-07",
+    "base_close": 47.5290641784668,
+    "end_close": 45.88999938964844,
+    "manual_1Y_pct": -3.44855262174706,
+    "passed": true
+  },
+  "fetched_at": "2026-10-08T04:13:01.025654+00:00",
+  "requested_as_of": "2026-10-08",
+  "history_count": {
+    "ENB": 255,
+    "SPY": 255
+  }
+}
