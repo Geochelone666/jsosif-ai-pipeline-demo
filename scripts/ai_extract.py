@@ -148,6 +148,128 @@ def classify_rule(item, ticker):
     return category, result
 
 
+# Lenient normalization for Gemini output. Gemini is mostly right but drifts:
+# singular category names, list-wrapped payloads, reworded headlines, and
+# non-canonical impact/horizon words. Normalize what we can; skip single
+# items we cannot; fail the whole AI batch only on structural breakage.
+def _norm_text(s):
+    return ' '.join(str(s).lower().split())
+
+_LEADING_QUESTION_WORDS = ('why ', 'how ', 'what ', 'when ', 'where ',
+                           'is ', 'are ', 'was ', 'were ', 'will ',
+                           'would ', 'could ', 'should ', 'can ', 'do ',
+                           'does ', 'did ')
+
+def _strip_leading_question(s):
+    for q in _LEADING_QUESTION_WORDS:
+        if s.startswith(q):
+            return s[len(q):]
+    return s
+
+_IMPACT_MAP = {
+    'high': 'high', 'major': 'high', 'severe': 'high', 'significant': 'high',
+    'medium': 'medium', 'moderate': 'medium',
+    'low': 'low', 'minor': 'low', 'minimal': 'low', 'negligible': 'low',
+}
+_HORIZON_MAP = {
+    'short': 'short', 'near-term': 'short', 'near term': 'short',
+    'immediate': 'short', 'past': 'short',
+    'medium': 'medium', 'medium-term': 'medium', 'medium term': 'medium',
+    'mid-term': 'medium', 'mid term': 'medium',
+    'long': 'long', 'long-term': 'long', 'long term': 'long',
+}
+_VALID_SENTIMENTS = ('positive', 'negative', 'neutral', 'unknown')
+
+
+def _normalize_ai_payload(extracted, ticker):
+    """Leniently normalize Gemini's payload. Returns (payload, notes).
+
+    Raises ValueError only on structural breakage (wrong shape, ticker
+    mismatch); per-item problems are left for the caller to skip.
+    """
+    notes = []
+    if isinstance(extracted, list):
+        if len(extracted) == 1 and isinstance(extracted[0], dict):
+            notes.append('unwrapped single-element list payload')
+            extracted = extracted[0]
+        else:
+            raise ValueError('AI returned a list instead of an object')
+    if not isinstance(extracted, dict):
+        raise ValueError('AI returned a non-object payload')
+    top_ticker = extracted.get('ticker')
+    if isinstance(top_ticker, str) and top_ticker.strip():
+        if top_ticker.strip().lower() != ticker.lower():
+            raise ValueError('Gemini returned a different ticker')
+    payload = {}
+    for key in KEYS:
+        val = extracted.get(key)
+        if val is None:
+            singular = key[:-1]
+            if singular in extracted:
+                notes.append(f'mapped singular category {singular!r} -> {key!r}')
+                val = extracted[singular]
+        if val is None:
+            payload[key] = []
+        elif isinstance(val, list):
+            payload[key] = val
+        else:
+            notes.append(f'category {key!r} was not a list; ignored')
+            payload[key] = []
+    if not (isinstance(top_ticker, str) and top_ticker.strip()):
+        item_tickers = {str(it.get('ticker')).strip().lower()
+                        for items in payload.values() for it in items
+                        if isinstance(it, dict) and it.get('ticker')}
+        bad = {t for t in item_tickers if t != ticker.lower()}
+        if bad:
+            raise ValueError('Gemini returned a different ticker')
+        if item_tickers:
+            notes.append('ticker verified from item-level fields')
+    return payload, notes
+
+
+def _build_headline_index(pending):
+    """Map normalized headline forms to the exact pending headline."""
+    index = {}
+    for it in pending:
+        exact = it['headline']
+        normed = _norm_text(exact)
+        for form in {normed, _strip_leading_question(normed)}:
+            index.setdefault(form, exact)
+    return index
+
+
+def _match_pending_headline(headline, by_headline, index):
+    """Match a Gemini-returned headline to a pending RSS headline.
+
+    Returns the exact pending headline or None. Tiered: exact, normalized,
+    normalized minus leading question word, then a conservative fuzzy match.
+    """
+    if headline in by_headline:
+        return headline
+    import difflib
+    normed = _norm_text(headline)
+    if normed in index:
+        return index[normed]
+    stripped = _strip_leading_question(normed)
+    if stripped in index:
+        return index[stripped]
+    close = difflib.get_close_matches(normed, list(index), n=1, cutoff=0.92)
+    return index[close[0]] if close else None
+
+
+def _parse_gemini_json(text):
+    """Parse Gemini's JSON payload, tolerating markdown code fences."""
+    t = str(text).strip()
+    if t.startswith('```'):
+        lines = t.split('\n')
+        if lines and lines[0].startswith('```'):
+            lines = lines[1:]
+        while lines and lines[-1].strip().startswith('```'):
+            lines = lines[:-1]
+        t = '\n'.join(lines).strip()
+    return json.loads(t)
+
+
 def extract(items, ticker, call_ai=None):
     data = {'ticker': ticker, 'as_of': '2026-10-03', **{k: [] for k in KEYS}}
     pending = []
@@ -164,34 +286,55 @@ def extract(items, ticker, call_ai=None):
     if pending and call_ai:
         try:
             extracted = call_ai(pending, ticker)
-            if extracted.get('ticker') != ticker:
-                raise ValueError('Gemini returned a different ticker')
+            payload, notes = _normalize_ai_payload(extracted, ticker)
             by_headline = {it['headline']: it for it in pending}
+            index = _build_headline_index(pending)
             staged = {k: [] for k in KEYS}
             used = set()
+            skipped = []
             for key in KEYS:
-                if not isinstance(extracted.get(key), list):
-                    raise ValueError('Invalid category')
-                for result in extracted[key]:
-                    headline = result['headline']
-                    if headline not in by_headline or headline in used:
-                        raise ValueError('Unknown or duplicate headline')
-                    if not all(field in result for field in ('summary', 'impact', 'horizon', 'confidence', 'event_type', 'sentiment')):
-                        raise ValueError('Incomplete Gemini item')
-                    if result['impact'] not in ('high', 'medium', 'low') or result['horizon'] not in ('short', 'medium', 'long'):
-                        raise ValueError('Invalid impact/horizon')
+                for result in payload[key]:
+                    headline = result.get('headline') if isinstance(result, dict) else None
+                    if not isinstance(headline, str):
+                        skipped.append({'headline': None, 'reason': 'not a dict or missing headline', 'category': key})
+                        continue
+                    matched = _match_pending_headline(headline, by_headline, index)
+                    if matched is None:
+                        skipped.append({'headline': headline, 'reason': 'no matching pending headline', 'category': key})
+                        continue
+                    if matched in used:
+                        skipped.append({'headline': headline, 'reason': 'duplicate headline', 'category': key})
+                        continue
+                    fields = ('summary', 'impact', 'horizon', 'confidence', 'event_type', 'sentiment')
+                    if not all(field in result for field in fields):
+                        skipped.append({'headline': headline, 'reason': 'incomplete item', 'category': key})
+                        continue
+                    impact = _IMPACT_MAP.get(_norm_text(result['impact']))
+                    horizon = _HORIZON_MAP.get(_norm_text(result['horizon']))
+                    sentiment = _norm_text(result['sentiment'])
+                    event_type = _norm_text(result['event_type'])
                     confidence = result['confidence']
-                    if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
-                        raise ValueError('Invalid confidence')
-                    if result['event_type'] not in (*EVENTS, 'unknown') or result['sentiment'] not in ('positive', 'negative', 'neutral', 'unknown'):
-                        raise ValueError('Invalid event/sentiment')
-                    base = classify_rule(by_headline[headline], ticker)[1]
-                    base.update({field: result[field] for field in ('summary', 'impact', 'horizon', 'confidence', 'event_type', 'sentiment')})
+                    if (impact is None or horizon is None
+                            or sentiment not in _VALID_SENTIMENTS
+                            or event_type not in (*EVENTS, 'unknown')
+                            or isinstance(confidence, bool)
+                            or not isinstance(confidence, (int, float))
+                            or not 0 <= confidence <= 1):
+                        skipped.append({'headline': headline, 'reason': 'invalid field value', 'category': key})
+                        continue
+                    base = classify_rule(by_headline[matched], ticker)[1]
+                    base.update({'summary': result['summary'], 'impact': impact,
+                                 'horizon': horizon, 'confidence': confidence,
+                                 'event_type': event_type, 'sentiment': sentiment})
                     base['extraction_method'] = 'ai'
                     staged[key].append(base)
-                    used.add(headline)
+                    used.add(matched)
             for key in KEYS:
                 data[key].extend(staged[key])
+            if notes:
+                data['ai_notes'] = notes
+            if skipped:
+                data['ai_skipped'] = skipped
             pending = [it for it in pending if it['headline'] not in used]
         except Exception as exc:
             data['error'] = f'AI unavailable: {exc}'
@@ -235,8 +378,19 @@ def call_gemini(items, ticker):
     )
     if res.returncode:
         raise RuntimeError(f'Gemini exit {res.returncode}: {res.stderr.strip()[:500]}')
-    envelope = json.loads(res.stdout)
-    result = json.loads(envelope['text'])
+    # Persist the raw stdout before parsing so malformed payloads stay debuggable.
+    save(ticker_file(ticker, 'ai-envelope-raw.json'),
+         {'stdout': res.stdout, 'stderr': (res.stderr or '')[:500],
+          'returncode': res.returncode})
+    try:
+        envelope = json.loads(res.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f'Gemini envelope not JSON: {exc}')
+    try:
+        result = _parse_gemini_json(envelope['text'])
+    except (KeyError, TypeError, json.JSONDecodeError) as exc:
+        head = str(envelope.get('text') if isinstance(envelope, dict) else '')[:200]
+        raise RuntimeError(f'Gemini payload not JSON: {exc}; text head: {head!r}')
     save(ticker_file(ticker, 'ai-envelope.json'), envelope)
     return result
 
