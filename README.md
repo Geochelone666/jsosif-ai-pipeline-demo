@@ -28,3 +28,11 @@ python3 -m unittest -v test_ai_extract test_data_utils test_rule_opt_v2
 ```
 
 Free source coverage is not guaranteed. AI items need human review. This demo is not investment advice.
+
+Run the full offline pytest suite (including archived verification tests) from the repo root with `PYTHONPATH=scripts .venv/bin/python -m pytest --import-mode=importlib -q`; importlib mode avoids duplicate archived test-module names.
+
+## Explicit assumptions (registry v1)
+
+`scripts/assumptions.py` records statements, rationale, and optional predicates: `prices-adjusted-close` (provider adjustments may be revised), `prices-lookback-start` (fixed 2025-10-02, not rolling), `stooq-us-only` (dot denotes international), `prices-normalized-index` (naive midnight), `prices-trading-calendar` (no gap detection), `prices-currency-usd` (no currency verification), `prices-minimum-history`, `phase1-artifacts-exist`, `fred-shared-freshness` (shared snapshot, no age bound), `supported-ticker`, and `report-as-of-date` (real YYYY-MM-DD, not future).
+
+The minimum is one usable positive finite ticker close; short histories retain existing N/A metrics and an unavailable SPY still yields N/A beta. Empty ticker histories and missing required report artifacts exit 2 with a human-readable violation. `check_all(context)` returns check results or raises `AssumptionViolation` carrying all results in `.results`; absent evidence is `uncheckable`, never `ok`. Quant JSON and report metadata sidecars (`reports/<TICKER>-intelligence-<DATE>.json`) record `assumptions_version` and `assumptions_checked`, including failures. Artifact existence does not validate contents or freshness; report preflight runs before Markdown is written.

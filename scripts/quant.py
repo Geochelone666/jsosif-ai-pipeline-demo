@@ -1,15 +1,17 @@
-import json, io, urllib.request, os
+import json, io, urllib.request, os, sys
 from datetime import date, timedelta
 from pathlib import Path
 import pandas as pd
 import numpy as np
 import yfinance as yf
 from data_utils import DATA, ticker_arg, ticker_file, number, as_of_date
+from assumptions import VERSION, PRICE_START, AssumptionViolation, check_all, checked_mapping
 TICKER=ticker_arg()
 AS_OF = as_of_date().isoformat()
 END = (date.fromisoformat(AS_OF) + timedelta(days=1)).isoformat()
 P = DATA
 errors=[]; sources=[]; series={}; info={}
+stooq_symbols=[]
 def clean_prices(h, symbol):
     c=h['Close'].loc[:AS_OF].map(number)
     valid=c.notna() & (c>0)
@@ -21,7 +23,7 @@ def clean_prices(h, symbol):
 
 for symbol in [TICKER,'SPY']:
     try:
-        h=yf.Ticker(symbol).history(start='2025-10-02',end=END,auto_adjust=True,timeout=30)
+        h=yf.Ticker(symbol).history(start=PRICE_START,end=END,auto_adjust=True,timeout=30)
         if h.empty: raise ValueError('empty history')
         h.index=pd.to_datetime(h.index).tz_localize(None).normalize()
         series[symbol]=clean_prices(h, symbol)
@@ -32,11 +34,12 @@ for symbol in [TICKER,'SPY']:
         try:
             if '.' in symbol:
                 raise ValueError('US Stooq fallback unavailable for international listing')
-            url=f'https://stooq.com/q/d/l/?s={symbol.lower()}.us&i=d&d1=20251002&d2={AS_OF.replace('-', '')}'
+            url=f'https://stooq.com/q/d/l/?s={symbol.lower()}.us&i=d&d1={PRICE_START.replace('-', '')}&d2={AS_OF.replace('-', '')}'
             raw=urllib.request.urlopen(url,timeout=30).read().decode()
             (P/f'{symbol}-stooq.csv').write_text(raw)
             h=pd.read_csv(io.StringIO(raw),parse_dates=['Date']).set_index('Date').sort_index()
             series[symbol]=clean_prices(h, symbol); sources.append(url)
+            stooq_symbols.append(symbol)
             if series[symbol].empty: raise ValueError('empty stooq')
         except Exception as e: errors.append(f'{symbol} stooq: {e}')
 try:
@@ -99,5 +102,20 @@ for label, value in m.items():
     if m[label] is None:
         errors.append(f'warning: {label} unavailable (N/A)')
 result['history_count']={k:len(v) for k,v in series.items()}
+context = {'ticker': TICKER, 'as_of': AS_OF, 'price_start': PRICE_START,
+           'price_count': len(series.get(TICKER, [])), 'stooq_symbols': stooq_symbols}
+if TICKER in series:
+    context['price_index'] = series[TICKER].index
+violation = None
+try:
+    checks = check_all(context)
+except AssumptionViolation as exc:
+    checks, violation = exc.results, exc
+result['assumptions_version'] = VERSION
+result['assumptions_checked'] = checked_mapping(checks)
 (P/ticker_file(TICKER, 'quant.json')).write_text(json.dumps(result,indent=2,allow_nan=False))
 print(json.dumps(result,indent=2))
+
+if violation is not None:
+    print(str(violation), file=sys.stderr)
+    raise SystemExit(2)

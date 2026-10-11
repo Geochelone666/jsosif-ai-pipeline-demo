@@ -48,13 +48,23 @@ def run_pipeline(monkeypatch, tmp_path, capsys):
                 return io.BytesIO(prices.rename_axis('Date').to_csv().encode())
             raise AssertionError('network disabled in resilience tests')
         monkeypatch.setattr('urllib.request.urlopen', urlopen)
-        runpy.run_path(str(SCRIPT), run_name='__main__')
+        if prices['Close'].dropna().empty:
+            with pytest.raises(SystemExit) as caught:
+                runpy.run_path(str(SCRIPT), run_name='__main__')
+            assert caught.value.code == 2
+        else:
+            runpy.run_path(str(SCRIPT), run_name='__main__')
         def reject_nonfinite(value):
             pytest.fail(f'nonstandard JSON number: {value}')
-        output = json.loads(capsys.readouterr().out, parse_constant=reject_nonfinite)
+        captured = capsys.readouterr()
+        if prices['Close'].dropna().empty:
+            assert 'prices-minimum-history' in captured.err
+        output = json.loads(captured.out, parse_constant=reject_nonfinite)
         saved = json.loads((tmp_path / 'csco-quant.json').read_text(),
                            parse_constant=reject_nonfinite)
         assert output == saved
+        assert saved['assumptions_checked']['prices-minimum-history']['status'] == (
+            'violated' if prices['Close'].dropna().empty else 'ok')
         assert (tmp_path / 'csco-info.json').exists()
         return saved
     return run
@@ -117,3 +127,8 @@ def test_complete_history_preserves_available_metrics(run_pipeline):
     result = run_pipeline()
     assert all(value is not None for value in result['metrics'].values())
     assert result['errors'] == []
+
+
+def test_empty_history_exits_with_saved_diagnostics(run_pipeline):
+    result = run_pipeline(prices=history(0))
+    assert result['assumptions_checked']['prices-minimum-history']['status'] == 'violated'

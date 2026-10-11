@@ -2,11 +2,28 @@
 """Regenerate the selected ticker intelligence report with quant + AI results."""
 import json
 import os
+import sys
 from datetime import date
 from data_utils import DATA, REPORTS, ticker_arg, ticker_file, as_of_date
+from assumptions import VERSION, AssumptionViolation, check_all, checked_mapping, required_paths
 TICKER = ticker_arg()
 AS_OF = as_of_date().isoformat()
 STAMP = AS_OF.replace('-', '')
+# Save a JSON sidecar even when preflight fails, before touching the report.
+violation = None
+try:
+    checks = check_all({'ticker': TICKER, 'as_of': AS_OF,
+                        'required_paths': required_paths(DATA, TICKER)})
+except AssumptionViolation as exc:
+    checks, violation = exc.results, exc
+metadata = {'ticker': TICKER, 'as_of': AS_OF, 'assumptions_version': VERSION,
+            'assumptions_checked': checked_mapping(checks)}
+(REPORTS / f'{TICKER}-intelligence-{STAMP}.json').write_text(
+    json.dumps(metadata, indent=2) + '\n', encoding='utf-8')
+if violation is not None:
+    print(str(violation), file=sys.stderr)
+    raise SystemExit(2)
+
 def read_snapshot(name):
     return json.loads((DATA / ticker_file(TICKER, name)).read_text(encoding="utf-8"))
 
