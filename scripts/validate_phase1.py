@@ -5,9 +5,9 @@ import json
 import re
 import os
 from datetime import date
-AS_OF = os.environ.get("REPORT_AS_OF", date.today().isoformat())
+from data_utils import DATA, REPORTS, ROOT, save, SUPPORTED, as_of_date
+AS_OF = as_of_date().isoformat()
 STAMP = AS_OF.replace("-", "")
-from data_utils import DATA, REPORTS, ROOT, save, SUPPORTED
 
 sections = ('QUANTITATIVE', 'TAILWINDS', 'HEADWINDS', 'CATALYSTS', 'RISKS', 'PEER COMPARABLES', 'EARNINGS CALENDAR', 'MACRO (FRED)', 'LATEST FILING (EDGAR)', 'SOURCES')
 results = {}

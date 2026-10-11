@@ -4,9 +4,9 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 import yfinance as yf
-from data_utils import DATA, ticker_arg, ticker_file, number
+from data_utils import DATA, ticker_arg, ticker_file, number, as_of_date
 TICKER=ticker_arg()
-AS_OF = os.environ.get('REPORT_AS_OF', date.today().isoformat())
+AS_OF = as_of_date().isoformat()
 END = (date.fromisoformat(AS_OF) + timedelta(days=1)).isoformat()
 P = DATA
 errors=[]; sources=[]; series={}; info={}

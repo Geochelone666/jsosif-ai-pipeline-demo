@@ -3,9 +3,9 @@
 import json
 import os
 from datetime import date
-from data_utils import DATA, REPORTS, ticker_arg, ticker_file
+from data_utils import DATA, REPORTS, ticker_arg, ticker_file, as_of_date
 TICKER = ticker_arg()
-AS_OF = os.environ.get('REPORT_AS_OF', date.today().isoformat())
+AS_OF = as_of_date().isoformat()
 STAMP = AS_OF.replace('-', '')
 def read_snapshot(name):
     return json.loads((DATA / ticker_file(TICKER, name)).read_text(encoding="utf-8"))
