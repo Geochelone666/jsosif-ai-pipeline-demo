@@ -5,7 +5,33 @@ import yfinance as yf
 from data_utils import number, save, ticker_arg, ticker_file, SUPPORTED
 
 # Configure sector peers separately; never reuse the old technology peers.
-PEERS = {ticker: [] for ticker in SUPPORTED}
+PEERS = {
+    'CNQ.TO': ['SU.TO', 'IMO.TO', 'CVE.TO'],
+    'CSCO': ['ANET', 'JNPR', 'HPE'],
+    'JPM': ['BAC', 'C', 'WFC'],
+    'BMO.TO': ['RY.TO', 'TD.TO', 'BNS.TO'],
+    'COST': ['WMT', 'TGT', 'BJ'],
+    'V': ['MA', 'PYPL', 'AXP'],
+    'JWEL.TO': ['HLF', 'USNA', 'NATR'],
+    'VRTX': ['REGN', 'BIIB', 'AMGN'],
+    'ENB': ['TRP.TO', 'KMI', 'EPD'],
+    'PFE': ['MRK', 'JNJ', 'LLY'],
+    'CP.TO': ['CNR.TO', 'UNP', 'NSC'],
+    'ATD.TO': ['CASY', 'ANDE', 'PKI.TO'],
+    'SCHW': ['IBKR', 'HOOD', 'ETFC'],
+    'ACN': ['IBM', 'CTSH', 'INFY'],
+    'J': ['ACM', 'FLR', 'KBR'],
+    'XYL': ['AOS', 'PH', 'DOV'],
+    'PEP': ['KO', 'MNST', 'KDP'],
+    'NTR.TO': ['MOS', 'CF', 'IPI'],
+    'DIS': ['NFLX', 'WBD', 'PARA'],
+    'MG.TO': ['APTV', 'BWA', 'LEA'],
+    'OTEX.TO': ['DSG.TO', 'CSU.TO', 'CGI.TO'],
+    'GIS': ['K', 'CPB', 'SJM'],
+    'NVO': ['LLY', 'ROG.SW', 'SAN.PA'],
+    'MC.PA': ['RMS.PA', 'CFR.SW', 'KER.PA'],
+    'AMTM': ['LDOS', 'CACI', 'SAIC'],
+}
 FIELDS = {'pe': 'trailingPE', 'pb': 'priceToBook', 'ev_ebitda': 'enterpriseToEbitda', 'revenue_growth': 'revenueGrowth', 'mktcap': 'marketCap'}
 
 def main():
