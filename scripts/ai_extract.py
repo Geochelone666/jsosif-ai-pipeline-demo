@@ -2,8 +2,12 @@
 """Fetch Google News RSS for the selected ticker, then rule-first extraction with Flash-Lite fallback."""
 from email.utils import parsedate_to_datetime
 import html
+import http.client
 import json
 import subprocess
+import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -11,13 +15,62 @@ import xml.etree.ElementTree as ET
 CLI = "/home/hatch/workspace/skills/google-ai-studio/bin/gemini-call.py"
 
 
-def fetch_rss(query, n=25):
+class RSSFetchError(Exception):
+    """Carries fetch diagnostics so callers can persist a graceful failure."""
+
+    def __init__(self, category, retryable, attempts, detail):
+        self.category = category
+        self.retryable = retryable
+        self.attempts = attempts
+        self.detail = detail
+        explanations = {
+            'dns_or_connection': '域名解析或网络连接失败，无法访问 news.google.com',
+            'timeout': '连接超时，未能及时从 news.google.com 获取新闻',
+            'http_error': 'news.google.com 返回 HTTP 错误，暂时限流、服务异常或请求被拒绝',
+            'malformed_xml': 'news.google.com 返回的 XML 格式损坏，无法解析新闻',
+        }
+        super().__init__(
+            f'RSS 源不可用（{explanations[category]}），{attempts} 次尝试后放弃。'
+            '本轮新闻分析跳过，量化指标不受影响。')
+
+
+def rss_url(query):
     q = urllib.parse.quote(query)
-    url = f"https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en"
+    return f"https://news.google.com/rss/search?q={q}&hl=en-US&gl=US&ceid=US:en"
+
+
+def rss_status(url, attempts, items=0, error=None):
+    return dict(stage='rss_fetch', status='failed' if error else 'ok',
+                category=error.category if error else None,
+                retryable=error.retryable if error else False,
+                attempts=attempts, url=url, items=items)
+
+
+def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep):
+    """Return (item list, status); retry transient failures after 0.5, 1, ... seconds."""
+    if not isinstance(max_attempts, int) or isinstance(max_attempts, bool) or max_attempts < 1:
+        raise ValueError('max_attempts must be a positive integer')
+    url = rss_url(query)
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        xml = r.read()
-    root = ET.fromstring(xml)
+    for attempt in range(1, max_attempts + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                xml = r.read()
+            root = ET.fromstring(xml)
+            break
+        except (OSError, http.client.HTTPException, ET.ParseError) as exc:
+            if isinstance(exc, urllib.error.HTTPError):
+                category = 'http_error'
+                retryable = exc.code == 429 or 500 <= exc.code <= 599
+            elif isinstance(exc, ET.ParseError):
+                category, retryable = 'malformed_xml', False
+            elif isinstance(getattr(exc, 'reason', exc), TimeoutError):
+                category, retryable = 'timeout', True
+            else:
+                category, retryable = 'dns_or_connection', True
+            if not retryable or attempt == max_attempts:
+                raise RSSFetchError(category, retryable, attempt, str(exc)) from exc
+            sleep(0.5 * 2 ** (attempt - 1))
     items = []
     for it in root.iter("item"):
         if len(items) >= n:
@@ -39,7 +92,7 @@ def fetch_rss(query, n=25):
             "link": it.findtext("link") or "",
             "pubDate": it.findtext("pubDate") or "",
         })
-    return items
+    return items, rss_status(url, attempt, len(items))
 
 
 KEYS = ('tailwinds', 'headwinds', 'catalysts', 'risks')
@@ -398,13 +451,19 @@ def call_gemini(items, ticker):
 def main():
     from data_utils import save, ticker_arg, ticker_file
     ticker = ticker_arg()
-    items = []
+    query = f'{COMPANIES[ticker]} {ticker} stock'
     try:
-        items = fetch_rss(f'{COMPANIES[ticker]} {ticker} stock', 25)
-        data = extract(items, ticker, call_gemini)
-    except Exception as exc:
-        data = extract(items, ticker)
+        items, fetch_status = fetch_rss(query, 25)
+    except RSSFetchError as exc:
+        items = []
+        data = extract([], ticker)
         data['error'] = str(exc)
+        fetch_status = rss_status(rss_url(query), exc.attempts, error=exc)
+        fetch_status['detail'] = exc.detail
+        print(str(exc), file=sys.stderr)
+    else:
+        data = extract(items, ticker, call_gemini)
+    data['fetch_status'] = fetch_status
     save(ticker_file(ticker, 'rss-items.json'), items)
     save(ticker_file(ticker, 'ai-intel.json'), data)
     print('Extraction: ' + json.dumps(data['extraction_stats']), flush=True)
