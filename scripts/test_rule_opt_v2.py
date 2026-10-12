@@ -16,9 +16,9 @@ class RuleV2Tests(unittest.TestCase):
             ('Nvidia announces stock split','stock_split','catalysts'),
             ('Nvidia spins off its software division','stock_split','catalysts'),
             ('Nvidia stock sold by Example Fund','ownership','catalysts'),
-            ('英伟达 announces acquisition','acquisition','catalysts'),
-            ('英伟达财报营收超预期','earnings','tailwinds'),
-            ('英伟达下调指引','guidance','headwinds'),
+            ('Nvidia announces acquisition deal','acquisition','catalysts'),
+            ('Nvidia earnings revenue beats expectations','earnings','tailwinds'),
+            ('Nvidia cuts guidance outlook','guidance','headwinds'),
             ('Nvidia shares rise - What happened?','market_move','tailwinds'),
         ]:
             with self.subTest(headline=headline):

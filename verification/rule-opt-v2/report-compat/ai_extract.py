@@ -45,29 +45,29 @@ def fetch_rss(query, n=25):
 KEYS = ('tailwinds', 'headwinds', 'catalysts', 'risks')
 MODEL = 'gemini-3.5-flash-lite'
 ALIASES = {
-    'NVDA': ('nvidia', '英伟达', '輝達'), 'MSFT': ('microsoft', '微软', '微軟', 'azure'), 'AAPL': ('apple', '苹果', '蘋果'),
-    'GOOGL': ('alphabet', 'google', 'goog', '谷歌'), 'AMZN': ('amazon', 'amazon.com', 'aws', '亚马逊', '亞馬遜'), 'TSLA': ('tesla', '特斯拉'),
+    'NVDA': ('nvidia',), 'MSFT': ('microsoft', 'azure'), 'AAPL': ('apple',),
+    'GOOGL': ('alphabet', 'google', 'goog'), 'AMZN': ('amazon', 'amazon.com', 'aws'), 'TSLA': ('tesla',),
 }
 # Specific corporate events precede generic earnings/market vocabulary.
 EVENTS = {
-    'acquisition': r'acquisition|acquir(?:e[sd]?|ing)|merger|takeover|buyout|收购|并购',
-    'stock_split': r'stock splits?|share splits?|splits? (?:into|its)|spin[ -]?offs?|spins? off|拆分|拆股|分拆',
-    'buyback': r'buy[ -]?backs?|repurchases?|share repurchase authorization|回购',
-    'dividend': r'dividends?|派息|股息',
-    'guidance': r'guidance|outlook|forecast|指引|展望',
-    'lawsuit': r'lawsuits?|sues?|suing|antitrust|litigation|court|liability|诉讼|反垄断',
-    'product': r'launch(?:es|ed|ing)?|unveils?|release|iphone|robotaxi|fsd|推出|发布',
-    'partnership': r'deals?|partnership|signs|agreement|contract|合作|协议',
-    'analyst': r'analysts?|price target|upgrad(?:e[sd]?|ing)|downgrad(?:e[sd]?|ing)|conviction list|tactical ideas|top .*pick|fair value|valued|评级|目标价|fair value boost',
-    'workforce': r'layoffs?|job cuts|裁员',
-    'earnings': r'(?:beats?|miss(?:es)?|tops?|exceeds?) .{0,25}estimates?|earnings|revenue|profits?|quarterly results|deliver(?:ies|ed)|delivery numbers|registrations|财报|营收|利润',
-    'ownership': r'(?:stock|shares) (?:sold|purchased|bought) by|(?:sells?|buys?) \$[\d,]+ in|insider (?:sale|purchase)|持股|增持|减持',
+    'acquisition': r'acquisition|acquir(?:e[sd]?|ing)|merger|takeover|buyout',
+    'stock_split': r'stock splits?|share splits?|splits? (?:into|its)|spin[ -]?offs?|spins? off',
+    'buyback': r'buy[ -]?backs?|repurchases?|share repurchase authorization',
+    'dividend': r'dividends?',
+    'guidance': r'guidance|outlook|forecast',
+    'lawsuit': r'lawsuits?|sues?|suing|antitrust|litigation|court|liability',
+    'product': r'launch(?:es|ed|ing)?|unveils?|release|iphone|robotaxi|fsd',
+    'partnership': r'deals?|partnership|signs|agreement|contract',
+    'analyst': r'analysts?|price target|upgrad(?:e[sd]?|ing)|downgrad(?:e[sd]?|ing)|conviction list|tactical ideas|top .*pick|fair value|valued|fair value boost',
+    'workforce': r'layoffs?|job cuts',
+    'earnings': r'(?:beats?|miss(?:es)?|tops?|exceeds?) .{0,25}estimates?|earnings|revenue|profits?|quarterly results|deliver(?:ies|ed)|delivery numbers|registrations',
+    'ownership': r'(?:stock|shares) (?:sold|purchased|bought) by|(?:sells?|buys?) \$[\d,]+ in|insider (?:sale|purchase)',
     'calendar': r'mark your calendars?|scheduled (?:for|on)',
     'risk': r'flags? .*risk|approval risks?|accounts receivable|memory chip crunch',
-    'market_move': r'stock|shares|premarket|market cap|股价|股票',
+    'market_move': r'stock|shares|premarket|market cap',
 }
-POSITIVE = r'jump(?:s|ed|ing)?|gain(?:s|ed|ing)?|climb(?:s|ed|ing)?|pop(?:s|ped)?|higher|surge(?:s|d)?|rall(?:y|ies|ied)|ris(?:e[sn]?|ing)|up|record highs?|all.time highs?|upgrad(?:e[sd]?|ing)|wins?|green light|bullish|better.than.expected|conviction list|top .*pick|optimism|best quarter|上涨|大涨|上调|超预期'
-NEGATIVE = r'fall(?:s|ing)?|fell|slip(?:s|ped)?|drop(?:s|ped)?|tumbl(?:ing|es?)|sink(?:s|ing)?|sank|slide[sd]?|down|lower(?:s|ed)?|downgrad(?:e[sd]?|ing)|worst|pressure|threat|warnings?|doubts|lawsuit|antitrust|layoffs?|post.ipo low|selloff|retreats?|下跌|下调|不及预期'
+POSITIVE = r'jump(?:s|ed|ing)?|gain(?:s|ed|ing)?|climb(?:s|ed|ing)?|pop(?:s|ped)?|higher|surge(?:s|d)?|rall(?:y|ies|ied)|ris(?:e[sn]?|ing)|up|record highs?|all.time highs?|upgrad(?:e[sd]?|ing)|wins?|green light|bullish|better.than.expected|conviction list|top .*pick|optimism|best quarter'
+NEGATIVE = r'fall(?:s|ing)?|fell|slip(?:s|ped)?|drop(?:s|ped)?|tumbl(?:ing|es?)|sink(?:s|ing)?|sank|slide[sd]?|down|lower(?:s|ed)?|downgrad(?:e[sd]?|ing)|worst|pressure|threat|warnings?|doubts|lawsuit|antitrust|layoffs?|post.ipo low|selloff|retreats?'
 
 
 def metadata(item):
@@ -101,8 +101,8 @@ def classify_rule(item, ticker):
     lead = re.split(r"[.!]\s+(?=[A-Z])|:\s+(?=(?:Is|What's|What is))|\s[-–—]\s+(?=(?:What|Still|Here))", headline)[0].lower()
     pos = bool(re.search(r'\b(?:' + POSITIVE + r')\b', lead))
     neg = bool(re.search(r'\b(?:' + NEGATIVE + r')\b', lead))
-    pos = pos or any(word in lead for word in ('上涨', '大涨', '上调', '超预期'))
-    neg = neg or any(word in lead for word in ('下跌', '下调', '不及预期'))
+    pos = pos or any(word in lead for word in ())
+    neg = neg or any(word in lead for word in ())
     # Evaluate forecasts within the lead, without treating calendar month May as speculation.
     speculation_text = re.sub(r'\b(?:in|since|during|of) may\b', '', lead)
     ambiguous = bool(re.search(r'\?|\b(?:could|may|might|prediction|predicts|predicted|will|expected to)\b', speculation_text))

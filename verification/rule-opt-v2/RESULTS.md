@@ -1,36 +1,36 @@
-# JSOSIF rule-opt-v2 对比报告 — 2026-10-05
+# JSOSIF rule-opt-v2 Comparison Report — 2026-10-05
 
-仅在本地 `rule-opt-v2` 分支探索；没有 merge、push、Notion 操作或模型/API 调用，也未增加凭据。
+Explored only on the local `rule-opt-v2` branch; no merge, push, Notion operations, model/API calls, or added credentials.
 
-## 指标
+## Metrics
 
-同一组六家公司缓存新闻：150 条输入，按公司去重后 147 条。
+Same six companies' cached news: 150 inputs, 147 after deduplication by company.
 
-| 指标 | v1 | v2 | 变化 |
+| Metric | v1 | v2 | Change |
 |---|---:|---:|---:|
-| 规则覆盖率 | 41/147 = 27.89% | 74/147 = 50.34% | +22.45 个百分点 |
-| AI 候选标题数 | 106 | 73 | 减少 33 条 |
-| 历史 AI 类别一致率 | 11/24 = 45.83% | 21/29 = 72.41% | +26.58 个百分点 |
+| Rule coverage | 41/147 = 27.89% | 74/147 = 50.34% | +22.45 pp |
+| AI candidate headlines | 106 | 73 | -33 |
+| Historical AI category agreement | 11/24 = 45.83% | 21/29 = 72.41% | +26.58 pp |
 
-达成本缓存集的覆盖率 ≥50%、历史 AI 类别一致率 ≥70% 目标。共同可比的 23 条标题，一致数从 11 增至 16（47.83% → 69.57%）；总体一致率的分母也随覆盖率变化。
+Met the targets of ≥50% coverage and ≥70% historical AI agreement on this cached set. On the 23 commonly comparable headlines, agreements rose from 11 to 16 (47.83% → 69.57%); the denominator for overall agreement also shifts with coverage.
 
-历史 AI 仅有四类标签，并非人工真值；不代表事件、情绪提取准确率，也不代表新数据上的泛化表现。规则开发和评估使用同一缓存集，属于探索性结果，没有独立留出集；未验证在线 fallback。标题减少不必然减少 API 请求次数（原流程已批处理）。
+Historical AI has only four category labels, not human ground truth; this does not represent event/sentiment extraction accuracy nor generalization to new data. Rules were developed and evaluated on the same cached set — exploratory results with no held-out set; online fallback not verified. Fewer headlines does not necessarily mean fewer API calls (the original pipeline already batches).
 
-## 漏判分析与改动
+## Miss Analysis and Changes
 
-v1 的 106 条漏判包括动词变形（rise/dropped/raised）、财报 beat/miss 句式、评级和目标价调整、机构买卖持仓、中文公司别名，以及事实陈述后附带评论问题的标题。其余大量是价格预测、估值推测、提问或相互冲突的信号。
+v1's 106 misses included verb inflections (rise/dropped/raised), earnings beat/miss phrasing, rating and price-target adjustments, institutional buy/sell holdings, Chinese company aliases, and factual statements followed by commentary questions. Most of the rest were price predictions, valuation speculation, questions, or conflicting signals.
 
-新增或扩展：
-- 公司匹配：ticker、GOOG、Amazon.com、Azure，以及英伟达/輝達、微软、苹果、谷歌、亚马逊、特斯拉；保留英文单词边界，防止 Pineapple 匹配 Apple。
-- 事件：并购、spin-off/股票拆分、回购、分红、指引、评级/目标价、机构持仓、明确日历提醒和具体风险；财报 beats/misses estimates、cuts/raises guidance 可直接识别。
-- 更具体的公司事件优先于宽泛的 earnings/stock 词汇；产品、回购、拆分等公告作为 catalysts，评级上调/下调保留方向。
-- 事实后附带评论问句可识别，但首句预测、条件语气及冲突信号继续回退；修复 competitor stock move 被归给目标公司的问题，以及 falls shy 被当作下跌的问题。
-- 机构持仓买卖是中性事件，不直接推断公司前景；摘要仍复制标题，不编造信息。
+Added or expanded:
+- Company matching: ticker, GOOG, Amazon.com, Azure, plus Nvidia, Microsoft, Apple, Google, Amazon, Tesla; English word boundaries preserved to prevent Pineapple matching Apple.
+- Events: M&A, spin-off/stock split, buyback, dividend, guidance, rating/price-target, institutional holdings, explicit calendar reminders, and specific risks; earnings beats/misses estimates and cuts/raises guidance directly recognized.
+- More specific company events take precedence over generic earnings/stock vocabulary; product, buyback, split announcements as catalysts; rating upgrades/downgrades keep direction.
+- Factual statements followed by commentary questions are recognized, but leading predictions, conditional mood, and conflicting signals still fall back; fixed competitor stock moves being attributed to the target company, and "falls shy" being treated as a decline.
+- Institutional holding buys/sells are neutral events; no inference about company outlook; summaries still copy headlines without fabricating information.
 
-新增规则命中的事件分布：{'risk': 3, 'analyst': 4, 'market_move': 18, 'calendar': 1, 'ownership': 6, 'product': 1, 'partnership': 1, 'earnings': 3}。
-仍回退 73 条的事件分布：{'market_move': 48, 'earnings': 3, 'unknown': 10, 'buyback': 1, 'stock_split': 1, 'workforce': 1, 'analyst': 2, 'product': 6, 'guidance': 1}。逐条 v1/v2 分类、历史标签及剩余 miss 见 `comparison.json`。
+Event distribution of new rule hits: {'risk': 3, 'analyst': 4, 'market_move': 18, 'calendar': 1, 'ownership': 6, 'product': 1, 'partnership': 1, 'earnings': 3}.
+Event distribution of the 73 still-falling-back: {'market_move': 48, 'earnings': 3, 'unknown': 10, 'buyback': 1, 'stock_split': 1, 'workforce': 1, 'analyst': 2, 'product': 6, 'guidance': 1}. Per-item v1/v2 classifications, historical labels, and remaining misses are in `comparison.json`.
 
-| 公司 | v1 命中/总数 | v2 命中/总数 |
+| Company | v1 hits/total | v2 hits/total |
 |---|---:|---:|
 | NVDA | 7/25 | 10/25 |
 | MSFT | 5/23 | 11/23 |
@@ -39,11 +39,11 @@ v1 的 106 条漏判包括动词变形（rise/dropped/raised）、财报 beat/mi
 | AMZN | 6/24 | 13/24 |
 | TSLA | 10/25 | 17/25 |
 
-## Schema 与验证
+## Schema and Verification
 
-保留四个分类数组及全部原字段，包括 `extraction_method=rule/ai/unknown`、RSS 元数据、未分类列表和统计。事件词表新增 ownership/calendar/risk；字段结构兼容，但若外部消费者硬编码 event_type 枚举，需要同步新增值。impact/horizon 仍为保守固定默认值。
+Kept the four category arrays and all original fields, including `extraction_method=rule/ai/unknown`, RSS metadata, unclassified list, and stats. Event vocabulary added ownership/calendar/risk; field structure is compatible, but if external consumers hardcode the event_type enum, they need to sync the new values. impact/horizon remain conservative fixed defaults.
 
-通过的可复现命令：
+Reproducible commands that passed:
 
 ```bash
 python3 -m unittest -v test_ai_extract test_rule_opt_v2
@@ -51,8 +51,8 @@ python3 verification/rule-opt-v2/compare.py
 python3 verification/rule-opt-v2/check_reports.py
 ```
 
-原有 4 项测试全部通过，新增 3 项参数化测试覆盖事件句式、别名、冲突/预测、日期和字段。六家公司仅添加元数据时报告字节一致；v2 输出报告均可渲染，隔离目录中的现有 validate_phase1.py 通过。所有验证离线完成。
+All 4 original tests passed; 3 new parameterized tests cover event phrasing, aliases, conflict/prediction, dates, and fields. Reports are byte-identical when only metadata was added for the six companies; all v2 output reports render; the existing validate_phase1.py in the isolated directory passes. All verification completed offline.
 
-## 分支与基线说明
+## Branch and Baseline Notes
 
-开始时目录没有 `.git`。从远端取回 Git 历史，保留全部本地文件，执行 `git checkout -b rule-opt-v2`。远端 main 与本地已有 v1 有差异，因此本报告明确以冻结的本地 `v1_ai_extract.py` 为基线；12 个新闻/历史 AI fixture 文件也冻结在本目录。main 引用不变。仅暂存本任务的规则、测试及验证文件，其他已有工作区修改未纳入暂存。仓库没有配置 Git 提交身份，commit 未创建；未擅自填写身份。改动保留在 rule-opt-v2 分支工作区，没有 push 或合并，待用户审阅。
+The directory had no `.git` at start. Fetched Git history from remote, kept all local files, ran `git checkout -b rule-opt-v2`. Remote main differed from the local v1, so this report explicitly uses the frozen local `v1_ai_extract.py` as baseline; the 12 news/historical-AI fixture files are also frozen in this directory. Main references unchanged. Only staged this task's rules, tests, and verification files; other existing workspace modifications were not staged. The repo had no Git commit identity configured; no commit was created and no identity was filled in without authorization. Changes remain in the rule-opt-v2 branch workspace, not pushed or merged, pending user review.

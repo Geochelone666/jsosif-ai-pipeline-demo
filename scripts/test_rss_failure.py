@@ -100,8 +100,8 @@ def test_main_writes_status(monkeypatch, tmp_path, capsys, failed):
     if failed:
         assert data['fetch_status']['attempts'] == 3
         assert data['fetch_status']['category'] == 'timeout'
-        assert '连接超时' in data['error'] and '3 次尝试' in data['error']
-        assert '量化指标不受影响' in data['error']
+        assert 'Connection timed out' in data['error'] and '3 attempts' in data['error']
+        assert 'quantitative metrics unaffected' in data['error']
         assert 'raw technical timeout' not in data['error']
         assert data['error'] in stderr
     else:
