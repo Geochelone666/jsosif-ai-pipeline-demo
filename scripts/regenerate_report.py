@@ -4,6 +4,7 @@ import json
 import os
 import sys
 from datetime import date
+from metric_interpretation import build_interpretation_section
 from data_utils import DATA, REPORTS, ticker_arg, ticker_file, as_of_date
 from assumptions import VERSION, AssumptionViolation, check_all, checked_mapping, required_paths
 TICKER = ticker_arg()
@@ -116,7 +117,7 @@ report = f"""# {TICKER} Intelligence Demo
 Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
 Market data sample: {quant.get('history_count', {})}.
 
-{section('TAILWINDS', ai['tailwinds'])}
+{build_interpretation_section(q)}{section('TAILWINDS', ai['tailwinds'])}
 {section('HEADWINDS', ai['headwinds'])}
 {section('CATALYSTS', ai['catalysts'])}
 {section('RISKS', ai['risks'])}
