@@ -46,7 +46,7 @@ def rss_status(url, attempts, items=0, error=None):
                 attempts=attempts, url=url, items=items)
 
 
-def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep):
+def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep, timeout=30):
     """Return (item list, status); retry transient failures after 0.5, 1, ... seconds."""
     if not isinstance(max_attempts, int) or isinstance(max_attempts, bool) or max_attempts < 1:
         raise ValueError('max_attempts must be a positive integer')
@@ -54,7 +54,7 @@ def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     for attempt in range(1, max_attempts + 1):
         try:
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
                 xml = r.read()
             root = ET.fromstring(xml)
             break
@@ -448,10 +448,17 @@ def call_gemini(items, ticker):
 
 def main():
     from data_utils import save, ticker_arg, ticker_file
+    import os
     ticker = ticker_arg()
     query = f'{COMPANIES[ticker]} {ticker} stock'
+    rss_options = {}
+    for option in ('max_attempts', 'timeout'):
+        env_name = 'JSOSIF_RSS_' + option.upper()
+        if env_name in os.environ:
+            rss_options[option] = int(os.environ[env_name])
     try:
-        items, fetch_status = fetch_rss(query, 25)
+        items, fetch_status = fetch_rss(
+            query, int(os.environ.get('JSOSIF_RSS_COUNT', '25')), **rss_options)
     except RSSFetchError as exc:
         items = []
         data = extract([], ticker)

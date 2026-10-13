@@ -44,3 +44,32 @@ RSS requests use a 30-second timeout and at most three attempts. Timeouts, DNS/c
 `ai-intel.json` records `fetch_status` (stage, status, category, retryable, attempts, URL, and returned item count). Failures are classified as `dns_or_connection`, `timeout`, `http_error`, or `malformed_xml`; the original exception summary is retained in failure `detail`. A successfully parsed empty feed is `ok` with zero items, while a failed fetch is `failed`. The item count is after the existing date filter and item limit, so zero can also mean no eligible items.
 
 On fetch failure, the script writes empty news results, a human-readable Chinese `error` message (also on stderr), and exits normally (0); quantitative metrics are unaffected. `rss-items.json` remains a plain item list, including `[]` on failure, preserving report compatibility. Successful statuses use `category: null` and `retryable: false`.
+
+## Configuration
+
+`python3 scripts/run_phase1.py` validates configuration before starting any child
+process. It reads the optional JSON object at `JSOSIF_CONFIG`, or `config.json`
+at the repository root when that variable is unset. A missing file (including an
+explicitly selected path) uses defaults. `load_config(path=...)` can select a file
+explicitly. Precedence is **environment > file > defaults**: each known key accepts
+an override named `JSOSIF_<KEY_UPPER>` (for example `JSOSIF_RSS_COUNT=40`).
+
+| Key | Default | Accepted value |
+| --- | --- | --- |
+| `report_as_of` | Local current date | Real `YYYY-MM-DD` string, no later than today |
+| `rss_count` | 25 | Integer 1–100, maximum eligible feed items |
+| `rss_max_attempts` | 3 | Integer 1–5, including the initial request |
+| `rss_timeout` | 30 | Integer 1–120, seconds per RSS request |
+
+JSON integers must be numbers, not strings, floats, or booleans; environment
+integers use decimal digits. Retry and timeout bounds cap exponential delays and
+individual request waits. Example: `{"rss_count": 40, "rss_max_attempts": 2}`.
+Unknown file keys are rejected with a spelling suggestion. All effective-value
+errors are reported together in alphabetical key order; malformed JSON reports
+its file, line, and column. Startup errors print to stderr and exit 2.
+
+Phase one forwards the validated report date through `REPORT_AS_OF`, replacing
+any inherited value; use `JSOSIF_REPORT_AS_OF` for this entry point. Direct report
+and quant invocations retain their existing `REPORT_AS_OF` behavior. RSS extraction
+consumes the normalized `JSOSIF_RSS_*` settings; direct invocations retain existing
+defaults when these are absent. The loader runs only at phase-one startup.
