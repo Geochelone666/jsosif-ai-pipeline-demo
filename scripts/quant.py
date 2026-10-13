@@ -1,10 +1,11 @@
-import json, io, urllib.request, os, sys
+import json, sys
 from datetime import date, timedelta
 from pathlib import Path
 import pandas as pd
 import numpy as np
 import yfinance as yf
 from data_utils import DATA, ticker_arg, ticker_file, number, as_of_date
+from price_fetch import fetch_symbol_prices, stooq_url
 from assumptions import VERSION, PRICE_START, AssumptionViolation, check_all, checked_mapping
 TICKER=ticker_arg()
 AS_OF = as_of_date().isoformat()
@@ -12,42 +13,34 @@ END = (date.fromisoformat(AS_OF) + timedelta(days=1)).isoformat()
 P = DATA
 errors=[]; sources=[]; series={}; info={}
 stooq_symbols=[]
-def clean_prices(h, symbol):
-    c=h['Close'].loc[:AS_OF].map(number)
-    valid=c.notna() & (c>0)
-    if not valid.all():
-        errors.append(f'warning: {symbol} invalid/missing prices skipped')
-    c=c.loc[valid].astype(float)
-    if c.empty: raise ValueError('no valid prices')
-    return c
-
+price_status=[]
+price_failure_warnings=[]
 for symbol in [TICKER,'SPY']:
-    try:
-        h=yf.Ticker(symbol).history(start=PRICE_START,end=END,auto_adjust=True,timeout=30)
-        if h.empty: raise ValueError('empty history')
-        h.index=pd.to_datetime(h.index).tz_localize(None).normalize()
-        series[symbol]=clean_prices(h, symbol)
-        sources.append(f'https://finance.yahoo.com/quote/{symbol}/history/')
-        h.to_csv(P/f'{symbol}-yfinance.csv')
-    except Exception as e:
-        errors.append(f'{symbol} yfinance: {e}')
-        try:
-            if '.' in symbol:
-                raise ValueError('US Stooq fallback unavailable for international listing')
-            url=f'https://stooq.com/q/d/l/?s={symbol.lower()}.us&i=d&d1={PRICE_START.replace('-', '')}&d2={AS_OF.replace('-', '')}'
-            raw=urllib.request.urlopen(url,timeout=30).read().decode()
-            (P/f'{symbol}-stooq.csv').write_text(raw)
-            h=pd.read_csv(io.StringIO(raw),parse_dates=['Date']).set_index('Date').sort_index()
-            series[symbol]=clean_prices(h, symbol); sources.append(url)
+    prices, statuses = fetch_symbol_prices(symbol, PRICE_START, AS_OF, END, P)
+    price_status.extend(statuses)
+    for status in statuses:
+        if status['status'] == 'failed':
+            warning = (f"{symbol} {status['source']}: {status['detail']} "
+                       f"after {status['attempts']} attempts ({status['category']})")
+            errors.append(warning)
+            price_failure_warnings.append(warning)
+        elif 'warning:' in status['detail']:
+            errors.append(status['detail'].split('; ', 1)[1])
+    if prices is not None:
+        series[symbol] = prices
+        if statuses[-1]['source'] == 'yfinance':
+            sources.append(f'https://finance.yahoo.com/quote/{symbol}/history/')
+        else:
+            sources.append(stooq_url(symbol, PRICE_START, AS_OF))
             stooq_symbols.append(symbol)
-            if series[symbol].empty: raise ValueError('empty stooq')
-        except Exception as e: errors.append(f'{symbol} stooq: {e}')
+
 try:
     info=yf.Ticker(TICKER).info
     sources.append(f'https://finance.yahoo.com/quote/{TICKER}/key-statistics/')
 except Exception as e: errors.append(f'info: {e}')
 (P/ticker_file(TICKER, 'info.json')).write_text(json.dumps(info,indent=2,default=str))
 result={'ticker':TICKER,'errors':errors,'sources':sources,'metrics':{},'as_of':None,'verification':None,'fetched_at':__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),'requested_as_of':AS_OF}
+result['price_status'] = price_status
 m=result['metrics']
 for label in ['Close', 'Return 1D (%)', 'Return 1W (%)', 'Return 1M (%)',
               'Return YTD (%)', 'Return 1Y (%)', 'Annualized volatility (%)',
@@ -115,6 +108,8 @@ result['assumptions_version'] = VERSION
 result['assumptions_checked'] = checked_mapping(checks)
 (P/ticker_file(TICKER, 'quant.json')).write_text(json.dumps(result,indent=2,allow_nan=False))
 print(json.dumps(result,indent=2))
+for warning in price_failure_warnings:
+    print(warning, file=sys.stderr)
 
 if violation is not None:
     print(str(violation), file=sys.stderr)
