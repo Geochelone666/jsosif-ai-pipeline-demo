@@ -73,3 +73,23 @@ any inherited value; use `JSOSIF_REPORT_AS_OF` for this entry point. Direct repo
 and quant invocations retain their existing `REPORT_AS_OF` behavior. RSS extraction
 consumes the normalized `JSOSIF_RSS_*` settings; direct invocations retain existing
 defaults when these are absent. The loader runs only at phase-one startup.
+
+## Metric boundary behavior
+
+`quant.compute_metrics(prices, spy)` performs no I/O and maps each price metric to `BoundaryResult(value, status, reason)`; status is `ok`, `undefined`, or `insufficient`. JSON retains `metrics` values and adds `metric_notes` with English status/reason entries for unavailable or specially defined values. Invalid direct inputs are rejected, while provider cleaning still skips invalid rows with recorded warnings.
+
+| Metric | Boundary condition | Value | Explanation |
+| --- | --- | --- | --- |
+| All price metrics | Non-finite/non-positive/non-numeric prices or invalid dates | `None`, undefined | Reject the affected series; dates must be unique, increasing, naive midnight dates. Non-finite computed results are also undefined. |
+| Close | Fewer than 1 close | `None`, insufficient | Latest valid close otherwise. |
+| Return 1D | Fewer than 2 closes | `None`, insufficient | Uses the previous observation, not the previous calendar day. |
+| Return 1W / 1M / 1Y | Fewer than 2 closes or missing starting price | `None`, insufficient | Last close on/before latest date minus 7 days / 1 month / 1 year; no interpolation. |
+| Return YTD | Fewer than 2 closes or missing starting price | `None`, insufficient | Last close on/before December 31 of the latest close's prior year. |
+| Annualized volatility / Sharpe | Fewer than 3 closes in trailing calendar year | `None`, insufficient | Two daily returns required for sample standard deviation; annualization uses 252. |
+| Sharpe (rf=0) | Zero return volatility | `None`, undefined | Volatility itself is valid at 0; Sharpe cannot divide by zero. |
+| Beta vs SPY | Missing/invalid SPY, zero variance, or fewer than 2 paired returns | `None`, undefined or insufficient | Compute returns independently, then intersect end dates; no positional pairing or resampling, so gaps may span different periods. |
+| Max drawdown | Fewer than 3 trailing-year closes; otherwise never declines | `None`, insufficient; otherwise `0.0` | Minimum relative change from running peak, in percent. |
+| MA50 / MA200 and Close vs MA | Fewer than 50 / 200 closes | `None`, insufficient | Full rolling window required. |
+| RSI (14, Wilder) | Fewer than 15 closes; zero losses; flat history | `None`, insufficient; `100`; `None`, undefined | Seed with 14 changes; positive gains without losses give 100, pure losses give 0, no gains/losses is undefined. |
+| MACD (12,26) / signal (9) / histogram | Fewer than 26 / 34 / 34 closes | `None`, insufficient | Availability policy: 26 and 26+9-1; retain first-close-seeded EMAs with `adjust=False`, not a convergence guarantee. |
+| P/E, P/B, EV/EBITDA, Revenue growth | Missing/non-finite fundamental or scaled result | `None`, undefined | Provider scalars need no price history; finite values retain existing interpretation. |
