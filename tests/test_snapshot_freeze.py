@@ -7,6 +7,7 @@ import sys
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+import snapshot_contract
 import snapshot_freeze_check as gate
 
 
@@ -21,7 +22,7 @@ def payload():
             'report_as_of': '2026-10-14', 'market_data_as_of': 'N/A',
             'market_data_fetched_at': 'N/A', 'ai_snapshot_as_of': 'N/A',
             'snapshot_note': 'Retained snapshot', 'assumptions_version': '1',
-            'assumptions_checked': {}, 'no_refresh_note': '邮件生成不刷新任何数据',
+            'assumptions_checked': {}, 'no_refresh_note': snapshot_contract.NO_REFRESH_NOTE,
         },
         'disclaimer': 'Not investment advice.',
     }
