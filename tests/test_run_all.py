@@ -189,3 +189,12 @@ def test_bundle_is_dated_and_idempotent(tmp_path, monkeypatch):
     assert bundle.bundle_reports() == first
     assert {p.relative_to(target): p.read_bytes() for p in target.rglob('*') if p.is_file()} == before
     assert len(list((tmp_path / 'bundle').iterdir())) == 1
+
+
+def test_no_argument_entry_point_defaults_to_no_send(flow):
+    runner, calls, _, _, transport, parsed = flow
+    with patch.object(sys, 'argv', ['scripts/run_all.py']):
+        assert runner.main() in (None, 0)
+    assert parsed[0].really_send is False
+    assert calls == [1, 2, 3]
+    transport.assert_not_called()
