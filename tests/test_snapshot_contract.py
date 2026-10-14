@@ -7,6 +7,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 
+import snapshot_contract
+
 
 @pytest.fixture
 def contract():
@@ -39,7 +41,7 @@ def payload():
             'market_data_fetched_at': '2026-10-14T00:00:00Z',
             'ai_snapshot_as_of': '2026-10-13', 'snapshot_note': '',
             'assumptions_version': '1', 'assumptions_checked': {},
-            'no_refresh_note': '邮件生成不刷新任何数据',
+            'no_refresh_note': snapshot_contract.NO_REFRESH_NOTE,
         },
         'disclaimer': 'For research only.',
     }

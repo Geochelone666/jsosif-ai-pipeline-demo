@@ -4,12 +4,14 @@ Identity carries ticker, YYYY-MM-DD as_of and YYYYMMDD report_stamp. Quant
 rows carry metric, string-or-None value, ok/missing availability and nullable
 reason. AI summaries carry status and a mapping of section names to text.
 Freshness records existing timestamps and assumptions, with no_refresh_note
-fixed to '邮件生成不刷新任何数据'. Validation must never fetch or refresh data.
+fixed to NO_REFRESH_NOTE. Validation must never fetch or refresh data.
 """
 from datetime import date
 import re
 
 CONTRACT_VERSION = '1.0'
+NO_REFRESH_NOTE = ('Report date is not a guarantee of data freshness. '
+                   'No data is refreshed by email generation.')
 REQUIRED_TOP_LEVEL = [
     'contract_version', 'identity', 'quant', 'ai_summary', 'freshness', 'disclaimer']
 REQUIRED_IDENTITY = ['ticker', 'as_of', 'report_stamp']
@@ -101,8 +103,8 @@ def validate_snapshot(payload) -> list[str]:
             expected = dict if field == 'assumptions_checked' else str
             if not isinstance(freshness.get(field), expected):
                 errors.append(f'freshness.{field} must be a {expected.__name__}')
-        if freshness.get('no_refresh_note') != '邮件生成不刷新任何数据':
-            errors.append('freshness.no_refresh_note must equal 邮件生成不刷新任何数据')
+        if freshness.get('no_refresh_note') != NO_REFRESH_NOTE:
+            errors.append('freshness.no_refresh_note must equal NO_REFRESH_NOTE')
 
     if not _nonblank(payload.get('disclaimer')):
         errors.append('disclaimer must be a nonempty string')
