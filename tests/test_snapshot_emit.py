@@ -75,3 +75,46 @@ def test_stable_json(inputs):
     assert first.encode('utf-8') == second.encode('utf-8')
     assert '增长' in first
     assert first == json.dumps(json.loads(first), ensure_ascii=False, indent=2, sort_keys=True)
+
+
+@pytest.mark.parametrize('ai, expected', [
+    ({'status': 'ok', 'error': 'failed'}, 'ok'),
+    ({'status': '', 'error': 'failed'}, 'failed'),
+    ({'status': None, 'error': ''}, 'N/A'),
+])
+def test_ai_status_precedence_and_section_filter(inputs, ai, expected):
+    inputs['ai'] = dict(ai, sections={'text': '保留', 'empty': '', 'number': 2, 'null': None})
+    assert emit_frozen_snapshot(**inputs)['ai_summary'] == {
+        'status': expected, 'sections': {'text': '保留', 'empty': ''}}
+
+
+def test_falsey_metrics_are_available(inputs):
+    inputs['quant_metrics'] = {'Zero': 0, 'False': False, 'Empty': ''}
+    rows = emit_frozen_snapshot(**inputs)['quant']
+    assert [row['value'] for row in rows] == ['0', 'False', '']
+    assert all(row['availability'] == 'ok' and row['reason'] is None for row in rows)
+
+
+@pytest.mark.parametrize('reason', [None, ''])
+def test_empty_missing_reason_uses_placeholder(inputs, reason):
+    payload = emit_frozen_snapshot(**inputs, availability_reasons={'Growth': reason})
+    assert payload['quant'][1]['reason'] == 'N/A'
+
+
+def test_fixed_note_and_detached_assumptions(inputs):
+    inputs['freshness']['no_refresh_note'] = 'upstream note'
+    payload = emit_frozen_snapshot(**inputs)
+    inputs['freshness']['assumptions_checked']['freshness']['status'] = 'changed'
+    assert payload['freshness']['assumptions_checked']['freshness']['status'] == 'uncheckable'
+    assert payload['freshness']['no_refresh_note'] == (
+        'Report date is not a guarantee of data freshness. '
+        'No data is refreshed by email generation.')
+    assert inputs['freshness']['no_refresh_note'] == 'upstream note'
+
+
+def test_shared_validation_errors_are_not_ignored(inputs, monkeypatch):
+    import snapshot_emit
+
+    monkeypatch.setattr(snapshot_emit, 'validate_snapshot', lambda payload: ['contract error'])
+    with pytest.raises(ValueError, match='contract error'):
+        emit_frozen_snapshot(**inputs)
