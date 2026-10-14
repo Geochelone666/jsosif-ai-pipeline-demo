@@ -6,14 +6,15 @@ from html import escape
 import json
 from pathlib import Path
 import re
-import shutil
 from tempfile import TemporaryDirectory
 
 if __package__:
+    from . import recipients as teams
     from . import email_delivery as email
     from . import snapshot_contract as contract
     from . import snapshot_freeze_check as freeze
 else:
+    import recipients as teams
     import email_delivery as email
     import snapshot_contract as contract
     import snapshot_freeze_check as freeze
@@ -26,10 +27,10 @@ def page(body):
     return f'<!doctype html><html><head><meta charset="utf-8"><title>Draft review</title><style>{STYLE}</style></head><body>{body}</body></html>\n'
 
 
-def snapshot_payload(path):
+def snapshot_payload(path, *, from_markdown=False):
     """Adapt legacy Markdown locally; existing frozen sidecars remain authoritative."""
     ticker, day, header, sections, metadata = email.load_snapshot(path)
-    if path.with_suffix('.json').exists():
+    if path.with_suffix('.json').exists() and not from_markdown:
         return metadata
     def field(label):
         match = re.search(r'^- ' + re.escape(label) + r': (.+)$', header, re.M)
@@ -66,12 +67,36 @@ def discover():
     return [(ticker, value[1]) for ticker, value in sorted(latest.items())]
 
 
-def load_recipients(path):
+def load_recipients(path, sector=None):
+    if path.suffix.lower() in ('.yaml', '.yml'):
+        config = teams.load_recipients(path)
+        return list(dict.fromkeys(entry['email'] for entry in config.values()
+                                  if sector is None or sector in entry['sectors']))
     payload = json.loads(path.read_text(encoding='utf-8'))
     if not isinstance(payload, dict) or not isinstance(payload.get('recipients'), list):
         raise ValueError('Expected a recipients list in recipients JSON')
     addresses = payload['recipients']
-    return email.validate_recipients(addresses) if addresses else []
+    if addresses:
+        email.validate_recipients(addresses)
+    if sector and addresses:
+        matching = {entry['email'].lower() for entry in teams.recipients_for_sector(sector)}
+        addresses = [address for address in addresses if address.lower() in matching]
+    return addresses
+
+
+def select_holdings(sector):
+    holdings = discover()
+    if sector is None:
+        return holdings
+    selected = []
+    for ticker, path in holdings:
+        info_path = ROOT / 'data' / f'{ticker.lower()}-info.json'
+        info = json.loads(info_path.read_text(encoding='utf-8'))
+        if not isinstance(info, dict):
+            raise ValueError(f'Invalid cached sector data for {ticker}')
+        if info.get('sectorKey', str(info.get('sector', '')).lower()) == sector:
+            selected.append((ticker, path))
+    return selected
 
 
 def build(out, addresses, holdings):
@@ -105,6 +130,9 @@ def build(out, addresses, holdings):
                 errors.extend(contract.validate_snapshot(payload))
                 if not freeze.determinism_check(snapshot_payload, path):
                     errors.append('Snapshot repeat-build drift detected')
+                if not errors and path.with_suffix('.json').exists():
+                    if payload != snapshot_payload(path, from_markdown=True):
+                        errors.append('Frozen sidecar / Markdown drift detected')
                 if not errors:
                     message = email.build_email([path], addresses, review_only=True)
                     def rendered():
@@ -165,9 +193,10 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--recipients', type=Path, default=ROOT / 'recipients.json')
     parser.add_argument('--out', type=Path, default=ROOT / 'review' / date.today().strftime('%Y%m%d'))
+    parser.add_argument('--sector', help='Sector key from cached info and recipient teams (for example technology)')
     args = parser.parse_args(argv)
     try:
-        manifest = build(args.out, load_recipients(args.recipients), discover())
+        manifest = build(args.out, load_recipients(args.recipients, args.sector), select_holdings(args.sector))
     except (ValueError, OSError, UnicodeError) as exc:
         parser.error(str(exc))
     print(f'Review bundle: {args.out} ({sum(not row["validation_errors"] for row in manifest)} clean drafts)')

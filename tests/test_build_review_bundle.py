@@ -131,3 +131,56 @@ def test_staging_failure_publishes_nothing(repo, monkeypatch):
     with pytest.raises(SystemExit):
         run(repo)
     assert not (repo / 'review').exists()
+
+
+def test_sector_filters_holdings_and_team_recipients(repo):
+    data = repo / 'data'
+    data.mkdir()
+    for ticker, sector in [('aaa', 'technology'), ('zzz', 'energy')]:
+        (data / f'{ticker}-info.json').write_text(json.dumps({'sectorKey': sector}))
+    config = repo / 'teams.yaml'
+    config.write_text('tech:\n  name: Tech\n  email: tech@example.com\n  sectors: [technology]\n  role: analyst\nenergy:\n  name: Energy\n  email: energy@example.com\n  sectors: [energy]\n  role: analyst\n')
+    review.main(['--recipients', str(config), '--sector', 'technology', '--out', str(repo / 'review')])
+    manifest = json.loads((repo / 'review/manifest.json').read_text())
+    assert [row['ticker'] for row in manifest] == ['AAA']
+    assert manifest[0]['recipients'] == ['tech@example.com']
+
+
+def test_frozen_sidecar_drift(repo):
+    path = repo / 'reports/AAA-intelligence-20261008.md'
+    payload = review.snapshot_payload(path)
+    payload['quant'][0]['value'] = '999'
+    path.with_suffix('.json').write_text(json.dumps(payload))
+    _, manifest = run(repo)
+    assert any('drift' in error for error in manifest[0]['validation_errors'])
+
+
+def test_valid_frozen_sidecar(repo):
+    path = repo / 'reports/AAA-intelligence-20261008.md'
+    path.with_suffix('.json').write_text(json.dumps(review.snapshot_payload(path)))
+    _, manifest = run(repo)
+    assert manifest[0]['validation_errors'] == []
+
+
+def test_default_email_still_rejects_empty_recipients(repo):
+    with pytest.raises(ValueError):
+        email_delivery.build_email([repo / 'reports/AAA-intelligence-20261008.md'], [])
+
+
+def test_rerun_removes_previously_clean_blocked_draft(repo, monkeypatch):
+    run(repo)
+    original = contract.validate_snapshot
+    monkeypatch.setattr(contract, 'validate_snapshot', lambda p:
+                        ['new failure'] if p['identity']['ticker'] == 'AAA' else original(p))
+    out, _ = run(repo)
+    assert not (out / 'AAA.html').exists()
+    assert not (out / 'AAA.txt').exists()
+
+
+def test_latest_report_only(repo):
+    old = repo / 'reports/AAA-intelligence-20261008.md'
+    (repo / 'reports/AAA-intelligence-20261009.md').write_text(
+        old.read_text().replace('2026-10-08', '2026-10-09'))
+    _, manifest = run(repo)
+    assert len(manifest) == 2
+    assert '2026-10-09 AAA' in manifest[0]['subject']
