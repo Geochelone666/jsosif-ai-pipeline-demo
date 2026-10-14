@@ -69,8 +69,10 @@ def load_snapshot(path):
     return ticker, as_of, parts[0], sections, metadata
 
 
-def build_email(paths, recipients):
-    recipients = validate_recipients(recipients)
+def build_email(paths, recipients, *, review_only=False):
+    # Empty recipients remain visibly pending in offline review artifacts.
+    if not (review_only and recipients == []):
+        recipients = validate_recipients(recipients)
     snapshots = []
     seen = set()
     for path in paths:
