@@ -134,8 +134,10 @@ def test_startup_passes_normalized_settings(tmp_path, monkeypatch):
     monkeypatch.setattr(run_phase1.subprocess, 'run', lambda *a, **k: calls.append(k))
     run_phase1.main()
     assert len(calls) == 6
-    assert all(c['env']['REPORT_AS_OF'] == '2020-01-01' and
-               c['env']['JSOSIF_RSS_COUNT'] == '12' for c in calls)
+    assert all(c['env']['REPORT_AS_OF'] == '2020-01-01' for c in calls)
+    assert calls[1]['env']['JSOSIF_RSS_COUNT'] == '12'
+    assert all('JSOSIF_RSS_COUNT' not in c['env']
+               for i, c in enumerate(calls) if i != 1)
 
 
 def test_rss_main_consumes_settings(monkeypatch):

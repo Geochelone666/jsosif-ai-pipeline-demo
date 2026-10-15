@@ -20,7 +20,15 @@ python3 scripts/validate_phase1.py
 ```
 
 Reports go to `reports/`; per-ticker data to `data/`. AI extraction needs a
-configured Gemini CLI (`GEMINI_CLI`). Open `docs/index.html` for the dashboard.
+configured Gemini CLI (`GEMINI_CLI`). Phase-one children receive an explicit
+allowlist: executable search path, locale, temporary-directory and Windows
+runtime variables, plus the normalized report date. Only `ai_extract.py` receives
+normalized RSS settings and `GEMINI_CLI`, `GEMINI_API_KEY`, `GOOGLE_API_KEY` when
+set. HOME, Python startup controls, proxy variables, and unrelated credentials
+are not forwarded. Configure the Gemini CLI to use an explicitly supplied API
+key rather than relying on inherited home-directory authentication. FRED data
+is reused from the existing snapshot; no FRED key is needed by these children.
+Open `docs/index.html` for the dashboard.
 
 ## Tests
 
