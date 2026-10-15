@@ -44,19 +44,20 @@ jobs:
           set -o pipefail
           cd ${{ github.workspace }}
           # Run pipeline steps for ACN only to fetch real-time data
-          for script in quant ai_extract comparables earnings edgar regenerate_report; do
+          for script in quant ai_extract comparables earnings edgar regenerate_report report_pdf; do
             echo "RUN ACN $script"
             python scripts/${script}.py --ticker ACN 2>&1 | tail -20
           done
           # Verify a fresh report was generated today (fail closed, never send stale)
           TODAY=$(date -u +%Y%m%d)
           FRESH_REPORT=$(ls reports/ACN-intelligence-${TODAY}.md 2>/dev/null || true)
-          if [ -z "$FRESH_REPORT" ]; then
-            echo "ERROR: No fresh ACN report for $TODAY found. Refusing to send stale report."
-            ls -la reports/ACN-intelligence-*.md || true
+          FRESH_PDF=$(ls reports/ACN-intelligence-${TODAY}.pdf 2>/dev/null || true)
+          if [ -z "$FRESH_REPORT" ] || [ -z "$FRESH_PDF" ]; then
+            echo "ERROR: No fresh ACN report+PDF for $TODAY found. Refusing to send stale report."
+            ls -la reports/ACN-intelligence-*.md reports/ACN-intelligence-*.pdf || true
             exit 1
           fi
-          echo "Fresh report verified: $FRESH_REPORT"
+          echo "Fresh report verified: $FRESH_REPORT + $FRESH_PDF"
         continue-on-error: false
 
       - name: Send test emails
@@ -77,19 +78,22 @@ jobs:
           EOF
           chmod 600 config/gmail.json
           # Write recipients to temp JSON file (--recipients takes a file path)
+          # Later test rounds: only zhou6u@uwindsor.ca (per Lucas 2026-10-15)
           cat > /tmp/recipients.json <<EOF
-          {"recipients": ["rodrick1@uwindsor.ca", "saprad@uwindsor.ca", "mahboobn@uwindsor.ca", "gibbm@uwindsor.ca", "zhou6u@uwindsor.ca"]}
+          {"recipients": ["zhou6u@uwindsor.ca"]}
           EOF
-          # Send ACN report only to 5 test recipients (use today's verified fresh report)
+          # Send ACN report (PDF attached) to the test recipient (use today's verified fresh report)
           TODAY=$(date -u +%Y%m%d)
           REPORT="reports/ACN-intelligence-${TODAY}.md"
-          if [ ! -f "$REPORT" ]; then
-            echo "ERROR: Fresh report $REPORT not found. Refusing to send."
+          PDF="reports/ACN-intelligence-${TODAY}.pdf"
+          if [ ! -f "$REPORT" ] || [ ! -f "$PDF" ]; then
+            echo "ERROR: Fresh report $REPORT / $PDF not found. Refusing to send."
             exit 1
           fi
-          echo "Sending report: $REPORT"
+          echo "Sending report: $REPORT + $PDF"
           python scripts/email_delivery.py "$REPORT" \
             --recipients /tmp/recipients.json \
+            --pdf "$PDF" \
             --send
           SEND_RC=$?
           # Clean up credentials immediately
