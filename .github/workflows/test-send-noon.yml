@@ -55,23 +55,32 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: |
+          set -o pipefail
           cd ${{ github.workspace }}
           # Write Gmail config from secrets (not committed to repo)
           mkdir -p config
           cat > config/gmail.json <<EOF
           {
-            "user": "${GMAIL_USER}",
+            "address": "${GMAIL_USER}",
             "app_password": "${GMAIL_APP_PASSWORD}"
           }
           EOF
           chmod 600 config/gmail.json
+          # Write recipients to temp JSON file (--recipients takes a file path)
+          cat > /tmp/recipients.json <<EOF
+          {"recipients": ["rodrick1@uwindsor.ca", "saprad@uwindsor.ca", "mahboobn@uwindsor.ca", "gibbm@uwindsor.ca", "zhou6u@uwindsor.ca"]}
+          EOF
           # Send ACN report only to 5 test recipients
-          python scripts/email_delivery.py \
-            $(ls reports/ACN-intelligence-*.md | sort | tail -1) \
-            --recipients-json <(echo '{"recipients": ["rodrick1@uwindsor.ca", "saprad@uwindsor.ca", "mahboobn@uwindsor.ca", "gibbm@uwindsor.ca", "zhou6u@uwindsor.ca"]}') \
-            --send 2>&1 | tail -50
+          REPORT=$(ls reports/ACN-intelligence-*.md | sort | tail -1)
+          echo "Sending report: $REPORT"
+          python scripts/email_delivery.py "$REPORT" \
+            --recipients /tmp/recipients.json \
+            --send
+          SEND_RC=$?
           # Clean up credentials immediately
           shred -u config/gmail.json || rm -f config/gmail.json
+          rm -f /tmp/recipients.json
+          exit $SEND_RC
 
       - name: Report results
         if: always()
