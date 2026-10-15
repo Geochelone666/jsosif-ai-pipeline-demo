@@ -43,3 +43,20 @@ without breaking the quant side.
 
 Config: `JSOSIF_CONFIG` JSON, `config.json`, or `JSOSIF_<KEY>` env vars
 (env > file > defaults).
+
+## Team email distribution
+
+`config/team_recipients.json` maps each teammate to one holding. Generate one
+multipart email per teammate from existing reports:
+
+```bash
+python3 scripts/distribute_team_reports.py --dry-run
+```
+
+Previews are written to ignored `review/team/`. The default report date is the
+latest date available for every assigned holding; use `--date YYYYMMDD` to select
+a specific snapshot. This command does not refresh reports or schedule daily runs.
+The complete batch is validated before delivery. Actual sending requires explicit
+Lucas approval, `JSOSIF_APPROVED_SEND=1`, `--send`, and the existing local
+`config/gmail.json` credentials. A transport failure stops the batch; check which
+messages were sent before retrying to avoid duplicates. Never commit credentials.
