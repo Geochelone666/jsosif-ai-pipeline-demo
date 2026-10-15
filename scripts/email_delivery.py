@@ -70,7 +70,60 @@ def load_snapshot(path):
     return ticker, as_of, parts[0], sections, metadata
 
 
-def build_email(paths, recipients, *, review_only=False, pdf_path=None):
+def _recipient_display_name(address):
+    """Derive a display name from a mailbox address (local part, first letter capitalized)."""
+    local = address.split('@', 1)[0]
+    return local[:1].upper() + local[1:] if local else address
+
+
+def _normalize_pdf_paths(pdf_path):
+    if pdf_path is None:
+        return []
+    paths = pdf_path if isinstance(pdf_path, (list, tuple)) else [pdf_path]
+    result = []
+    for p in paths:
+        pdf = Path(p)
+        if not pdf.is_file():
+            raise ValueError(f'PDF attachment not found: {pdf}')
+        result.append(pdf)
+    return result
+
+
+def _build_brief_email(snapshots, recipients, pdf_paths):
+    """Short cover-note format: greeting, report list, sign-off.
+
+    Details live in the PDF attachments; the body only introduces them.
+    """
+    title = 'JSOSIF Intelligence Reports | ' + '; '.join(f'{day} {ticker}' for ticker, day, *_ in snapshots)
+    name = _recipient_display_name(recipients[0])
+    plain = [
+        f'Hi {name},',
+        '',
+        'Here are the latest JSOSIF intelligence reports:',
+        '',
+    ]
+    plain += [f'- {ticker} — {day}' for ticker, day, *_ in snapshots]
+    plain += ['', 'Best,', 'Tech Team']
+    html = [
+        '<html><body>',
+        f'<p>Hi {escape(name)},</p>',
+        '<p>Here are the latest JSOSIF intelligence reports:</p>',
+        '<ul>',
+    ]
+    html += [f'<li>{escape(ticker)} &mdash; {escape(day)}</li>' for ticker, day, *_ in snapshots]
+    html += ['</ul>', '<p>Best,<br>Tech Team</p>', '</body></html>']
+    message = EmailMessage(policy=policy.SMTP)
+    message['Subject'] = title
+    message['To'] = ', '.join(recipients)
+    message.set_content('\n'.join(plain))
+    message.add_alternative('\n'.join(html), subtype='html')
+    for pdf in pdf_paths:
+        message.add_attachment(pdf.read_bytes(), maintype='application',
+                               subtype='pdf', filename=pdf.name)
+    return message
+
+
+def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=False):
     # Empty recipients remain visibly pending in offline review artifacts.
     if not (review_only and recipients == []):
         recipients = validate_recipients(recipients)
@@ -83,6 +136,9 @@ def build_email(paths, recipients, *, review_only=False, pdf_path=None):
             seen.add(identity)
     if not snapshots:
         raise ValueError('At least one snapshot is required')
+    pdf_paths = _normalize_pdf_paths(pdf_path)
+    if brief:
+        return _build_brief_email(snapshots, recipients, pdf_paths)
     title = 'JSOSIF snapshot | ' + '; '.join(f'{day} {ticker}' for ticker, day, *_ in snapshots)
     plain, html = [title], [f'<html><body><h1>{escape(title)}</h1>']
 
@@ -126,10 +182,7 @@ def build_email(paths, recipients, *, review_only=False, pdf_path=None):
     message['To'] = ', '.join(recipients)
     message.set_content('\n'.join(plain))
     message.add_alternative('\n'.join(html), subtype='html')
-    if pdf_path is not None:
-        pdf = Path(pdf_path)
-        if not pdf.is_file():
-            raise ValueError(f'PDF attachment not found: {pdf}')
+    for pdf in pdf_paths:
         message.add_attachment(pdf.read_bytes(), maintype='application',
                                subtype='pdf', filename=pdf.name)
     return message
@@ -189,8 +242,10 @@ def main(argv=None):
     parser.add_argument('snapshots', nargs='+', type=Path)
     parser.add_argument('--recipients', type=Path, default=ROOT / 'recipients.json')
     parser.add_argument('--output', type=Path, help='Write an .eml file instead of stdout')
-    parser.add_argument('--pdf', type=Path, default=None,
-                        help='Attach a PDF report file to the email')
+    parser.add_argument('--pdf', nargs='*', default=None,
+                        help='Attach PDF report file(s) to the email')
+    parser.add_argument('--brief', action='store_true',
+                        help='Use short cover-note body (greeting + report list + sign-off)')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--dry-run', action='store_true', help='Generate only (default)')
     mode.add_argument('--send', action='store_true', help='Send via Gmail SMTP (requires config/gmail.json)')
@@ -199,7 +254,7 @@ def main(argv=None):
         raise NotImplementedError('发送需 Lucas 明确批准')
     try:
         message = build_email(args.snapshots, load_recipients(args.recipients),
-                              pdf_path=args.pdf)
+                              pdf_path=args.pdf, brief=args.brief)
     except (ValueError, OSError):
         parser.error('Invalid snapshot or recipients configuration; check filenames, identities and JSON schema')
     if args.send:

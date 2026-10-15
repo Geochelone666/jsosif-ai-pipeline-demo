@@ -95,6 +95,44 @@ def test_dry_run_cli_no_network(snapshot, tmp_path, monkeypatch, capsys):
         mail.main([str(snapshot), '--send'])
 
 
+def test_brief_format(snapshot, tmp_path):
+    message = mail.build_email([snapshot], ['zhou6u@uwindsor.ca'], brief=True)
+    plain = message.get_body(preferencelist=('plain',)).get_content()
+    html = message.get_body(preferencelist=('html',)).get_content()
+    for body in (plain, html):
+        assert 'Hi Zhou6u,' in body
+        assert 'ACN' in body and '2026-10-08' in body
+        assert 'Best,' in body and 'Tech Team' in body
+    # Brief format must not contain the full report dump
+    assert '196.6400' not in plain
+
+
+def test_brief_multiple_reports_and_pdfs(snapshot, tmp_path):
+    other = tmp_path / 'COST-intelligence-20261008.md'
+    other.write_text('# COST Intelligence Demo\n- Report as_of: **2026-10-08**\n')
+    other.with_suffix('.json').write_text(json.dumps({'ticker': 'COST', 'as_of': '2026-10-08'}))
+    pdf1 = tmp_path / 'ACN-intelligence-20261008.pdf'
+    pdf2 = tmp_path / 'COST-intelligence-20261008.pdf'
+    pdf1.write_bytes(b'%PDF-1.4 fake1')
+    pdf2.write_bytes(b'%PDF-1.4 fake2')
+    message = mail.build_email([snapshot, other], ['rodrick1@uwindsor.ca'],
+                               brief=True, pdf_path=[pdf1, pdf2])
+    plain = message.get_body(preferencelist=('plain',)).get_content()
+    assert 'Hi Rodrick1,' in plain
+    assert 'ACN' in plain and 'COST' in plain
+    attachments = list(message.iter_attachments())
+    assert len(attachments) == 2
+    assert sorted(p.get_filename() for p in attachments) == [
+        'ACN-intelligence-20261008.pdf', 'COST-intelligence-20261008.pdf']
+
+
+def test_single_pdf_still_works(snapshot, tmp_path):
+    pdf = tmp_path / 'ACN-intelligence-20261008.pdf'
+    pdf.write_bytes(b'%PDF-1.4 fake')
+    message = mail.build_email([snapshot], ['a@example.com'], pdf_path=pdf)
+    assert len(list(message.iter_attachments())) == 1
+
+
 def test_identity_conflict(snapshot):
     snapshot.with_suffix('.json').write_text('{"ticker": "COST", "as_of": "2026-10-08"}')
     with pytest.raises(ValueError):

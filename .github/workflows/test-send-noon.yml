@@ -39,25 +39,34 @@ jobs:
           fi
           echo "Date check passed: $TODAY"
 
-      - name: Generate fresh ACN report (real-time data)
+      - name: Generate fresh reports (5 tickers, real-time data)
         run: |
           set -o pipefail
           cd ${{ github.workspace }}
-          # Run pipeline steps for ACN only to fetch real-time data
-          for script in quant ai_extract comparables earnings edgar regenerate_report report_pdf; do
-            echo "RUN ACN $script"
-            python scripts/${script}.py --ticker ACN 2>&1 | tail -20
+          # Run pipeline steps for the 5 test tickers to fetch real-time data
+          for ticker in CNQ.TO CSCO JPM BMO.TO COST; do
+            for script in quant ai_extract comparables earnings edgar regenerate_report report_pdf; do
+              echo "RUN $ticker $script"
+              python scripts/${script}.py --ticker "$ticker" 2>&1 | tail -20
+            done
           done
-          # Verify a fresh report was generated today (fail closed, never send stale)
+          # Verify fresh reports+PDFs were generated today (fail closed, never send stale)
           TODAY=$(date -u +%Y%m%d)
-          FRESH_REPORT=$(ls reports/ACN-intelligence-${TODAY}.md 2>/dev/null || true)
-          FRESH_PDF=$(ls reports/ACN-intelligence-${TODAY}.pdf 2>/dev/null || true)
-          if [ -z "$FRESH_REPORT" ] || [ -z "$FRESH_PDF" ]; then
-            echo "ERROR: No fresh ACN report+PDF for $TODAY found. Refusing to send stale report."
-            ls -la reports/ACN-intelligence-*.md reports/ACN-intelligence-*.pdf || true
+          MISSING=0
+          for ticker in CNQ.TO CSCO JPM BMO.TO COST; do
+            if [ ! -f "reports/${ticker}-intelligence-${TODAY}.md" ]; then
+              echo "MISSING md: $ticker"; MISSING=1
+            fi
+            if [ ! -f "reports/${ticker}-intelligence-${TODAY}.pdf" ]; then
+              echo "MISSING pdf: $ticker"; MISSING=1
+            fi
+          done
+          if [ "$MISSING" -ne 0 ]; then
+            echo "ERROR: Not all fresh reports generated for $TODAY. Refusing to send stale."
+            ls -la reports/*-intelligence-${TODAY}.md reports/*-intelligence-${TODAY}.pdf || true
             exit 1
           fi
-          echo "Fresh report verified: $FRESH_REPORT + $FRESH_PDF"
+          echo "Fresh reports verified for all 5 tickers: CNQ.TO CSCO JPM BMO.TO COST"
         continue-on-error: false
 
       - name: Send test emails
@@ -82,18 +91,25 @@ jobs:
           cat > /tmp/recipients.json <<EOF
           {"recipients": ["zhou6u@uwindsor.ca"]}
           EOF
-          # Send ACN report (PDF attached) to the test recipient (use today's verified fresh report)
+          # Send the 5 fresh reports (PDFs attached) to the test recipient.
+          # One email, brief cover-note body (greeting + report list + sign-off).
           TODAY=$(date -u +%Y%m%d)
-          REPORT="reports/ACN-intelligence-${TODAY}.md"
-          PDF="reports/ACN-intelligence-${TODAY}.pdf"
-          if [ ! -f "$REPORT" ] || [ ! -f "$PDF" ]; then
-            echo "ERROR: Fresh report $REPORT / $PDF not found. Refusing to send."
-            exit 1
-          fi
-          echo "Sending report: $REPORT + $PDF"
-          python scripts/email_delivery.py "$REPORT" \
+          MDS=""
+          PDFS=""
+          for ticker in CNQ.TO CSCO JPM BMO.TO COST; do
+            MDS="$MDS reports/${ticker}-intelligence-${TODAY}.md"
+            PDFS="$PDFS reports/${ticker}-intelligence-${TODAY}.pdf"
+          done
+          for f in $MDS $PDFS; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: Fresh report $f not found. Refusing to send."
+              exit 1
+            fi
+          done
+          echo "Sending 5 reports: $MDS"
+          python scripts/email_delivery.py $MDS \
             --recipients /tmp/recipients.json \
-            --pdf "$PDF" \
+            --brief --pdf $PDFS \
             --send
           SEND_RC=$?
           # Clean up credentials immediately
