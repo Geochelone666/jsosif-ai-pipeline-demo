@@ -70,7 +70,7 @@ def load_snapshot(path):
     return ticker, as_of, parts[0], sections, metadata
 
 
-def build_email(paths, recipients, *, review_only=False):
+def build_email(paths, recipients, *, review_only=False, pdf_path=None):
     # Empty recipients remain visibly pending in offline review artifacts.
     if not (review_only and recipients == []):
         recipients = validate_recipients(recipients)
@@ -126,6 +126,12 @@ def build_email(paths, recipients, *, review_only=False):
     message['To'] = ', '.join(recipients)
     message.set_content('\n'.join(plain))
     message.add_alternative('\n'.join(html), subtype='html')
+    if pdf_path is not None:
+        pdf = Path(pdf_path)
+        if not pdf.is_file():
+            raise ValueError(f'PDF attachment not found: {pdf}')
+        message.add_attachment(pdf.read_bytes(), maintype='application',
+                               subtype='pdf', filename=pdf.name)
     return message
 
 
@@ -183,6 +189,8 @@ def main(argv=None):
     parser.add_argument('snapshots', nargs='+', type=Path)
     parser.add_argument('--recipients', type=Path, default=ROOT / 'recipients.json')
     parser.add_argument('--output', type=Path, help='Write an .eml file instead of stdout')
+    parser.add_argument('--pdf', type=Path, default=None,
+                        help='Attach a PDF report file to the email')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--dry-run', action='store_true', help='Generate only (default)')
     mode.add_argument('--send', action='store_true', help='Send via Gmail SMTP (requires config/gmail.json)')
@@ -190,7 +198,8 @@ def main(argv=None):
     if args.send and os.environ.get('JSOSIF_APPROVED_SEND') != '1':
         raise NotImplementedError('发送需 Lucas 明确批准')
     try:
-        message = build_email(args.snapshots, load_recipients(args.recipients))
+        message = build_email(args.snapshots, load_recipients(args.recipients),
+                              pdf_path=args.pdf)
     except (ValueError, OSError):
         parser.error('Invalid snapshot or recipients configuration; check filenames, identities and JSON schema')
     if args.send:
