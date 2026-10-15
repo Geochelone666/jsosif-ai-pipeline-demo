@@ -1,0 +1,80 @@
+name: JSOSIF Test Send (One-time Noon Test)
+
+on:
+  schedule:
+    # 12:00 EDT = 16:00 UTC, one-time test on 2026-10-15
+    - cron: '0 16 15 10 *'
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type YES to confirm test send'
+        required: true
+        default: 'NO'
+
+jobs:
+  test-send:
+    runs-on: ubuntu-latest
+    # Only run on 2026-10-15 (one-time test guard)
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 16 15 10 *'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify test date (one-time guard)
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          if [ "$TODAY" != "2026-10-15" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "Not 2026-10-15, skipping one-time test"
+            exit 1
+          fi
+          echo "Date check passed: $TODAY"
+
+      - name: Generate fresh ACN report (real-time data)
+        run: |
+          cd ${{ github.workspace }}
+          # Run pipeline steps for ACN only to fetch real-time data
+          for script in quant ai_extract comparables earnings edgar regenerate_report; do
+            echo "RUN ACN $script"
+            python scripts/${script}.py --ticker ACN 2>&1 | tail -20
+          done
+        continue-on-error: false
+
+      - name: Send test emails
+        env:
+          JSOSIF_APPROVED_SEND: '1'
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          cd ${{ github.workspace }}
+          # Write Gmail config from secrets (not committed to repo)
+          mkdir -p config
+          cat > config/gmail.json <<EOF
+          {
+            "user": "${GMAIL_USER}",
+            "app_password": "${GMAIL_APP_PASSWORD}"
+          }
+          EOF
+          chmod 600 config/gmail.json
+          # Send ACN report only to 5 test recipients
+          python scripts/email_delivery.py \
+            $(ls reports/ACN-intelligence-*.md | sort | tail -1) \
+            --recipients-json <(echo '{"recipients": ["rodrick1@uwindsor.ca", "saprad@uwindsor.ca", "mahboobn@uwindsor.ca", "gibbm@uwindsor.ca", "zhou6u@uwindsor.ca"]}') \
+            --send 2>&1 | tail -50
+          # Clean up credentials immediately
+          shred -u config/gmail.json || rm -f config/gmail.json
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "Test send completed at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "Check Gmail sent folder and recipient inboxes for verification"
