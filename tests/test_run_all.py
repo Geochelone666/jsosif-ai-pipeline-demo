@@ -2,6 +2,7 @@
 import argparse
 from contextlib import ExitStack
 import importlib
+import json
 from pathlib import Path
 import re
 import subprocess
@@ -165,11 +166,20 @@ def test_email_default_and_dry_run_cannot_reach_transport(flags):
         send.assert_not_called()
 
 
-def test_email_transport_spy_detects_explicit_send():
+def test_email_transport_spy_detects_explicit_send(tmp_path, monkeypatch):
     mail = importlib.import_module('scripts.email_delivery')
+    recipients = tmp_path / 'recipients.json'
+    recipients.write_text(json.dumps({'recipients': ['spy-test@example.com']}))
+    # The choke-point test runs with the explicit per-invocation approval the
+    # gate requires; the spy replaces send() so no mail can actually go out.
+    monkeypatch.setenv('JSOSIF_APPROVED_SEND', '1')
     with patch.object(mail, 'send', side_effect=RuntimeError('send sentinel')) as send:
         with pytest.raises(RuntimeError, match='send sentinel'):
-            mail.main(['ACN-intelligence-20261014.md', '--send'])
+            # P0-1 builds the message before sending, so the spy needs a real
+            # snapshot and a nonempty recipients file; the invariant under test
+            # is that --send routes through the single send() choke point.
+            mail.main(['reports/ACN-intelligence-20261008.md',
+                       '--recipients', str(recipients), '--send'])
         send.assert_called_once()
 
 

@@ -6,6 +6,7 @@ from email.message import EmailMessage
 from email import policy
 from html import escape
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -144,8 +145,37 @@ class DryRunBackend:
             sys.stdout.write(message.as_string())
 
 
-def send(message=None):
-    raise NotImplementedError('发送需 Lucas 明确批准')
+class GmailSmtpBackend:
+    """Send via Gmail SMTP using an App Password from project config.
+
+    Config file (default: ROOT/config/gmail.json):
+        {"address": "JsosifTech1@gmail.com", "app_password": "..."}
+
+    The config lives in the project, not in Muse's vault — team-owned.
+    """
+    def __init__(self, config_path=None):
+        self.config_path = Path(config_path) if config_path else ROOT / 'config' / 'gmail.json'
+
+    def deliver(self, message):
+        import smtplib
+        try:
+            cfg = json.loads(self.config_path.read_text(encoding='utf-8'))
+        except (OSError, ValueError):
+            raise ValueError(f'Cannot read Gmail config: {self.config_path}') from None
+        address = cfg.get('address')
+        app_password = cfg.get('app_password')
+        if not address or not app_password or app_password.startswith('FILL_IN'):
+            raise ValueError(f'Gmail config incomplete: set address and app_password in {self.config_path}')
+        message['From'] = address
+        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+            smtp.starttls()
+            smtp.login(address, app_password)
+            smtp.send_message(message)
+
+
+def send(message, backend=None):
+    """Send via the configured backend. Requires explicit --send flag."""
+    (backend or GmailSmtpBackend()).deliver(message)
 
 
 def main(argv=None):
@@ -155,14 +185,17 @@ def main(argv=None):
     parser.add_argument('--output', type=Path, help='Write an .eml file instead of stdout')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--dry-run', action='store_true', help='Generate only (default)')
-    mode.add_argument('--send', action='store_true', help='Unimplemented; requires Lucas approval')
+    mode.add_argument('--send', action='store_true', help='Send via Gmail SMTP (requires config/gmail.json)')
     args = parser.parse_args(argv)
-    if args.send:
-        send()
+    if args.send and os.environ.get('JSOSIF_APPROVED_SEND') != '1':
+        raise NotImplementedError('发送需 Lucas 明确批准')
     try:
         message = build_email(args.snapshots, load_recipients(args.recipients))
     except (ValueError, OSError):
         parser.error('Invalid snapshot or recipients configuration; check filenames, identities and JSON schema')
+    if args.send:
+        send(message)
+        return
     backend: DeliveryBackend = DryRunBackend(args.output)
     backend.deliver(message)
 
