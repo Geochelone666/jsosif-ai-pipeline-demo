@@ -9,7 +9,16 @@ from data_utils import number, save
 SERIES = {'UNRATE': 'Unemployment rate (%)', 'CPIAUCSL': 'Consumer Price Index (1982–1984=100)', 'FEDFUNDS': 'Federal funds rate (%)', 'NAPM': 'ISM Manufacturing PMI'}
 
 def main():
-    key = os.environ.get('FRED_API_KEY', '').strip()
+    # Team key: project config first, then env var (legacy personal key).
+    key = ''
+    cfg_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config', 'fred.json')
+    try:
+        with open(cfg_path, encoding='utf-8') as f:
+            key = json.load(f).get('api_key', '').strip()
+    except (OSError, ValueError):
+        pass
+    if not key:
+        key = os.environ.get('FRED_API_KEY', '').strip()
     if not key:
         save('fred.json', {'available': False, 'reason': 'no key'})
         print('FRED SKIP: no key; 0 indicator rows')
