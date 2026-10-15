@@ -41,12 +41,22 @@ jobs:
 
       - name: Generate fresh ACN report (real-time data)
         run: |
+          set -o pipefail
           cd ${{ github.workspace }}
           # Run pipeline steps for ACN only to fetch real-time data
           for script in quant ai_extract comparables earnings edgar regenerate_report; do
             echo "RUN ACN $script"
             python scripts/${script}.py --ticker ACN 2>&1 | tail -20
           done
+          # Verify a fresh report was generated today (fail closed, never send stale)
+          TODAY=$(date -u +%Y%m%d)
+          FRESH_REPORT=$(ls reports/ACN-intelligence-${TODAY}.md 2>/dev/null || true)
+          if [ -z "$FRESH_REPORT" ]; then
+            echo "ERROR: No fresh ACN report for $TODAY found. Refusing to send stale report."
+            ls -la reports/ACN-intelligence-*.md || true
+            exit 1
+          fi
+          echo "Fresh report verified: $FRESH_REPORT"
         continue-on-error: false
 
       - name: Send test emails
@@ -70,8 +80,13 @@ jobs:
           cat > /tmp/recipients.json <<EOF
           {"recipients": ["rodrick1@uwindsor.ca", "saprad@uwindsor.ca", "mahboobn@uwindsor.ca", "gibbm@uwindsor.ca", "zhou6u@uwindsor.ca"]}
           EOF
-          # Send ACN report only to 5 test recipients
-          REPORT=$(ls reports/ACN-intelligence-*.md | sort | tail -1)
+          # Send ACN report only to 5 test recipients (use today's verified fresh report)
+          TODAY=$(date -u +%Y%m%d)
+          REPORT="reports/ACN-intelligence-${TODAY}.md"
+          if [ ! -f "$REPORT" ]; then
+            echo "ERROR: Fresh report $REPORT not found. Refusing to send."
+            exit 1
+          fi
           echo "Sending report: $REPORT"
           python scripts/email_delivery.py "$REPORT" \
             --recipients /tmp/recipients.json \
