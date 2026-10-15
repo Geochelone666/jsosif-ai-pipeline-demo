@@ -4,12 +4,16 @@ import argparse
 from datetime import date
 from email.message import EmailMessage
 from email import policy
+from email.utils import getaddresses
 from html import escape
 import json
 import os
 from pathlib import Path
 import re
 import sys
+import ssl
+import smtplib
+import send_ledger
 from typing import Protocol
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -205,31 +209,67 @@ class DryRunBackend:
 
 
 class GmailSmtpBackend:
-    """Send via Gmail SMTP using an App Password from project config.
+    """Deliver with mandatory TLS and audit every transport attempt.
 
-    Config file (default: ROOT/config/gmail.json):
-        {"address": "JsosifTech1@gmail.com", "app_password": "..."}
-
-    The config lives in the project, not in Muse's vault — team-owned.
+    Config requires nonempty address and app_password strings. Endpoint and TLS
+    context overrides allow loopback integration tests without Gmail credentials.
+    SMTP response text is untrusted and is never copied into errors or the ledger.
     """
-    def __init__(self, config_path=None):
+    def __init__(self, config_path=None, *, host='smtp.gmail.com', port=587,
+                 tls_context=None, timeout=30):
         self.config_path = Path(config_path) if config_path else ROOT / 'config' / 'gmail.json'
+        self.host, self.port = host, port
+        self.tls_context = tls_context
+        self.timeout = timeout
 
-    def deliver(self, message):
-        import smtplib
+    def _config(self):
         try:
             cfg = json.loads(self.config_path.read_text(encoding='utf-8'))
         except (OSError, ValueError):
-            raise ValueError(f'Cannot read Gmail config: {self.config_path}') from None
-        address = cfg.get('address')
-        app_password = cfg.get('app_password')
-        if not address or not app_password or app_password.startswith('FILL_IN'):
-            raise ValueError(f'Gmail config incomplete: set address and app_password in {self.config_path}')
-        message['From'] = address
-        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-            smtp.starttls()
-            smtp.login(address, app_password)
-            smtp.send_message(message)
+            raise ValueError('Cannot read Gmail config: expected config/gmail.json JSON') from None
+        if not isinstance(cfg, dict):
+            raise ValueError('Gmail config must be an object')
+        address, password = cfg.get('address'), cfg.get('app_password')
+        if (not isinstance(address, str) or not isinstance(password, str)
+                or not password.strip() or password.strip().startswith('FILL_IN')):
+            raise ValueError('Gmail config incomplete: set address and app_password')
+        try:
+            validate_recipients([address])
+        except ValueError:
+            raise ValueError('Gmail config requires a valid sender address') from None
+        return address, password
+
+    def deliver(self, message):
+        recipients = [address for _, address in getaddresses(
+            message.get_all('To', []) + message.get_all('Cc', []) + message.get_all('Bcc', []))]
+        identities = re.findall(r'(\d{4}-\d{2}-\d{2}) ([A-Z0-9][A-Z0-9.-]*)',
+                                str(message.get('Subject', '')))
+        entry = dict(snapshot_id=';'.join(f'{ticker}-{day}' for day, ticker in identities)
+                     or str(message.get('Message-ID') or 'unspecified'),
+                     recipients=recipients, dry_run=False)
+        config_valid = False
+        try:
+            address, password = self._config()
+            config_valid = True
+            validate_recipients(recipients)
+            if 'From' in message:
+                message.replace_header('From', address)
+            else:
+                message['From'] = address
+            with smtplib.SMTP(self.host, self.port, timeout=self.timeout) as smtp:
+                smtp.starttls(context=self.tls_context or ssl.create_default_context())
+                smtp.login(address, password)
+                refused = smtp.send_message(message)
+                if refused:
+                    raise smtplib.SMTPRecipientsRefused(refused)
+        except Exception as exc:
+            # Config errors are our own static messages; SMTP errors may echo secrets.
+            error = str(exc) if not config_valid and isinstance(exc, ValueError) else type(exc).__name__
+            send_ledger.record(dict(entry, status='failed', error=error))
+            if not config_valid and isinstance(exc, ValueError):
+                raise
+            raise RuntimeError(f'Gmail delivery failed: {error}') from None
+        send_ledger.record(dict(entry, status='sent'))
 
 
 def send(message, backend=None):
