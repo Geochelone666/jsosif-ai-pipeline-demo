@@ -60,3 +60,29 @@ The complete batch is validated before delivery. Actual sending requires explici
 Lucas approval, `JSOSIF_APPROVED_SEND=1`, `--send`, and the existing local
 `config/gmail.json` credentials. A transport failure stops the batch; check which
 messages were sent before retrying to avoid duplicates. Never commit credentials.
+
+## Built-in daily scheduler
+
+Run the foreground daemon in a persistent terminal or under a process supervisor;
+no external cron is needed. Keep the process and machine running:
+
+```bash
+JSOSIF_APPROVED_SEND=1 python3 scripts/scheduler.py --daemon
+```
+
+It sleeps until the next 09:00 `America/Toronto`, adjusting for daylight saving
+time, then runs `distribute_team_reports.py --send` with the current Python
+interpreter. Existing Gmail credentials and send approval are still required.
+It distributes existing reports; it does not refresh them. Missed runs while the
+process is stopped are not replayed. Starting at exactly 09:00 schedules tomorrow.
+
+`--once` sends immediately; `--dry-run` only prints the next run and elapsed
+seconds without sending or creating files. These modes are mutually exclusive.
+Logs rotate at `logs/scheduler.log`; use `--log-file` to override. A shared
+`logs/distribution.lock` prevents simultaneous sends by scheduler instances,
+including `--once`; use the same `--lock-file` for all instances. Direct manual
+calls to the distribution script do not participate in this lock. The persistent
+lock file is released by the OS when its owner exits; do not delete it while
+running. Failed sends are logged and the daemon continues with the next day's
+run, without automatically retrying a potentially partially sent batch. Child
+output is suppressed to keep credentials and recipient data out of scheduler logs.
