@@ -1,0 +1,91 @@
+name: JSOSIF Daily 25 Reports
+
+on:
+  schedule:
+    # 9:00 AM EDT = 13:00 UTC (EDT is UTC-4)
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type YES to confirm send'
+        required: true
+        default: 'NO'
+
+jobs:
+  daily-reports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate fresh reports for all 25 tickers
+        run: |
+          set -o pipefail
+          cd ${{ github.workspace }}
+          TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
+          for ticker in $TICKERS; do
+            for script in quant ai_extract comparables earnings edgar regenerate_report; do
+              echo "RUN $ticker $script"
+              python scripts/${script}.py --ticker "$ticker" 2>&1 | tail -5
+            done
+          done
+          # Verify fresh reports exist for today for all 5 assigned tickers (fail closed)
+          TODAY=$(date -u +%Y%m%d)
+          MISSING=0
+          for ticker in CNQ.TO CSCO JPM BMO.TO COST; do
+            REPORT="reports/${ticker}-intelligence-${TODAY}.md"
+            if [ ! -f "$REPORT" ]; then
+              echo "ERROR: Missing fresh report $REPORT"
+              MISSING=1
+            else
+              echo "OK: $REPORT"
+            fi
+          done
+          if [ "$MISSING" -ne 0 ]; then
+            echo "ERROR: Not all assigned tickers have fresh reports for $TODAY. Refusing to send."
+            exit 1
+          fi
+          echo "All 5 assigned ticker reports verified for $TODAY"
+        continue-on-error: false
+
+      - name: Distribute reports to 5 test emails
+        env:
+          JSOSIF_APPROVED_SEND: '1'
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          set -o pipefail
+          cd ${{ github.workspace }}
+          # Write Gmail config from secrets (not committed to repo)
+          mkdir -p config
+          cat > config/gmail.json <<EOF
+          {
+            "address": "${GMAIL_USER}",
+            "app_password": "${GMAIL_APP_PASSWORD}"
+          }
+          EOF
+          chmod 600 config/gmail.json
+          TODAY=$(date -u +%Y%m%d)
+          echo "Distributing reports for date: $TODAY"
+          python scripts/distribute_team_reports.py --send --date "$TODAY"
+          SEND_RC=$?
+          # Clean up credentials immediately
+          shred -u config/gmail.json || rm -f config/gmail.json
+          exit $SEND_RC
+
+      - name: Report results
+        if: always()
+        run: |
+          echo "Daily 25-reports run completed at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "Check Gmail sent folder and recipient inboxes for verification"
