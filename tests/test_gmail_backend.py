@@ -75,7 +75,7 @@ def fake_smtp(tmp_path, reject=False):
                 self.wfile.write(b'220 local test\r\n')
                 encrypted = False
                 while line := self.rfile.readline():
-                    verb = line.split()[0].decode()
+                    verb = line.split()[0].decode().upper()
                     events.append(verb)
                     if verb == 'EHLO':
                         self.wfile.write(b'250-localhost\r\n' +
@@ -131,7 +131,7 @@ def test_smtp_round_trip(tmp_path, config, message, reject):
             assert 'fake-password' not in str(error.value)
         else:
             backend.deliver(message)
-    assert events == ['EHLO', 'STARTTLS', 'EHLO', 'AUTH', 'MAIL', 'RCPT', 'DATA', 'QUIT']
+    assert events == ['EHLO', 'STARTTLS', 'EHLO', 'AUTH', 'MAIL', 'RCPT', 'DATA'] + (['RSET'] if reject else []) + ['QUIT']
     parsed = BytesParser(policy=policy.default).parsebytes(messages[0])
     assert parsed['From'] == 'sender@example.com'
     assert parsed['To'] == 'reader@example.com'
@@ -182,3 +182,35 @@ def test_approved_cli_config_fail_closed(tmp_path, monkeypatch, message, payload
     row, = send_ledger.query()
     assert row['status'] == 'failed' and row['dry_run'] is False
     assert row['error'] and 'fake-password' not in row['error']
+
+
+@pytest.mark.parametrize('failure', ['auth', 'partial', 'tls'])
+def test_transport_failures_are_audited_without_response_text(monkeypatch, config, message, failure):
+    class Transport:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            pass
+
+        def starttls(self, **kwargs):
+            if failure == 'tls':
+                raise ssl.SSLError('fake-password')
+
+        def login(self, *args):
+            if failure == 'auth':
+                raise mail.smtplib.SMTPAuthenticationError(535, b'fake-password')
+
+        def send_message(self, message):
+            return {'reader@example.com': (550, b'fake-password')}
+
+    monkeypatch.setattr(mail.smtplib, 'SMTP', Transport)
+    with pytest.raises(RuntimeError) as error:
+        mail.GmailSmtpBackend(config).deliver(message)
+    row, = send_ledger.query()
+    assert row['status'] == 'failed' and row['dry_run'] is False
+    assert row['error']
+    assert 'fake-password' not in str(error.value) + json.dumps(row)
