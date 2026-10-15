@@ -1,10 +1,12 @@
 name: JSOSIF Weekly 25 Reports
 
 on:
-  schedule:
-    # Monday 9:00 AM EDT = 13:00 UTC (EDT is UTC-4)
-    # Run day/time is provisional — Lucas to confirm.
-    - cron: '0 13 * * 1'
+  # schedule DISABLED until Lucas confirms weekly frequency AND the first
+  # manual workflow_dispatch (confirm=YES) run passes end-to-end.
+  # Provisional slot was: Monday 9:00 AM EDT = 13:00 UTC (EDT is UTC-4).
+  # To re-enable, uncomment the two lines below.
+  # schedule:
+  #   - cron: '0 13 * * 1'
   workflow_dispatch:
     inputs:
       confirm:
@@ -52,9 +54,11 @@ jobs:
       - name: Generate fresh reports for all 25 tickers
         id: generate
         env:
-          # ai_extract.py is fail-closed without GEMINI_CLI;
-          # inject the team Gemini CLI entrypoint via repo secret.
-          GEMINI_CLI: ${{ secrets.GEMINI_CLI }}
+          # ai_extract.py needs GEMINI_CLI to be a file path it can exec.
+          # The repo ships scripts/gemini_call_ci.py (REST wrapper, stdlib only);
+          # the real key comes from GEMINI_API_KEY.
+          GEMINI_CLI: ${{ github.workspace }}/scripts/gemini_call_ci.py
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -o pipefail
           cd ${{ github.workspace }}
@@ -86,6 +90,44 @@ jobs:
           fi
           echo "All 25 ticker reports+PDFs verified for $TODAY"
         continue-on-error: false
+
+      # Archive BEFORE sending: email is irreversible, so the reports must be
+      # durably archived (and the push must succeed) before distribute runs.
+      - name: Archive weekly reports
+        id: archive
+        if: success()
+        run: |
+          set -o pipefail
+          cd ${{ github.workspace }}
+          WEEK=$(date -u +%Y-%m-%d)
+          TODAY=$(date -u +%Y%m%d)
+          ARCHIVE="reports/weekly/${WEEK}"
+          mkdir -p "$ARCHIVE"
+          TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
+          COUNT=0
+          for ticker in $TICKERS; do
+            cp "reports/${ticker}-intelligence-${TODAY}.md" "$ARCHIVE/" || exit 1
+            cp "reports/${ticker}-intelligence-${TODAY}.pdf" "$ARCHIVE/" || exit 1
+            COUNT=$((COUNT + 1))
+          done
+          # Run summary: what ran, where the logs live
+          cat > "${ARCHIVE}/SUMMARY.md" <<EOF
+          # JSOSIF Weekly Reports — ${WEEK}
+
+          - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - Tickers: ${COUNT} (full 25-stock universe)
+          - Files: ${COUNT} markdown reports + ${COUNT} PDFs
+          - Recipients: config/team_recipients.json at run time
+          - Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+          - FRED macro data: refreshed this run via scripts/fred.py
+          EOF
+          echo "Archived ${COUNT} reports+PDFs to ${ARCHIVE}/"
+          # Commit the archive back so it is durable (reports/ is git-tracked)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$ARCHIVE"
+          git commit -m "weekly: archive 25 reports for ${WEEK}" || echo "nothing new to commit"
+          git push
 
       - name: Distribute reports (brief format + PDF attachments)
         id: distribute
@@ -139,42 +181,6 @@ jobs:
           rm -f /tmp/recipients.json
           exit $SEND_RC
 
-      - name: Archive weekly reports
-        id: archive
-        if: success()
-        run: |
-          set -o pipefail
-          cd ${{ github.workspace }}
-          WEEK=$(date -u +%Y-%m-%d)
-          TODAY=$(date -u +%Y%m%d)
-          ARCHIVE="reports/weekly/${WEEK}"
-          mkdir -p "$ARCHIVE"
-          TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
-          COUNT=0
-          for ticker in $TICKERS; do
-            cp "reports/${ticker}-intelligence-${TODAY}.md" "$ARCHIVE/" || exit 1
-            cp "reports/${ticker}-intelligence-${TODAY}.pdf" "$ARCHIVE/" || exit 1
-            COUNT=$((COUNT + 1))
-          done
-          # Run summary: what ran, where the logs live
-          cat > "${ARCHIVE}/SUMMARY.md" <<EOF
-          # JSOSIF Weekly Reports — ${WEEK}
-
-          - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          - Tickers: ${COUNT} (full 25-stock universe)
-          - Files: ${COUNT} markdown reports + ${COUNT} PDFs
-          - Recipients: config/team_recipients.json at run time
-          - Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
-          - FRED macro data: refreshed this run via scripts/fred.py
-          EOF
-          echo "Archived ${COUNT} reports+PDFs to ${ARCHIVE}/"
-          # Commit the archive back so it is durable (reports/ is git-tracked)
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "$ARCHIVE"
-          git commit -m "weekly: archive 25 reports for ${WEEK}" || echo "nothing new to commit"
-          git push
-
       - name: Notify Telegram (success)
         if: success()
         # Never let a notify failure flip the job status
@@ -209,13 +215,13 @@ jobs:
           fi
           WEEK=$(date -u +%Y-%m-%d)
           LOG_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          MSG=$(printf 'WEEKLY REPORTS FAILED (%s)\ntests: %s\nfred: %s\ngenerate: %s\ndistribute: %s\narchive: %s\nlogs: %s' \
+          MSG=$(printf 'WEEKLY REPORTS FAILED (%s)\ntests: %s\nfred: %s\ngenerate: %s\narchive: %s\ndistribute: %s\nlogs: %s' \
             "$WEEK" \
             "${{ steps.tests.conclusion }}" \
             "${{ steps.fred.conclusion }}" \
             "${{ steps.generate.conclusion }}" \
-            "${{ steps.distribute.conclusion }}" \
             "${{ steps.archive.conclusion }}" \
+            "${{ steps.distribute.conclusion }}" \
             "$LOG_URL")
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
