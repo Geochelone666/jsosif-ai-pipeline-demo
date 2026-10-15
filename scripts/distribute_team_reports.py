@@ -8,6 +8,7 @@ from pathlib import Path
 
 from email_delivery import ROOT, DryRunBackend, build_email, send, validate_recipients
 from universe import SUPPORTED
+import send_ledger
 
 
 def prepare(config, reports, stamp=None):
@@ -69,10 +70,23 @@ def main(argv=None):
     if not args.send:
         args.output_dir.mkdir(parents=True, exist_ok=True)
     for ticker, message in messages:
-        if args.send:
-            send(message)
-        else:
-            DryRunBackend(args.output_dir / f'{ticker}-{stamp}.eml').deliver(message)
+        entry = {
+            'snapshot_id': f'{ticker}-{stamp}',
+            'recipients': [str(message['To'])],
+            'dry_run': not args.send,
+        }
+        try:
+            if args.send:
+                send(message)
+            else:
+                DryRunBackend(args.output_dir / f'{ticker}-{stamp}.eml').deliver(message)
+        except Exception as exc:
+            entry['status'] = 'failed'
+            entry['error'] = f'{type(exc).__name__}: {exc}'
+            send_ledger.record(entry)
+            raise
+        entry['status'] = 'sent' if args.send else 'dry-run'
+        send_ledger.record(entry)
         print(f'{"Sent" if args.send else "Prepared"}: {ticker} | {stamp} | {message["To"]}')
     print(f'{len(messages)} emails {"sent" if args.send else "prepared; no email sent"}.')
 

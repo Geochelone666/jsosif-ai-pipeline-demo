@@ -1,9 +1,7 @@
 name: JSOSIF Test Send (One-time Noon Test)
 
 on:
-  schedule:
-    # 12:00 EDT = 16:00 UTC, one-time test on 2026-10-15
-    - cron: '0 16 15 10 *'
+  # One-time cron '0 16 15 10 *' (2026-10-15) removed — manual dispatch only now
   workflow_dispatch:
     inputs:
       confirm:
@@ -14,8 +12,8 @@ on:
 jobs:
   test-send:
     runs-on: ubuntu-latest
-    # Only run on 2026-10-15 (one-time test guard)
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 16 15 10 *'
+    # P1-1: confirm gate — manual runs need explicit YES
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'YES'
     steps:
       - name: Checkout
         uses: actions/checkout@v4

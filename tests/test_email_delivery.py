@@ -96,15 +96,24 @@ def test_dry_run_cli_no_network(snapshot, tmp_path, monkeypatch, capsys):
 
 
 def test_brief_format(snapshot, tmp_path):
-    message = mail.build_email([snapshot], ['zhou6u@uwindsor.ca'], brief=True)
+    # greeting_name override: caller-supplied name wins over address prefix
+    message = mail.build_email([snapshot], ['zhou6u@uwindsor.ca'], brief=True,
+                               greeting_name='Yi Zhou')
     plain = message.get_body(preferencelist=('plain',)).get_content()
     html = message.get_body(preferencelist=('html',)).get_content()
     for body in (plain, html):
-        assert 'Hi Zhou6u,' in body
+        assert 'Hi Yi Zhou,' in body
         assert 'ACN' in body and '2026-10-08' in body
         assert 'Best,' in body and 'Tech Team' in body
     # Brief format must not contain the full report dump
     assert '196.6400' not in plain
+
+
+def test_brief_fallback_name(snapshot, tmp_path):
+    # No override and no config name -> address-prefix fallback (documented behavior)
+    message = mail.build_email([snapshot], ['zhou6u@uwindsor.ca'], brief=True)
+    plain = message.get_body(preferencelist=('plain',)).get_content()
+    assert 'Hi Zhou,' in plain
 
 
 def test_brief_multiple_reports_and_pdfs(snapshot, tmp_path):
@@ -118,7 +127,7 @@ def test_brief_multiple_reports_and_pdfs(snapshot, tmp_path):
     message = mail.build_email([snapshot, other], ['rodrick1@uwindsor.ca'],
                                brief=True, pdf_path=[pdf1, pdf2])
     plain = message.get_body(preferencelist=('plain',)).get_content()
-    assert 'Hi Rodrick1,' in plain
+    assert 'Hi Rodrick,' in plain
     assert 'ACN' in plain and 'COST' in plain
     attachments = list(message.iter_attachments())
     assert len(attachments) == 2

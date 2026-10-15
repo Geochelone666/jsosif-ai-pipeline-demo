@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Fetch Google News RSS for the selected ticker, then rule-first extraction with Flash-Lite fallback."""
+from datetime import date, timedelta
 from email.utils import parsedate_to_datetime
 import html
 import http.client
 import json
+import os
 import subprocess
 import sys
 import time
@@ -12,7 +14,29 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
-CLI = "/home/hatch/workspace/skills/google-ai-studio/bin/gemini-call.py"
+# News freshness window: only keep items published in the last 14 days.
+NEWS_MAX_AGE_DAYS = 14
+NEWS_CUTOFF = (date.today() - timedelta(days=NEWS_MAX_AGE_DAYS)).isoformat()
+
+
+def _gemini_cli():
+    """Resolve the Gemini CLI entrypoint; fail closed when it is not configured.
+
+    The CLI path must come from the GEMINI_CLI environment variable (passed
+    through by run_phase1.py and set in CI via secrets). A missing or
+    nonexistent path used to silently disable AI on machines where the old
+    hardcoded Hatch-VM path did not exist; now it is a hard error.
+    """
+    cli = os.environ.get('GEMINI_CLI', '').strip()
+    if not cli:
+        raise RuntimeError(
+            'GEMINI_CLI is not set; refusing to run with AI disabled (fail-closed). '
+            'Set GEMINI_CLI to the gemini-call.py entrypoint.')
+    if not os.path.isfile(cli):
+        raise RuntimeError(
+            f'GEMINI_CLI={cli!r} does not exist; refusing to run with AI '
+            'disabled (fail-closed).')
+    return cli
 
 
 class RSSFetchError(Exception):
@@ -82,7 +106,8 @@ def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep, timeout=30):
             headline, source = title, ""
         pub_date = it.findtext("pubDate") or ""
         try:
-            if parsedate_to_datetime(pub_date).date().isoformat() > "2026-10-03":
+            # Keep only recent news; drop anything older than NEWS_CUTOFF.
+            if parsedate_to_datetime(pub_date).date().isoformat() < NEWS_CUTOFF:
                 continue
         except (ValueError, TypeError):
             continue
@@ -322,7 +347,7 @@ def _parse_gemini_json(text):
 
 
 def extract(items, ticker, call_ai=None):
-    data = {'ticker': ticker, 'as_of': '2026-10-03', **{k: [] for k in KEYS}}
+    data = {'ticker': ticker, 'as_of': date.today().isoformat(), **{k: [] for k in KEYS}}
     pending = []
     seen = set()
     for item in items:
@@ -423,7 +448,7 @@ def call_gemini(items, ticker):
         time.sleep(delay)
     last_call.write_text(str(time.time()))
     res = subprocess.run(
-        [os.environ.get('GEMINI_CLI', CLI), '--model', MODEL,
+        [_gemini_cli(), '--model', MODEL,
          '--json-output', '--prompt', '@' + str(path)],
         capture_output=True, text=True, timeout=180,
     )
@@ -449,6 +474,9 @@ def call_gemini(items, ticker):
 def main():
     from data_utils import save, ticker_arg, ticker_file
     import os
+    # Fail fast: a missing/unusable Gemini CLI used to degrade AI silently
+    # (FileNotFoundError swallowed into data['error'], workflow stayed green).
+    _gemini_cli()
     ticker = ticker_arg()
     query = f'{COMPANIES[ticker]} {ticker} stock'
     rss_options = {}

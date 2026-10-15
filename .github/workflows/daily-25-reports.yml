@@ -15,6 +15,8 @@ jobs:
   daily-reports:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    # P1-1: confirm gate — manual runs only send with explicit YES
+    if: github.event_name == 'schedule' || github.event.inputs.confirm == 'YES'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,37 +31,59 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run tests
+        run: |
+          cd ${{ github.workspace }}
+          # P1-6 class breaks (e.g. stale test modules) must block the daily run
+          pip install pytest
+          python -m pytest tests/ -q
+
+      - name: Refresh macro data (FRED, real-time)
+        run: |
+          cd ${{ github.workspace }}
+          # regenerate_report reads data/fred.json; refresh it every run
+          # so macro section is never stale. fred.py is fail-open (writes
+          # available:false when no key) and never logs the key.
+          python scripts/fred.py
+
       - name: Generate fresh reports for all 25 tickers
+        env:
+          # P0-1: ai_extract.py is fail-closed without GEMINI_CLI;
+          # inject the team Gemini CLI entrypoint via repo secret.
+          GEMINI_CLI: ${{ secrets.GEMINI_CLI }}
         run: |
           set -o pipefail
           cd ${{ github.workspace }}
           TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
           for ticker in $TICKERS; do
-            for script in quant ai_extract comparables earnings edgar regenerate_report; do
+            for script in quant ai_extract comparables earnings edgar regenerate_report report_pdf; do
               echo "RUN $ticker $script"
               python scripts/${script}.py --ticker "$ticker" 2>&1 | tail -5
             done
           done
-          # Verify fresh reports exist for today for all 5 assigned tickers (fail closed)
+          # Verify fresh reports + PDFs exist for today for ALL 25 tickers (fail closed)
           TODAY=$(date -u +%Y%m%d)
           MISSING=0
-          for ticker in CNQ.TO CSCO JPM BMO.TO COST; do
+          for ticker in $TICKERS; do
             REPORT="reports/${ticker}-intelligence-${TODAY}.md"
+            PDF="reports/${ticker}-intelligence-${TODAY}.pdf"
             if [ ! -f "$REPORT" ]; then
               echo "ERROR: Missing fresh report $REPORT"
               MISSING=1
-            else
-              echo "OK: $REPORT"
+            fi
+            if [ ! -f "$PDF" ]; then
+              echo "ERROR: Missing fresh PDF $PDF"
+              MISSING=1
             fi
           done
           if [ "$MISSING" -ne 0 ]; then
-            echo "ERROR: Not all assigned tickers have fresh reports for $TODAY. Refusing to send."
+            echo "ERROR: Not all 25 tickers have fresh reports+PDFs for $TODAY. Refusing to send."
             exit 1
           fi
-          echo "All 5 assigned ticker reports verified for $TODAY"
+          echo "All 25 ticker reports+PDFs verified for $TODAY"
         continue-on-error: false
 
-      - name: Distribute reports to 5 test emails
+      - name: Distribute reports (brief format + PDF attachments)
         env:
           JSOSIF_APPROVED_SEND: '1'
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
@@ -77,11 +101,38 @@ jobs:
           EOF
           chmod 600 config/gmail.json
           TODAY=$(date -u +%Y%m%d)
-          echo "Distributing reports for date: $TODAY"
-          python scripts/distribute_team_reports.py --send --date "$TODAY"
+          TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
+          MDS=""
+          PDFS=""
+          for ticker in $TICKERS; do
+            MDS="$MDS reports/${ticker}-intelligence-${TODAY}.md"
+            PDFS="$PDFS reports/${ticker}-intelligence-${TODAY}.pdf"
+          done
+          for f in $MDS $PDFS; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: Fresh report $f not found. Refusing to send."
+              exit 1
+            fi
+          done
+          # Recipients from config/team_recipients.json (single source of truth;
+          # test-phase narrowing of that file applies automatically)
+          python -c "
+          import json
+          recs = json.load(open('config/team_recipients.json'))['assignments']
+          json.dump({'recipients': sorted(recs)}, open('/tmp/recipients.json', 'w'))
+          print('recipients:', sorted(recs))
+          "
+          # Approved format: brief cover-note (Hi {name}, + report list + Best, Tech Team)
+          # with PDF attachments (same pattern as test-send-noon.yml)
+          echo "Sending 25 reports: $MDS"
+          python scripts/email_delivery.py $MDS \
+            --recipients /tmp/recipients.json \
+            --brief --pdf $PDFS \
+            --send
           SEND_RC=$?
           # Clean up credentials immediately
           shred -u config/gmail.json || rm -f config/gmail.json
+          rm -f /tmp/recipients.json
           exit $SEND_RC
 
       - name: Report results

@@ -16,10 +16,11 @@ def test_team_dry_run(tmp_path, monkeypatch):
         pytest.fail('Dry-run attempted network access')
     monkeypatch.setattr(socket, 'create_connection', forbidden)
     monkeypatch.setattr(socket.socket, 'connect', forbidden)
+    monkeypatch.setenv('SEND_LEDGER_PATH', str(tmp_path / 'ledger.jsonl'))
     team.main(['--dry-run', '--output-dir', str(tmp_path)])
     expected = json.loads((team.ROOT / 'config/team_recipients.json').read_text())['assignments']
     files = list(tmp_path.glob('*.eml'))
-    assert len(files) == len(expected) == 5
+    assert len(files) == len(expected)
     for path in files:
         message = BytesParser(policy=policy.default).parsebytes(path.read_bytes())
         ticker = expected[str(message['To'])]
@@ -41,13 +42,15 @@ def test_batch_validation_and_send_gate(tmp_path, monkeypatch):
         team.main(['--send'])
 
 
-def test_send_routes_separate_messages(monkeypatch):
+def test_send_routes_separate_messages(tmp_path, monkeypatch):
     sent = []
+    expected = json.loads((team.ROOT / 'config/team_recipients.json').read_text())['assignments']
+    monkeypatch.setenv('SEND_LEDGER_PATH', str(tmp_path / 'ledger.jsonl'))
     monkeypatch.setenv('JSOSIF_APPROVED_SEND', '1')
     monkeypatch.setattr(team, 'send', sent.append)
     team.main(['--send'])
-    assert len(sent) == 5
-    assert len({str(message['To']) for message in sent}) == 5
+    assert len(sent) == len(expected)
+    assert len({str(message['To']) for message in sent}) == len(expected)
 
 
 @pytest.mark.parametrize('assignments', [{}, {'a@example.com': 'UNKNOWN'},
@@ -57,3 +60,49 @@ def test_invalid_assignments(tmp_path, assignments):
     config.write_text(json.dumps({'assignments': assignments}))
     with pytest.raises(ValueError):
         team.prepare(config, tmp_path)
+
+
+def _ledger_rows(path):
+    return [json.loads(line) for line in Path(path).read_text().splitlines() if line.strip()]
+
+
+def test_send_ledger_records_sent_attempts(tmp_path, monkeypatch):
+    ledger = tmp_path / 'ledger.jsonl'
+    monkeypatch.setenv('SEND_LEDGER_PATH', str(ledger))
+    monkeypatch.setenv('JSOSIF_APPROVED_SEND', '1')
+    monkeypatch.setattr(team, 'send', lambda message: None)
+    team.main(['--send'])
+    expected = json.loads((team.ROOT / 'config/team_recipients.json').read_text())['assignments']
+    rows = _ledger_rows(ledger)
+    assert len(rows) == len(expected)
+    assert {row['status'] for row in rows} == {'sent'}
+    assert all(row['dry_run'] is False for row in rows)
+    assert {row['recipients'][0] for row in rows} == set(expected)
+
+
+def test_send_ledger_records_failed_attempt(tmp_path, monkeypatch):
+    ledger = tmp_path / 'ledger.jsonl'
+    monkeypatch.setenv('SEND_LEDGER_PATH', str(ledger))
+    monkeypatch.setenv('JSOSIF_APPROVED_SEND', '1')
+
+    def boom(message):
+        raise RuntimeError('smtp down')
+
+    monkeypatch.setattr(team, 'send', boom)
+    with pytest.raises(RuntimeError, match='smtp down'):
+        team.main(['--send'])
+    rows = _ledger_rows(ledger)
+    assert len(rows) == 1
+    assert rows[0]['status'] == 'failed'
+    assert 'smtp down' in rows[0]['error']
+    assert rows[0]['dry_run'] is False
+
+
+def test_send_ledger_records_dry_run(tmp_path, monkeypatch):
+    ledger = tmp_path / 'ledger.jsonl'
+    monkeypatch.setenv('SEND_LEDGER_PATH', str(ledger))
+    team.main(['--dry-run', '--output-dir', str(tmp_path / 'eml')])
+    rows = _ledger_rows(ledger)
+    assert rows
+    assert {row['status'] for row in rows} == {'dry-run'}
+    assert all(row['dry_run'] is True for row in rows)

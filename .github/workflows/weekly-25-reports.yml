@@ -1,0 +1,223 @@
+name: JSOSIF Weekly 25 Reports
+
+on:
+  schedule:
+    # Monday 9:00 AM EDT = 13:00 UTC (EDT is UTC-4)
+    # Run day/time is provisional — Lucas to confirm.
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type YES to confirm send'
+        required: true
+        default: 'NO'
+
+jobs:
+  weekly-reports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    # confirm gate — manual runs only send with explicit YES
+    if: github.event_name == 'schedule' || github.event.inputs.confirm == 'YES'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        id: tests
+        run: |
+          cd ${{ github.workspace }}
+          # Stale test modules must block the weekly run (fail-closed)
+          pip install pytest
+          python -m pytest tests/ -q
+
+      - name: Refresh macro data (FRED, real-time)
+        id: fred
+        run: |
+          cd ${{ github.workspace }}
+          # regenerate_report reads data/fred.json; refresh it every run
+          # so macro section is never stale. fred.py is fail-open (writes
+          # available:false when no key) and never logs the key.
+          python scripts/fred.py
+
+      - name: Generate fresh reports for all 25 tickers
+        id: generate
+        env:
+          # ai_extract.py is fail-closed without GEMINI_CLI;
+          # inject the team Gemini CLI entrypoint via repo secret.
+          GEMINI_CLI: ${{ secrets.GEMINI_CLI }}
+        run: |
+          set -o pipefail
+          cd ${{ github.workspace }}
+          TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
+          for ticker in $TICKERS; do
+            for script in quant ai_extract comparables earnings edgar regenerate_report report_pdf; do
+              echo "RUN $ticker $script"
+              python scripts/${script}.py --ticker "$ticker" 2>&1 | tail -5
+            done
+          done
+          # Verify fresh reports + PDFs exist for today for ALL 25 tickers (fail closed)
+          TODAY=$(date -u +%Y%m%d)
+          MISSING=0
+          for ticker in $TICKERS; do
+            REPORT="reports/${ticker}-intelligence-${TODAY}.md"
+            PDF="reports/${ticker}-intelligence-${TODAY}.pdf"
+            if [ ! -f "$REPORT" ]; then
+              echo "ERROR: Missing fresh report $REPORT"
+              MISSING=1
+            fi
+            if [ ! -f "$PDF" ]; then
+              echo "ERROR: Missing fresh PDF $PDF"
+              MISSING=1
+            fi
+          done
+          if [ "$MISSING" -ne 0 ]; then
+            echo "ERROR: Not all 25 tickers have fresh reports+PDFs for $TODAY. Refusing to send."
+            exit 1
+          fi
+          echo "All 25 ticker reports+PDFs verified for $TODAY"
+        continue-on-error: false
+
+      - name: Distribute reports (brief format + PDF attachments)
+        id: distribute
+        env:
+          JSOSIF_APPROVED_SEND: '1'
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          set -o pipefail
+          cd ${{ github.workspace }}
+          # Write Gmail config from secrets (not committed to repo)
+          mkdir -p config
+          cat > config/gmail.json <<EOF
+          {
+            "address": "${GMAIL_USER}",
+            "app_password": "${GMAIL_APP_PASSWORD}"
+          }
+          EOF
+          chmod 600 config/gmail.json
+          TODAY=$(date -u +%Y%m%d)
+          TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
+          MDS=""
+          PDFS=""
+          for ticker in $TICKERS; do
+            MDS="$MDS reports/${ticker}-intelligence-${TODAY}.md"
+            PDFS="$PDFS reports/${ticker}-intelligence-${TODAY}.pdf"
+          done
+          for f in $MDS $PDFS; do
+            if [ ! -f "$f" ]; then
+              echo "ERROR: Fresh report $f not found. Refusing to send."
+              exit 1
+            fi
+          done
+          # Recipients from config/team_recipients.json (single source of truth)
+          python -c "
+          import json
+          recs = json.load(open('config/team_recipients.json'))['assignments']
+          json.dump({'recipients': sorted(recs)}, open('/tmp/recipients.json', 'w'))
+          print('recipients:', sorted(recs))
+          "
+          # Approved format: brief cover-note (Hi {name}, + report list + Best, Tech Team)
+          # with PDF attachments
+          echo "Sending 25 reports: $MDS"
+          python scripts/email_delivery.py $MDS \
+            --recipients /tmp/recipients.json \
+            --brief --pdf $PDFS \
+            --send
+          SEND_RC=$?
+          # Clean up credentials immediately
+          shred -u config/gmail.json || rm -f config/gmail.json
+          rm -f /tmp/recipients.json
+          exit $SEND_RC
+
+      - name: Archive weekly reports
+        id: archive
+        if: success()
+        run: |
+          set -o pipefail
+          cd ${{ github.workspace }}
+          WEEK=$(date -u +%Y-%m-%d)
+          TODAY=$(date -u +%Y%m%d)
+          ARCHIVE="reports/weekly/${WEEK}"
+          mkdir -p "$ARCHIVE"
+          TICKERS="CNQ.TO CSCO JPM BMO.TO COST V JWEL.TO VRTX ENB PFE CP.TO ATD.TO SCHW ACN J XYL PEP NTR.TO DIS MG.TO OTEX.TO GIS NVO MC.PA AMTM"
+          COUNT=0
+          for ticker in $TICKERS; do
+            cp "reports/${ticker}-intelligence-${TODAY}.md" "$ARCHIVE/" || exit 1
+            cp "reports/${ticker}-intelligence-${TODAY}.pdf" "$ARCHIVE/" || exit 1
+            COUNT=$((COUNT + 1))
+          done
+          # Run summary: what ran, where the logs live
+          cat > "${ARCHIVE}/SUMMARY.md" <<EOF
+          # JSOSIF Weekly Reports — ${WEEK}
+
+          - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          - Tickers: ${COUNT} (full 25-stock universe)
+          - Files: ${COUNT} markdown reports + ${COUNT} PDFs
+          - Recipients: config/team_recipients.json at run time
+          - Generated: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+          - FRED macro data: refreshed this run via scripts/fred.py
+          EOF
+          echo "Archived ${COUNT} reports+PDFs to ${ARCHIVE}/"
+          # Commit the archive back so it is durable (reports/ is git-tracked)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "$ARCHIVE"
+          git commit -m "weekly: archive 25 reports for ${WEEK}" || echo "nothing new to commit"
+          git push
+
+      - name: Notify Telegram (success)
+        if: success()
+        # Never let a notify failure flip the job status
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          echo "Weekly 25-reports run completed at $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "WARNING: TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID not configured, skipping Telegram notify"
+            exit 0
+          fi
+          WEEK=$(date -u +%Y-%m-%d)
+          MSG=$(printf 'Weekly 25 reports sent (%s)\n25 reports + PDFs emailed to recipients\nArchive: reports/weekly/%s/' "$WEEK" "$WEEK")
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${MSG}" \
+            -o /dev/null -w "telegram http_code=%{http_code}\n"
+
+      - name: Notify Telegram (failure)
+        if: failure()
+        # Never let a notify failure flip the job status
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -z "$TELEGRAM_BOT_TOKEN" ] || [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "WARNING: TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID not configured, skipping Telegram notify"
+            exit 0
+          fi
+          WEEK=$(date -u +%Y-%m-%d)
+          LOG_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          MSG=$(printf 'WEEKLY REPORTS FAILED (%s)\ntests: %s\nfred: %s\ngenerate: %s\ndistribute: %s\narchive: %s\nlogs: %s' \
+            "$WEEK" \
+            "${{ steps.tests.conclusion }}" \
+            "${{ steps.fred.conclusion }}" \
+            "${{ steps.generate.conclusion }}" \
+            "${{ steps.distribute.conclusion }}" \
+            "${{ steps.archive.conclusion }}" \
+            "$LOG_URL")
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${MSG}" \
+            -o /dev/null -w "telegram http_code=%{http_code}\n"

@@ -140,9 +140,12 @@ def test_startup_passes_normalized_settings(tmp_path, monkeypatch):
                for i, c in enumerate(calls) if i != 1)
 
 
-def test_rss_main_consumes_settings(monkeypatch):
+def test_rss_main_consumes_settings(monkeypatch, tmp_path):
     import ai_extract
     import data_utils
+    fake_cli = tmp_path / 'gemini-call.py'
+    fake_cli.write_text('#!/usr/bin/env python3\n')
+    monkeypatch.setenv('GEMINI_CLI', str(fake_cli))
     monkeypatch.setenv('JSOSIF_RSS_COUNT', '12')
     monkeypatch.setenv('JSOSIF_RSS_MAX_ATTEMPTS', '2')
     monkeypatch.setenv('JSOSIF_RSS_TIMEOUT', '7')

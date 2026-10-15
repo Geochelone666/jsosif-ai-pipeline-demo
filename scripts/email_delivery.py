@@ -71,9 +71,30 @@ def load_snapshot(path):
 
 
 def _recipient_display_name(address):
-    """Derive a display name from a mailbox address (local part, first letter capitalized)."""
-    local = address.split('@', 1)[0]
-    return local[:1].upper() + local[1:] if local else address
+    """Return a greeting name derived from the email address prefix.
+
+    Rule (user decision 2026-10-15): UWindsor student emails are
+    name + identifier (trailing digits or a single letter). Strip the
+    identifier, keep only the name part, capitalize first letter.
+    No config lookup, no API, no hardcoding.
+    zhou6u@uwindsor.ca -> Zhou, rodrick1@uwindsor.ca -> Rodrick,
+    gibbm@uwindsor.ca -> Gibb, saprad@uwindsor.ca -> Sapra,
+    mahboobn@uwindsor.ca -> Mahboob.
+    """
+    local = address.split('@', 1)[0].strip()
+    if not local:
+        return address
+    # Strip trailing identifier: digits optionally followed by a single letter
+    # (e.g. zhou6u -> zhou, rodrick1 -> rodrick).
+    name = re.sub(r'[0-9]+[a-zA-Z]?$', '', local)
+    if name == local:
+        # No trailing digits: strip a single trailing letter identifier only
+        # when the remaining name is long enough to survive it
+        # (e.g. gibbm -> gibb, saprad -> sapra, mahboobn -> mahboob).
+        # Do NOT apply after digits were stripped (rodrick must stay rodrick).
+        if len(name) >= 4:
+            name = re.sub(r'[a-zA-Z]$', '', name)
+    return name[:1].upper() + name[1:] if name else local[:1].upper() + local[1:]
 
 
 def _normalize_pdf_paths(pdf_path):
@@ -89,13 +110,16 @@ def _normalize_pdf_paths(pdf_path):
     return result
 
 
-def _build_brief_email(snapshots, recipients, pdf_paths):
+def _build_brief_email(snapshots, recipients, pdf_paths, greeting_name=None):
     """Short cover-note format: greeting, report list, sign-off.
 
     Details live in the PDF attachments; the body only introduces them.
+    greeting_name overrides the address-prefix greeting when the caller
+    wants a different display name.
     """
     title = 'JSOSIF Intelligence Reports | ' + '; '.join(f'{day} {ticker}' for ticker, day, *_ in snapshots)
-    name = _recipient_display_name(recipients[0])
+    name = greeting_name.strip() if isinstance(greeting_name, str) and greeting_name.strip() \
+        else _recipient_display_name(recipients[0])
     plain = [
         f'Hi {name},',
         '',
@@ -123,7 +147,8 @@ def _build_brief_email(snapshots, recipients, pdf_paths):
     return message
 
 
-def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=False):
+def build_email(paths, recipients, *, review_only=False, pdf_path=None,
+                brief=False, greeting_name=None):
     # Empty recipients remain visibly pending in offline review artifacts.
     if not (review_only and recipients == []):
         recipients = validate_recipients(recipients)
@@ -138,7 +163,8 @@ def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=Fa
         raise ValueError('At least one snapshot is required')
     pdf_paths = _normalize_pdf_paths(pdf_path)
     if brief:
-        return _build_brief_email(snapshots, recipients, pdf_paths)
+        return _build_brief_email(snapshots, recipients, pdf_paths,
+                                  greeting_name=greeting_name)
     title = 'JSOSIF snapshot | ' + '; '.join(f'{day} {ticker}' for ticker, day, *_ in snapshots)
     plain, html = [title], [f'<html><body><h1>{escape(title)}</h1>']
 
@@ -246,6 +272,9 @@ def main(argv=None):
                         help='Attach PDF report file(s) to the email')
     parser.add_argument('--brief', action='store_true',
                         help='Use short cover-note body (greeting + report list + sign-off)')
+    parser.add_argument('--greeting-name', default=None,
+                        help='Override the greeting display name. '
+                             'Defaults to the email address prefix, capitalized.')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--dry-run', action='store_true', help='Generate only (default)')
     mode.add_argument('--send', action='store_true', help='Send via Gmail SMTP (requires config/gmail.json)')
@@ -254,7 +283,8 @@ def main(argv=None):
         raise NotImplementedError('发送需 Lucas 明确批准')
     try:
         message = build_email(args.snapshots, load_recipients(args.recipients),
-                              pdf_path=args.pdf, brief=args.brief)
+                              pdf_path=args.pdf, brief=args.brief,
+                              greeting_name=args.greeting_name)
     except (ValueError, OSError):
         parser.error('Invalid snapshot or recipients configuration; check filenames, identities and JSON schema')
     if args.send:
