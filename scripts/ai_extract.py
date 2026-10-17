@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Fetch Google News RSS for the selected ticker, then rule-first extraction with Flash-Lite fallback."""
 from email.utils import parsedate_to_datetime
+from datetime import date, timedelta, datetime, timezone
 import html
 import http.client
 import json
@@ -12,7 +13,7 @@ import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 
-CLI = "/home/hatch/workspace/skills/google-ai-studio/bin/gemini-call.py"
+CLI = None  # Use the portable REST provider unless GEMINI_CLI is explicitly set.
 
 
 class RSSFetchError(Exception):
@@ -46,10 +47,13 @@ def rss_status(url, attempts, items=0, error=None):
                 attempts=attempts, url=url, items=items)
 
 
-def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep, timeout=30):
+def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep, timeout=30,
+              as_of=None, window_days=None):
     """Return (item list, status); retry transient failures after 0.5, 1, ... seconds."""
     if not isinstance(max_attempts, int) or isinstance(max_attempts, bool) or max_attempts < 1:
         raise ValueError('max_attempts must be a positive integer')
+    cutoff = date.fromisoformat(as_of) if as_of else date.today()
+    earliest = cutoff - timedelta(days=window_days) if window_days else None
     url = rss_url(query)
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     for attempt in range(1, max_attempts + 1):
@@ -82,9 +86,10 @@ def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep, timeout=30):
             headline, source = title, ""
         pub_date = it.findtext("pubDate") or ""
         try:
-            if parsedate_to_datetime(pub_date).date().isoformat() > "2026-10-03":
+            published = parsedate_to_datetime(pub_date).astimezone(timezone.utc).date()
+            if published > cutoff or (earliest and published < earliest):
                 continue
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, OverflowError):
             continue
         items.append({
             "headline": headline,
@@ -103,6 +108,7 @@ ALIASES = {
 }
 from universe import COMPANIES
 ALIASES.update({ticker: (name.lower(),) for ticker, name in COMPANIES.items()})
+ALIASES['J'] = ('jacobs solutions', 'jacobs')
 # Specific corporate events precede generic earnings/market vocabulary.
 EVENTS = {
     'acquisition': r'acquisition|acquir(?:e[sd]?|ing)|merger|takeover|buyout',
@@ -139,18 +145,32 @@ def classify_rule(item, ticker):
     import re
     headline = item['headline']
     text = headline.lower()
-    companies = [symbol for symbol, names in ALIASES.items()
-                 if any(re.search(r'\b' + re.escape(name) + r'\b', text)
-                        for name in (*names, symbol.lower()))]
+    def mentions(symbol, names):
+        named = any(re.search(r'\b' + re.escape(name) + r'\b', text) for name in names)
+        # A one-letter ticker is ambiguous in prose (notably J&J versus Jacobs).
+        coded = (bool(re.search(r'\$' + re.escape(symbol) + r'\b|\(' + re.escape(symbol) + r'\)', headline))
+                 if len(symbol) == 1 else bool(re.search(r'\b' + re.escape(symbol.lower()) + r'\b', text)))
+        return named or coded
+
+    companies = [symbol for symbol, names in ALIASES.items() if mentions(symbol, names)]
     event = next((name for name, pattern in EVENTS.items()
                   if re.search(r'(?<![a-z0-9])(?:' + pattern + r')(?![a-z0-9])', text)), 'unknown')
     if event == 'unknown' and re.search(r'\b(?:falls?|rises?|gains?|drops?)\s+\d+(?:\.\d+)?%', text):
         event = 'market_move'
-    # A competitor's price move is not a target-company price move.
+    # A competitor's event is not a target-company event.
     other_subject = False
-    if event == 'market_move' and not text.startswith('stocks making'):
-        subject = re.split(r'\b(?:stock|shares)\b', text, maxsplit=1)[0]
-        other_subject = not any(re.search(r'\b'+re.escape(name)+r'\b', subject) for name in (*ALIASES.get(ticker, ()), ticker.lower()))
+    if not (event == 'market_move' and text.startswith('stocks making')):
+        # Only unambiguous target-led statements qualify for automatic rules.
+        # A mention such as "Visa rival Mastercard wins ..." is not Visa's event.
+        names = list(ALIASES.get(ticker, ()))
+        if len(ticker) > 1:
+            names.append(ticker.lower())
+        target = r'(?:' + '|'.join(re.escape(name) for name in names) + r')\b'
+        code = r'(?:\$' + re.escape(ticker.lower()) + r'\b|\(' + re.escape(ticker.lower()) + r'\))'
+        lead_target = re.match(r'^\s*(?:' + target + '|' + code + r')', text)
+        other_subject = not lead_target or bool(re.match(
+            r"\s*(?:\([A-Za-z0-9.$:-]+\)\s*)?(?:['’]s\s+)?(?:rival|competitor|peer|supplier|customer|partner|and|versus|vs)\b|\s*:",
+            text[lead_target.end():] if lead_target else ''))
     # A factual lead remains classifiable when followed by a commentary question.
     # Leading questions and conditional claims remain AI candidates.
     lead = re.split(r"[.!]\s+(?=[A-Z])|:\s+(?=(?:Is|What's|What is))|\s[-–—]\s+(?=(?:What|Still|Here))", headline)[0].lower()
@@ -321,8 +341,8 @@ def _parse_gemini_json(text):
     return json.loads(t)
 
 
-def extract(items, ticker, call_ai=None):
-    data = {'ticker': ticker, 'as_of': '2026-10-03', **{k: [] for k in KEYS}}
+def extract(items, ticker, call_ai=None, as_of=None):
+    data = {'ticker': ticker, 'as_of': as_of or date.today().isoformat(), **{k: [] for k in KEYS}}
     pending = []
     seen = set()
     for item in items:
@@ -388,7 +408,9 @@ def extract(items, ticker, call_ai=None):
                 data['ai_skipped'] = skipped
             pending = [it for it in pending if it['headline'] not in used]
         except Exception as exc:
-            data['error'] = f'AI unavailable: {exc}'
+            # HTTP and CLI transports expose safe messages; never include OS paths.
+            detail = type(exc).__name__ if isinstance(exc, OSError) else str(exc)
+            data['error'] = f'AI unavailable: {detail}'
     # Preserve unresolved headlines for audit, without inventing report classifications.
     data['unclassified'] = [classify_rule(it, ticker)[1] for it in pending]
     data['extraction_stats'] = {
@@ -410,6 +432,9 @@ def call_gemini(items, ticker):
         'impact high/medium/low, horizon short/medium/long, confidence 0-1, '
         'event_type from ' + ', '.join(EVENTS) + ', or unknown; '
         'sentiment positive/negative/neutral/unknown. Do not infer facts absent from headlines. '
+        'Distinguish the event subject from companies merely mentioned for comparison. '
+        'A competitor winning a contract is not a target-company tailwind. '
+        'J means Jacobs, not Johnson & Johnson/J&J; V means Visa. '
         'News: ' + json.dumps(items)
     )
     path = DATA / ticker_file(ticker, 'ai-prompt.txt')
@@ -422,13 +447,19 @@ def call_gemini(items, ticker):
     if delay:
         time.sleep(delay)
     last_call.write_text(str(time.time()))
+    cli = os.environ.get('GEMINI_CLI')
+    if not cli:
+        from gemini_provider import generate_json
+        envelope = generate_json(prompt, model=os.environ.get('GEMINI_MODEL', MODEL))
+        save(ticker_file(ticker, 'ai-envelope.json'), envelope)
+        return _parse_gemini_json(envelope['text'])
     res = subprocess.run(
-        [os.environ.get('GEMINI_CLI', CLI), '--model', MODEL,
+        [cli, '--model', os.environ.get('GEMINI_MODEL', MODEL),
          '--json-output', '--prompt', '@' + str(path)],
         capture_output=True, text=True, timeout=180,
     )
     if res.returncode:
-        raise RuntimeError(f'Gemini exit {res.returncode}: {res.stderr.strip()[:500]}')
+        raise RuntimeError(f'Gemini CLI exited with status {res.returncode}')
     # Persist the raw stdout before parsing so malformed payloads stay debuggable.
     save(ticker_file(ticker, 'ai-envelope-raw.json'),
          {'stdout': res.stdout, 'stderr': (res.stderr or '')[:500],
@@ -441,15 +472,16 @@ def call_gemini(items, ticker):
         result = _parse_gemini_json(envelope['text'])
     except (KeyError, TypeError, json.JSONDecodeError) as exc:
         head = str(envelope.get('text') if isinstance(envelope, dict) else '')[:200]
-        raise RuntimeError(f'Gemini payload not JSON: {exc}; text head: {head!r}')
+        raise RuntimeError('Gemini payload was not valid JSON') from None
     save(ticker_file(ticker, 'ai-envelope.json'), envelope)
     return result
 
 
 def main():
-    from data_utils import save, ticker_arg, ticker_file
+    from data_utils import save, ticker_arg, ticker_file, as_of_date
     import os
     ticker = ticker_arg()
+    as_of = as_of_date().isoformat()
     query = f'{COMPANIES[ticker]} {ticker} stock'
     rss_options = {}
     for option in ('max_attempts', 'timeout'):
@@ -458,16 +490,19 @@ def main():
             rss_options[option] = int(os.environ[env_name])
     try:
         items, fetch_status = fetch_rss(
-            query, int(os.environ.get('JSOSIF_RSS_COUNT', '25')), **rss_options)
+            query, int(os.environ.get('JSOSIF_RSS_COUNT', '25')),
+            as_of=as_of, window_days=7, **rss_options)
     except RSSFetchError as exc:
         items = []
-        data = extract([], ticker)
+        data = extract([], ticker, as_of=as_of)
         data['error'] = str(exc)
         fetch_status = rss_status(rss_url(query), exc.attempts, error=exc)
         fetch_status['detail'] = exc.detail
         print(str(exc), file=sys.stderr)
     else:
-        data = extract(items, ticker, call_gemini)
+        data = extract(items, ticker, call_gemini, as_of=as_of)
+    data['fetched_at'] = datetime.now(timezone.utc).isoformat()
+    data['model'] = os.environ.get('GEMINI_MODEL', MODEL)
     data['fetch_status'] = fetch_status
     save(ticker_file(ticker, 'rss-items.json'), items)
     save(ticker_file(ticker, 'ai-intel.json'), data)
@@ -476,3 +511,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

@@ -48,7 +48,9 @@ def run_once(lock_path):
             # Keep the lock inode: unlinking it would allow overlapping owners.
             LOGGER.info('Distribution started')
             result = subprocess.run(
-                [sys.executable, str(ROOT / 'scripts/distribute_team_reports.py'), '--send'],
+                [sys.executable, str(ROOT / 'scripts/deliver_weekly.py'),
+                 '--config', str(ROOT / 'config/subscriptions.local.json'),
+                 '--store', str(ROOT / 'report-store'), '--send'],
                 cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                 pass_fds=(lock.fileno(),),
             )
@@ -107,3 +109,4 @@ def main(argv=None):
 
 if __name__ == '__main__':
     sys.exit(main())
+

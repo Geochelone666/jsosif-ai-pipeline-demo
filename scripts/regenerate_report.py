@@ -107,11 +107,11 @@ report = f"""# {TICKER} Intelligence Demo
 - Report as_of: **{AS_OF}**
 - Market data as_of: **{quant.get('as_of') or 'N/A'}**
 - Quant sources: {', '.join(quant.get('sources', [])) or 'N/A'}
-- AI analysis snapshot as_of: **{ai.get('as_of', 'N/A')}** (retained; this run refreshes market data only)
-- Snapshot note: the report-date daily bar may be intraday until the US market closes; its Close field is provisional. News, peers, earnings, EDGAR and macro sections reuse their existing snapshots.
+- AI analysis snapshot as_of: **{ai.get('as_of', 'N/A')}**
+- Snapshot note: report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.
 - Market data fetched_at (UTC): **{quant.get('fetched_at', 'N/A')}**
 - AI status: **{'N/A: ' + ai['error'] if ai.get('error') else 'Available'}**
-- AI model: **gemini-3.5-flash-lite** (25 Google News RSS headlines -> AI extraction and classification; free-tier grounding unavailable, using RSS + AI)
+- AI model (configured): **{ai.get('model', 'legacy snapshot / rules')}** (RSS headlines; rule and AI item counts: {ai.get('extraction_stats', {})})
 
 {quant_table}
 Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
@@ -158,10 +158,10 @@ def append_free_source_sections():
     quant, info = load('quant.json'), load('info.json')
     q = quant['metrics']
     growth, ret = number(q.get('Revenue growth (%)')), number(q.get('Return 1Y (%)'))
-    nvda = {'ticker': TICKER, 'pe': q.get('P/E (trailing)'), 'pb': q.get('P/B'), 'ev_ebitda': q.get('EV/EBITDA'), 'revenue_growth': growth / 100 if growth is not None else None, 'mktcap': info.get('marketCap'), 'ret_1y': ret / 100 if ret is not None else None}
-    out = ['## PEER COMPARABLES', '', '| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (USD) | 1Y return (%) |', '|---|---:|---:|---:|---:|---:|---:|']
+    nvda = {'ticker': TICKER, 'pe': q.get('P/E (trailing)'), 'pb': q.get('P/B'), 'ev_ebitda': q.get('EV/EBITDA'), 'revenue_growth': growth / 100 if growth is not None else None, 'mktcap': info.get('marketCap'), 'ret_1y': ret / 100 if ret is not None else None, 'currency': info.get('currency')}
+    out = ['## PEER COMPARABLES', '', '| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (listing currency) | 1Y return (%) |', '|---|---:|---:|---:|---:|---:|---:|']
     for row in [nvda] + peers['peers']:
-        cells = [row['ticker'], fmt(row['pe']), fmt(row['pb']), fmt(row['ev_ebitda']), fmt(row['revenue_growth'], True), fmt(row['mktcap']), fmt(row['ret_1y'], True)]
+        cells = [row['ticker'], fmt(row['pe']), fmt(row['pb']), fmt(row['ev_ebitda']), fmt(row['revenue_growth'], True), fmt(row['mktcap']) + ' ' + (row.get('currency') or 'unknown currency'), fmt(row['ret_1y'], True)]
         if row['ticker'] == TICKER:
             cells = [f'**{cell}**' for cell in cells]
         out.append('| ' + ' | '.join(cells) + ' |')
@@ -181,3 +181,7 @@ def append_free_source_sections():
 
 
 append_free_source_sections()
+
+from freeze_report import freeze
+freeze(REPORT, quant, ai)
+

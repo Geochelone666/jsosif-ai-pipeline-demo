@@ -1,0 +1,24 @@
+name: Offline regression tests
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: PYTHONPATH=scripts python -m pytest --import-mode=importlib tests scripts -q
+      - name: Build an offline preview from existing historical reports
+        run: |
+          python scripts/import_history.py --reports reports --store "$RUNNER_TEMP/report-preview"
+          python scripts/build_site.py --store "$RUNNER_TEMP/report-preview" --output site-preview
+      - uses: actions/upload-artifact@v4
+        with:
+          name: research-site-preview
+          path: site-preview
+          retention-days: 14

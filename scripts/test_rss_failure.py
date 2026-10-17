@@ -87,7 +87,7 @@ def test_main_writes_status(monkeypatch, tmp_path, capsys, failed):
         return io.BytesIO(EMPTY)
     monkeypatch.setattr(ai.urllib.request, 'urlopen', respond)
     fetch = ai.fetch_rss
-    monkeypatch.setattr(ai, 'fetch_rss', lambda *a: fetch(*a, sleep=lambda _: None))
+    monkeypatch.setattr(ai, 'fetch_rss', lambda *a, **kw: fetch(*a, **kw, sleep=lambda _: None))
     monkeypatch.setattr(data_utils, 'DATA', tmp_path)
     monkeypatch.setattr(data_utils, 'ticker_arg', lambda: 'CNQ.TO')
     monkeypatch.setattr(ai, 'call_gemini', lambda *a: pytest.fail('empty news must not call AI'))
@@ -127,3 +127,4 @@ def test_invalid_attempt_budget(monkeypatch, max_attempts):
     monkeypatch.setattr(ai.urllib.request, 'urlopen', lambda *a, **kw: pytest.fail('must not fetch'))
     with pytest.raises(ValueError, match='positive integer'):
         ai.fetch_rss('test', max_attempts=max_attempts)
+

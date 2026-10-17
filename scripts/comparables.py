@@ -2,7 +2,7 @@
 from datetime import date, timedelta
 import pandas as pd
 import yfinance as yf
-from data_utils import number, save, ticker_arg, ticker_file, SUPPORTED
+from data_utils import number, save, ticker_arg, ticker_file, SUPPORTED, as_of_date
 
 # Configure sector peers separately; never reuse the old technology peers.
 PEERS = {
@@ -36,13 +36,14 @@ FIELDS = {'pe': 'trailingPE', 'pb': 'priceToBook', 'ev_ebitda': 'enterpriseToEbi
 
 def main():
     symbol_arg = ticker_arg()
-    today = date.today()
+    today = as_of_date()
     peers = []
     for symbol in PEERS[symbol_arg]:
-        row = {'ticker': symbol, **dict.fromkeys(FIELDS), 'ret_1y': None}
+        row = {'ticker': symbol, **dict.fromkeys(FIELDS), 'ret_1y': None, 'currency': None}
         ticker = yf.Ticker(symbol)
         try:
             info = ticker.info
+            row['currency'] = info.get('currency')
             row.update({key: number(info.get(field)) for key, field in FIELDS.items()})
         except Exception as exc:
             print(f'{symbol} info unavailable: {type(exc).__name__}')
@@ -65,3 +66,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

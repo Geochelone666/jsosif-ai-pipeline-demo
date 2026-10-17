@@ -57,3 +57,16 @@ def test_invalid_assignments(tmp_path, assignments):
     config.write_text(json.dumps({'assignments': assignments}))
     with pytest.raises(ValueError):
         team.prepare(config, tmp_path)
+
+
+def test_two_members_same_stock_keep_separate_previews(tmp_path):
+    config = tmp_path / 'team.json'
+    config.write_text(json.dumps({'assignments': {
+        'alice@example.com': 'CSCO', 'bob@example.com': 'CSCO'}}))
+    output = tmp_path / 'previews'
+    team.main(['--config', str(config), '--date', '20261008', '--output-dir', str(output)])
+    files = list(output.glob('*.eml'))
+    assert len(files) == 2
+    assert {str(BytesParser(policy=policy.default).parsebytes(p.read_bytes())['To'])
+            for p in files} == {'alice@example.com', 'bob@example.com'}
+

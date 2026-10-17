@@ -34,13 +34,16 @@ def snapshot_payload(path, *, from_markdown=False):
         return metadata
     def field(label):
         match = re.search(r'^- ' + re.escape(label) + r': (.+)$', header, re.M)
-        return match.group(1) if match else 'N/A: missing from snapshot'
+        return match.group(1).replace('**', '') if match else 'N/A: missing from snapshot'
     quant = []
     for line in sections.get('QUANTITATIVE', '').splitlines():
         cells = [cell.strip() for cell in line.strip('|').split('|')]
         if (line.startswith('|') and len(cells) == 2 and cells[0] != 'Metric'
                 and not re.fullmatch(r'[-: ]+', cells[0])):
-            quant.append(dict(metric=cells[0], value=cells[1], availability='ok', reason=None))
+            missing = cells[1] in ('N/A', 'Unavailable')
+            quant.append(dict(metric=cells[0], value=None if missing else cells[1],
+                              availability='missing' if missing else 'ok',
+                              reason='N/A: source data unavailable' if missing else None))
     return {
         'contract_version': contract.CONTRACT_VERSION,
         'identity': dict(ticker=ticker, as_of=day, report_stamp=day.replace('-', '')),
@@ -50,8 +53,10 @@ def snapshot_payload(path, *, from_markdown=False):
         'freshness': dict(report_as_of=day, market_data_as_of=field('Market data as_of'),
                           market_data_fetched_at=field('Market data fetched_at (UTC)'),
                           ai_snapshot_as_of=field('AI analysis snapshot as_of'),
-                          snapshot_note=field('Snapshot note'), assumptions_version='N/A',
-                          assumptions_checked={}, no_refresh_note=contract.NO_REFRESH_NOTE),
+                          snapshot_note=field('Snapshot note'),
+                          assumptions_version=str(metadata.get('assumptions_version', 'N/A')),
+                          assumptions_checked=metadata.get('assumptions_checked', {}),
+                          no_refresh_note=contract.NO_REFRESH_NOTE),
         'disclaimer': email.DISCLAIMER,
     }
 
@@ -131,7 +136,7 @@ def build(out, addresses, holdings):
                 if not freeze.determinism_check(snapshot_payload, path):
                     errors.append('Snapshot repeat-build drift detected')
                 if not errors and path.with_suffix('.json').exists():
-                    if payload != snapshot_payload(path, from_markdown=True):
+                    if {key: payload.get(key) for key in contract.REQUIRED_TOP_LEVEL} != snapshot_payload(path, from_markdown=True):
                         errors.append('Frozen sidecar / Markdown drift detected')
                 if not errors:
                     message = email.build_email([path], addresses, review_only=True)
@@ -204,3 +209,4 @@ def main(argv=None):
 
 if __name__ == '__main__':
     main()
+

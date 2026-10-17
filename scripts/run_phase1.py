@@ -9,10 +9,12 @@ from data_utils import ROOT, SCRIPTS, SUPPORTED
 # No HOME/USERPROFILE, proxy URLs, Python startup controls, or unrelated secrets.
 # The absolute interpreter is used below; PATH also supports the Gemini CLI shebang.
 RUNTIME_ENV = ('PATH', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TMPDIR', 'TMP', 'TEMP',
-               'SYSTEMROOT', 'WINDIR')
+               'SYSTEMROOT', 'WINDIR', 'HTTP_PROXY', 'HTTPS_PROXY', 'NO_PROXY',
+               'http_proxy', 'https_proxy', 'no_proxy', 'SSL_CERT_FILE',
+               'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE')
 SCRIPT_ENV = {
     'quant': (),
-    'ai_extract': ('GEMINI_CLI', 'GEMINI_API_KEY', 'GOOGLE_API_KEY'),
+    'ai_extract': ('GEMINI_CLI', 'GEMINI_API_KEY', 'GOOGLE_API_KEY', 'GEMINI_MODEL'),
     'comparables': (),
     'earnings': (),
     'edgar': (),
@@ -43,3 +45,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

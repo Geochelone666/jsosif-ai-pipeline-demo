@@ -177,13 +177,14 @@ company = esc(info.get('longName') or TICKER)
 story.append(p(f'{company} &nbsp;|&nbsp; {esc(info.get("sector") or "N/A")} '
                f'&nbsp;/&nbsp; {esc(info.get("industry") or "N/A")}',
                'subtitle'))
-story.append(p('AI status: <b>%s</b> &nbsp;|&nbsp; AI model: <b>gemini-3.5-flash-lite</b> '
-               '(Google News RSS headlines &rarr; AI extraction and classification)'
-               % esc('N/A: ' + ai['error'] if ai.get('error') else 'Available'),
+story.append(p('AI status: <b>%s</b> &nbsp;|&nbsp; Configured model: <b>%s</b> '
+               '&nbsp;|&nbsp; News snapshot: <b>%s</b>'
+               % (esc('N/A: ' + ai['error'] if ai.get('error') else 'Available'),
+                  esc(ai.get('model', 'legacy snapshot / rules')), esc(ai.get('as_of', 'N/A'))),
                'small'))
-story.append(p('Snapshot note: the report-date daily bar may be intraday until the US '
-               'market closes; its Close field is provisional. News, peers, earnings, '
-               'EDGAR and macro sections reuse their existing snapshots.',
+story.append(p('Report rendering uses saved source snapshots with separate observation dates. '
+               'The daily price bar may be provisional before the listing market closes. '
+               'Check source dates and availability.',
                'small'))
 story.append(Spacer(1, 6))
 
@@ -287,7 +288,7 @@ if peers:
           'ev_ebitda': q.get('EV/EBITDA'),
           'revenue_growth': growth / 100 if growth is not None else None,
           'mktcap': info.get('marketCap'),
-          'ret_1y': ret / 100 if ret is not None else None}
+          'ret_1y': ret / 100 if ret is not None else None, 'currency': info.get('currency')}
 
 
     def pfmt(v, pct=False):
@@ -312,12 +313,12 @@ if peers:
         is_me = row['ticker'] == TICKER
         cells = [row['ticker'], pfmt(row.get('pe')), pfmt(row.get('pb')),
                  pfmt(row.get('ev_ebitda')), pfmt(row.get('revenue_growth'), True),
-                 mcap_fmt(row.get('mktcap')), pfmt(row.get('ret_1y'), True)]
+                 mcap_fmt(row.get('mktcap')) + ' ' + esc(row.get('currency') or '?'), pfmt(row.get('ret_1y'), True)]
         prows.append([bold(c) if is_me else c for c in cells])
     cw = [W * 0.14, W * 0.12, W * 0.12, W * 0.14, W * 0.18, W * 0.16, W * 0.14]
     story.append(styled_table(
         ['Ticker', 'P/E', 'P/B', 'EV/EBITDA', 'Rev growth (%)',
-         'Mkt cap (USD)', '1Y ret (%)'],
+         'Mkt cap (local)', '1Y ret (%)'],
         prows, cw, right_cols=(1, 2, 3, 4, 5, 6)))
     story.append(p(f'Peers fetched as_of: {esc(peers_doc.get("as_of", "N/A"))}; '
                    f'{esc(TICKER)} reuses existing data. Fundamentals are yfinance '
@@ -431,3 +432,4 @@ frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id='main'
 doc.addPageTemplates([PageTemplate(id='page', frames=[frame], onPage=footer)])
 doc.build(story)
 print(f'PDF written: {OUT} ({OUT.stat().st_size / 1024:.1f} KB)')
+

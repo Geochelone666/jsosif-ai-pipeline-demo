@@ -4,7 +4,7 @@ import json
 import os
 from urllib.parse import urlencode
 from urllib.request import urlopen
-from data_utils import number, save
+from data_utils import number, save, as_of_date
 
 SERIES = {'UNRATE': 'Unemployment rate (%)', 'CPIAUCSL': 'Consumer Price Index (1982–1984=100)', 'FEDFUNDS': 'Federal funds rate (%)', 'NAPM': 'ISM Manufacturing PMI'}
 
@@ -26,7 +26,7 @@ def main():
     indicators = []
     for series_id, name in SERIES.items():
         row = {'series_id': series_id, 'name': name, 'value': None, 'date': None}
-        params = urlencode({'api_key': key, 'series_id': series_id, 'file_type': 'json', 'sort_order': 'desc', 'limit': 100, 'observation_end': date.today().isoformat()})
+        params = urlencode({'api_key': key, 'series_id': series_id, 'file_type': 'json', 'sort_order': 'desc', 'limit': 100, 'observation_end': as_of_date().isoformat()})
         try:
             with urlopen('https://api.stlouisfed.org/fred/series/observations?' + params, timeout=30) as response:
                 observations = json.load(response)['observations']
@@ -39,8 +39,9 @@ def main():
             # Never print the request URL containing the API key.
             print(f'{series_id} unavailable: {type(exc).__name__}')
         indicators.append(row)
-    save('fred.json', {'available': True, 'as_of': date.today().isoformat(), 'indicators': indicators})
+    save('fred.json', {'available': True, 'as_of': as_of_date().isoformat(), 'indicators': indicators})
     print(f'FRED: {len(indicators)} rows; {sum(r["value"] is not None for r in indicators)}/4 values')
 
 if __name__ == '__main__':
     main()
+

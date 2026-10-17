@@ -60,6 +60,9 @@ def validate_snapshot(payload) -> list[str]:
             date.fromisoformat(as_of)
         except ValueError:
             errors.append('identity.as_of must be a valid YYYY-MM-DD date')
+        else:
+            if identity.get('report_stamp') != as_of.replace('-', ''):
+                errors.append('identity.report_stamp must match identity.as_of')
 
     quant = payload.get('quant')
     if not isinstance(quant, list) or not quant:
@@ -109,3 +112,4 @@ def validate_snapshot(payload) -> list[str]:
     if not _nonblank(payload.get('disclaimer')):
         errors.append('disclaimer must be a nonempty string')
     return errors
+
