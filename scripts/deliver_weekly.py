@@ -13,6 +13,34 @@ from report_store import read_json, write_json, resolve_file, digest, persist
 from subscriptions import load, tickers_for
 
 
+def eligible_report(entry, ticker, config, now):
+    """Malformed metadata cannot prevent other reports or members being processed."""
+    try:
+        if not isinstance(entry, dict) or entry['ticker'] != ticker:
+            return False
+        if any(not isinstance(entry.get(field), str) or not entry[field]
+               for field in ('report_id', 'md', 'json', 'pdf')):
+            return False
+        hashes = entry.get('sha256')
+        if not isinstance(hashes, dict) or any(
+                not isinstance(hashes.get(kind), str) or len(hashes[kind]) != 64
+                for kind in ('md', 'json', 'pdf')):
+            return False
+        if entry['quality'] != 'ready' and not (
+                entry['quality'] == 'degraded' and config.get('allow_degraded', False)):
+            return False
+        as_of = date.fromisoformat(entry['as_of'])
+        generated = datetime.fromisoformat(entry['generated_at'])
+        if generated.tzinfo is None or generated.utcoffset() is None:
+            return False
+        age = config.get('max_report_age_days', 4)
+        # Zero means today's UTC report, not an impossible zero-second TTL.
+        return (timedelta(0) <= now.date() - as_of <= timedelta(days=age) and
+                timedelta(0) <= now - generated <= timedelta(days=max(1, age)))
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return False
+
+
 def due_period(member, now):
     if now.tzinfo is None:
         raise ValueError('now must be timezone-aware')
@@ -48,17 +76,11 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 continue
             selected = []
             for ticker in tickers_for(config, member):
-                candidates = [r for r in index['reports'] if r['ticker'] == ticker and
-                              (r['quality'] == 'ready' or
-                               (r['quality'] == 'degraded' and config.get('allow_degraded', False))) and
-                              timedelta(0) <= now.date() - date.fromisoformat(r['as_of']) <=
-                              timedelta(days=config.get('max_report_age_days', 4)) and
-                              timedelta(0) <= now - datetime.fromisoformat(r['generated_at']) <=
-                              timedelta(days=config.get('max_report_age_days', 4))]
+                candidates = [r for r in index['reports'] if eligible_report(r, ticker, config, now)]
                 if not candidates:
                     selected = []
                     break
-                selected.append(max(candidates, key=lambda r: r['generated_at']))
+                selected.append(max(candidates, key=lambda r: datetime.fromisoformat(r['generated_at'])))
             if not selected:
                 summary['deferred'] += 1
                 continue
@@ -78,7 +100,7 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 message['Message-ID'] = make_msgid()
                 if len(message.as_bytes()) > 20 * 1024 * 1024:
                     raise ValueError('Digest exceeds the 20 MiB encoded message budget')
-            except (ValueError, OSError):
+            except (ValueError, OSError, KeyError, TypeError):
                 summary['deferred'] += 1
                 continue
             if not really_send:

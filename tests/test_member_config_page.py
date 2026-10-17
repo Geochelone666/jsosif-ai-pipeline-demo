@@ -50,3 +50,29 @@ process.stdout.write(JSON.stringify(outcomes));
     result = subprocess.run([node, str(target)], input=json.dumps(values), capture_output=True,
                             text=True, check=True)
     assert json.loads(result.stdout) == expected
+
+
+def test_browser_export_canonicalizes_timezones_for_python(tmp_path):
+    node = shutil.which('node')
+    if not node:
+        pytest.skip('Node required')
+    root = Path(__file__).resolve().parents[1]
+    script = (root / 'docs/members.html').read_text().split('<script>', 1)[1].split('</script>', 1)[0]
+    fixture = json.loads((root / 'config/subscriptions.example.json').read_text())
+    target = tmp_path / 'export-validator.js'
+    target.write_text(script + '''
+const fs = require('node:fs');
+const config = JSON.parse(fs.readFileSync(0, 'utf8'));
+process.stdout.write(JSON.stringify(JSOSIFConfig.validateConfig(config)));
+''')
+    for zone in ('america/toronto', 'america/new_york', 'UTC', 'US/Eastern'):
+        fixture['members'][0]['timezone'] = zone
+        result = subprocess.run([node, str(target)], input=json.dumps(fixture),
+                                capture_output=True, text=True, check=True)
+        exported = json.loads(result.stdout)
+        validate(exported)  # The exact exported JSON must load in the real sender.
+        assert exported['members'][0]['timezone'] != 'america/toronto'
+    fixture['members'][0]['timezone'] = '+05:30'
+    result = subprocess.run([node, str(target)], input=json.dumps(fixture),
+                            capture_output=True, text=True)
+    assert result.returncode != 0

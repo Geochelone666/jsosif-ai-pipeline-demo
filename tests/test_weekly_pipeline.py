@@ -307,3 +307,64 @@ def test_history_import_does_not_postpone_real_collection():
                          {'ticker': 'JPM', 'generated_at': '2026-10-18T12:00:00+00:00', 'quality': 'ready'}]}
     selected, _ = quota_plan(['CSCO', 'JPM'], index, 5)
     assert selected == ['CSCO']
+
+
+def test_zero_age_allows_today_but_not_yesterday(config, store):
+    config['max_report_age_days'] = 0
+    validate(config)
+    assert weekly.deliver(config, store, now=NOW)['prepared'] == 1
+    index = read_json(store / 'index.json')
+    index['reports'][0]['as_of'] = '2026-10-18'
+    write_json(store / 'index.json', index)
+    assert weekly.deliver(config, store, now=NOW)['deferred'] == 1
+
+
+@pytest.mark.parametrize('changes', [
+    {'generated_at': 'bad-date'}, {'generated_at': '2026-10-19T12:00:00'},
+    {'generated_at': None}, {'as_of': 'bad-date'}, {'as_of': None},
+    {'report_id': None}, {'sha256': None}, {'pdf': None},
+])
+def test_bad_metadata_does_not_block_other_members(config, store, changes):
+    config['members'][0]['groups'] = ['tech']
+    config['groups']['bank'] = {'tickers': ['JPM']}
+    config['members'].append(dict(config['members'][0], id='two',
+                                  email='bob@example.com', groups=['bank']))
+    index = read_json(store / 'index.json')
+    index['reports'][0].update(changes)
+    write_json(store / 'index.json', index)
+    sent = []
+    result = weekly.deliver(config, store, now=NOW, really_send=True, backend=sent.append)
+    assert result['deferred'] == 1 and result['sent'] == 1
+    assert str(sent[0]['To']) == 'bob@example.com'
+
+
+def test_bad_old_metadata_does_not_hide_valid_report(config, store):
+    index = read_json(store / 'index.json')
+    index['reports'].insert(0, dict(index['reports'][0], generated_at='bad-date'))
+    index['reports'].append(None)
+    write_json(store / 'index.json', index)
+    assert weekly.deliver(config, store, now=NOW)['prepared'] == 1
+
+
+@pytest.mark.parametrize('headline,ticker', [
+    ('Visa rival Mastercard wins major contract', 'V'),
+    ("Visa's competitor Mastercard raises its dividend", 'V'),
+    ('Visa (V) rival Mastercard wins major contract', 'V'),
+    ('Visa and Mastercard win major contracts', 'V'),
+    ('Visa rival Mastercard stock rises', 'V'),
+    ('J&J wins major contract', 'J'),
+])
+def test_competitor_and_ambiguous_ticker_news_requires_review(headline, ticker):
+    item = {'headline': headline, 'pubDate': 'Fri, 16 Oct 2026 12:00:00 GMT'}
+    data = ai_extract.extract([item], ticker, as_of='2026-10-17')
+    assert data['extraction_stats']['rule'] == 0
+    assert len(data['unclassified']) == 1
+
+
+@pytest.mark.parametrize('headline,ticker', [
+    ('Visa wins major contract', 'V'), ('Jacobs wins major contract', 'J'),
+    ('$J wins major contract', 'J'), ('(V) wins major contract', 'V'),
+])
+def test_unambiguous_company_and_cashtag_rules_still_work(headline, ticker):
+    item = {'headline': headline, 'pubDate': 'Fri, 16 Oct 2026 12:00:00 GMT'}
+    assert ai_extract.classify_rule(item, ticker)[1]['extraction_method'] == 'rule'

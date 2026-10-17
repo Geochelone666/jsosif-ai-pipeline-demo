@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Prepare one holding email per teammate; dry-run is the default."""
 import argparse
+import hashlib
 from datetime import datetime
 import json
 import os
@@ -70,7 +71,8 @@ def main(argv=None):
         if args.send:
             send(message)
         else:
-            DryRunBackend(args.output_dir / f'{ticker}-{stamp}.eml').deliver(message)
+            member_key = hashlib.sha256(str(message['To']).lower().encode()).hexdigest()[:16]
+            DryRunBackend(args.output_dir / f'{ticker}-{stamp}-{member_key}.eml').deliver(message)
         print(f'{"Sent" if args.send else "Prepared"}: {ticker} | {stamp} | {message["To"]}')
     print(f'{len(messages)} emails {"sent" if args.send else "prepared; no email sent"}.')
 

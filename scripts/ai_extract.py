@@ -108,6 +108,7 @@ ALIASES = {
 }
 from universe import COMPANIES
 ALIASES.update({ticker: (name.lower(),) for ticker, name in COMPANIES.items()})
+ALIASES['J'] = ('jacobs solutions', 'jacobs')
 # Specific corporate events precede generic earnings/market vocabulary.
 EVENTS = {
     'acquisition': r'acquisition|acquir(?:e[sd]?|ing)|merger|takeover|buyout',
@@ -144,18 +145,32 @@ def classify_rule(item, ticker):
     import re
     headline = item['headline']
     text = headline.lower()
-    companies = [symbol for symbol, names in ALIASES.items()
-                 if any(re.search(r'\b' + re.escape(name) + r'\b', text)
-                        for name in (*names, symbol.lower()))]
+    def mentions(symbol, names):
+        named = any(re.search(r'\b' + re.escape(name) + r'\b', text) for name in names)
+        # A one-letter ticker is ambiguous in prose (notably J&J versus Jacobs).
+        coded = (bool(re.search(r'\$' + re.escape(symbol) + r'\b|\(' + re.escape(symbol) + r'\)', headline))
+                 if len(symbol) == 1 else bool(re.search(r'\b' + re.escape(symbol.lower()) + r'\b', text)))
+        return named or coded
+
+    companies = [symbol for symbol, names in ALIASES.items() if mentions(symbol, names)]
     event = next((name for name, pattern in EVENTS.items()
                   if re.search(r'(?<![a-z0-9])(?:' + pattern + r')(?![a-z0-9])', text)), 'unknown')
     if event == 'unknown' and re.search(r'\b(?:falls?|rises?|gains?|drops?)\s+\d+(?:\.\d+)?%', text):
         event = 'market_move'
-    # A competitor's price move is not a target-company price move.
+    # A competitor's event is not a target-company event.
     other_subject = False
-    if event == 'market_move' and not text.startswith('stocks making'):
-        subject = re.split(r'\b(?:stock|shares)\b', text, maxsplit=1)[0]
-        other_subject = not any(re.search(r'\b'+re.escape(name)+r'\b', subject) for name in (*ALIASES.get(ticker, ()), ticker.lower()))
+    if not (event == 'market_move' and text.startswith('stocks making')):
+        # Only unambiguous target-led statements qualify for automatic rules.
+        # A mention such as "Visa rival Mastercard wins ..." is not Visa's event.
+        names = list(ALIASES.get(ticker, ()))
+        if len(ticker) > 1:
+            names.append(ticker.lower())
+        target = r'(?:' + '|'.join(re.escape(name) for name in names) + r')\b'
+        code = r'(?:\$' + re.escape(ticker.lower()) + r'\b|\(' + re.escape(ticker.lower()) + r'\))'
+        lead_target = re.match(r'^\s*(?:' + target + '|' + code + r')', text)
+        other_subject = not lead_target or bool(re.match(
+            r"\s*(?:\([A-Za-z0-9.$:-]+\)\s*)?(?:['’]s\s+)?(?:rival|competitor|peer|supplier|customer|partner|and|versus|vs)\b|\s*:",
+            text[lead_target.end():] if lead_target else ''))
     # A factual lead remains classifiable when followed by a commentary question.
     # Leading questions and conditional claims remain AI candidates.
     lead = re.split(r"[.!]\s+(?=[A-Z])|:\s+(?=(?:Is|What's|What is))|\s[-–—]\s+(?=(?:What|Still|Here))", headline)[0].lower()
@@ -417,6 +432,9 @@ def call_gemini(items, ticker):
         'impact high/medium/low, horizon short/medium/long, confidence 0-1, '
         'event_type from ' + ', '.join(EVENTS) + ', or unknown; '
         'sentiment positive/negative/neutral/unknown. Do not infer facts absent from headlines. '
+        'Distinguish the event subject from companies merely mentioned for comparison. '
+        'A competitor winning a contract is not a target-company tailwind. '
+        'J means Jacobs, not Johnson & Johnson/J&J; V means Visa. '
         'News: ' + json.dumps(items)
     )
     path = DATA / ticker_file(ticker, 'ai-prompt.txt')

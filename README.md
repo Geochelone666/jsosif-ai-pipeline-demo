@@ -75,6 +75,8 @@ with one collection batch per trading day and inspect observed failures.
 
 Every archived version includes immutable MD, JSON, PDF and the source snapshots.
 Same-day reruns receive separate run IDs. Each file has a SHA-256 integrity check.
+Price history is reused only within the current collection batch; later batches
+fetch again so an earlier provisional daily bar cannot mask the closing price.
 Existing saved Markdown is migrated by `scripts/import_history.py` before the
 first refresh. It preserves the original text/date, renders a historical PDF
 without reading today's mutable data snapshots, and marks these versions
@@ -107,7 +109,10 @@ Actual delivery requires `--send`, `JSOSIF_APPROVED_SEND=1`, `GMAIL_USER`, and
 `GMAIL_APP_PASSWORD`. A local ignored `config/gmail.json` remains supported for
 legacy usage. Scheduled delivery does not regenerate reports.
 
-`max_report_age_days` defaults to 4. Degraded reports are blocked unless the
+`max_report_age_days` defaults to 4. Zero means a report dated today in UTC and generated
+within the last 24 hours; positive values bound both the UTC report date and elapsed
+generation age. The member editor canonicalizes time zone names before export.
+Degraded reports are blocked unless the
 private configuration explicitly sets `allow_degraded: true`. Missing/old reports
 defer the whole member digest and are retried by later scans within the same week.
 Both the report date and its generation time must satisfy the age bound, so

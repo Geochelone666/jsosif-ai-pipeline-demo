@@ -1,7 +1,6 @@
 """Price providers with bounded retries and safe, structured diagnostics."""
 import io
 import os
-from datetime import datetime, timezone
 from pathlib import Path
 import time
 import urllib.error
@@ -97,7 +96,10 @@ def fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
                 cache = None
                 if os.environ.get('JSOSIF_PRICE_CACHE'):
                     cache = Path(os.environ['JSOSIF_PRICE_CACHE']) / f'{symbol}-{price_start}-{end}.csv'
-                if cache and cache.is_file() and datetime.fromtimestamp(cache.stat().st_mtime, timezone.utc).date() == datetime.now(timezone.utc).date():
+                # Cache only within one refresh batch. A later run must fetch a new
+                # daily bar, which may have changed since an earlier intraday run.
+                batch_start = os.environ.get('JSOSIF_PRICE_CACHE_BATCH_START')
+                if cache and cache.is_file() and batch_start and cache.stat().st_mtime >= float(batch_start):
                     h = pd.read_csv(cache, index_col=0, parse_dates=True)
                 else:
                     h = yf.Ticker(symbol).history(start=price_start, end=end,

@@ -121,6 +121,7 @@ def main():
     env['JSOSIF_API_USAGE_PATH'] = str(args.store.resolve() / 'state/api-usage.json')
     env['JSOSIF_SEC_CACHE'] = str(args.store.resolve() / 'state/sec-tickers.json')
     env['JSOSIF_PRICE_CACHE'] = str(args.store.resolve() / 'state/price-cache')
+    env['JSOSIF_PRICE_CACHE_BATCH_START'] = str(now.timestamp())
     DATA.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
     subprocess.run([sys.executable, str(ROOT / 'scripts/fred.py')], cwd=ROOT, env=env, check=True)
     run_id = now.strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:8]

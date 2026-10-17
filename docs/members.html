@@ -16,7 +16,7 @@
 <h2>2 · 成员及每周时间</h2><p>一个成员可加入多个组，系统会合并股票，并按成员的时区每周发送一封邮件。</p>
 <div id="members"></div><button id="add-member" type="button">＋ 添加成员</button>
 <h2>3 · 报告要求</h2>
-<div class="card fields"><label>报告最长生成时间（天）<input id="age" type="number" value="4" min="0" max="30" step="1"></label><div><label class="check"><input id="degraded" type="checkbox">允许发送标为降级的报告</label><small>默认关闭。开启后，邮件可包含部分来源缺失的报告。</small></div></div>
+<div class="card fields"><label>报告最长生成时间（天；0 表示 UTC 当天）<input id="age" type="number" value="4" min="0" max="30" step="1"></label><div><label class="check"><input id="degraded" type="checkbox">允许发送标为降级的报告</label><small>默认关闭。开启后，邮件可包含部分来源缺失的报告。</small></div></div>
 <details><summary>查看导出内容</summary><pre id="preview">填写后点击校验。</pre></details>
 <div class="actions"><div class="row"><button id="validate" type="button">校验配置</button><button id="download" type="button" class="primary">下载私有 JSON 配置</button></div><p id="status" role="status" aria-live="polite"></p></div>
 <footer><small>下载文件名：subscriptions.local.json。请将配置放入项目的私有配置或 GitHub 的 SUBSCRIPTIONS_JSON Secret，避免提交真实姓名和邮箱到公开仓库。夏令时重复时刻按第一次计算；跳过的时刻按时间差顺延。</small></footer>
@@ -38,7 +38,7 @@ function validateConfig(config){
     if(ids.has(m.id)||emails.has(m.email.toLowerCase()))throw Error('成员编号或邮箱重复。请将多个小组合并到同一成员。');
     ids.add(m.id);emails.add(m.email.toLowerCase());
     if(typeof m.enabled!=='boolean'||!Number.isInteger(m.send_weekday)||m.send_weekday<0||m.send_weekday>6||!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(m.send_time))throw Error('请检查参与开关、星期和发送时间。');
-    try{new Intl.DateTimeFormat('en',{timeZone:m.timezone})}catch{throw Error('请使用有效时区，例如 America/Detroit 或 America/Toronto。')}
+    try{const zone=new Intl.DateTimeFormat('en',{timeZone:m.timezone}).resolvedOptions().timeZone;if(zone!=='UTC'&&!/^[A-Za-z_]+\/[A-Za-z0-9_+./-]+$/.test(zone))throw Error();m.timezone=zone}catch{throw Error('请使用有效 IANA 时区，例如 America/Detroit 或 America/Toronto，不支持固定数字偏移。')}
     if(!Array.isArray(m.groups)||!m.groups.length||m.groups.some(g=>typeof g!=='string'||!Object.hasOwn(config.groups,g)))throw Error('每位成员至少需要选择一个有效小组。');
   }
   const age=config.max_report_age_days??4;
