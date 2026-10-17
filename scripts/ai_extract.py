@@ -484,6 +484,7 @@ def main():
     else:
         data = extract(items, ticker, call_gemini, as_of=as_of)
     data['fetched_at'] = datetime.now(timezone.utc).isoformat()
+    data['model'] = os.environ.get('GEMINI_MODEL', MODEL)
     data['fetch_status'] = fetch_status
     save(ticker_file(ticker, 'rss-items.json'), items)
     save(ticker_file(ticker, 'ai-intel.json'), data)

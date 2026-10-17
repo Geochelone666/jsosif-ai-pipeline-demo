@@ -177,13 +177,14 @@ company = esc(info.get('longName') or TICKER)
 story.append(p(f'{company} &nbsp;|&nbsp; {esc(info.get("sector") or "N/A")} '
                f'&nbsp;/&nbsp; {esc(info.get("industry") or "N/A")}',
                'subtitle'))
-story.append(p('AI status: <b>%s</b> &nbsp;|&nbsp; AI model: <b>gemini-3.5-flash-lite</b> '
-               '(Google News RSS headlines &rarr; AI extraction and classification)'
-               % esc('N/A: ' + ai['error'] if ai.get('error') else 'Available'),
+story.append(p('AI status: <b>%s</b> &nbsp;|&nbsp; Configured model: <b>%s</b> '
+               '&nbsp;|&nbsp; News snapshot: <b>%s</b>'
+               % (esc('N/A: ' + ai['error'] if ai.get('error') else 'Available'),
+                  esc(ai.get('model', 'legacy snapshot / rules')), esc(ai.get('as_of', 'N/A'))),
                'small'))
-story.append(p('Snapshot note: the report-date daily bar may be intraday until the US '
-               'market closes; its Close field is provisional. News, peers, earnings, '
-               'EDGAR and macro sections reuse their existing snapshots.',
+story.append(p('Report rendering uses saved source snapshots with separate observation dates. '
+               'The daily price bar may be provisional before the listing market closes. '
+               'Check source dates and availability.',
                'small'))
 story.append(Spacer(1, 6))
 
