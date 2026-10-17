@@ -26,7 +26,7 @@ def test_environment_is_exact_allowlist(script, monkeypatch):
     expected = {key: parent[key] for key in run_phase1.RUNTIME_ENV}
     expected.update(REPORT_AS_OF='2026-01-01', JSOSIF_REPORT_AS_OF='2026-01-01')
     if script == 'ai_extract':
-        expected.update({key: parent[key] for key in run_phase1.SCRIPT_ENV[script]})
+        expected.update({key: parent[key] for key in run_phase1.SCRIPT_ENV[script] if key in parent})
         expected.update(JSOSIF_RSS_COUNT='7', JSOSIF_RSS_MAX_ATTEMPTS='2', JSOSIF_RSS_TIMEOUT='9')
     assert run_phase1.child_env(script, CONFIG) == expected
     assert parent['REPORT_AS_OF'] == 'stale'
@@ -73,3 +73,4 @@ def test_child_failure_stops_pipeline(monkeypatch):
     with pytest.raises(subprocess.CalledProcessError):
         run_phase1.main()
     assert len(calls) == 1
+

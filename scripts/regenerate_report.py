@@ -158,10 +158,10 @@ def append_free_source_sections():
     quant, info = load('quant.json'), load('info.json')
     q = quant['metrics']
     growth, ret = number(q.get('Revenue growth (%)')), number(q.get('Return 1Y (%)'))
-    nvda = {'ticker': TICKER, 'pe': q.get('P/E (trailing)'), 'pb': q.get('P/B'), 'ev_ebitda': q.get('EV/EBITDA'), 'revenue_growth': growth / 100 if growth is not None else None, 'mktcap': info.get('marketCap'), 'ret_1y': ret / 100 if ret is not None else None}
-    out = ['## PEER COMPARABLES', '', '| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (USD) | 1Y return (%) |', '|---|---:|---:|---:|---:|---:|---:|']
+    nvda = {'ticker': TICKER, 'pe': q.get('P/E (trailing)'), 'pb': q.get('P/B'), 'ev_ebitda': q.get('EV/EBITDA'), 'revenue_growth': growth / 100 if growth is not None else None, 'mktcap': info.get('marketCap'), 'ret_1y': ret / 100 if ret is not None else None, 'currency': info.get('currency')}
+    out = ['## PEER COMPARABLES', '', '| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (listing currency) | 1Y return (%) |', '|---|---:|---:|---:|---:|---:|---:|']
     for row in [nvda] + peers['peers']:
-        cells = [row['ticker'], fmt(row['pe']), fmt(row['pb']), fmt(row['ev_ebitda']), fmt(row['revenue_growth'], True), fmt(row['mktcap']), fmt(row['ret_1y'], True)]
+        cells = [row['ticker'], fmt(row['pe']), fmt(row['pb']), fmt(row['ev_ebitda']), fmt(row['revenue_growth'], True), fmt(row['mktcap']) + ' ' + (row.get('currency') or 'unknown currency'), fmt(row['ret_1y'], True)]
         if row['ticker'] == TICKER:
             cells = [f'**{cell}**' for cell in cells]
         out.append('| ' + ' | '.join(cells) + ' |')
@@ -181,3 +181,7 @@ def append_free_source_sections():
 
 
 append_free_source_sections()
+
+from freeze_report import freeze
+freeze(REPORT, quant, ai)
+

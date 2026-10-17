@@ -287,7 +287,7 @@ if peers:
           'ev_ebitda': q.get('EV/EBITDA'),
           'revenue_growth': growth / 100 if growth is not None else None,
           'mktcap': info.get('marketCap'),
-          'ret_1y': ret / 100 if ret is not None else None}
+          'ret_1y': ret / 100 if ret is not None else None, 'currency': info.get('currency')}
 
 
     def pfmt(v, pct=False):
@@ -312,12 +312,12 @@ if peers:
         is_me = row['ticker'] == TICKER
         cells = [row['ticker'], pfmt(row.get('pe')), pfmt(row.get('pb')),
                  pfmt(row.get('ev_ebitda')), pfmt(row.get('revenue_growth'), True),
-                 mcap_fmt(row.get('mktcap')), pfmt(row.get('ret_1y'), True)]
+                 mcap_fmt(row.get('mktcap')) + ' ' + esc(row.get('currency') or '?'), pfmt(row.get('ret_1y'), True)]
         prows.append([bold(c) if is_me else c for c in cells])
     cw = [W * 0.14, W * 0.12, W * 0.12, W * 0.14, W * 0.18, W * 0.16, W * 0.14]
     story.append(styled_table(
         ['Ticker', 'P/E', 'P/B', 'EV/EBITDA', 'Rev growth (%)',
-         'Mkt cap (USD)', '1Y ret (%)'],
+         'Mkt cap (local)', '1Y ret (%)'],
         prows, cw, right_cols=(1, 2, 3, 4, 5, 6)))
     story.append(p(f'Peers fetched as_of: {esc(peers_doc.get("as_of", "N/A"))}; '
                    f'{esc(TICKER)} reuses existing data. Fundamentals are yfinance '
@@ -431,3 +431,4 @@ frame = Frame(doc.leftMargin, doc.bottomMargin, doc.width, doc.height, id='main'
 doc.addPageTemplates([PageTemplate(id='page', frames=[frame], onPage=footer)])
 doc.build(story)
 print(f'PDF written: {OUT} ({OUT.stat().st_size / 1024:.1f} KB)')
+

@@ -19,8 +19,6 @@ def prepare(config, reports, stamp=None):
     tickers = list(assignments.values())
     if any(not isinstance(ticker, str) or ticker not in SUPPORTED for ticker in tickers):
         raise ValueError('Every assignment must name a supported holding')
-    if len(set(tickers)) != len(tickers):
-        raise ValueError('Each teammate must have a distinct holding')
     reports = Path(reports)
     available = {}
     for ticker in tickers:
@@ -79,3 +77,4 @@ def main(argv=None):
 
 if __name__ == '__main__':
     main()
+

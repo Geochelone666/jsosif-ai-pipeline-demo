@@ -2,11 +2,11 @@
 from datetime import date
 import pandas as pd
 import yfinance as yf
-from data_utils import save, ticker_arg, ticker_file
+from data_utils import save, ticker_arg, ticker_file, as_of_date
 
 def main():
     symbol = ticker_arg()
-    today = date.today()
+    today = as_of_date()
     data = {'ticker': symbol, 'last_earnings': None, 'next_earnings': None, 'source': 'yfinance'}
     ticker = yf.Ticker(symbol)
     try:
@@ -36,3 +36,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

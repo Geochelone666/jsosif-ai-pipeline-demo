@@ -1,0 +1,11 @@
+{
+  "groups": {
+    "energy": {"name": "Energy", "tickers": ["CNQ.TO", "ENB"]},
+    "technology": {"name": "Technology", "tickers": ["CSCO", "OTEX.TO"]}
+  },
+  "max_report_age_days": 4,
+  "allow_degraded": false,
+  "members": [
+    {"id": "member-001", "name": "Example Analyst", "email": "analyst@example.com", "groups": ["energy", "technology"], "enabled": false, "timezone": "America/Toronto", "send_weekday": 0, "send_time": "09:00"}
+  ]
+}

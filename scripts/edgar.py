@@ -1,29 +1,53 @@
 """SEC free APIs. Demo User-Agent uses a placeholder contact email."""
 from datetime import date
 import json
+import os
+import time
+from pathlib import Path
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
-from data_utils import number, save, ticker_arg, ticker_file
+from data_utils import number, save, ticker_arg, ticker_file, as_of_date
 
 def resolve_cik(symbol):
     # SEC uses the US listing symbol for Canadian dual listings.
     sec_symbol = symbol.removesuffix('.TO')
     if symbol.endswith('.PA'):
         return None
-    entries = fetch('https://www.sec.gov/files/company_tickers.json')
+    cache = Path(os.environ['JSOSIF_SEC_CACHE']) if os.environ.get('JSOSIF_SEC_CACHE') else None
+    if cache and cache.is_file() and time.time() - cache.stat().st_mtime < 86400:
+        entries = json.loads(cache.read_text())
+    else:
+        entries = fetch('https://www.sec.gov/files/company_tickers.json')
+        if cache:
+            cache.parent.mkdir(parents=True, exist_ok=True)
+            cache.write_text(json.dumps(entries))
     return next((str(row['cik_str']) for row in entries.values()
                  if row['ticker'].upper() == sec_symbol), None)
 
 HEADERS = {'User-Agent': 'JSOSIF-demo contact@example.com (demo placeholder contact)', 'Accept': 'application/json'}
 
 def fetch(url):
-    with urlopen(Request(url, headers=HEADERS), timeout=30) as response:
-        return json.load(response)
+    headers = dict(HEADERS)
+    headers['User-Agent'] = os.environ.get('SEC_USER_AGENT', HEADERS['User-Agent'])
+    for attempt in range(3):
+        # Serial pipeline plus a conservative 2 req/sec ceiling per process.
+        time.sleep(.5)
+        try:
+            with urlopen(Request(url, headers=headers), timeout=30) as response:
+                return json.load(response)
+        except HTTPError as exc:
+            if exc.code not in (429, 500, 502, 503, 504) or attempt == 2:
+                raise
+        except (URLError, TimeoutError):
+            if attempt == 2:
+                raise
+        time.sleep(2 ** (attempt + 1))
 
 def quarter_value(concept, CIK):
     data = fetch(f'https://data.sec.gov/api/xbrl/companyconcept/CIK{CIK.zfill(10)}/us-gaap/{concept}.json')
     candidates = []
     for obs in data.get('units', {}).get('USD', []):
-        if obs.get('form') not in ('10-Q', '10-K') or obs.get('filed', '9999') > date.today().isoformat():
+        if obs.get('form') not in ('10-Q', '10-K') or obs.get('filed', '9999') > as_of_date().isoformat():
             continue
         try:
             duration = (date.fromisoformat(obs['end']) - date.fromisoformat(obs['start'])).days
@@ -50,7 +74,7 @@ def main():
         return
     try:
         recent = fetch(f'https://data.sec.gov/submissions/CIK{CIK.zfill(10)}.json')['filings']['recent']
-        matches = [i for i, form in enumerate(recent['form']) if form in ('10-Q', '10-K') and recent['filingDate'][i] <= date.today().isoformat()]
+        matches = [i for i, form in enumerate(recent['form']) if form in ('10-Q', '10-K') and recent['filingDate'][i] <= as_of_date().isoformat()]
         if matches:
             i = max(matches, key=lambda i: recent['filingDate'][i])
             accession = recent['accessionNumber'][i]
@@ -74,3 +98,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
