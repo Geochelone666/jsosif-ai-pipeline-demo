@@ -204,3 +204,106 @@ def test_archive_versions_are_immutable(tmp_path, monkeypatch):
     assert (root / second['pdf']).read_bytes() == b'%PDF-1.4 updated'
     with pytest.raises(ValueError, match='already exists'):
         refresh.archive(root, 'CSCO', '20261019', 'run-1', NOW.isoformat())
+
+
+def test_quota_plan_subtracts_same_day_attempts():
+    index = {'reports': []}
+    selected, plan = quota_plan(['CSCO', 'JPM', 'COST'], index, 10, used_requests=5)
+    assert selected == ['COST']
+    assert plan['remaining_requests'] == 3 and plan['used_requests_today'] == 5
+    selected, plan = quota_plan(['CSCO'], index, 10, used_requests=8)
+    assert selected == [] and plan['remaining_requests'] == 0
+
+
+def test_provider_day_resets_in_pacific_time():
+    from gemini_provider import quota_day
+    assert quota_day(datetime(2026, 10, 18, 6, 59, tzinfo=timezone.utc)) == '2026-10-17'
+    assert quota_day(datetime(2026, 10, 18, 7, 0, tzinfo=timezone.utc)) == '2026-10-18'
+
+
+def test_fall_back_second_hour_does_not_undo_due_time(config):
+    member = dict(config['members'][0], send_weekday=6, send_time='01:30')
+    assert weekly.due_period(member, datetime(2026, 11, 1, 5, 29, tzinfo=timezone.utc)) is None
+    assert weekly.due_period(member, datetime(2026, 11, 1, 6, 15, tzinfo=timezone.utc)) == '2026-10-26'
+
+
+def test_spring_gap_moves_forward_by_gap(config):
+    member = dict(config['members'][0], send_weekday=6, send_time='02:30')
+    assert weekly.due_period(member, datetime(2026, 3, 8, 7, 10, tzinfo=timezone.utc)) is None
+    assert weekly.due_period(member, datetime(2026, 3, 8, 7, 30, tzinfo=timezone.utc)) == '2026-03-02'
+
+
+def test_failed_site_build_preserves_last_good_output(store, tmp_path):
+    output = tmp_path.parent / (tmp_path.name + '-atomic-site')
+    build(store, output)
+    previous = {p.relative_to(output): p.read_bytes() for p in output.rglob('*') if p.is_file()}
+    next(store.rglob('*.pdf')).write_bytes(b'%PDF-1.4 corrupt')
+    with pytest.raises(ValueError, match='integrity'):
+        build(store, output)
+    assert {p.relative_to(output): p.read_bytes() for p in output.rglob('*') if p.is_file()} == previous
+
+
+def test_missing_store_cannot_erase_site(store, tmp_path):
+    output = tmp_path.parent / (tmp_path.name + '-missing-store-site')
+    build(store, output)
+    index = (output / 'index.json').read_bytes()
+    (store / 'index.json').unlink()
+    with pytest.raises(ValueError, match='persisted archive index'):
+        build(store, output)
+    assert (output / 'index.json').read_bytes() == index
+
+
+@pytest.mark.parametrize('path', ['/tmp/report.pdf', '../report.pdf', 'archive/../../report.pdf', 'archive\\report.pdf'])
+def test_report_manifest_paths_cannot_escape_store(tmp_path, path):
+    from report_store import resolve_file
+    with pytest.raises(ValueError):
+        resolve_file(tmp_path, path)
+
+
+def test_reconciliation_respects_active_delivery_lock(store, monkeypatch):
+    import fcntl
+    import sys
+    import delivery_state
+    monkeypatch.setattr(sys, 'argv', ['delivery_state.py', '--store', str(store),
+                                     '--member-id', 'example', '--period', '2026-10-19',
+                                     '--resolution', 'retry'])
+    with (store / '.delivery.lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        with pytest.raises(BlockingIOError):
+            delivery_state.main()
+
+
+def test_exhausted_quota_does_not_call_any_data_provider(tmp_path, monkeypatch):
+    import sys
+    import refresh_reports as refresh
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_MODEL', 'test-model')
+    monkeypatch.setenv('GEMINI_RPD', '10')
+    monkeypatch.setenv('GEMINI_RPM', '3')
+    monkeypatch.setenv('SEC_USER_AGENT', 'Synthetic fixture contact@example.com')
+    monkeypatch.delenv('GEMINI_CLI', raising=False)
+    monkeypatch.setattr(refresh, 'quota_day', lambda *args: '2026-10-17')
+    write_json(tmp_path / 'state/api-usage.json', {'test-model:2026-10-17': 8})
+    monkeypatch.setattr(sys, 'argv', ['refresh_reports.py', '--store', str(tmp_path), '--force'])
+    monkeypatch.setattr(refresh.subprocess, 'run', lambda *a, **kw: pytest.fail('Quota exhaustion must stop before API work'))
+    refresh.main()
+    index = read_json(tmp_path / 'index.json')
+    assert index['refresh_plan']['remaining_requests'] == 0
+    assert index['reports'] == [] and 'last_complete_refresh' not in index
+
+
+def test_recently_packaged_old_report_is_not_fresh(config, store):
+    index = read_json(store / 'index.json')
+    for entry in index['reports']:
+        entry['as_of'] = '2026-10-08'
+    write_json(store / 'index.json', index)
+    config['allow_degraded'] = True
+    assert weekly.deliver(config, store, now=NOW, really_send=True,
+                          backend=lambda _: pytest.fail('Old report must be deferred'))['deferred'] == 1
+
+
+def test_history_import_does_not_postpone_real_collection():
+    index = {'reports': [{'ticker': 'CSCO', 'generated_at': NOW.isoformat(), 'quality': 'historical'},
+                         {'ticker': 'JPM', 'generated_at': '2026-10-18T12:00:00+00:00', 'quality': 'ready'}]}
+    selected, _ = quota_plan(['CSCO', 'JPM'], index, 5)
+    assert selected == ['CSCO']

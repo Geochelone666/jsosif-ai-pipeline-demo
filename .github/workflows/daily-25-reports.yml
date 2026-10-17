@@ -42,7 +42,10 @@ jobs:
               path.chmod(0o600)
           PY
       - name: Open persistent report store
+        id: store
         run: python scripts/prepare_store.py ../report-store
+      - name: Preserve pre-existing historical reports without fetching new data
+        run: python scripts/import_history.py --reports reports --store ../report-store
       - name: Generate and archive reports
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -59,7 +62,8 @@ jobs:
           fi
           python scripts/refresh_reports.py --store ../report-store --interval-days "$REPORT_INTERVAL_DAYS" "${CONFIG[@]}"
       - name: Persist successful reports and API state even after a partial failure
-        if: always()
+        id: persist
+        if: ${{ always() && steps.store.outcome == 'success' }}
         run: |
           if [ -d ../report-store ]; then
             PYTHONPATH=scripts python - <<'PY'
@@ -68,14 +72,16 @@ jobs:
           PY
           fi
       - name: Build latest and historical website
-        if: ${{ !cancelled() }}
+        id: build
+        if: ${{ !cancelled() && steps.persist.outcome == 'success' }}
         run: python scripts/build_site.py --store ../report-store --output site-build
       - uses: actions/upload-pages-artifact@v3
-        if: ${{ !cancelled() }}
+        id: upload
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         with:
           path: site-build
       - name: Deploy archive to Pages
-        if: ${{ !cancelled() && vars.PAGES_DEPLOY_ENABLED == 'true' }}
+        if: ${{ !cancelled() && steps.upload.outcome == 'success' && vars.PAGES_DEPLOY_ENABLED == 'true' }}
         uses: actions/deploy-pages@v4
       - name: Remove private configuration
         if: always()

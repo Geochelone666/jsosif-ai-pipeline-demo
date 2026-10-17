@@ -14,23 +14,30 @@ from data_utils import ROOT, DATA, REPORTS, SUPPORTED
 from report_store import read_json, write_json, digest
 from snapshot_contract import validate_snapshot
 from subscriptions import load, tickers_for
+from gemini_provider import quota_day
 
 
-def quota_plan(tickers, index, rpd, *, attempts=3):
+def quota_plan(tickers, index, rpd, *, attempts=3, used_requests=0):
     """Conservative rotation: reserve retries instead of bursting past a daily quota."""
-    if rpd < 1:
+    if type(rpd) is not int or rpd < 1:
         raise ValueError('GEMINI_RPD must be the actual positive project quota')
+    if type(used_requests) is not int or used_requests < 0 or type(attempts) is not int or attempts < 1:
+        raise ValueError('Request counts and retry reserve must be valid nonnegative integers')
     daily = max(1, int(rpd * .8))
-    capacity = daily // attempts
-    if capacity < 1:
+    full_day_capacity = daily // attempts
+    if full_day_capacity < 1:
         raise ValueError('Configured quota cannot cover one ticker and its retry reserve')
-    latest = {ticker: max((r['generated_at'] for r in index['reports'] if r['ticker'] == ticker),
+    remaining = max(0, daily - used_requests)
+    capacity = remaining // attempts
+    latest = {ticker: max((r['generated_at'] for r in index['reports'] if r['ticker'] == ticker and
+                          r.get('quality') != 'historical'),
                           default='') for ticker in tickers}
     ordered = sorted(tickers, key=lambda ticker: (latest[ticker], ticker))
     return ordered[:capacity], {'project_rpd': rpd, 'local_daily_budget': daily,
+                                'used_requests_today': used_requests, 'remaining_requests': remaining,
                                 'max_attempts_per_ticker': attempts,
                                 'tickers_per_day': min(capacity, len(tickers)),
-                                'full_rotation_days': math.ceil(len(tickers) / capacity)}
+                                'full_rotation_days': math.ceil(len(tickers) / full_day_capacity)}
 
 
 def archive(root, ticker, stamp, run_id, generated_at):
@@ -97,12 +104,18 @@ def main():
             rpd, rpm = int(os.environ.get('GEMINI_RPD', '0')), int(os.environ.get('GEMINI_RPM', '0'))
             if rpm < 1:
                 raise ValueError('GEMINI_RPM must be the actual positive project quota')
-            tickers, plan = quota_plan(tickers, index, rpd)
+            model = os.environ.get('GEMINI_MODEL', 'gemini-3.5-flash-lite')
+            usage = read_json(args.store / 'state/api-usage.json', {})
+            used = usage.get(model + ':' + quota_day(now), 0)
+            tickers, plan = quota_plan(tickers, index, rpd, used_requests=used)
         except ValueError as exc:
             parser.error(str(exc))
         index['refresh_plan'] = plan
         print('Quota plan:', json.dumps(plan))
         write_json(args.store / 'index.json', index)
+        if not tickers:
+            print('No quota remains for a ticker plus retry reserve; wait for the next quota day')
+            return
     # Freeze the business date for every stage even if a job crosses UTC midnight.
     env = dict(os.environ, REPORT_AS_OF=now.date().isoformat())
     env['JSOSIF_API_USAGE_PATH'] = str(args.store.resolve() / 'state/api-usage.json')

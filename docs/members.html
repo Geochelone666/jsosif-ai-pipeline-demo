@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JSOSIF · 成员与小组配置</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#dbe5ef;background:#0d1520;color-scheme:dark}*{box-sizing:border-box}body{margin:0}main{max-width:1120px;margin:auto;padding:32px 22px}a{color:#8edcbd}h1{font-size:30px;letter-spacing:-.04em}h2{font-size:20px;margin:30px 0 14px}p,small{color:#a5b8cb;line-height:1.7}.notice{border-left:3px solid #79d4b1;padding:14px 18px;background:#172737;border-radius:4px}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.card{border:1px solid #34495d;border-radius:9px;padding:20px;margin:14px 0;background:#142232}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}label{display:grid;gap:7px;font-size:13px;color:#b9c9d8}input,select,button{font:inherit;border:1px solid #40566d;border-radius:5px;padding:10px;background:#1a2c3f;color:#edf4fb;max-width:100%}button{cursor:pointer}button:hover{border-color:#93dfc1}.primary{background:#8cdabd;color:#0c241c;border-color:#8cdabd;font-weight:600}.remove{margin-left:auto;color:#f0b2a8;background:transparent}input[type=checkbox]{width:17px;height:17px;accent-color:#80dcba}.check{display:flex;align-items:center;gap:9px;line-height:1.5}.choices{display:flex;gap:16px;flex-wrap:wrap;padding-top:12px}.muted{font-size:12px;color:#92abc0}#status{min-height:26px;color:#a4e6ca}#status.error{color:#ffb7a9}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#142232;padding:18px;border-radius:8px}summary{cursor:pointer;padding:14px 0}footer{border-top:1px solid #34495d;margin-top:30px;padding-top:16px}.actions{position:sticky;bottom:0;background:#0d1520f5;border-top:1px solid #34495d;padding:16px 0;margin-top:20px}fieldset{border:0;margin:0;padding:12px 0 0}legend{font-size:13px;color:#b9c9d8}input:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid #8cdabd;outline-offset:3px}
+</style>
+</head>
+<body><main>
+<a href="./index.html">← 返回报告历史</a><h1>成员与小组配置</h1>
+<p class="notice">在浏览器中填写并导出私有配置。关闭页面前请下载保存；成员信息保留在当前页面中。导出文件用于项目的私有订阅配置，页面不会自动启用发送。</p>
+<div class="row"><label>导入已有配置<input id="import" type="file" accept=".json,application/json"></label></div>
+<h2>1 · 小组及股票</h2><p>先建立小组，再选择该组需要的股票。同一只股票可属于多个组。</p>
+<div id="groups"></div><button id="add-group" type="button">＋ 新建小组</button>
+<h2>2 · 成员及每周时间</h2><p>一个成员可加入多个组，系统会合并股票，并按成员的时区每周发送一封邮件。</p>
+<div id="members"></div><button id="add-member" type="button">＋ 添加成员</button>
+<h2>3 · 报告要求</h2>
+<div class="card fields"><label>报告最长生成时间（天）<input id="age" type="number" value="4" min="0" max="30" step="1"></label><div><label class="check"><input id="degraded" type="checkbox">允许发送标为降级的报告</label><small>默认关闭。开启后，邮件可包含部分来源缺失的报告。</small></div></div>
+<details><summary>查看导出内容</summary><pre id="preview">填写后点击校验。</pre></details>
+<div class="actions"><div class="row"><button id="validate" type="button">校验配置</button><button id="download" type="button" class="primary">下载私有 JSON 配置</button></div><p id="status" role="status" aria-live="polite"></p></div>
+<footer><small>下载文件名：subscriptions.local.json。请将配置放入项目的私有配置或 GitHub 的 SUBSCRIPTIONS_JSON Secret，避免提交真实姓名和邮箱到公开仓库。夏令时重复时刻按第一次计算；跳过的时刻按时间差顺延。</small></footer>
+</main>
+<script>
+(() => {
+'use strict';
+const SUPPORTED = ['CNQ.TO','CSCO','JPM','BMO.TO','COST','V','JWEL.TO','VRTX','ENB','PFE','CP.TO','ATD.TO','SCHW','ACN','J','XYL','PEP','NTR.TO','DIS','MG.TO','OTEX.TO','GIS','NVO','MC.PA','AMTM'];
+function validateConfig(config){
+  if(!config||typeof config!=='object'||Array.isArray(config)||!config.groups||typeof config.groups!=='object'||Array.isArray(config.groups)||!Array.isArray(config.members))throw Error('需要有效的小组和成员配置。');
+  for(const [id,g] of Object.entries(config.groups)){
+    if(!id.trim()||!g||typeof g!=='object'||!Array.isArray(g.tickers)||!g.tickers.length||g.tickers.some(t=>!SUPPORTED.includes(t)))throw Error('每个小组需要有效编号，以及项目支持的股票代码。');
+  }
+  const ids=new Set(),emails=new Set();
+  for(const m of config.members){
+    if(!m||typeof m!=='object')throw Error('成员格式无效。');
+    for(const field of ['id','name','email','timezone','send_time'])if(typeof m[field]!=='string'||!m[field].trim()||/[\u0000-\u001f]/.test(m[field]))throw Error('请补全成员编号、姓名、邮箱、时区和发送时间。');
+    if(!/^[\x21-\x7e]+$/.test(m.email)||!/^[-A-Za-z0-9!#$%&'*+/=?^_`{|}~.]+@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)+$/.test(m.email)||m.email.length>254||m.email.split('@')[0].length>64||m.email.startsWith('.')||m.email.includes('..')||m.email.includes('.@'))throw Error('请填写有效的纯邮箱地址。');
+    if(ids.has(m.id)||emails.has(m.email.toLowerCase()))throw Error('成员编号或邮箱重复。请将多个小组合并到同一成员。');
+    ids.add(m.id);emails.add(m.email.toLowerCase());
+    if(typeof m.enabled!=='boolean'||!Number.isInteger(m.send_weekday)||m.send_weekday<0||m.send_weekday>6||!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(m.send_time))throw Error('请检查参与开关、星期和发送时间。');
+    try{new Intl.DateTimeFormat('en',{timeZone:m.timezone})}catch{throw Error('请使用有效时区，例如 America/Detroit 或 America/Toronto。')}
+    if(!Array.isArray(m.groups)||!m.groups.length||m.groups.some(g=>typeof g!=='string'||!Object.hasOwn(config.groups,g)))throw Error('每位成员至少需要选择一个有效小组。');
+  }
+  const age=config.max_report_age_days??4;
+  if(!Number.isInteger(age)||age<0||age>30||('allow_degraded' in config&&typeof config.allow_degraded!=='boolean'))throw Error('请检查报告要求：天数为 0–30 的整数，降级开关为布尔值。');
+  return config;
+}
+globalThis.JSOSIFConfig={validateConfig,supported:SUPPORTED};
+if(typeof document==='undefined')return;
+const $=id=>document.getElementById(id);
+const node=(tag,value)=>{const n=document.createElement(tag);if(value!==undefined)n.textContent=value;return n};
+let groups=[{id:'energy',name:'Energy',tickers:'CNQ.TO, ENB'}],members=[];
+const uid=()=>globalThis.crypto?.randomUUID?.()||'member-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
+function input(label,value,onchange,type='text'){
+  const wrap=node('label',label),el=document.createElement('input');el.type=type;el.value=value;el.addEventListener('input',()=>onchange(el.value));wrap.append(el);return wrap;
+}
+function select(label,value,values,onchange){const wrap=node('label',label),el=document.createElement('select');for(const [key,text]of values){const option=new Option(text,String(key));el.append(option)}el.value=String(value);el.addEventListener('change',()=>onchange(el.value));wrap.append(el);return wrap}
+function check(label,value,onchange){const wrap=node('label');wrap.className='check';const el=document.createElement('input');el.type='checkbox';el.checked=value;el.addEventListener('change',()=>onchange(el.checked));wrap.append(el,document.createTextNode(label));return wrap}
+function button(label,handler){const b=node('button',label);b.type='button';b.addEventListener('click',handler);return b}
+function renderGroups(){
+  $('groups').replaceChildren();
+  for(const g of groups){const card=node('section');card.className='card';const fields=node('div');fields.className='fields';
+    const id=input('小组编号',g.id,()=>{});id.querySelector('input').addEventListener('change',event=>{const value=event.target.value.trim();if(!value||groups.some(other=>other!==g&&other.id===value)){event.target.value=g.id;error(Error('小组编号必须非空且唯一。'));return}const old=g.id;g.id=value;event.target.value=value;for(const m of members)m.groups=m.groups.map(id=>id===old?value:id);renderMembers()});
+    fields.append(id,input('小组名称',g.name,value=>{g.name=value;renderMembers()}),input('股票代码（逗号分隔）',g.tickers,value=>g.tickers=value));card.append(fields);
+    const remove=button('删除小组',()=>{groups=groups.filter(item=>item!==g);for(const m of members)m.groups=m.groups.filter(id=>id!==g.id);renderGroups();renderMembers()});remove.className='remove';card.append(remove);$('groups').append(card);
+  }
+}
+function renderMembers(){
+  $('members').replaceChildren();
+  for(const m of members){const card=node('section');card.className='card';const top=node('div');top.className='row';const title=node('strong',m.name||'新成员');top.append(title,check('参与计划',m.enabled,value=>m.enabled=value));const remove=button('删除成员',()=>{members=members.filter(item=>item!==m);renderMembers()});remove.className='remove';top.append(remove);card.append(top);
+    const fields=node('div');fields.className='fields';fields.append(input('姓名',m.name,value=>{m.name=value;title.textContent=value||'新成员'}),input('邮箱',m.email,value=>m.email=value,'email'),input('时区',m.timezone,value=>m.timezone=value),select('每周星期',m.send_weekday,['周一','周二','周三','周四','周五','周六','周日'].map((name,i)=>[i,name]),value=>m.send_weekday=Number(value)),input('当地发送时间',m.send_time,value=>m.send_time=value,'time'));card.append(fields);
+    const assigned=node('fieldset');assigned.append(node('legend','所属小组'));const choices=node('div');choices.className='choices';for(const g of groups)if(g.id.trim())choices.append(check(g.name||g.id,m.groups.includes(g.id),enabled=>{m.groups=enabled?[...new Set([...m.groups,g.id])]:m.groups.filter(id=>id!==g.id)}));if(!groups.length)choices.append(node('small','请先建立小组。'));assigned.append(choices);card.append(assigned,node('p','成员编号：'+m.id));$('members').append(card);
+  }
+}
+function configuration(){if($('age').value==='')throw Error('请填写报告最长生成时间。');const result={};for(const g of groups){const id=g.id.trim();if(Object.hasOwn(result,id))throw Error('小组编号重复。');Object.defineProperty(result,id,{value:{name:g.name.trim()||id,tickers:[...new Set(g.tickers.toUpperCase().split(/[,;\s]+/).filter(Boolean))]},enumerable:true})}return validateConfig({groups:result,members:members.map(m=>({...m,name:m.name.trim(),email:m.email.trim(),timezone:m.timezone.trim(),groups:[...new Set(m.groups.map(id=>id.trim()))]})),max_report_age_days:Number($('age').value),allow_degraded:$('degraded').checked})}
+function validated(){const config=configuration();$('preview').textContent=JSON.stringify(config,null,2);$('status').textContent='校验通过：'+config.members.length+' 位成员，'+Object.keys(config.groups).length+' 个小组。';$('status').className='';return config}
+function error(exc){$('status').textContent=exc.message||'配置无效，请检查填写内容。';$('status').className='error'}
+$('add-group').addEventListener('click',()=>{groups.push({id:'group-'+(groups.length+1),name:'',tickers:''});renderGroups();renderMembers()});
+$('add-member').addEventListener('click',()=>{members.push({id:uid(),name:'',email:'',groups:[],enabled:false,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Detroit',send_weekday:0,send_time:'09:00'});renderMembers()});
+$('validate').addEventListener('click',()=>{try{validated()}catch(exc){error(exc)}});
+$('download').addEventListener('click',()=>{try{const value=JSON.stringify(validated(),null,2)+'\n';const url=URL.createObjectURL(new Blob([value],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='subscriptions.local.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(exc){error(exc)}});
+$('import').addEventListener('change',async event=>{try{const file=event.target.files[0];if(!file)return;const c=validateConfig(JSON.parse(await file.text()));groups=Object.entries(c.groups).map(([id,g])=>({id,name:g.name||id,tickers:g.tickers.join(', ')}));members=c.members.map(m=>({...m,groups:[...m.groups]}));$('age').value=c.max_report_age_days??4;$('degraded').checked=c.allow_degraded??false;renderGroups();renderMembers();validated()}catch(exc){error(exc)}finally{event.target.value=''}});
+renderGroups();renderMembers();
+})();
+</script></body></html>

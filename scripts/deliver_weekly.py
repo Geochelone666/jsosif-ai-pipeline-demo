@@ -1,6 +1,6 @@
 """Deliver one personalized PDF digest per member per local calendar week."""
 import argparse
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from email.utils import format_datetime, make_msgid
 import fcntl
 import hashlib
@@ -21,7 +21,9 @@ def due_period(member, now):
     hour, minute = map(int, member['send_time'].split(':'))
     due = datetime.combine(monday + timedelta(days=member['send_weekday']),
                            datetime.min.time(), tzinfo=local.tzinfo).replace(hour=hour, minute=minute)
-    return monday.isoformat() if local >= due else None
+    # Compare instants: the repeated fall-back hour must not move an already due
+    # send back into the future. ZoneInfo's default fold=0 chooses its first occurrence.
+    return monday.isoformat() if now.astimezone(timezone.utc) >= due.astimezone(timezone.utc) else None
 
 
 def deliver(config, root, *, now=None, really_send=False, git=False, backend=send):
@@ -47,7 +49,10 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
             selected = []
             for ticker in tickers_for(config, member):
                 candidates = [r for r in index['reports'] if r['ticker'] == ticker and
-                              (r['quality'] == 'ready' or config.get('allow_degraded', False)) and
+                              (r['quality'] == 'ready' or
+                               (r['quality'] == 'degraded' and config.get('allow_degraded', False))) and
+                              timedelta(0) <= now.date() - date.fromisoformat(r['as_of']) <=
+                              timedelta(days=config.get('max_report_age_days', 4)) and
                               timedelta(0) <= now - datetime.fromisoformat(r['generated_at']) <=
                               timedelta(days=config.get('max_report_age_days', 4))]
                 if not candidates:

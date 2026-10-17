@@ -25,6 +25,11 @@ def digest(path):
 
 
 def resolve_file(root, relative):
+    if not isinstance(relative, str) or not relative or '\\' in relative:
+        raise ValueError('Report path must be a relative file path')
+    relative = Path(relative)
+    if relative.is_absolute() or '..' in relative.parts:
+        raise ValueError('Report path must stay relative to the store')
     root = Path(root).resolve()
     path = (root / relative).resolve()
     if root not in path.parents or not path.is_file():

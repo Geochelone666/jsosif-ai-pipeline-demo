@@ -14,6 +14,11 @@ class GeminiError(RuntimeError):
     pass
 
 
+def quota_day(now=None):
+    return (now or datetime.now(ZoneInfo('America/Los_Angeles'))).astimezone(
+        ZoneInfo('America/Los_Angeles')).date().isoformat()
+
+
 def reserve_request(model):
     """Enforce a configured project budget before every attempt, including retries."""
     path = os.environ.get('JSOSIF_API_USAGE_PATH')
@@ -27,7 +32,7 @@ def reserve_request(model):
         raise GeminiError('Configure numeric GEMINI_RPD and GEMINI_RPM') from None
     if rpd < 1 or rpm < 1:
         raise GeminiError('Configure actual project GEMINI_RPD and GEMINI_RPM')
-    day = datetime.now(ZoneInfo('America/Los_Angeles')).date().isoformat()
+    day = quota_day()
     usage = read_json(Path(path), {})
     key = model + ':' + day
     used = usage.get(key, 0)
