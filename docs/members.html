@@ -4,22 +4,22 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>JSOSIF · Members and groups</title>
 <style>
-:root{font-family:system-ui,sans-serif;color:#dbe5ef;background:#0d1520;color-scheme:dark}*{box-sizing:border-box}body{margin:0}main{max-width:1120px;margin:auto;padding:32px 22px}a{color:#8edcbd}h1{font-size:30px;letter-spacing:-.04em}h2{font-size:20px;margin:30px 0 14px}p,small{color:#a5b8cb;line-height:1.7}.notice{border-left:3px solid #79d4b1;padding:14px 18px;background:#172737;border-radius:4px}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.card{border:1px solid #34495d;border-radius:9px;padding:20px;margin:14px 0;background:#142232}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}label{display:grid;gap:7px;font-size:13px;color:#b9c9d8}input,select,button{font:inherit;border:1px solid #40566d;border-radius:5px;padding:10px;background:#1a2c3f;color:#edf4fb;max-width:100%}button{cursor:pointer}button:hover{border-color:#93dfc1}.primary{background:#8cdabd;color:#0c241c;border-color:#8cdabd;font-weight:600}.remove{margin-left:auto;color:#f0b2a8;background:transparent}input[type=checkbox]{width:17px;height:17px;accent-color:#80dcba}.check{display:flex;align-items:center;gap:9px;line-height:1.5}.choices{display:flex;gap:16px;flex-wrap:wrap;padding-top:12px}.muted{font-size:12px;color:#92abc0}#status{min-height:26px;color:#a4e6ca}#status.error{color:#ffb7a9}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#142232;padding:18px;border-radius:8px}summary{cursor:pointer;padding:14px 0}footer{border-top:1px solid #34495d;margin-top:30px;padding-top:16px}.actions{position:sticky;bottom:0;background:#0d1520f5;border-top:1px solid #34495d;padding:16px 0;margin-top:20px}fieldset{border:0;margin:0;padding:12px 0 0}legend{font-size:13px;color:#b9c9d8}input:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid #8cdabd;outline-offset:3px}
+:root{font-family:system-ui,sans-serif;color:#dbe5ef;background:#0d1520;color-scheme:dark}*{box-sizing:border-box}body{margin:0}main{max-width:1120px;margin:auto;padding:32px 22px}a{color:#8edcbd}h1{font-size:30px;letter-spacing:-.04em}h2{font-size:20px;margin:30px 0 14px}p,small{color:#a5b8cb;line-height:1.7}.notice{border-left:3px solid #79d4b1;padding:14px 18px;background:#172737;border-radius:4px}.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.card{border:1px solid #34495d;border-radius:9px;padding:20px;margin:14px 0;background:#142232}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}label{display:grid;gap:7px;font-size:13px;color:#b9c9d8}input,select,button{font:inherit;border:1px solid #40566d;border-radius:5px;padding:10px;background:#1a2c3f;color:#edf4fb;max-width:100%}button{cursor:pointer}button:hover{border-color:#93dfc1}.primary{background:#8cdabd;color:#0c241c;border-color:#8cdabd;font-weight:600}.remove{margin-left:auto;color:#f0b2a8;background:transparent}input[type=checkbox]{width:17px;height:17px;accent-color:#80dcba}.check{display:flex;align-items:center;gap:9px;line-height:1.5}.choices{display:flex;gap:16px;flex-wrap:wrap;padding-top:12px}.muted{font-size:12px;color:#92abc0}#status{min-height:26px;color:#a4e6ca}#status.error{color:#ffb7a9}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#142232;padding:18px;border-radius:8px}summary{cursor:pointer;padding:14px 0}footer{border-top:1px solid #34495d;margin-top:30px;padding-top:16px}.table-wrap{overflow:auto;margin:18px 0}table{width:100%;min-width:1500px;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid #34495d}th{font-size:12px;color:#a5b8cb}td input:not([type=checkbox]),td select{width:150px}td .choices{display:grid;padding:0;min-width:150px}.actions{position:sticky;bottom:0;background:#0d1520f5;border-top:1px solid #34495d;padding:16px 0;margin-top:20px}fieldset{border:0;margin:0;padding:12px 0 0}legend{font-size:13px;color:#b9c9d8}input:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid #8cdabd;outline-offset:3px}
 </style>
 </head>
 <body><main>
 <a href="./index.html">← Back to report history</a><h1>Members and groups</h1>
-<p class="notice">Enter and export private configuration in your browser. Download it before closing this page; member details remain in this page only. Exporting configuration does not enable email delivery.</p>
-<div class="row"><label>Import configuration<input id="import" type="file" accept=".json,application/json"></label></div>
+<p class="notice">Enter and export private configuration in your browser. Download it before closing this page; member details remain in this page only. Exporting configuration does not enable email delivery. Excel workbooks can be imported with the project importer or saved as CSV for this editor.</p>
+<div class="row"><label>Import private JSON or member CSV<input id="import" type="file" accept=".json,.csv,application/json,text/csv"></label><button id="template" type="button">Download CSV template</button><a href="./members.example.xlsx">Download Excel template</a></div>
 <h2>1 · Groups and holdings</h2><p>Create groups and choose their holdings. A holding can belong to multiple groups.</p>
 <div id="groups"></div><button id="add-group" type="button">+ Add group</button>
-<h2>2 · Members and weekly schedules</h2><p>Members can join multiple groups. Holdings are combined into one weekly email using each member's time zone.</p>
-<div id="members"></div><button id="add-member" type="button">+ Add member</button>
+<h2>2 · Members and weekly schedules</h2><p>Enter one row per member, or import a spreadsheet saved as UTF-8 CSV. Personal holdings replace group defaults when filled in. Leave them blank to inherit the selected groups. All selected reports arrive in one weekly email.</p>
+<div class="table-wrap"><table><caption>Private member subscription table</caption><thead><tr><th>Name</th><th>Email</th><th>Groups</th><th>Personal holdings</th><th>Email participation</th><th>Weekday</th><th>Local time</th><th>Time zone</th><th>Stable member ID</th><th>Actions</th></tr></thead><tbody id="members"></tbody></table></div><button id="add-member" type="button">+ Add member</button>
 <h2>3 · Report requirements</h2>
 <div class="card fields"><label>Maximum report age (days; 0 means today in UTC)<input id="age" type="number" value="4" min="0" max="30" step="1"></label><div><label class="check"><input id="degraded" type="checkbox">Allow reports marked as degraded</label><small>Off by default. Enabling this allows reports with missing source data.</small></div></div>
 <details><summary>Preview exported configuration</summary><pre id="preview">Complete the form, then select Validate.</pre></details>
-<div class="actions"><div class="row"><button id="validate" type="button">Validate configuration</button><button id="download" type="button" class="primary">Download private JSON configuration</button></div><p id="status" role="status" aria-live="polite"></p></div>
-<footer><small>Download filename: subscriptions.local.json. Store it privately or in the GitHub SUBSCRIPTIONS_JSON secret. Do not commit real names or email addresses to a public repository. Repeated daylight saving times use the first occurrence; skipped times move forward by the clock change.</small></footer>
+<div class="actions"><div class="row"><button id="validate" type="button">Validate configuration</button><button id="download-csv" type="button">Download member CSV</button><button id="download" type="button" class="primary">Download private JSON configuration</button></div><p id="status" role="status" aria-live="polite"></p></div>
+<footer><small>Download filename: subscriptions.local.json. Store the JSON in SUBSCRIPTIONS_JSON or the spreadsheet in MEMBERS_CSV, using private GitHub repository secrets. Do not commit real names or email addresses to a public repository. Repeated daylight saving times use the first occurrence; skipped times move forward by the clock change.</small></footer>
 </main>
 <script>
 (() => {
@@ -40,14 +40,61 @@ function validateConfig(config){
     ids.add(m.id);emails.add(m.email.toLowerCase());
     if(typeof m.enabled!=='boolean'||!Number.isInteger(m.send_weekday)||m.send_weekday<0||m.send_weekday>6||!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(m.send_time))throw Error('Check the enabled setting, weekday and send time.');
     try{const zone=new Intl.DateTimeFormat('en',{timeZone:m.timezone}).resolvedOptions().timeZone;if(zone!=='UTC'&&!/^[A-Za-z_]+\/[A-Za-z0-9_+./-]+$/.test(zone))throw Error();m.timezone=zone}catch{throw Error('Use an IANA time zone such as America/Detroit or America/Toronto. Fixed numeric offsets are not supported.')}
-    if(!Array.isArray(m.groups)||!m.groups.length||m.groups.some(g=>typeof g!=='string'||!Object.hasOwn(config.groups,g)))throw Error('Each member needs at least one valid group.');
+    const requested=m.tickers??[];
+    if(!Array.isArray(requested)||requested.some(t=>!SUPPORTED.includes(t)))throw Error('Personal holdings must use supported ticker symbols.');
+    if(!Array.isArray(m.groups)||m.groups.some(g=>typeof g!=='string'||!Object.hasOwn(config.groups,g)))throw Error('Select valid group IDs.');
+    if(!m.groups.length&&!requested.length)throw Error('Each member needs a group or personal holdings.');
   }
   const age=config.max_report_age_days??4;
   if(!Number.isInteger(age)||age<0||age>30||('allow_degraded' in config&&typeof config.allow_degraded!=='boolean'))throw Error('Report age must be an integer from 0 to 30; allow_degraded must be boolean.');
   return config;
 }
+
+const CSV_FIELDS=['id','name','email','groups','tickers','enabled','timezone','send_weekday','send_time','preferred_frequency','preferred_weekdays','preferred_time','content_preferences','feedback'];
+function csvRows(text){
+  text=text.replace(/^\uFEFF/,'');
+  const rows=[];let row=[],field='',quoted=false,closed=false;
+  for(let i=0;i<text.length;i++){
+    const char=text[i];
+    if(quoted){if(char==='"'){if(text[i+1]==='"'){field+='"';i++}else{quoted=false;closed=true}}else field+=char;continue}
+    if(char==='"'){if(field||closed)throw Error('Invalid CSV quoting.');quoted=true;continue}
+    if(char===','||char==='\n'||char==='\r'){
+      row.push(field);field='';closed=false;
+      if(char!==','){if(char==='\r'&&text[i+1]==='\n')i++;if(row.some(value=>value!==''))rows.push(row);row=[]}
+    }else{if(closed)throw Error('Unexpected text after a quoted CSV field.');field+=char}
+  }
+  if(quoted)throw Error('Unclosed CSV field.');
+  if(field||row.length||closed){row.push(field);if(row.some(value=>value!==''))rows.push(row)}
+  return rows;
+}
+const splitList=value=>[...new Set(value.split(';').map(s=>s.trim()).filter(Boolean))];
+function importMembersCsv(text,base={groups:{},members:[]}){
+  const rows=csvRows(text),headers=rows.shift()??[],required=CSV_FIELDS.slice(0,9).filter(key=>key!=='tickers');
+  if(new Set(headers).size!==headers.length||required.some(key=>!headers.includes(key))||headers.some(key=>!CSV_FIELDS.includes(key)))throw Error('CSV columns must be: '+CSV_FIELDS.join(','));
+  if(!rows.length)throw Error('CSV must contain at least one member.');
+  const config=JSON.parse(JSON.stringify(base));
+  config.members=rows.map(cells=>{
+    if(cells.length!==headers.length)throw Error('Incorrect number of CSV columns.');
+    const row=Object.fromEntries(headers.map((key,i)=>[key,cells[i].trim()]));
+    if(!['true','false','yes','no'].includes(row.enabled.toLowerCase()))throw Error('Enabled must be true/false or yes/no.');
+    if(!/^[0-6]$/.test(row.send_weekday))throw Error('Weekday must be 0 (Monday) to 6 (Sunday).');
+    return {...row,groups:splitList(row.groups),tickers:splitList(row.tickers??'').map(t=>t.toUpperCase()),enabled:['true','yes'].includes(row.enabled.toLowerCase()),send_weekday:Number(row.send_weekday)};
+  });
+  for(const member of config.members)for(const group of member.groups)if(!Object.hasOwn(config.groups,group)){
+    const tickers=[...new Set(config.members.filter(m=>m.groups.includes(group)).flatMap(m=>m.tickers))].sort();
+    if(!tickers.length)throw Error('New groups need holdings in the spreadsheet or existing configuration.');
+    Object.defineProperty(config.groups,group,{value:{name:group,tickers},enumerable:true});
+  }
+  return validateConfig(config);
+}
+function membersCsv(config){
+  validateConfig(config);
+  const quote=value=>'"'+String(value).replace(/"/g,'""')+'"';
+  return CSV_FIELDS.join(',')+'\r\n'+config.members.map(member=>CSV_FIELDS.map(key=>quote(key==='groups'||key==='tickers'?(member[key]??[]).join(';'):(member[key]??''))).join(',')).join('\r\n')+'\r\n';
+}
+
 function nextGroupId(groups){const ids=new Set(groups.map(group=>group.id));let number=1;while(ids.has('group-'+number))number++;return 'group-'+number}
-globalThis.JSOSIFConfig={validateConfig,nextGroupId,supported:SUPPORTED};
+globalThis.JSOSIFConfig={validateConfig,nextGroupId,importMembersCsv,membersCsv,supported:SUPPORTED};
 if(typeof document==='undefined')return;
 const $=id=>document.getElementById(id);
 const node=(tag,value)=>{const n=document.createElement(tag);if(value!==undefined)n.textContent=value;return n};
@@ -69,19 +116,47 @@ function renderGroups(){
 }
 function renderMembers(){
   $('members').replaceChildren();
-  for(const m of members){const card=node('section');card.className='card';const top=node('div');top.className='row';const title=node('strong',m.name||'New member');top.append(title,check('Enabled',m.enabled,value=>m.enabled=value));const remove=button('Remove member',()=>{members=members.filter(item=>item!==m);renderMembers()});remove.className='remove';top.append(remove);card.append(top);
-    const fields=node('div');fields.className='fields';fields.append(input('Name',m.name,value=>{m.name=value;title.textContent=value||'New member'}),input('Email',m.email,value=>m.email=value,'email'),input('Time zone',m.timezone,value=>m.timezone=value),select('Weekday',m.send_weekday,['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map((name,i)=>[i,name]),value=>m.send_weekday=Number(value)),input('Local send time',m.send_time,value=>m.send_time=value,'time'));card.append(fields);
-    const assigned=node('fieldset');assigned.append(node('legend','Groups'));const choices=node('div');choices.className='choices';for(const g of groups)if(g.id.trim())choices.append(check(g.name||g.id,m.groups.includes(g.id),enabled=>{m.groups=enabled?[...new Set([...m.groups,g.id])]:m.groups.filter(id=>id!==g.id)}));if(!groups.length)choices.append(node('small','Create a group first.'));assigned.append(choices);card.append(assigned,node('p','Member ID: '+m.id));$('members').append(card);
+  for(const m of members){
+    const row=node('tr');
+    const add=control=>{const cell=node('td');cell.append(control);row.append(cell)};
+    add(input('Name',m.name,value=>m.name=value));
+    add(input('Email',m.email,value=>m.email=value,'email'));
+    const choices=node('div');choices.className='choices';
+    for(const g of groups)if(g.id.trim())choices.append(check(g.name||g.id,m.groups.includes(g.id),enabled=>{m.groups=enabled?[...new Set([...m.groups,g.id])]:m.groups.filter(id=>id!==g.id)}));
+    if(!groups.length)choices.append(node('small','Personal holdings can be used without a group.'));
+    add(choices);
+    add(input('Tickers (comma-separated)',(m.tickers??[]).join(', '),value=>m.tickers=[...new Set(value.toUpperCase().split(/[,;\s]+/).filter(Boolean))]));
+    add(check('Email enabled',m.enabled,value=>m.enabled=value));
+    add(select('Weekday',m.send_weekday,['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map((name,i)=>[i,name]),value=>m.send_weekday=Number(value)));
+    add(input('Local send time',m.send_time,value=>m.send_time=value,'time'));
+    add(input('Time zone',m.timezone,value=>m.timezone=value));
+    add(node('small',m.id));
+    add(button('Remove member',()=>{members=members.filter(item=>item!==m);renderMembers()}));
+    $('members').append(row);
   }
 }
 function configuration(){if($('age').value==='')throw Error('Enter the maximum report age.');const result={};for(const g of groups){const id=g.id.trim();if(Object.hasOwn(result,id))throw Error('Duplicate group ID.');Object.defineProperty(result,id,{value:{name:g.name.trim()||id,tickers:[...new Set(g.tickers.toUpperCase().split(/[,;\s]+/).filter(Boolean))]},enumerable:true})}return validateConfig({groups:result,members:members.map(m=>({...m,name:m.name.trim(),email:m.email.trim(),timezone:m.timezone.trim(),groups:[...new Set(m.groups.map(id=>id.trim()))]})),max_report_age_days:Number($('age').value),allow_degraded:$('degraded').checked})}
 function validated(){const config=configuration();$('preview').textContent=JSON.stringify(config,null,2);$('status').textContent='Validated: '+config.members.length+' members, '+Object.keys(config.groups).length+' groups.';$('status').className='';return config}
 function error(exc){$('status').textContent=exc.message||'Invalid configuration. Check the form fields.';$('status').className='error'}
 $('add-group').addEventListener('click',()=>{groups.push({id:nextGroupId(groups),name:'',tickers:''});renderGroups();renderMembers()});
-$('add-member').addEventListener('click',()=>{members.push({id:uid(),name:'',email:'',groups:[],enabled:false,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Detroit',send_weekday:0,send_time:'09:00'});renderMembers()});
+$('add-member').addEventListener('click',()=>{members.push({id:uid(),name:'',email:'',groups:[],tickers:[],enabled:false,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||'America/Detroit',send_weekday:0,send_time:'09:00'});renderMembers()});
 $('validate').addEventListener('click',()=>{try{validated()}catch(exc){error(exc)}});
 $('download').addEventListener('click',()=>{try{const value=JSON.stringify(validated(),null,2)+'\n';const url=URL.createObjectURL(new Blob([value],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='subscriptions.local.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(exc){error(exc)}});
-$('import').addEventListener('change',async event=>{try{const file=event.target.files[0];if(!file)return;const c=validateConfig(JSON.parse(await file.text()));groups=Object.entries(c.groups).map(([id,g])=>({id,name:g.name||id,tickers:g.tickers.join(', ')}));members=c.members.map(m=>({...m,groups:[...m.groups]}));$('age').value=c.max_report_age_days??4;$('degraded').checked=c.allow_degraded??false;renderGroups();renderMembers();validated()}catch(exc){error(exc)}finally{event.target.value=''}});
+function applyConfig(c){
+  groups=Object.entries(c.groups).map(([id,g])=>({id,name:g.name||id,tickers:g.tickers.join(', ')}));
+  members=c.members.map(m=>({...m,groups:[...m.groups],tickers:[...(m.tickers??[])]}));
+  $('age').value=c.max_report_age_days??4;$('degraded').checked=c.allow_degraded??false;
+  renderGroups();renderMembers();validated();
+}
+function downloadFile(value,name,type){const url=URL.createObjectURL(new Blob([value],{type}));const link=node('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$('download-csv').addEventListener('click',()=>{try{downloadFile(membersCsv(validated()),'members.local.csv','text/csv')}catch(exc){error(exc)}});
+$('template').addEventListener('click',()=>downloadFile(CSV_FIELDS.join(',')+'\r\nmember-001,Example Analyst,analyst@example.com,energy,CNQ.TO;ENB,false,America/Toronto,0,09:00,,,,,\r\n','members.example.csv','text/csv'));
+$('import').addEventListener('change',async event=>{
+  try{const file=event.target.files[0];if(!file)return;const value=await file.text();
+    const base={groups:Object.fromEntries(groups.filter(g=>g.id.trim()&&g.tickers.trim()).map(g=>[g.id,{name:g.name||g.id,tickers:g.tickers.toUpperCase().split(/[,;\s]+/).filter(Boolean)}])),members:[],max_report_age_days:Number($('age').value),allow_degraded:$('degraded').checked};
+    const c=file.name.toLowerCase().endsWith('.csv')?importMembersCsv(value,base):validateConfig(JSON.parse(value));applyConfig(c);
+  }catch(exc){error(exc)}finally{event.target.value=''}
+});
 renderGroups();renderMembers();
 })();
 </script></body></html>

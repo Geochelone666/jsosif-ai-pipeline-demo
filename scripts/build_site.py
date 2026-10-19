@@ -1,10 +1,20 @@
 """Build a static latest/history site from the persisted archive, excluding private state."""
 import argparse
+from copy import deepcopy
+from datetime import datetime, timezone
 from pathlib import Path
 import shutil
 from tempfile import TemporaryDirectory
 
 from report_store import read_json, write_json, verified_report_files
+
+
+def report_summary(snapshot):
+    """Publish a small, source-derived overview without private delivery information."""
+    metrics = {row['metric']: row['value'] for row in snapshot['quant']}
+    return {'close': metrics.get('Close'), 'return_1d': metrics.get('Return 1D (%)'),
+            'return_1y': metrics.get('Return 1Y (%)'),
+            'ai_status': snapshot['ai_summary']['status']}
 
 
 def build(store, output, template=None):
@@ -16,6 +26,10 @@ def build(store, output, template=None):
     index = read_json(store / 'index.json')
     if not isinstance(index, dict) or not isinstance(index.get('reports'), list):
         raise ValueError('A valid persisted archive index is required before building the site')
+    index = deepcopy(index)
+    index['publication'] = {'published_at': datetime.now(timezone.utc).isoformat(),
+                            'schedule': 'Workday research updates', 'refresh_seconds': 60,
+                            'data_type': 'Research snapshots; not a live market feed'}
     if output.exists():
         if not output.is_dir() or (any(output.iterdir()) and not (output / '.jsosif-site-build').is_file()):
             raise ValueError('Refusing to replace a nonempty directory without the site-build marker')
@@ -29,8 +43,12 @@ def build(store, output, template=None):
         members_page = Path(template).with_name('members.html')
         if members_page.is_file():
             shutil.copy2(members_page, stage / 'members.html')
+        excel_template = Path(template).with_name('members.example.xlsx')
+        if excel_template.is_file():
+            shutil.copy2(excel_template, stage / 'members.example.xlsx')
         for entry in index['reports']:
             files = verified_report_files(store, entry)
+            entry['summary'] = report_summary(read_json(files['json']))
             for kind in ('md', 'json', 'pdf'):
                 source = files[kind]
                 target = stage / entry[kind]

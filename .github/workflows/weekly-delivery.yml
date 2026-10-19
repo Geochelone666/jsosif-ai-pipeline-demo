@@ -32,18 +32,8 @@ jobs:
       - name: Load and validate private member configuration
         env:
           SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}
-        run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          value = os.environ.get('SUBSCRIPTIONS_JSON')
-          if not value:
-              raise SystemExit('Configure the private SUBSCRIPTIONS_JSON repository secret')
-          path = Path(os.environ['RUNNER_TEMP']) / 'subscriptions.json'
-          path.write_text(json.dumps(json.loads(value)))
-          path.chmod(0o600)
-          PY
-          python scripts/subscriptions.py "$RUNNER_TEMP/subscriptions.json"
+          MEMBERS_CSV: ${{ secrets.MEMBERS_CSV }}
+        run: python scripts/prepare_subscriptions.py "$RUNNER_TEMP/subscriptions.json" --required
       - name: Open persistent report and delivery store
         run: python scripts/prepare_store.py ../report-store
       - name: Send due weekly PDF digests or show preview counts

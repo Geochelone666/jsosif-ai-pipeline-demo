@@ -10,9 +10,11 @@ they are not investment advice. News summaries use RSS headlines, not full artic
 ## Manual member and group entry
 
 Open `docs/members.html` locally, or choose **Members and groups** on the report site.
-The browser form supports group stock lists, multiple members, participation,
-time zones and weekly delivery times. Import an existing JSON to edit it, then
-download `subscriptions.local.json`. All editing stays in that browser page;
+The browser editor provides a member table with names, email addresses, groups,
+personal ticker lists, participation, time zones and weekly delivery times. Import
+an existing JSON or UTF-8 CSV to edit it, then download `subscriptions.local.json`
+or `members.local.csv`. CSV and Excel templates are available from the editor. The downloadable Excel
+workbook also preserves the original paper-form survey answers. All editing stays in that browser page;
 it does not upload the roster or enable delivery. Save the download before closing
 the page and use it as the private configuration below.
 
@@ -20,20 +22,43 @@ Copy `config/subscriptions.example.json` to **ignored**
 `config/subscriptions.local.json`. Enter groups and their ticker lists, then members:
 
 - `id`: a stable member identifier; keep it when changing their email/name.
-- `name`, `email`, `groups`: one or more group IDs; overlapping tickers are deduplicated.
+- `name`, `email`: the personal greeting and delivery address.
+- `groups`: group IDs used for team membership and default stock lists.
+- `tickers`: optional personal stock list. A nonempty list replaces group defaults;
+  leave it empty to inherit the union of selected groups. At least a group or
+  personal holding is required. Only the 25 supported holdings are accepted.
 - `enabled`: participation switch, a JSON boolean.
 - `timezone`: IANA zone such as `America/Toronto`.
 - `send_weekday`: Monday = 0 through Sunday = 6.
 - `send_time`: local 24-hour `HH:MM`.
 
 You can manually fill a CSV using `config/members.example.csv`, with group IDs
-separated by semicolons, then import it:
+and personal tickers separated by semicolons, then import it:
 
 ```bash
 python scripts/subscriptions.py config/subscriptions.local.json --import-csv config/members.local.csv
 ```
 
-This replaces the configuration's member list after validating the entire input.
+A completed Excel workbook can be imported directly, without converting it first:
+
+```bash
+python scripts/subscriptions.py config/subscriptions.local.json --import-excel config/members.local.xlsx
+```
+
+Use the `Members` sheet in [the Excel template](docs/members.example.xlsx), or a
+single-sheet workbook with the same column headers. Native Excel time cells are
+supported. Formula cells are rejected; the importer never evaluates them.
+
+This replaces the configuration's member list only after validating the entire input,
+using an atomic file replacement with owner-only permissions. A complete CSV can
+create the JSON configuration from scratch. New groups derive their stock lists
+from the personal holdings entered for that group. Existing group lists and
+freshness settings are preserved. Header-only files are rejected. Use `true`/`false`
+or `yes`/`no` for participation; weekday numbers run from Monday = 0 to Sunday = 6.
+Optional `preferred_frequency`, `preferred_weekdays`, `preferred_time`,
+`content_preferences` and `feedback` columns retain the original paper survey.
+They do not override the reviewed `send_weekday`, `send_time` or `enabled` values.
+The pilot remains weekly even if a survey response asks for daily reports.
 All example members are disabled and use example.com addresses. Actual member
 files must stay private; do not commit them to this public repository.
 
@@ -70,6 +95,8 @@ project also consume the published quota.
 If a rotation takes longer than your weekly delivery or freshness requirements,
 increase the available quota, reduce the stock list or adjust the requirements;
 the application defers an incomplete/stale digest instead of mislabeling it fresh.
+Research collection includes all configured group and personal holdings, even
+when a member opts out of email. The participation switch controls delivery only.
 Yahoo/RSS have no fixed guaranteed capacity established by this project. Start
 with one collection batch per trading day and inspect observed failures.
 
@@ -98,9 +125,22 @@ python scripts/deliver_weekly.py --config config/subscriptions.local.json --stor
 ```
 
 Default mode shows preview counts and never consumes the weekly send slot.
+To inspect actual `.eml` messages before the scheduled time, use:
+
+```bash
+python scripts/deliver_weekly.py --config config/subscriptions.local.json --store report-store \
+  --preview-all --preview-dir review/weekly
+```
+
+This includes enabled members only, checks report quality and freshness, writes
+private previews outside the public archive, and does not contact SMTP or reserve
+a weekly slot. Preview flags cannot be combined with `--send`. Historical-only
+archives still defer delivery previews; they do not masquerade as fresh reports.
 For enabled members whose local weekly time has passed, it selects the newest
 qualifying report for every subscribed ticker. One email includes all PDFs, a
-personal greeting, attachment introduction and good wishes. Multiple groups still
+personal greeting, the report list and the `Best, / Tech Team` sign-off.
+This is the same short cover-note format as the previously tested email; the
+detailed analysis stays in the PDF attachments. Multiple groups still
 produce at most one email per member per local Monday–Sunday week.
 
 For the repeated fall-back hour, a configured time uses its first occurrence.
@@ -158,6 +198,10 @@ at 22:17 UTC. It collects only the union of enabled members' stocks; without
 `SUBSCRIPTIONS_JSON`, it collects the full 25-stock universe. It never sends mail.
 `Weekly member PDF delivery` checks due members every 15 minutes at offset minutes.
 Manual runs default to preview; type `YES` in the confirmation input to send.
+Both workflows accept the private `MEMBERS_CSV` repository secret directly.
+`SUBSCRIPTIONS_JSON` remains supported for existing group defaults and report
+policies. If both are set, CSV replaces the members while preserving those
+defaults and policies. Neither roster is written to the public site or logs.
 GitHub schedules can be delayed or dropped, so delivery is best-effort within the
 remaining local week. It does not guarantee minute-exact arrival. A durable
 external scheduler is needed if strict arrival deadlines are required.
@@ -205,3 +249,15 @@ legacy entry points for compatibility. Use the new refresh/delivery workflows fo
 subscriptions and weekly idempotency; do not run the legacy daily daemon alongside
 them. The former one-time test sending schedule has been removed. Legacy recipient
 configuration now contains example addresses instead of actual members.
+
+
+## Rollout from the team spreadsheet
+
+See [the rollout checklist](docs/ROLLOUT.md) for collection fields, CSV import,
+private preview, automation settings, and the website's workday update behavior.
+The public workspace shows latest saved metrics, per-source dates and quality,
+plus every historical version. Use **Read research** or **Inspect** to view a
+version's quantitative table, research sections and freshness evidence inline.
+The browser checks for a new publication every minute by default; readers can
+choose five minutes or manual refresh. Polling does not initiate API calls or
+convert daily research snapshots into streaming quotes.
