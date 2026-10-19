@@ -1,0 +1,134 @@
+{
+  "ticker": "JWEL.TO",
+  "errors": [
+    "SPY yfinance: The price request could not be completed due to an unexpected error after 1 attempts (dns_or_connection)",
+    "SPY stooq: The price service returned HTTP 404 after 1 attempts (http_error)",
+    "warning: Beta vs SPY unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/JWEL.TO/history/",
+    "https://finance.yahoo.com/quote/JWEL.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 45.47999954223633,
+    "Return 1D (%)": 0.04399572847879618,
+    "Return 1W (%)": 0.04399572847879618,
+    "Return 1M (%)": 0.13210342516489781,
+    "Return YTD (%)": 37.657826981689624,
+    "Return 1Y (%)": 35.672097165195794,
+    "Annualized volatility (%)": 22.350279835841256,
+    "Max drawdown (%)": -14.622056877948243,
+    "Sharpe (rf=0)": 1.4929433936281438,
+    "Beta vs SPY": null,
+    "MA50": 45.43324752807617,
+    "Close vs MA50 (%)": 0.10290264663836979,
+    "MA200": 38.36758850097656,
+    "Close vs MA200 (%)": 18.537550362537747,
+    "RSI (14, Wilder)": 63.16761514553916,
+    "MACD (12,26)": 0.10714591122275863,
+    "MACD signal (9)": 0.14954460997610575,
+    "MACD histogram": -0.04239869875334712,
+    "P/E (trailing)": 24.71739,
+    "P/B": 3.7032814,
+    "EV/EBITDA": 16.33,
+    "Revenue growth (%)": 17.4
+  },
+  "as_of": "2026-10-19",
+  "verification": {
+    "base_date": "2025-10-17",
+    "base_close": 33.52199935913086,
+    "end_close": 45.47999954223633,
+    "manual_1Y_pct": 35.67209716519579,
+    "passed": true
+  },
+  "fetched_at": "2026-10-19T19:46:16.913722+00:00",
+  "requested_as_of": "2026-10-19",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "JWEL.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "failed",
+      "category": "dns_or_connection",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price request could not be completed due to an unexpected error"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "stooq",
+      "status": "failed",
+      "category": "http_error",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price service returned HTTP 404"
+    }
+  ],
+  "metric_notes": {
+    "Beta vs SPY": {
+      "status": "undefined",
+      "reason": "undefined: SPY prices are missing"
+    }
+  },
+  "history_count": {
+    "JWEL.TO": 262
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 262 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 262. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'JWEL.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-19'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
