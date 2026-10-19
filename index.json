@@ -508,6 +508,23 @@
       "md": "archive/20261019T193942Z-038adf28/CSCO/CSCO-intelligence-20261019.md",
       "json": "archive/20261019T193942Z-038adf28/CSCO/CSCO-intelligence-20261019.json",
       "pdf": "archive/20261019T193942Z-038adf28/CSCO/CSCO-intelligence-20261019.pdf"
+    },
+    {
+      "report_id": "20261019T193942Z-038adf28/JPM",
+      "ticker": "JPM",
+      "generated_at": "2026-10-19T19:42:45.479854+00:00",
+      "as_of": "2026-10-19",
+      "quality": "degraded",
+      "market_as_of": "2026-10-19",
+      "news_as_of": "2026-10-19",
+      "sha256": {
+        "md": "79a2f421e07c4aefd655c785d236caf2427e913cb73a6b695d346b185094db8d",
+        "json": "901a90e8fd52834d2521633716b7d12a2e716ae42b3a631d542fafffe3f45f51",
+        "pdf": "b523e6b50aa5f23d979b3aa26a00f3eb5199620f23f16bd1824a059fb710a1a7"
+      },
+      "md": "archive/20261019T193942Z-038adf28/JPM/JPM-intelligence-20261019.md",
+      "json": "archive/20261019T193942Z-038adf28/JPM/JPM-intelligence-20261019.json",
+      "pdf": "archive/20261019T193942Z-038adf28/JPM/JPM-intelligence-20261019.pdf"
     }
   ],
   "refresh_plan": {
@@ -574,11 +591,13 @@
     ],
     "successful_tickers": [
       "CNQ.TO",
-      "CSCO"
+      "CSCO",
+      "JPM"
     ],
     "degraded_tickers": [
       "CNQ.TO",
-      "CSCO"
+      "CSCO",
+      "JPM"
     ],
     "failed_tickers": [],
     "failures": [],
