@@ -172,7 +172,7 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                               JSOSIF_AI_UNAVAILABLE_REASON=plan['reason'])
             for stage in ('quant', 'ai_extract', 'comparables', 'earnings', 'edgar', 'regenerate_report', 'report_pdf'):
                 # Never use the demo SEC contact identity for a production request.
-                if stage == 'edgar' and not os.environ.get('SEC_USER_AGENT'):
+                if stage == 'edgar' and not (os.environ.get('SEC_USER_AGENT') or os.environ.get('GMAIL_USER')):
                     write_json(DATA / f'{ticker.lower()}-edgar.json', {
                         'ticker': ticker, 'cik': None, 'latest_filing': None, 'revenue': None,
                         'net_income': None, 'error': 'SEC source unavailable: configure SEC_USER_AGENT'})

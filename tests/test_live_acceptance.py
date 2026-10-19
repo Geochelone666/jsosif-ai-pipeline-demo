@@ -107,3 +107,13 @@ def test_ci_annotations_are_sanitized_and_available_without_artifact_download(mo
     assert '403' in output and 'synthetic-secret' not in output
     assert '| ai | verified |' in summary.read_text()
     assert 'synthetic-secret' not in summary.read_text()
+
+
+def test_sec_contact_can_reuse_a_validated_sender_without_a_placeholder(monkeypatch):
+    import edgar
+    monkeypatch.delenv('SEC_USER_AGENT', raising=False)
+    monkeypatch.setenv('GMAIL_USER', 'synthetic@example.com')
+    assert edgar.request_identity() == 'JSOSIF Research contact synthetic@example.com'
+    monkeypatch.setenv('GMAIL_USER', 'not an address')
+    with pytest.raises(ValueError):
+        edgar.request_identity()

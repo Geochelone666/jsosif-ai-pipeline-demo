@@ -176,3 +176,19 @@ def test_malformed_ai_summary_remains_unclassified(summary):
     result = extract([item], 'CSCO', generate, as_of='2026-10-18')
     assert result['extraction_stats']['ai'] == 0
     assert result['extraction_stats']['unknown'] == 1
+
+
+def test_api_requests_identify_the_application(setup):
+    def open_request(request, **kwargs):
+        assert request.get_header('User-agent') == 'JSOSIF/1.0'
+        return response()
+    groq.generate_json('JSON', opener=open_request, sleep=lambda _: None)
+
+
+@pytest.mark.parametrize('body,expected', [
+    (b'error code: 1010', 'edge_policy_1010'),
+    (b'{"error":{"code":"invalid_api_key","message":"synthetic-secret"}}', 'invalid_api_key'),
+    (b'{"error":{"code":"synthetic-secret"}}', None),
+])
+def test_safe_provider_error_codes_never_copy_arbitrary_response_content(body, expected):
+    assert groq.error_code(io.BytesIO(body)) == expected

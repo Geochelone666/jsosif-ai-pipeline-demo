@@ -17,7 +17,26 @@ DEFAULT_MODEL = 'llama-3.1-8b-instant'
 
 
 class GroqError(RuntimeError):
-    pass
+    def __init__(self, message, *, status=None, provider_code=None):
+        super().__init__(message)
+        self.code = status
+        self.provider_code = provider_code
+
+
+def error_code(response):
+    """Return a known diagnostic code, never raw error content or credentials."""
+    try:
+        raw = response.read(8192)
+        if b'error code: 1010' in raw.lower():
+            return 'edge_policy_1010'
+        error = json.loads(raw).get('error', {})
+        code = error.get('code') or error.get('type')
+        allowed = {'invalid_api_key', 'insufficient_permissions', 'permission_denied',
+                   'model_not_found', 'rate_limit_exceeded', 'unsupported_country_region_territory',
+                   'access_denied'}
+        return code if isinstance(code, str) and code in allowed else None
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
 
 
 def settings():
@@ -94,7 +113,8 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
         {'role': 'user', 'content': prompt}], 'temperature': 0,
         'response_format': {'type': 'json_object'}, 'max_completion_tokens': 1600}).encode()
     request = Request('https://api.groq.com/openai/v1/chat/completions', data=body,
-                      headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json'})
+                      headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json',
+                               'User-Agent': 'JSOSIF/1.0'})
     for attempt in range(attempts):
         path, ledger, slot = _reserve(model, reserved, sleep)
         try:
@@ -107,7 +127,8 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
                 ledger['groq_next_request_at'] = max(ledger.get('groq_next_request_at', 0), time.time() + delay)
                 _save(path, ledger)
             if not retry or attempt + 1 == attempts or delay > 120:
-                raise GroqError(f'Groq HTTP {exc.code}; check account limits and retry guidance') from None
+                raise GroqError(f'Groq HTTP {exc.code}; check account limits and retry guidance',
+                                status=exc.code, provider_code=error_code(exc)) from None
             sleep(delay)
             continue
         except (URLError, TimeoutError, OSError):
