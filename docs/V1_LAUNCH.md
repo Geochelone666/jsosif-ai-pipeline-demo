@@ -25,7 +25,7 @@ source files, PR descriptions, issue comments or chat.
 | Setting | Type | Purpose |
 | --- | --- | --- |
 | `Grop_ai_API` | Secret | Existing Groq key, mapped to `GROQ_API_KEY` in Actions |
-| `GROQ_MODEL` | Optional variable | Defaults to `llama-3.1-8b-instant`; verify account availability |
+| `GROQ_MODEL` | Optional variable | Defaults to `openai/gpt-oss-20b`; verify account availability |
 | `GROQ_RPD`, `GROQ_RPM` | Optional variables | Application request caps, defaults 100/day and 10/minute |
 | `GROQ_TPD`, `GROQ_TPM` | Optional variables | Application token caps, defaults 100,000/day and 5,000/minute |
 | `SEC_USER_AGENT` | Variable | Organization and real contact email for SEC requests |
@@ -153,7 +153,7 @@ Official sources checked on 2026-10-19:
 - [Groq Python client](https://github.com/groq/groq-python): authentication,
   error classes, timeout and retry behavior.
 - [Official request types](https://github.com/groq/groq-python/blob/main/src/groq/types/chat/completion_create_params.py):
-  `llama-3.1-8b-instant`, `response_format` and `max_completion_tokens`.
+  `openai/gpt-oss-20b`, `response_format` and `max_completion_tokens`.
 - [Rate limits](https://console.groq.com/docs/rate-limits) and
   [account limits](https://console.groq.com/settings/limits): verify the actual
   model/account request and token limits before enabling full-volume collection.

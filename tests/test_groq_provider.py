@@ -114,8 +114,8 @@ def test_pacing_across_midnight_charges_the_new_application_day(setup, monkeypat
         clock['now'] += seconds
     groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=wait)
     ledger = read_json(setup, {})
-    assert 'groq:llama-3.1-8b-instant:2026-10-19' not in ledger
-    assert ledger['groq:llama-3.1-8b-instant:2026-10-20']['requests'] == 1
+    assert 'groq:openai/gpt-oss-20b:2026-10-19' not in ledger
+    assert ledger['groq:openai/gpt-oss-20b:2026-10-20']['requests'] == 1
 
 
 def test_response_persistence_error_does_not_repeat_a_successful_http_call(setup, monkeypatch):

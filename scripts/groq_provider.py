@@ -13,8 +13,8 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request
 from credential_http import urlopen
 
-DEFAULT_MODEL = 'llama-3.1-8b-instant'
-MODEL_CANDIDATES = (DEFAULT_MODEL, 'llama-3.3-70b-versatile', 'openai/gpt-oss-20b',
+DEFAULT_MODEL = 'openai/gpt-oss-20b'
+MODEL_CANDIDATES = (DEFAULT_MODEL, 'llama-3.1-8b-instant', 'llama-3.3-70b-versatile',
                     'openai/gpt-oss-120b', 'qwen/qwen3-32b',
                     'meta-llama/llama-4-scout-17b-16e-instruct')
 
@@ -123,10 +123,13 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
         raise GroqError('Groq API key is not configured')
     # A byte bound intentionally overestimates input tokens; output is bounded too.
     reserved = len(prompt.encode('utf-8')) + 1800
-    body = json.dumps({'model': model, 'messages': [
+    payload = {'model': model, 'messages': [
         {'role': 'system', 'content': 'Return a valid JSON object only.'},
         {'role': 'user', 'content': prompt}], 'temperature': 0,
-        'response_format': {'type': 'json_object'}, 'max_completion_tokens': 1600}).encode()
+        'response_format': {'type': 'json_object'}, 'max_completion_tokens': 1600}
+    if model.startswith('openai/gpt-oss-'):
+        payload['reasoning_effort'] = 'low'
+    body = json.dumps(payload).encode()
     request = Request('https://api.groq.com/openai/v1/chat/completions', data=body,
                       headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json',
                                'User-Agent': 'JSOSIF/1.0'})

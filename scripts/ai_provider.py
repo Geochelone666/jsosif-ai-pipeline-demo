@@ -12,7 +12,7 @@ def provider():
 
 
 def model():
-    return (os.environ.get('GROQ_MODEL') or 'llama-3.1-8b-instant') if provider() == 'groq' else (
+    return (os.environ.get('GROQ_MODEL') or 'openai/gpt-oss-20b') if provider() == 'groq' else (
         os.environ.get('GEMINI_MODEL') or 'gemini-3.5-flash-lite')
 
 

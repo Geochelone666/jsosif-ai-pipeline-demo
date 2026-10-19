@@ -2,6 +2,11 @@ name: Live launch acceptance (no email delivery)
 
 on:
   workflow_dispatch:
+    inputs:
+      research_smoke:
+        description: 'Generate one real CSCO report in an isolated store; no publication or email'
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -30,7 +35,7 @@ jobs:
         env:
           AI_PROVIDER: groq
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
-          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'openai/gpt-oss-20b' }}
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
@@ -44,3 +49,57 @@ jobs:
           name: live-launch-acceptance
           path: review/live-acceptance.json
           retention-days: 30
+
+  research_smoke:
+    needs: verify
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.research_smoke }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.lock
+      - name: Configure a public research holding without a member roster
+        run: |
+          python - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          Path(os.environ['RUNNER_TEMP'], 'smoke-subscriptions.json').write_text(json.dumps({
+              'groups': {'smoke': {'tickers': ['CSCO']}}, 'members': []}))
+          PYCODE
+      - name: Generate a real report in a temporary archive
+        id: collect
+        env:
+          AI_PROVIDER: groq
+          GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'openai/gpt-oss-20b' }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/refresh_reports.py --store "$RUNNER_TEMP/research-smoke" --config "$RUNNER_TEMP/smoke-subscriptions.json"
+      - name: Build the isolated report preview
+        if: ${{ !cancelled() && steps.collect.outputs.publish == 'true' }}
+        run: python scripts/build_site.py --store "$RUNNER_TEMP/research-smoke" --output research-smoke-site
+      - name: Verify full source evidence and report coverage
+        if: ${{ !cancelled() && steps.collect.outputs.publish == 'true' }}
+        run: |
+          PYTHONPATH=scripts python - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          from check_release import check
+          from report_store import read_json
+          result = check(Path(os.environ['RUNNER_TEMP']) / 'research-smoke', require_ready=True)
+          result['extraction_stats'] = read_json('data/csco-ai-intel.json', {}).get('extraction_stats', {})
+          print('::notice title=Research smoke::' + json.dumps(result))
+          if not result['ready']:
+              raise SystemExit('The isolated real report requires complete source evidence')
+          PYCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: isolated-real-research-preview
+          path: research-smoke-site
+          retention-days: 14
