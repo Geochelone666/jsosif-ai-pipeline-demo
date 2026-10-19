@@ -1,0 +1,140 @@
+{
+  "ticker": "BMO.TO",
+  "errors": [
+    "SPY yfinance: The price request could not be completed due to an unexpected error after 1 attempts (dns_or_connection)",
+    "SPY stooq: The price service returned HTTP 404 after 1 attempts (http_error)",
+    "warning: enterpriseToEbitda unavailable (N/A)",
+    "warning: Beta vs SPY unavailable (N/A)",
+    "warning: EV/EBITDA unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/BMO.TO/history/",
+    "https://finance.yahoo.com/quote/BMO.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 234.3300018310547,
+    "Return 1D (%)": -0.8756311839568376,
+    "Return 1W (%)": 0.9607908956902333,
+    "Return 1M (%)": -4.08497230046655,
+    "Return YTD (%)": 34.631989583654786,
+    "Return 1Y (%)": 38.37688071235248,
+    "Annualized volatility (%)": 19.05845164604863,
+    "Max drawdown (%)": -11.423920488622063,
+    "Sharpe (rf=0)": 1.7707715890066003,
+    "Beta vs SPY": null,
+    "MA50": 241.6382000732422,
+    "Close vs MA50 (%)": -3.024438288305553,
+    "MA200": 217.86436210632326,
+    "Close vs MA200 (%)": 7.557748117012264,
+    "RSI (14, Wilder)": 44.26542994564101,
+    "MACD (12,26)": -2.279682316169527,
+    "MACD signal (9)": -2.3824838380363498,
+    "MACD histogram": 0.10280152186682256,
+    "P/E (trailing)": 19.0978,
+    "P/B": 1.9225184,
+    "EV/EBITDA": null,
+    "Revenue growth (%)": 12.0
+  },
+  "as_of": "2026-10-19",
+  "verification": {
+    "base_date": "2025-10-17",
+    "base_close": 169.3418731689453,
+    "end_close": 234.3300018310547,
+    "manual_1Y_pct": 38.37688071235248,
+    "passed": true
+  },
+  "fetched_at": "2026-10-19T19:42:48.925373+00:00",
+  "requested_as_of": "2026-10-19",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "BMO.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "failed",
+      "category": "dns_or_connection",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price request could not be completed due to an unexpected error"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "stooq",
+      "status": "failed",
+      "category": "http_error",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price service returned HTTP 404"
+    }
+  ],
+  "metric_notes": {
+    "Beta vs SPY": {
+      "status": "undefined",
+      "reason": "undefined: SPY prices are missing"
+    },
+    "EV/EBITDA": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    }
+  },
+  "history_count": {
+    "BMO.TO": 262
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 262 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 262. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'BMO.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-19'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
