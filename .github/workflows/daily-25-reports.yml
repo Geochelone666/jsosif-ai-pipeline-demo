@@ -31,16 +31,8 @@ jobs:
       - name: Load private subscriptions
         env:
           SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}
-        run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          value = os.environ.get('SUBSCRIPTIONS_JSON')
-          if value:
-              path = Path(os.environ['RUNNER_TEMP']) / 'subscriptions.json'
-              path.write_text(json.dumps(json.loads(value)))
-              path.chmod(0o600)
-          PY
+          MEMBERS_CSV: ${{ secrets.MEMBERS_CSV }}
+        run: python scripts/prepare_subscriptions.py "$RUNNER_TEMP/subscriptions.json"
       - name: Open persistent report store
         id: store
         run: python scripts/prepare_store.py ../report-store

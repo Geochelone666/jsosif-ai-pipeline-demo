@@ -13,7 +13,7 @@ import uuid
 from data_utils import ROOT, DATA, REPORTS, SUPPORTED
 from report_store import read_json, write_json, digest
 from snapshot_contract import validate_snapshot
-from subscriptions import load, tickers_for
+from subscriptions import load, research_tickers
 from gemini_provider import quota_day
 
 
@@ -91,9 +91,9 @@ def main():
     if last and not args.force and (now.date() - datetime.fromisoformat(last).date()).days < args.interval_days:
         print('Refresh interval not elapsed; archive retained')
         return
-    tickers = tickers_for(load(args.config)) if args.config else list(SUPPORTED)
+    tickers = research_tickers(load(args.config)) if args.config else list(SUPPORTED)
     if not tickers:
-        print('No active subscriptions; no API calls')
+        print('No configured research holdings; no API calls')
         return
     if not os.environ.get('GEMINI_CLI') and not (os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY')):
         parser.error('Configure GEMINI_API_KEY (or explicitly configure GEMINI_CLI) before refreshing')

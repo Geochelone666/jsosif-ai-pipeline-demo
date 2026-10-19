@@ -107,8 +107,7 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
         '',
     ]
     plain += [f'- {ticker} — {day}' for ticker, day, *_ in snapshots]
-    plain += ['', 'The attached PDFs include quantitative metrics, news, source links and data dates.',
-              'Wishing you a productive week and all the best with your research.', '', 'Best,', 'Tech Team']
+    plain += ['', 'Best,', 'Tech Team']
     html = [
         '<html><body>',
         f'<p>Hi {escape(name)},</p>',
@@ -116,9 +115,7 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
         '<ul>',
     ]
     html += [f'<li>{escape(ticker)} &mdash; {escape(day)}</li>' for ticker, day, *_ in snapshots]
-    html += ['</ul>', '<p>The attached PDFs include quantitative metrics, news, source links and data dates.</p>',
-             '<p>Wishing you a productive week and all the best with your research.</p>',
-             '<p>Best,<br>Tech Team</p>', '</body></html>']
+    html += ['</ul>', '<p>Best,<br>Tech Team</p>', '</body></html>']
     message = EmailMessage(policy=policy.SMTP)
     message['Subject'] = title
     message['To'] = ', '.join(recipients)

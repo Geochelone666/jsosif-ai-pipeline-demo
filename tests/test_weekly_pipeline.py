@@ -125,6 +125,62 @@ def test_preview_does_not_consume_week(config, store):
     assert weekly.deliver(config, store, now=NOW, really_send=True, backend=lambda _: None)['sent'] == 1
 
 
+def test_table_personal_choices_and_opt_out_drive_the_digest(config, store):
+    from email import policy
+    from email.parser import BytesParser
+    config['members'][0]['tickers'] = ['CSCO']
+    config['members'].append(dict(config['members'][0], id='two', name='Bob Example',
+                                  email='bob@example.com', tickers=['JPM'], enabled=False))
+    output = store.with_name(store.name + '-mail-previews')
+    result = weekly.deliver(config, store, now=NOW, preview_dir=output)
+    assert result['prepared'] == 1 and result['skipped'] == 1
+    files = list(output.glob('*.eml'))
+    assert len(files) == 1 and files[0].stat().st_mode & 0o777 == 0o600
+    message = BytesParser(policy=policy.default).parsebytes(files[0].read_bytes())
+    body = message.get_body(preferencelist=('plain',)).get_content().replace('\r\n', '\n')
+    assert body.strip() == ('Hi Alice Example,\n\nHere are the latest JSOSIF intelligence reports:'
+                            '\n\n- CSCO — 2026-10-19\n\nBest,\nTech Team')
+    assert str(message['To']) == 'alice@example.com'
+    assert [part.get_filename() for part in message.iter_attachments()] == ['CSCO-intelligence-20261019.pdf']
+    assert not (store / 'state/deliveries.json').exists()
+
+
+def test_pre_presentation_preview_does_not_wait_for_the_weekly_slot(config, store):
+    config['members'][0]['send_weekday'] = 2
+    assert weekly.deliver(config, store, now=NOW)['skipped'] == 1
+    output = store.with_name(store.name + '-advance-preview')
+    result = weekly.deliver(config, store, now=NOW, preview_all=True, preview_dir=output,
+                            backend=lambda _: pytest.fail('Preview must not contact SMTP'))
+    assert result['prepared'] == 1
+    assert len(list(output.glob('*.eml'))) == 1
+    assert not (store / 'state/deliveries.json').exists()
+    with pytest.raises(ValueError, match='Preview'):
+        weekly.deliver(config, store, really_send=True, preview_all=True)
+
+
+def test_private_email_preview_cannot_be_published_in_the_archive(config, store):
+    with pytest.raises(ValueError, match='outside'):
+        weekly.deliver(config, store, now=NOW, preview_dir=store / 'archive/previews')
+    assert not list(store.rglob('*.eml'))
+
+
+def test_site_overview_metrics_come_from_the_saved_snapshot(store, tmp_path):
+    index = read_json(store / 'index.json')
+    entry = index['reports'][0]
+    payload = read_json(store / entry['json'])
+    payload['quant'][0]['value'] = '0'
+    write_json(store / entry['json'], payload)
+    entry['sha256']['json'] = digest(store / entry['json'])
+    write_json(store / 'index.json', index)
+    output = store.with_name(store.name + '-summary-site')
+    build(store, output)
+    public = read_json(output / 'index.json')
+    assert public['reports'][0]['summary']['close'] == '0'
+    assert public['publication']['refresh_seconds'] == 60
+    assert public['publication']['published_at']
+    assert 'summary' not in read_json(store / 'index.json')['reports'][0]
+
+
 def test_corrupt_pdf_blocks_delivery(config, store):
     next(store.rglob('*.pdf')).write_text('%PDF changed')
     assert weekly.deliver(config, store, now=NOW, really_send=True,

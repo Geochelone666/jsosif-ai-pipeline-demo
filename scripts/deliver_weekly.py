@@ -7,6 +7,7 @@ import hashlib
 import os
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from tempfile import NamedTemporaryFile
 
 from email_delivery import build_email, send, GmailSmtpBackend
 from report_store import read_json, write_json, verified_report_files, persist
@@ -54,7 +55,10 @@ def due_period(member, now):
     return monday.isoformat() if now.astimezone(timezone.utc) >= due.astimezone(timezone.utc) else None
 
 
-def deliver(config, root, *, now=None, really_send=False, git=False, backend=send):
+def deliver(config, root, *, now=None, really_send=False, git=False, backend=send,
+            preview_dir=None, preview_all=False):
+    if really_send and (preview_dir is not None or preview_all):
+        raise ValueError('Preview options cannot be combined with real delivery')
     now = now or datetime.now(timezone.utc)
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
@@ -66,12 +70,15 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
         summary = {'sent': 0, 'prepared': 0, 'skipped': 0, 'deferred': 0, 'unknown': 0}
         for member in config['members']:
             period = due_period(member, now) if member['enabled'] else None
+            if preview_all and member['enabled']:
+                local = now.astimezone(ZoneInfo(member['timezone']))
+                period = (local.date() - timedelta(days=local.weekday())).isoformat()
             if not period:
                 summary['skipped'] += 1
                 continue
             # Public archive state never includes names, addresses, or message bodies.
             key = hashlib.sha256((member['id'] + ':' + period).encode()).hexdigest()
-            if key in ledger:
+            if key in ledger and not preview_all:
                 summary['skipped'] += 1
                 continue
             selected = []
@@ -99,6 +106,24 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 summary['deferred'] += 1
                 continue
             if not really_send:
+                if preview_dir is not None:
+                    directory = Path(preview_dir)
+                    # Never put a private email body in the public report archive.
+                    resolved = directory.resolve()
+                    store = root.resolve()
+                    if resolved == store or store in resolved.parents:
+                        raise ValueError('Private email previews must be outside the report store')
+                    directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+                    target = directory / f'{key}.eml'
+                    temporary = None
+                    try:
+                        with NamedTemporaryFile(dir=directory, delete=False) as stream:
+                            temporary = Path(stream.name)
+                            stream.write(message.as_bytes())
+                        os.replace(temporary, target)
+                    finally:
+                        if temporary is not None:
+                            temporary.unlink(missing_ok=True)
                 summary['prepared'] += 1
                 continue
             ledger[key] = {'period': period, 'status': 'sending', 'updated_at': now.isoformat(),
@@ -126,12 +151,17 @@ def main():
     parser.add_argument('--store', type=Path, required=True)
     parser.add_argument('--send', action='store_true')
     parser.add_argument('--persist-git', action='store_true')
+    parser.add_argument('--preview-dir', type=Path, help='Write private .eml previews outside the report store')
+    parser.add_argument('--preview-all', action='store_true', help='Preview enabled members regardless of schedule or sent state')
     args = parser.parse_args()
     if args.send and os.environ.get('JSOSIF_APPROVED_SEND') != '1':
         parser.error('Set JSOSIF_APPROVED_SEND=1 to enable delivery')
+    if args.send and (args.preview_dir or args.preview_all):
+        parser.error('Preview options cannot be combined with send')
     if args.send:
         GmailSmtpBackend().credentials()  # Fail configuration checks before reserving a weekly slot.
-    result = deliver(load(args.config), args.store, really_send=args.send, git=args.persist_git)
+    result = deliver(load(args.config), args.store, really_send=args.send, git=args.persist_git,
+                     preview_dir=args.preview_dir, preview_all=args.preview_all)
     print(result)
     if result['unknown']:
         raise SystemExit('Delivery needs reconciliation; uncertain messages will not be retried automatically')
