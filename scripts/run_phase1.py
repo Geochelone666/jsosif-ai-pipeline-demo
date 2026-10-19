@@ -6,7 +6,8 @@ from config import startup_config
 from data_utils import ROOT, SCRIPTS, SUPPORTED
 
 
-# No HOME/USERPROFILE, proxy URLs, Python startup controls, or unrelated secrets.
+# No HOME/USERPROFILE, Python startup controls, or unrelated secrets.
+# Preserve explicitly allowlisted transport settings for the cloud proxy.
 # The absolute interpreter is used below; PATH also supports the Gemini CLI shebang.
 RUNTIME_ENV = ('PATH', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TMPDIR', 'TMP', 'TEMP',
                'SYSTEMROOT', 'WINDIR', 'HTTP_PROXY', 'HTTPS_PROXY', 'NO_PROXY',
@@ -14,10 +15,11 @@ RUNTIME_ENV = ('PATH', 'LANG', 'LC_ALL', 'LC_CTYPE', 'TMPDIR', 'TMP', 'TEMP',
                'SSL_CERT_DIR', 'REQUESTS_CA_BUNDLE', 'CURL_CA_BUNDLE')
 SCRIPT_ENV = {
     'quant': (),
-    'ai_extract': ('GEMINI_CLI', 'GEMINI_API_KEY', 'GOOGLE_API_KEY', 'GEMINI_MODEL'),
+    'ai_extract': ('GEMINI_CLI', 'GEMINI_API_KEY', 'GOOGLE_API_KEY', 'GEMINI_MODEL',
+                   'GEMINI_RPD', 'GEMINI_RPM', 'JSOSIF_API_USAGE_PATH'),
     'comparables': (),
     'earnings': (),
-    'edgar': (),
+    'edgar': ('SEC_USER_AGENT', 'JSOSIF_SEC_CACHE'),
     'regenerate_report': (),
 }
 

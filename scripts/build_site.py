@@ -4,7 +4,7 @@ from pathlib import Path
 import shutil
 from tempfile import TemporaryDirectory
 
-from report_store import read_json, write_json, resolve_file, digest
+from report_store import read_json, write_json, verified_report_files
 
 
 def build(store, output, template=None):
@@ -30,10 +30,9 @@ def build(store, output, template=None):
         if members_page.is_file():
             shutil.copy2(members_page, stage / 'members.html')
         for entry in index['reports']:
+            files = verified_report_files(store, entry)
             for kind in ('md', 'json', 'pdf'):
-                source = resolve_file(store, entry[kind])
-                if digest(source) != entry['sha256'][kind]:
-                    raise ValueError('Report integrity check failed')
+                source = files[kind]
                 target = stage / entry[kind]
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, target)

@@ -27,7 +27,7 @@ def main(argv=None):
     stage, name = 1, 'Quant + AI extract'
     try:
         print(f'STAGE {stage} START: {name}', flush=True)
-        subprocess.run(['python3', 'scripts/run_phase1.py'], check=True, cwd=ROOT)
+        subprocess.run([sys.executable, 'scripts/run_phase1.py'], check=True, cwd=ROOT)
         print(f'STAGE {stage} DONE: {name}', flush=True)
 
         stage, name = 2, 'Report packaging'

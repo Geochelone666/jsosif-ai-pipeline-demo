@@ -29,6 +29,10 @@ def test_browser_validator_matches_subscription_schema(tmp_path):
     changed = deepcopy(fixture)
     changed['groups']['energy']['tickers'] = ['UNKNOWN']
     values.append(changed)
+    for name in (123, None, ['Energy']):
+        changed = deepcopy(fixture)
+        changed['groups']['energy']['name'] = name
+        values.append(changed)
     changed = deepcopy(fixture)
     changed['members'].append(dict(changed['members'][0], id='different-id'))
     values.append(changed)
@@ -76,3 +80,21 @@ process.stdout.write(JSON.stringify(JSOSIFConfig.validateConfig(config)));
     result = subprocess.run([node, str(target)], input=json.dumps(fixture),
                             capture_output=True, text=True)
     assert result.returncode != 0
+
+
+def test_new_group_id_does_not_collide_after_removal_or_import(tmp_path):
+    node = shutil.which('node')
+    if not node:
+        pytest.skip('Node is required for browser configuration checks')
+    root = Path(__file__).resolve().parents[1]
+    script = (root / 'docs/members.html').read_text().split('<script>', 1)[1].split('</script>', 1)[0]
+    target = tmp_path / 'group-ids.js'
+    target.write_text(script + '''
+const groups = [{id: 'energy'}, {id: 'group-3'}, {id: 'group-1'}];
+const first = JSOSIFConfig.nextGroupId(groups);
+groups.push({id: first});
+const second = JSOSIFConfig.nextGroupId(groups);
+process.stdout.write(JSON.stringify([first, second]));
+''')
+    result = subprocess.run([node, str(target)], capture_output=True, text=True, check=True)
+    assert json.loads(result.stdout) == ['group-2', 'group-4']

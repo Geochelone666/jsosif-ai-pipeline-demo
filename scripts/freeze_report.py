@@ -3,6 +3,7 @@ import json
 from datetime import date, timedelta
 from build_review_bundle import snapshot_payload
 from snapshot_contract import validate_snapshot
+from data_utils import number
 
 
 def freeze(path, quant, ai):
@@ -16,11 +17,20 @@ def freeze(path, quant, ai):
     payload['freshness'].update(
         assumptions_version=str(payload['assumptions_version']),
         assumptions_checked=payload['assumptions_checked'])
+    report_date = date.fromisoformat(payload['as_of'])
+    try:
+        market_date = date.fromisoformat(quant.get('as_of'))
+    except (TypeError, ValueError):
+        market_date = None
+    close = number(quant.get('metrics', {}).get('Close'))
     payload['source_status'] = {
-        'market': 'ok' if quant.get('as_of') and quant['metrics'].get('Close') is not None and
-                  date.fromisoformat(quant['as_of']) >= date.fromisoformat(payload['as_of']) - timedelta(days=4)
+        'market': 'ok' if market_date is not None and close is not None and close > 0 and
+                  report_date - timedelta(days=4) <= market_date <= report_date
                   else 'failed',
         'news': 'degraded' if ai.get('error') or
+                ai.get('ticker') != payload['identity']['ticker'] or
+                ai.get('as_of') != payload['as_of'] or
+                ai.get('fetch_status', {}).get('status', 'ok') != 'ok' or
                 not ai.get('extraction_stats', {}).get('unique_headlines') or
                 (ai.get('extraction_stats', {}).get('unknown', 0) > 0 and
                  ai.get('extraction_stats', {}).get('ai', 0) == 0) else 'ok'}

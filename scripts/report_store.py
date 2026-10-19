@@ -1,6 +1,7 @@
 """Versioned report files and atomic JSON state in a separately persisted directory."""
 import hashlib
 import json
+from datetime import date
 from pathlib import Path
 import subprocess
 
@@ -35,6 +36,35 @@ def resolve_file(root, relative):
     if root not in path.parents or not path.is_file():
         raise ValueError('Report path is outside the store or missing')
     return path
+
+
+def verified_report_files(root, entry):
+    """Verify an archived version's files, snapshot identity and publication quality."""
+    from snapshot_contract import validate_snapshot
+
+    paths = {}
+    stamp = date.fromisoformat(entry['as_of']).isoformat().replace('-', '')
+    stem = f"{entry['ticker']}-intelligence-{stamp}"
+    for kind in ('md', 'json', 'pdf'):
+        path = resolve_file(root, entry[kind])
+        relative = Path(entry[kind])
+        if relative.parts[0] != 'archive' or relative.name != f'{stem}.{kind}':
+            raise ValueError('Report filename and archive identity disagree')
+        if digest(path) != entry['sha256'][kind]:
+            raise ValueError('Report integrity check failed')
+        paths[kind] = path
+    if any(path.parent != paths['md'].parent for path in paths.values()):
+        raise ValueError('Report files must belong to the same archived version')
+    payload = read_json(paths['json'])
+    if validate_snapshot(payload):
+        raise ValueError('Invalid archived snapshot contract')
+    if (payload['identity']['ticker'] != entry['ticker'] or
+            payload['identity']['as_of'] != entry['as_of'] or
+            payload.get('quality') != entry['quality']):
+        raise ValueError('Archive index and snapshot metadata disagree')
+    if not paths['pdf'].read_bytes().startswith(b'%PDF-'):
+        raise ValueError('Invalid archived PDF')
+    return paths
 
 
 def persist(root, git=False):
