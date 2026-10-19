@@ -1,4 +1,4 @@
-"""SEC free APIs. Demo User-Agent uses a placeholder contact email."""
+"""SEC free APIs using an explicitly configured organization and contact identity."""
 from datetime import date
 import json
 import os
@@ -24,11 +24,14 @@ def resolve_cik(symbol):
     return next((str(row['cik_str']) for row in entries.values()
                  if row['ticker'].upper() == sec_symbol), None)
 
-HEADERS = {'User-Agent': 'JSOSIF-demo contact@example.com (demo placeholder contact)', 'Accept': 'application/json'}
+HEADERS = {'Accept': 'application/json'}
 
 def fetch(url):
     headers = dict(HEADERS)
-    headers['User-Agent'] = os.environ.get('SEC_USER_AGENT', HEADERS['User-Agent'])
+    identity = os.environ.get('SEC_USER_AGENT', '').strip()
+    if not identity:
+        raise ValueError('Configure SEC_USER_AGENT with organization and contact email')
+    headers['User-Agent'] = identity
     for attempt in range(3):
         # Serial pipeline plus a conservative 2 req/sec ceiling per process.
         time.sleep(.5)

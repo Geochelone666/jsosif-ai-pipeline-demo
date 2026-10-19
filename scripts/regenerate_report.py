@@ -101,7 +101,7 @@ for sec in ("tailwinds", "headwinds", "catalysts", "risks"):
         if u and u not in seen:
             seen.add(u); all_sources.append(u)
 
-report = f"""# {TICKER} Intelligence Demo
+report = f"""# {TICKER} Intelligence Report
 
 - ticker: **{TICKER}**
 - Report as_of: **{AS_OF}**
@@ -125,10 +125,10 @@ Market data sample: {quant.get('history_count', {})}.
 
 """ + "\n".join(f"- {u}" for u in all_sources) + """
 
-## Demo notes and limitations
+## Research notes and limitations
 
-- Multi-ticker local demo; AI items require human spot checks; RSS coverage is not guaranteed.
-- Free-tier Gemini grounding (google_search tool) returned 429; the demo uses Google News RSS + plain-text AI extraction.
+- Daily multi-source research; AI items require human spot checks; RSS coverage is not guaranteed.
+- News classifications use source headlines, with rule-based extraction and Gemini when its daily budget is available.
 - Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
 """
 
@@ -172,7 +172,7 @@ def append_free_source_sections():
         out += [f'Fetched as_of: {macro["as_of"]}', '', '| Metric | series_id | Latest value | Observation date |', '|---|---|---:|---|']
         out += [f'| {row["name"]} | {row["series_id"]} | {fmt(row["value"])} | {row["date"] or "N/A"} |' for row in macro['indicators']]
     filing = edgar['latest_filing'] or {}
-    out += ['', '## LATEST FILING (EDGAR)', '', f'- Form: {filing.get("form", "N/A")}', f'- Filing date: {filing.get("filing_date", "N/A")}', f'- Revenue (latest available single quarter): {amount(edgar["revenue"])}', f'- Net income (latest available single quarter): {amount(edgar["net_income"])}', f'- SEC link: {filing.get("url", "N/A")}', '', 'SEC requests use the demo placeholder contact email contact@example.com. Financial values use directly reported periods of approximately three months, without deriving quarters from cumulative values; fiscal year/period labels come from original facts and may refer to later comparative statements.', '', 'API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-application-programming-interfaces), [FRED observations](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).', '']
+    out += ['', '## LATEST FILING (EDGAR)', '', f'- Form: {filing.get("form", "N/A")}', f'- Filing date: {filing.get("filing_date", "N/A")}', f'- Revenue (latest available single quarter): {amount(edgar["revenue"])}', f'- Net income (latest available single quarter): {amount(edgar["net_income"])}', f'- SEC link: {filing.get("url", "N/A")}', '', 'SEC requests use the configured organization and contact identity; unavailable source data is shown as N/A. Financial values use directly reported periods of approximately three months, without deriving quarters from cumulative values; fiscal year/period labels come from original facts and may refer to later comparative statements.', '', 'API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-application-programming-interfaces), [FRED observations](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).', '']
     original = REPORT.read_text(encoding='utf-8')
     marker = '## SOURCES\n'
     assert original.count(marker) == 1

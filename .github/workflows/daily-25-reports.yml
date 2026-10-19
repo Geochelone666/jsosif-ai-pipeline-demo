@@ -1,9 +1,17 @@
-name: Refresh research archive
+name: Daily production research pipeline
 
 on:
   schedule:
-    - cron: '17 22 * * 1-5'
+    # UTC triggers cover 19:00 Toronto in both DST and standard time.
+    # The schedule gate selects one; collection also has daily idempotency.
+    - cron: '0 23 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Explicit recovery: retry a previously attempted business date'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -15,19 +23,37 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  refresh:
+  schedule:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    outputs:
+      run: ${{ steps.gate.outputs.run }}
+      business_date: ${{ steps.gate.outputs.business_date }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select the local evening run
+        id: gate
+        env:
+          EVENT: ${{ github.event_name }}
+          CRON: ${{ github.event.schedule }}
+        run: python3 scripts/daily_schedule.py --event "$EVENT" --cron "$CRON" >> "$GITHUB_OUTPUT"
+  refresh:
+    needs: schedule
+    if: needs.schedule.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
           cache: pip
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: python -m pip install -r requirements.lock
       - name: Load private subscriptions
         env:
           SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}
@@ -39,20 +65,27 @@ jobs:
       - name: Preserve pre-existing historical reports without fetching new data
         run: python scripts/import_history.py --reports reports --store ../report-store
       - name: Generate and archive reports
+        id: collect
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.5-flash-lite' }}
-          GEMINI_RPD: ${{ vars.GEMINI_RPD }}
-          GEMINI_RPM: ${{ vars.GEMINI_RPM }}
+          AI_PROVIDER: groq
+          GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+          GROQ_RPD: ${{ vars.GROQ_RPD }}
+          GROQ_RPM: ${{ vars.GROQ_RPM }}
+          GROQ_TPD: ${{ vars.GROQ_TPD }}
+          GROQ_TPM: ${{ vars.GROQ_TPM }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
-          REPORT_INTERVAL_DAYS: ${{ vars.REPORT_INTERVAL_DAYS || '1' }}
+          REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
+          RECOVERY_RUN: ${{ inputs.force }}
         run: |
           CONFIG=()
           if [ -f "$RUNNER_TEMP/subscriptions.json" ]; then
             CONFIG=(--config "$RUNNER_TEMP/subscriptions.json")
           fi
-          python scripts/refresh_reports.py --store ../report-store --interval-days "$REPORT_INTERVAL_DAYS" "${CONFIG[@]}"
+          MODE=()
+          if [ "$RECOVERY_RUN" = true ]; then MODE=(--force); fi
+          python scripts/refresh_reports.py --store ../report-store --persist-git --business-date "$REPORT_BUSINESS_DATE" "${CONFIG[@]}" "${MODE[@]}"
       - name: Persist successful reports and API state even after a partial failure
         id: persist
         if: ${{ always() && steps.store.outcome == 'success' }}
@@ -65,16 +98,41 @@ jobs:
           fi
       - name: Build latest and historical website
         id: build
-        if: ${{ !cancelled() && steps.persist.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.collect.outputs.publish == 'true' }}
         run: python scripts/build_site.py --store ../report-store --output site-build
+      - name: Record the strict daily release check
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: python scripts/check_release.py --store ../report-store --require-ready
+      - name: Back up the persisted archive and recovery state
+        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.collect.outputs.publish == 'true' }}
+        run: git -C ../report-store archive --format=tar.gz --output="$RUNNER_TEMP/report-store-backup.tar.gz" HEAD
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.collect.outputs.publish == 'true' }}
+        with:
+          name: report-store-${{ github.run_id }}
+          path: ${{ runner.temp }}/report-store-backup.tar.gz
+          retention-days: 30
       - uses: actions/upload-pages-artifact@v3
         id: upload
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         with:
           path: site-build
       - name: Deploy archive to Pages
+        id: deployment
         if: ${{ !cancelled() && steps.upload.outcome == 'success' && vars.PAGES_DEPLOY_ENABLED == 'true' }}
         uses: actions/deploy-pages@v4
+      - name: Write the daily production summary
+        if: ${{ always() && steps.store.outcome == 'success' }}
+        run: |
+          PYTHONPATH=scripts python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          from report_store import read_json
+          attempt = read_json('../report-store/index.json', {}).get('last_attempt', {})
+          print('# Daily research pipeline')
+          print('Business date:', attempt.get('business_date', 'not collected'))
+          print('Collection status:', attempt.get('status', 'not collected'))
+          for key in ('successful_tickers', 'degraded_tickers', 'failed_tickers', 'ai_deferred_tickers'):
+              print('- ' + key + ': ' + str(len(attempt.get(key, []))))
+          PY
       - name: Remove private configuration
         if: always()
         run: rm -f "$RUNNER_TEMP/subscriptions.json"

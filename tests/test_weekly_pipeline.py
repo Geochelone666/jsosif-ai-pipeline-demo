@@ -367,7 +367,7 @@ def test_reconciliation_respects_active_delivery_lock(store, monkeypatch):
             delivery_state.main()
 
 
-def test_exhausted_quota_does_not_call_any_data_provider(tmp_path, monkeypatch):
+def test_exhausted_quota_only_disables_ai_budget(tmp_path, monkeypatch):
     import sys
     import refresh_reports as refresh
     monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
@@ -378,12 +378,10 @@ def test_exhausted_quota_does_not_call_any_data_provider(tmp_path, monkeypatch):
     monkeypatch.delenv('GEMINI_CLI', raising=False)
     monkeypatch.setattr(refresh, 'quota_day', lambda *args: '2026-10-17')
     write_json(tmp_path / 'state/api-usage.json', {'test-model:2026-10-17': 8})
-    monkeypatch.setattr(sys, 'argv', ['refresh_reports.py', '--store', str(tmp_path), '--force'])
-    monkeypatch.setattr(refresh.subprocess, 'run', lambda *a, **kw: pytest.fail('Quota exhaustion must stop before API work'))
-    refresh.main()
-    index = read_json(tmp_path / 'index.json')
-    assert index['refresh_plan']['remaining_requests'] == 0
-    assert index['reports'] == [] and 'last_complete_refresh' not in index
+    selected, plan = refresh.ai_budget(['CSCO'], {'reports': []}, tmp_path, NOW)
+    assert selected == []
+    assert plan['remaining_requests'] == 0
+    assert 'insufficient' in plan['reason']
 
 
 def test_recently_packaged_old_report_is_not_fresh(config, store):

@@ -27,8 +27,10 @@ def build(store, output, template=None):
     if not isinstance(index, dict) or not isinstance(index.get('reports'), list):
         raise ValueError('A valid persisted archive index is required before building the site')
     index = deepcopy(index)
+    version_file = Path(__file__).resolve().parents[1] / 'VERSION'
     index['publication'] = {'published_at': datetime.now(timezone.utc).isoformat(),
-                            'schedule': 'Workday research updates', 'refresh_seconds': 60,
+                            'schedule': 'Daily at 19:00 America/Toronto; execution can be delayed',
+                            'version': version_file.read_text().strip(), 'refresh_seconds': 60,
                             'data_type': 'Research snapshots; not a live market feed'}
     if output.exists():
         if not output.is_dir() or (any(output.iterdir()) and not (output / '.jsosif-site-build').is_file()):
@@ -56,6 +58,17 @@ def build(store, output, template=None):
                 shutil.copy2(source, target)
         # Delivery/quota state, member config and credentials never enter the site.
         write_json(stage / 'index.json', index)
+        attempt = index.get('last_attempt', {})
+        write_json(stage / 'health.json', {
+            'version': index['publication']['version'],
+            'published_at': index['publication']['published_at'],
+            'business_date': attempt.get('business_date'),
+            'status': attempt.get('status', 'historical_only'),
+            'expected': len(attempt.get('expected_tickers', [])),
+            'updated': len(attempt.get('successful_tickers', [])),
+            'degraded': len(attempt.get('degraded_tickers', [])),
+            'failed': len(attempt.get('failed_tickers', [])),
+        })
         (stage / '.nojekyll').touch()
         (stage / '.jsosif-site-build').touch()
         backup = Path(temporary) / 'previous'

@@ -28,7 +28,9 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
+      - name: Install pinned runtime dependencies
+        run: python -m pip install -r requirements.lock
       - name: Load and validate private member configuration
         env:
           SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}

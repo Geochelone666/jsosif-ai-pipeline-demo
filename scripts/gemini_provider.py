@@ -44,6 +44,9 @@ def reserve_request(model):
     usage[key] = used + 1
     usage['last_request_at'] = time.time()
     write_json(Path(path), usage)
+    if os.environ.get('JSOSIF_PERSIST_API_USAGE') == '1':
+        from report_store import persist
+        persist(Path(path).resolve().parents[1], git=True)
 
 
 def generate_json(prompt, model='gemini-3.5-flash-lite', *, attempts=3,

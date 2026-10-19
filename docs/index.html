@@ -8,7 +8,7 @@
 </style>
 </head>
 <body>
-<header><div class="top"><small>JSOSIF / INVESTMENT RESEARCH</small><a href="./members.html">Members and groups →</a></div><h1>Research, with a history.</h1><p>A shared workspace for current research and every published version.<br>Workday updates. Source dates you can check. Reports you can revisit.</p></header>
+<header><div class="top"><small>JSOSIF / INVESTMENT RESEARCH</small><a href="./members.html">Members and groups →</a></div><h1>Research, with a history.</h1><p>A shared workspace for current research and every published version.<br>Daily updates. Source dates you can check. Reports you can revisit.</p></header>
 <main>
 <div id="status" class="status" role="status" aria-live="polite">Loading the research archive…</div>
 <div class="stats"><div class="stat"><span class="eyebrow">Holdings</span><strong id="stat-holdings">—</strong><span class="muted">Covered in the archive</span></div><div class="stat"><span class="eyebrow">Saved versions</span><strong id="stat-versions">—</strong><span class="muted">History is retained</span></div><div class="stat"><span class="eyebrow">Ready latest</span><strong id="stat-ready">—</strong><span class="muted">Quality label, not a freshness guarantee</span></div><div class="stat"><span class="eyebrow">Latest report date</span><strong id="stat-date">—</strong><span class="muted">Check each source date below</span></div></div>
@@ -18,7 +18,7 @@
 <section id="detail" class="detail" aria-labelledby="detail-title" tabindex="-1" hidden><div class="top"><h2 id="detail-title">Report details</h2><button id="close-detail" type="button">Close details</button></div><p id="detail-status" role="status" aria-live="polite"></p><div id="detail-body"></div></section>
 <div class="heading"><div><h2>Version history <span id="count" class="muted"></span></h2><span class="muted">Choose any version to inspect its metrics, research and original files.</span></div></div>
 <div class="table-wrap"><table><thead><tr><th>Holding</th><th>Report date</th><th>Market date</th><th>News date</th><th>Generated / imported</th><th>Quality</th><th>Open</th><th>Files</th></tr></thead><tbody id="history"></tbody></table></div>
-<footer>For research preparation only. Not investment advice. Workday publication and browser refresh do not guarantee real-time exchange data. Old and degraded reports remain visible in history. Read the source dates before use. Member names, email addresses, subscription choices and delivery records are excluded from this public workspace.</footer>
+<footer>For research preparation only. Not investment advice. Daily publication and browser refresh do not guarantee real-time exchange data. Old and degraded reports remain visible in history. Read the source dates before use. Member names, email addresses, subscription choices and delivery records are excluded from this public workspace.</footer>
 </main>
 <script>
 (() => {
@@ -49,7 +49,7 @@ function render(){
   }
   for(const report of filtered){const tr=document.createElement('tr');for(const value of [report.ticker,report.as_of,report.market_as_of,report.news_as_of,timestamp(report.generated_at)])tr.append(text('td',value));const quality=text('td','');quality.append(badge(report.quality));const open=text('td','');open.append(button('Inspect',()=>openReport(report)));const files=text('td','');for(const kind of ['pdf','json','md'])files.append(fileLink(report[kind],kind.toUpperCase()),document.createTextNode('  '));tr.append(quality,open,files);$('history').append(tr)}
   $('count').textContent='· '+filtered.length+' versions';
-  if(!filtered.length)$('latest').append(text('p','No reports match these filters. New reports appear after a successful workday refresh.', 'empty'));
+  if(!filtered.length)$('latest').append(text('p','No reports match these filters. New reports appear after a successful daily refresh.', 'empty'));
 }
 function researchSection(title,content){
   const section=text('details','', 'research-section'),parts=String(content??'').split(/^### (.+)$/m);
@@ -87,7 +87,7 @@ async function openReport(report){
 async function load(){
   if(loading)return;loading=true;$('refresh-now').disabled=true;
   try{const response=await fetch('./index.json',{cache:'no-store'});if(!response.ok)throw Error('Archive unavailable');const index=await response.json();if(!Array.isArray(index.reports)||index.reports.some(r=>!r||typeof r.ticker!=='string'||typeof r.as_of!=='string'||typeof r.generated_at!=='string'))throw Error('Invalid archive');reports=ordered(index.reports);const selected=$('ticker').value;$('ticker').replaceChildren(new Option('All holdings',''));for(const ticker of [...new Set(reports.map(r=>r.ticker))].sort())$('ticker').append(new Option(ticker,ticker));$('ticker').value=selected;
-    const latest=latestReports(reports);$('stat-holdings').textContent=latest.length;$('stat-versions').textContent=reports.length;$('stat-ready').textContent=latest.filter(r=>r.quality==='ready').length;$('stat-date').textContent=reports[0]?.as_of??'—';$('status').textContent=reports.length?'Workday research snapshots · Site published: '+timestamp(index.publication?.published_at)+' · Latest version saved: '+timestamp(reports[0].generated_at)+'. Source dates may be earlier.':'No published reports yet. Reports will appear after the first configured refresh.';$('checked').textContent='Last checked '+new Date().toLocaleTimeString();render();
+    const latest=latestReports(reports);$('stat-holdings').textContent=latest.length;$('stat-versions').textContent=reports.length;$('stat-ready').textContent=latest.filter(r=>r.quality==='ready').length;$('stat-date').textContent=reports[0]?.as_of??'—';const attempt=index.last_attempt??{};const collection=attempt.status?'Collection '+attempt.business_date+': '+attempt.status+' · Updated '+(attempt.successful_tickers??[]).length+'/'+(attempt.expected_tickers??[]).length+' holdings. ':'';$('status').textContent=reports.length?collection+'Daily research snapshots · Site published: '+timestamp(index.publication?.published_at)+' · Latest version saved: '+timestamp(reports[0].generated_at)+'. Source dates may be earlier.':'No published reports yet. Reports will appear after the first configured refresh.';$('checked').textContent='Last checked '+new Date().toLocaleTimeString();render();
   }catch(error){$('status').textContent='The update check failed. Previously loaded research is still shown; it may be out of date.';if(!reports.length)$('latest').replaceChildren(text('p','Report data is unavailable. Please retry later.', 'empty'))}
   finally{loading=false;$('refresh-now').disabled=false}
 }

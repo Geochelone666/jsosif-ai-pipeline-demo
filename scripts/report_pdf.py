@@ -369,7 +369,7 @@ story.append(p(f'Form: <b>{esc(filing.get("form", "N/A"))}</b> &nbsp;|&nbsp; '
                f'Net income (latest quarter): {amount(edgar.get("net_income"))}<br/>'
                f'SEC filing: {link(filing.get("url", ""), "Open on SEC EDGAR") if filing.get("url") else "N/A"}',
                'body'))
-story.append(p('SEC requests use the demo placeholder contact email. Financial values '
+story.append(p('SEC requests use the configured organization and contact identity. Financial values '
                'use directly reported periods of approximately three months, without '
                'deriving quarters from cumulative values.',
                'small'))
@@ -402,8 +402,8 @@ story.append(p('API documentation: '
                'small'))
 
 # ---------------------------------------------------------------- disclaimer
-story.append(p('Demo notes and limitations', 'h1'))
-story.append(p('Multi-ticker local demo; AI items require human spot checks; RSS '
+story.append(p('Research notes and limitations', 'h1'))
+story.append(p('Daily multi-source research; AI items require human spot checks; RSS '
                'coverage is not guaranteed. Missing market data or fundamentals are '
                'marked N/A; no numbers are fabricated.',
                'small'))
@@ -417,7 +417,7 @@ def footer(canvas, doc):
     canvas.rect(0, 0, A4[0], 1.4 * cm, stroke=0, fill=1)
     canvas.setFillColor(MUTED)
     canvas.drawString(2 * cm, 0.65 * cm,
-                      'JSOSIF Intelligence Demo \u2014 Not investment advice')
+                      'JSOSIF Intelligence Report v1 \u2014 Not investment advice')
     canvas.drawRightString(A4[0] - 2 * cm, 0.65 * cm, f'Page {doc.page}')
     canvas.restoreState()
 
