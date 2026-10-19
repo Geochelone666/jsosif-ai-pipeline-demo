@@ -14,6 +14,21 @@ from urllib.request import Request
 from credential_http import urlopen
 
 DEFAULT_MODEL = 'llama-3.1-8b-instant'
+MODEL_CANDIDATES = (DEFAULT_MODEL, 'llama-3.3-70b-versatile', 'openai/gpt-oss-20b',
+                    'openai/gpt-oss-120b', 'qwen/qwen3-32b',
+                    'meta-llama/llama-4-scout-17b-16e-instruct')
+
+
+def available_models(*, opener=urlopen):
+    key = os.environ.get('GROQ_API_KEY') or os.environ.get('Grop_ai_API')
+    if not key:
+        raise GroqError('Groq API key is not configured')
+    request = Request('https://api.groq.com/openai/v1/models',
+                      headers={'Authorization': 'Bearer ' + key, 'User-Agent': 'JSOSIF/1.0'})
+    with opener(request, timeout=60) as response:
+        payload = json.load(response)
+    enabled = {entry.get('id') for entry in payload.get('data', []) if isinstance(entry, dict)}
+    return [model for model in MODEL_CANDIDATES if model in enabled]
 
 
 class GroqError(RuntimeError):

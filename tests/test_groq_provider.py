@@ -192,3 +192,12 @@ def test_api_requests_identify_the_application(setup):
 ])
 def test_safe_provider_error_codes_never_copy_arbitrary_response_content(body, expected):
     assert groq.error_code(io.BytesIO(body)) == expected
+
+
+def test_model_discovery_exposes_only_known_public_candidates(setup):
+    def open_request(request, **kwargs):
+        assert request.full_url == 'https://api.groq.com/openai/v1/models'
+        assert request.get_method() == 'GET'
+        return io.BytesIO(json.dumps({'data': [{'id': 'llama-3.3-70b-versatile'},
+                                             {'id': 'private-org-model'}]}).encode())
+    assert groq.available_models(opener=open_request) == ['llama-3.3-70b-versatile']

@@ -94,6 +94,12 @@ def run(*, site_url, business_date, checks=None):
                 if isinstance(exc, GroqError):
                     if exc.provider_code:
                         results[name]['provider_code'] = exc.provider_code
+                    if exc.provider_code == 'model_not_found':
+                        from groq_provider import available_models
+                        try:
+                            results[name]['available_models'] = available_models()
+                        except Exception:
+                            results[name]['model_discovery'] = 'unavailable'
                     match = re.fullmatch(r'Groq HTTP (\d{3}); check account limits and retry guidance', str(exc))
                     if match:
                         results[name]['service_status'] = int(match.group(1))
@@ -116,7 +122,7 @@ def publish_ci_results(report):
     rows = ['# Live launch acceptance', '', '| Check | Result |', '| --- | --- |']
     for name, result in report['checks'].items():
         # Details may contain provider text; only status diagnostics enter annotations.
-        safe = {key: result[key] for key in ('status', 'category', 'service_status', 'provider_code', 'reason', 'switches', 'hint')
+        safe = {key: result[key] for key in ('status', 'category', 'service_status', 'provider_code', 'available_models', 'model_discovery', 'reason', 'switches', 'hint')
                 if key in result}
         message = json.dumps({'check': name, **safe}, sort_keys=True)
         escaped = message.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
