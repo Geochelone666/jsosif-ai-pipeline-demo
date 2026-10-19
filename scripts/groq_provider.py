@@ -75,6 +75,16 @@ def _save(path, ledger):
         persist(Path(path).resolve().parents[1], git=True)
 
 
+def minute_slot(events, start, tokens, caps):
+    """Reserve against a rolling minute, including differently sized requests."""
+    at = start
+    while True:
+        active = [event for event in events if event['at'] > at - 60]
+        if len(active) < caps['RPM'] and sum(event['tokens'] for event in active) + tokens <= caps['TPM']:
+            return at, active
+        at = min(event['at'] for event in active) + 60
+
+
 def _reserve(model, tokens, sleep):
     from report_store import read_json
     path = os.environ.get('JSOSIF_API_USAGE_PATH')
@@ -84,7 +94,9 @@ def _reserve(model, tokens, sleep):
     if tokens > caps['TPM']:
         raise GroqError('Groq prompt exceeds application per-minute token budget')
     # Determine the UTC application day after waiting: pacing may cross midnight.
-    delay = max(0, ledger.get('groq_next_request_at', 0) - now)
+    at, recent = minute_slot(ledger.get('groq_recent_requests', []),
+                             max(now, ledger.get('groq_next_request_at', 0)), tokens, caps)
+    delay = max(0, at - now)
     if delay > 120:
         raise GroqError('Groq retry deferred by server or application pacing')
     next_day = datetime.fromtimestamp(now + delay, timezone.utc).date().isoformat()
@@ -93,16 +105,18 @@ def _reserve(model, tokens, sleep):
         raise GroqError('Groq application daily budget exhausted')
     if delay:
         sleep(delay)
-    day = datetime.fromtimestamp(time.time(), timezone.utc).date().isoformat()
+    at = max(at, time.time())
+    day = datetime.fromtimestamp(at, timezone.utc).date().isoformat()
     key = 'groq:' + model + ':' + day
     state = ledger.setdefault(key, {'requests': 0, 'tokens': 0})
     if state['requests'] >= caps['RPD'] or state['tokens'] + tokens > caps['TPD']:
         raise GroqError('Groq application daily budget exhausted')
     state['requests'] += 1
     state['tokens'] += tokens
-    ledger['groq_next_request_at'] = time.time() + max(60 / caps['RPM'], 60 * tokens / caps['TPM'])
+    event = {'at': at, 'tokens': tokens}
+    ledger['groq_recent_requests'] = [e for e in recent if e['at'] > at - 60] + [event]
     _save(path, ledger)  # Persist before HTTP; a crash must not erase a reservation.
-    return path, ledger, key
+    return path, ledger, key, event
 
 
 def _retry_delay(headers, fallback):
@@ -134,7 +148,7 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
                       headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json',
                                'User-Agent': 'JSOSIF/1.0'})
     for attempt in range(attempts):
-        path, ledger, slot = _reserve(model, reserved, sleep)
+        path, ledger, slot, reservation = _reserve(model, reserved, sleep)
         try:
             with opener(request, timeout=60) as response:
                 payload = json.load(response)
@@ -168,6 +182,7 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
             raise GroqError('Groq returned an invalid response') from None
         if type(actual) is int and actual >= 0:
             ledger[slot]['tokens'] += actual - reserved
+            reservation['tokens'] = actual
             # Persistence failures are not transport failures and must not retry HTTP.
             _save(path, ledger)
         return {'text': text, 'model': model, 'usage': safe_usage}

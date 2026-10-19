@@ -60,3 +60,37 @@ real external integration and deployment acceptance.
 See [V1 launch and operations](V1_LAUNCH.md) for settings, commands, recovery and
 scope. Do not describe this release as waiting only for member information until
 the real integration and deployment checks have passed.
+
+
+## Post-merge live follow-up
+
+Follow-up on 2026-10-19 using repository Secrets in GitHub Actions:
+
+| Integration | Observed result |
+| --- | --- |
+| Groq authenticated JSON | Passed with `openai/gpt-oss-20b`; the old default was unavailable |
+| Market history | Passed |
+| Google News RSS | Passed |
+| SEC directory | Passed using the configured sender as the contact identity |
+| Gmail STARTTLS/login | Passed; no email submitted |
+| Isolated real CSCO report | Strict check passed: one current report, no degraded holdings or integrity errors |
+| Real news extraction | 24 unique headlines; 3 rule classifications, 14 AI classifications, 7 retained unclassified |
+| Isolated report artifacts | Markdown, JSON, PDF and static site preview generated in temporary storage |
+| Production website | Blocked: Pages uses `main/docs`; production data URLs return 404 |
+| Production switches | `PAGES_DEPLOY_ENABLED` and `EMAIL_DELIVERY_ENABLED` were false |
+
+The isolated real-report run is
+[39306349643](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39306349643).
+Its `research_smoke` job succeeded; the separate `verify` job correctly failed for
+the remaining deployment/switch settings. This is not a failed CSCO generation.
+The temporary report did not change the production `report-data` branch and did
+not consume today's automatic collection slot. A complete 25-holding daily run,
+production Pages verification and an explicitly authorized inbox test are still
+required. The code follow-up is tracked in PR #6.
+
+The follow-up also enforces request/token caps with a rolling-minute reservation
+window. Successful calls reconcile both daily and rolling token usage; failed
+calls retain their reservation. This avoids both unnecessary waits based on a
+byte-bound estimate and bursts that average-rate spacing alone would permit.
+
+Latest local follow-up regression: 714 tests passed with pinned Python 3.12 dependencies.

@@ -201,3 +201,23 @@ def test_model_discovery_exposes_only_known_public_candidates(setup):
         return io.BytesIO(json.dumps({'data': [{'id': 'llama-3.3-70b-versatile'},
                                              {'id': 'private-org-model'}]}).encode())
     assert groq.available_models(opener=open_request) == ['llama-3.3-70b-versatile']
+
+
+def test_minute_token_budget_checks_the_rolling_window_for_unequal_requests():
+    caps = {'RPM': 10, 'TPM': 5000}
+    events = [{'at': 0, 'tokens': 1000}, {'at': 12, 'tokens': 4000}]
+    # Average-rate spacing would allow another 4000 at t=60, exceeding 5000
+    # in the interval (0, 60]. The rolling window must wait until t=72.
+    at, active = groq.minute_slot(events, 60, 4000, caps)
+    assert at == 72 and active == []
+
+
+def test_minute_request_budget_waits_for_the_oldest_reservation_to_expire():
+    events = [{'at': second, 'tokens': 1} for second in range(10)]
+    at, active = groq.minute_slot(events, 10, 1, {'RPM': 10, 'TPM': 5000})
+    assert at == 60 and len(active) == 9
+
+
+def test_successful_token_usage_reconciles_the_rolling_window(setup):
+    groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=lambda _: None)
+    assert read_json(setup, {})['groq_recent_requests'][0]['tokens'] == 24
