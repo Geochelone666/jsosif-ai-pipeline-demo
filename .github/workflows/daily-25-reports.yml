@@ -69,13 +69,14 @@ jobs:
         env:
           AI_PROVIDER: groq
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
-          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'openai/gpt-oss-20b' }}
           GROQ_RPD: ${{ vars.GROQ_RPD }}
           GROQ_RPM: ${{ vars.GROQ_RPM }}
           GROQ_TPD: ${{ vars.GROQ_TPD }}
           GROQ_TPM: ${{ vars.GROQ_TPM }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
           REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
           RECOVERY_RUN: ${{ inputs.force }}
         run: |

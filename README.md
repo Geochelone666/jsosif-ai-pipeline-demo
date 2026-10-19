@@ -72,7 +72,7 @@ python scripts/build_site.py --store report-store --output site-build
 
 Production AI uses **Groq**. Set the repository Secret `Grop_ai_API`; the daily
 workflow maps it to `GROQ_API_KEY` and explicitly sets `AI_PROVIDER=groq`.
-The default model is `llama-3.1-8b-instant`. Local request and token application
+The default model is `openai/gpt-oss-20b`. Local request and token application
 caps are configurable with `GROQ_RPD`, `GROQ_RPM`, `GROQ_TPD`, and `GROQ_TPM`.
 These caps are not the provider's published allowances. Verify account limits in
 Groq Console. Quota exhaustion degrades AI evidence without suppressing market

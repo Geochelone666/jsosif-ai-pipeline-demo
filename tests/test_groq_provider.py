@@ -114,8 +114,8 @@ def test_pacing_across_midnight_charges_the_new_application_day(setup, monkeypat
         clock['now'] += seconds
     groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=wait)
     ledger = read_json(setup, {})
-    assert 'groq:llama-3.1-8b-instant:2026-10-19' not in ledger
-    assert ledger['groq:llama-3.1-8b-instant:2026-10-20']['requests'] == 1
+    assert 'groq:openai/gpt-oss-20b:2026-10-19' not in ledger
+    assert ledger['groq:openai/gpt-oss-20b:2026-10-20']['requests'] == 1
 
 
 def test_response_persistence_error_does_not_repeat_a_successful_http_call(setup, monkeypatch):
@@ -176,3 +176,48 @@ def test_malformed_ai_summary_remains_unclassified(summary):
     result = extract([item], 'CSCO', generate, as_of='2026-10-18')
     assert result['extraction_stats']['ai'] == 0
     assert result['extraction_stats']['unknown'] == 1
+
+
+def test_api_requests_identify_the_application(setup):
+    def open_request(request, **kwargs):
+        assert request.get_header('User-agent') == 'JSOSIF/1.0'
+        return response()
+    groq.generate_json('JSON', opener=open_request, sleep=lambda _: None)
+
+
+@pytest.mark.parametrize('body,expected', [
+    (b'error code: 1010', 'edge_policy_1010'),
+    (b'{"error":{"code":"invalid_api_key","message":"synthetic-secret"}}', 'invalid_api_key'),
+    (b'{"error":{"code":"synthetic-secret"}}', None),
+])
+def test_safe_provider_error_codes_never_copy_arbitrary_response_content(body, expected):
+    assert groq.error_code(io.BytesIO(body)) == expected
+
+
+def test_model_discovery_exposes_only_known_public_candidates(setup):
+    def open_request(request, **kwargs):
+        assert request.full_url == 'https://api.groq.com/openai/v1/models'
+        assert request.get_method() == 'GET'
+        return io.BytesIO(json.dumps({'data': [{'id': 'llama-3.3-70b-versatile'},
+                                             {'id': 'private-org-model'}]}).encode())
+    assert groq.available_models(opener=open_request) == ['llama-3.3-70b-versatile']
+
+
+def test_minute_token_budget_checks_the_rolling_window_for_unequal_requests():
+    caps = {'RPM': 10, 'TPM': 5000}
+    events = [{'at': 0, 'tokens': 1000}, {'at': 12, 'tokens': 4000}]
+    # Average-rate spacing would allow another 4000 at t=60, exceeding 5000
+    # in the interval (0, 60]. The rolling window must wait until t=72.
+    at, active = groq.minute_slot(events, 60, 4000, caps)
+    assert at == 72 and active == []
+
+
+def test_minute_request_budget_waits_for_the_oldest_reservation_to_expire():
+    events = [{'at': second, 'tokens': 1} for second in range(10)]
+    at, active = groq.minute_slot(events, 10, 1, {'RPM': 10, 'TPM': 5000})
+    assert at == 60 and len(active) == 9
+
+
+def test_successful_token_usage_reconciles_the_rolling_window(setup):
+    groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=lambda _: None)
+    assert read_json(setup, {})['groq_recent_requests'][0]['tokens'] == 24

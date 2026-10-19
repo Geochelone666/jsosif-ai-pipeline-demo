@@ -3,6 +3,7 @@ import argparse
 from datetime import datetime, timedelta
 import json
 import os
+import re
 from pathlib import Path
 import smtplib
 import ssl
@@ -84,11 +85,53 @@ def run(*, site_url, business_date, checks=None):
         except Exception as exc:
             # Provider/SMTP exception strings can contain credentials or addresses.
             results[name] = {'status': 'blocked', 'category': type(exc).__name__}
+            code = getattr(exc, 'smtp_code', getattr(exc, 'code', None))
+            if type(code) is int:
+                results[name]['service_status'] = code
+            # Extract only the numeric status from the client's fixed safe error.
+            if name == 'ai':
+                from groq_provider import GroqError
+                if isinstance(exc, GroqError):
+                    if exc.provider_code:
+                        results[name]['provider_code'] = exc.provider_code
+                    if exc.provider_code == 'model_not_found':
+                        from groq_provider import available_models
+                        try:
+                            results[name]['available_models'] = available_models()
+                        except Exception:
+                            results[name]['model_discovery'] = 'unavailable'
+                    match = re.fullmatch(r'Groq HTTP (\d{3}); check account limits and retry guidance', str(exc))
+                    if match:
+                        results[name]['service_status'] = int(match.group(1))
+                    elif str(exc) == 'Groq API key is not configured':
+                        results[name]['reason'] = 'missing_credentials'
+            if name == 'automation':
+                results[name]['switches'] = {key: os.environ.get(key, '').lower() == 'true'
+                                            for key in ('PAGES_DEPLOY_ENABLED', 'EMAIL_DELIVERY_ENABLED')}
             if name in hints:
                 results[name]['hint'] = hints[name]
     return {'ready_for_roster': bool(results) and all(r['status'] == 'verified' for r in results.values()),
             'business_date': business_date, 'checks': results, 'member_roster': 'not required for these checks',
             'messages_sent': 0}
+
+
+def publish_ci_results(report):
+    """Expose sanitized check states without requiring access to zipped run logs."""
+    if os.environ.get('GITHUB_ACTIONS') != 'true':
+        return
+    rows = ['# Live launch acceptance', '', '| Check | Result |', '| --- | --- |']
+    for name, result in report['checks'].items():
+        # Details may contain provider text; only status diagnostics enter annotations.
+        safe = {key: result[key] for key in ('status', 'category', 'service_status', 'provider_code', 'available_models', 'model_discovery', 'reason', 'switches', 'hint')
+                if key in result}
+        message = json.dumps({'check': name, **safe}, sort_keys=True)
+        escaped = message.replace('%', '%25').replace('\r', '%0D').replace('\n', '%0A')
+        print('::notice title=Live acceptance::' + escaped)
+        rows.append('| ' + name.replace('|', '\\|').replace('\n', ' ') + ' | ' + result['status'] + ' |')
+    rows += ['', 'Messages sent: 0', '']
+    if os.environ.get('GITHUB_STEP_SUMMARY'):
+        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as stream:
+            stream.write('\n'.join(rows))
 
 
 def main():
@@ -100,6 +143,7 @@ def main():
     report = run(site_url=args.site_url, business_date=args.business_date)
     text = json.dumps(report, indent=2)
     print(text)
+    publish_ci_results(report)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(text + '\n', encoding='utf-8')

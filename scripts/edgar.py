@@ -26,9 +26,21 @@ def resolve_cik(symbol):
 
 HEADERS = {'Accept': 'application/json'}
 
+def request_identity():
+    identity = os.environ.get('SEC_USER_AGENT', '').strip()
+    if identity:
+        return identity
+    contact = os.environ.get('GMAIL_USER', '').strip()
+    if contact:
+        from email_delivery import validate_recipients
+        validate_recipients([contact])
+        return 'JSOSIF Research contact ' + contact
+    return None
+
+
 def fetch(url):
     headers = dict(HEADERS)
-    identity = os.environ.get('SEC_USER_AGENT', '').strip()
+    identity = request_identity()
     if not identity:
         raise ValueError('Configure SEC_USER_AGENT with organization and contact email')
     headers['User-Agent'] = identity

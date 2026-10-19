@@ -85,3 +85,35 @@ def test_readiness_requires_automation_to_be_armed(pages, email, ready, monkeypa
                       checks={'automation': live.automation})
     assert result['ready_for_roster'] is ready
     assert result['messages_sent'] == 0
+
+
+def test_provider_status_diagnostics_do_not_include_private_error_bodies():
+    from groq_provider import GroqError
+    def rejected():
+        raise GroqError('Groq HTTP 401; check account limits and retry guidance')
+    result = live.run(site_url='https://example.invalid', business_date='2026-10-19', checks={'ai': rejected})
+    assert result['checks']['ai']['service_status'] == 401
+
+
+def test_ci_annotations_are_sanitized_and_available_without_artifact_download(monkeypatch, tmp_path, capsys):
+    summary = tmp_path / 'summary.md'
+    monkeypatch.setenv('GITHUB_ACTIONS', 'true')
+    monkeypatch.setenv('GITHUB_STEP_SUMMARY', str(summary))
+    report = {'checks': {'ai': {'status': 'verified', 'details': 'synthetic-secret'},
+                         'sec': {'status': 'blocked', 'service_status': 403, 'category': 'HTTPError'}}}
+    live.publish_ci_results(report)
+    output = capsys.readouterr().out
+    assert output.count('::notice title=Live acceptance::') == 2
+    assert '403' in output and 'synthetic-secret' not in output
+    assert '| ai | verified |' in summary.read_text()
+    assert 'synthetic-secret' not in summary.read_text()
+
+
+def test_sec_contact_can_reuse_a_validated_sender_without_a_placeholder(monkeypatch):
+    import edgar
+    monkeypatch.delenv('SEC_USER_AGENT', raising=False)
+    monkeypatch.setenv('GMAIL_USER', 'synthetic@example.com')
+    assert edgar.request_identity() == 'JSOSIF Research contact synthetic@example.com'
+    monkeypatch.setenv('GMAIL_USER', 'not an address')
+    with pytest.raises(ValueError):
+        edgar.request_identity()

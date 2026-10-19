@@ -23,5 +23,5 @@ jobs:
         env:
           AI_PROVIDER: groq
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
-          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'openai/gpt-oss-20b' }}
         run: python scripts/probe_ai.py

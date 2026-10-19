@@ -25,13 +25,13 @@ source files, PR descriptions, issue comments or chat.
 | Setting | Type | Purpose |
 | --- | --- | --- |
 | `Grop_ai_API` | Secret | Existing Groq key, mapped to `GROQ_API_KEY` in Actions |
-| `GROQ_MODEL` | Optional variable | Defaults to `llama-3.1-8b-instant`; verify account availability |
+| `GROQ_MODEL` | Optional variable | Defaults to `openai/gpt-oss-20b`; verify account availability |
 | `GROQ_RPD`, `GROQ_RPM` | Optional variables | Application request caps, defaults 100/day and 10/minute |
 | `GROQ_TPD`, `GROQ_TPM` | Optional variables | Application token caps, defaults 100,000/day and 5,000/minute |
-| `SEC_USER_AGENT` | Variable | Organization and real contact email for SEC requests |
+| `SEC_USER_AGENT` | Optional variable | Organization/contact override; otherwise derive a real contact identity from `GMAIL_USER` |
 | `PAGES_DEPLOY_ENABLED` | Variable: `true` | Enable the Pages deployment step |
 | `SUBSCRIPTIONS_JSON` or `MEMBERS_CSV` | Secret | Private roster and research choices |
-| `GMAIL_USER`, `GMAIL_APP_PASSWORD` | Secrets | Required only for real email delivery |
+| `GMAIL_USER`, `GMAIL_APP_PASSWORD` | Secrets | Gmail authentication/delivery; the sender address can also supply the SEC contact |
 | `EMAIL_DELIVERY_ENABLED` | Variable | Leave false until the roster and email previews are reviewed |
 | `FRED_API_KEY` | Optional secret | FRED macro source; otherwise explicitly unavailable |
 
@@ -137,7 +137,8 @@ Never put a Groq key into a Gemini credential binding.
 The local caps above are conservative application defaults, **not Groq plan
 allowances**. The request/token ledger uses UTC dates for the application's daily
 budget; this does not assert Groq's reset timezone. Input reservation uses a
-conservative UTF-8 byte bound plus completion allowance. Successful calls reconcile
+conservative UTF-8 byte bound plus completion allowance. Minute request/token caps
+use a rolling window, not an average spacing estimate. Successful calls reconcile
 reported token usage; failed calls retain their reservation. Headlines are batched
 five at a time, so one stock can require several requests. Budget exhaustion leaves
 market collection running and marks affected AI evidence unavailable.
@@ -153,7 +154,7 @@ Official sources checked on 2026-10-19:
 - [Groq Python client](https://github.com/groq/groq-python): authentication,
   error classes, timeout and retry behavior.
 - [Official request types](https://github.com/groq/groq-python/blob/main/src/groq/types/chat/completion_create_params.py):
-  `llama-3.1-8b-instant`, `response_format` and `max_completion_tokens`.
+  `openai/gpt-oss-20b`, `response_format` and `max_completion_tokens`.
 - [Rate limits](https://console.groq.com/docs/rate-limits) and
   [account limits](https://console.groq.com/settings/limits): verify the actual
   model/account request and token limits before enabling full-volume collection.
@@ -256,3 +257,23 @@ the weekly job idle without SMTP authentication or delivery. An invalid roster
 fails validation. A later valid enabled roster is picked up automatically. Keep
 `PAGES_DEPLOY_ENABLED=true` so future daily runs continue to publish. Live acceptance
 requires both switches to be armed before reporting `ready_for_roster=true`.
+
+
+## Post-merge live diagnostics
+
+The live account model directory was queried during the 2026-10-19 follow-up.
+It offered `openai/gpt-oss-20b` and `openai/gpt-oss-120b` among the known public
+candidates; the previous default model was unavailable. Production now defaults
+to the smaller 20b model and requests low reasoning effort. Explicit `GROQ_MODEL`
+configuration still takes precedence. API requests identify the application with
+`User-Agent: JSOSIF/1.0`. Safe check annotations expose status codes and known
+provider error codes without raw responses, credentials or addresses.
+
+If the normal job logs or artifacts cannot be downloaded, inspect the run's
+**Live acceptance** annotations. The same states appear in the job summary.
+Select the optional `research_smoke` input when manually dispatching live launch
+acceptance to generate one real CSCO report and PDF in a temporary store. The
+isolated run uploads `isolated-real-research-preview`; it neither publishes the
+website nor writes to `report-data` and never sends email. It consumes real source
+and AI requests and is intended for explicit acceptance, not periodic polling.
+A successful isolated report is separate from a full daily production deployment.
