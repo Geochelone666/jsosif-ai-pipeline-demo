@@ -65,6 +65,12 @@ def test_main_bad_directory(tmp_path, capsys):
     assert 'failed=1' in capsys.readouterr().out
 
 
+def test_empty_directory_cannot_pass_release_gate(tmp_path):
+    with pytest.raises(SystemExit) as caught:
+        gate.main([str(tmp_path)])
+    assert caught.value.code == 1
+
+
 @pytest.mark.parametrize('key', gate.REQUIRED_TOP_LEVEL)
 def test_fallback_required_keys(payload, monkeypatch, key):
     monkeypatch.setattr(gate, 'validate_snapshot', None)
@@ -140,7 +146,10 @@ def test_main_success(reports, capsys):
 
 
 def test_empty_directory(tmp_path):
-    assert gate.check_reports_dir(tmp_path) == {'checked': 0, 'passed': 0, 'failed': []}
+    result = gate.check_reports_dir(tmp_path)
+    assert result['checked'] == result['passed'] == 0
+    assert len(result['failed']) == 1
+    assert result['failed'][0]['errors'] == ['No snapshot sidecars found']
 
 
 def test_determinism_ignores_mapping_order():

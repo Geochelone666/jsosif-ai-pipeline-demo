@@ -9,7 +9,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 from email_delivery import build_email, send, GmailSmtpBackend
-from report_store import read_json, write_json, resolve_file, digest, persist
+from report_store import read_json, write_json, verified_report_files, persist
 from subscriptions import load, tickers_for
 
 
@@ -87,13 +87,8 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
             paths, pdfs = [], []
             try:
                 for entry in selected:
-                    md = resolve_file(root, entry['md'])
-                    pdf = resolve_file(root, entry['pdf'])
-                    snapshot = resolve_file(root, entry['json'])
-                    if any(digest(path) != entry['sha256'][kind]
-                           for kind, path in [('md', md), ('pdf', pdf), ('json', snapshot)]):
-                        raise ValueError('Archived report integrity check failed')
-                    paths.append(md); pdfs.append(pdf)
+                    files = verified_report_files(root, entry)
+                    paths.append(files['md']); pdfs.append(files['pdf'])
                 message = build_email(paths, [member['email']], pdf_path=pdfs,
                                       brief=True, display_name=member['name'])
                 message['Date'] = format_datetime(now)

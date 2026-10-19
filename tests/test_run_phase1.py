@@ -40,6 +40,21 @@ def test_empty_parent_and_fresh_environments(monkeypatch):
         'REPORT_AS_OF': '2026-01-01', 'JSOSIF_REPORT_AS_OF': '2026-01-01'}
 
 
+def test_provider_configuration_only_reaches_the_matching_stage(monkeypatch):
+    settings = {'SEC_USER_AGENT': 'Research team contact@example.com',
+                'JSOSIF_SEC_CACHE': '/tmp/sec-fixture.json',
+                'JSOSIF_API_USAGE_PATH': '/tmp/api-usage-fixture.json',
+                'GEMINI_RPD': '100', 'GEMINI_RPM': '10'}
+    monkeypatch.setattr(os, 'environ', settings)
+    assert run_phase1.child_env('edgar', CONFIG)['SEC_USER_AGENT'] == settings['SEC_USER_AGENT']
+    assert run_phase1.child_env('edgar', CONFIG)['JSOSIF_SEC_CACHE'] == settings['JSOSIF_SEC_CACHE']
+    for key in ('GEMINI_RPD', 'GEMINI_RPM', 'JSOSIF_API_USAGE_PATH'):
+        assert run_phase1.child_env('ai_extract', CONFIG)[key] == settings[key]
+        assert key not in run_phase1.child_env('edgar', CONFIG)
+    assert 'SEC_USER_AGENT' not in run_phase1.child_env('ai_extract', CONFIG)
+    assert not set(settings) & run_phase1.child_env('quant', CONFIG).keys()
+
+
 def test_every_child_uses_its_own_environment(monkeypatch):
     monkeypatch.setattr(run_phase1, 'startup_config', lambda: CONFIG)
     monkeypatch.setattr(run_phase1, 'SUPPORTED', ['ACN', 'MSFT'])

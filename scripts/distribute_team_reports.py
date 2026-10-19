@@ -60,7 +60,7 @@ def main(argv=None):
     mode.add_argument('--send', action='store_true', help='Send via the existing Gmail backend')
     args = parser.parse_args(argv)
     if args.send and os.environ.get('JSOSIF_APPROVED_SEND') != '1':
-        parser.error('发送需 Lucas 明确批准；设置 JSOSIF_APPROVED_SEND=1 后重试')
+        parser.error('Explicit approval is required; set JSOSIF_APPROVED_SEND=1 to enable delivery')
     try:
         stamp, messages = prepare(args.config, args.reports_dir, args.date)
     except (OSError, ValueError):

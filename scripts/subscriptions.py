@@ -19,6 +19,8 @@ def validate(config):
     for key, group in groups.items():
         if not isinstance(key, str) or not key.strip() or not isinstance(group, dict):
             raise ValueError('Each group needs a nonblank id and an object')
+        if 'name' in group and not isinstance(group['name'], str):
+            raise ValueError('Group names must be strings')
         tickers = group.get('tickers')
         if not isinstance(tickers, list) or not tickers or any(not isinstance(t, str) or t not in SUPPORTED for t in tickers):
             raise ValueError(f'Group {key}: tickers must be supported symbols')

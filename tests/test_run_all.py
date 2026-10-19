@@ -64,6 +64,7 @@ def flow(tmp_path, monkeypatch):
         assert '--send' not in tokens and '--really-send' not in tokens
         names = {Path(token).name for token in tokens}
         if 'run_phase1.py' in names:
+            assert tokens[0] == sys.executable
             stage(1)
         elif 'bundle_reports.py' in names:
             stage(2)

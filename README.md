@@ -9,7 +9,7 @@ they are not investment advice. News summaries use RSS headlines, not full artic
 
 ## Manual member and group entry
 
-Open `docs/members.html` locally, or choose **成员与小组配置** on the report site.
+Open `docs/members.html` locally, or choose **Members and groups** on the report site.
 The browser form supports group stock lists, multiple members, participation,
 time zones and weekly delivery times. Import an existing JSON to edit it, then
 download `subscriptions.local.json`. All editing stays in that browser page;
@@ -85,7 +85,10 @@ weekly delivery even when degraded reports are allowed. Only new collections
 carry fresh source snapshots; historical imports cannot reconstruct missing inputs.
 Source freshness and degraded news are visible in the snapshot and site. Market
 data older than four calendar days is marked degraded; this conservative bound
-may need adjustment for exceptional exchange closures. Peers display their own
+may need adjustment for exceptional exchange closures. Future or invalid market
+dates and nonpositive or nonfinite closing prices also fail the market quality
+check. News from another report date or ticker, or a failed news fetch, is degraded.
+Peers display their own
 listing currencies; this project does not convert values to USD.
 
 ## Weekly personalized delivery
@@ -118,6 +121,11 @@ defer the whole member digest and are retried by later scans within the same wee
 Both the report date and its generation time must satisfy the age bound, so
 repackaging old content does not make it eligible for weekly mail.
 The encoded email is capped at 20 MiB to leave room below common SMTP limits.
+Before delivery or site publication, archive files must match their hashes,
+filenames, snapshot contract, ticker, report date and quality label. All three
+files must belong to the same archived version, and the PDF must have a PDF header.
+An invalid archive is deferred for delivery; a failed site build preserves the
+previous output. The snapshot release check rejects an empty reports directory.
 
 The sender records a `sending` reservation durably before contacting SMTP.
 Accepted messages are not sent again that week. An ambiguous transport failure

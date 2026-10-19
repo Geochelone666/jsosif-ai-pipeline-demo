@@ -67,6 +67,8 @@ def check_reports_dir(path) -> dict:
             result['failed'].append({'file': str(file), 'errors': errors})
         else:
             result['passed'] += 1
+    if not result['checked']:
+        result['failed'].append({'file': str(path), 'errors': ['No snapshot sidecars found']})
     return result
 
 

@@ -14,7 +14,7 @@ def inputs():
     return dict(
         ticker='ACN', as_of='2026-10-08',
         quant_metrics={'Close': 196.64, 'Growth': None},
-        ai={'status': 'ok', 'sections': {'TAILWINDS': '增长'}},
+        ai={'status': 'ok', 'sections': {'TAILWINDS': 'Growth ↑'}},
         freshness={
             'report_as_of': '2026-10-08', 'market_data_as_of': '2026-10-07',
             'market_data_fetched_at': '2026-10-08T12:00:00Z',
@@ -73,7 +73,7 @@ def test_stable_json(inputs):
     first = snapshot_to_json(emit_frozen_snapshot(**inputs))
     second = snapshot_to_json(emit_frozen_snapshot(**inputs))
     assert first.encode('utf-8') == second.encode('utf-8')
-    assert '增长' in first
+    assert 'Growth ↑' in first
     assert first == json.dumps(json.loads(first), ensure_ascii=False, indent=2, sort_keys=True)
 
 
@@ -83,9 +83,9 @@ def test_stable_json(inputs):
     ({'status': None, 'error': ''}, 'N/A'),
 ])
 def test_ai_status_precedence_and_section_filter(inputs, ai, expected):
-    inputs['ai'] = dict(ai, sections={'text': '保留', 'empty': '', 'number': 2, 'null': None})
+    inputs['ai'] = dict(ai, sections={'text': 'Retained ✓', 'empty': '', 'number': 2, 'null': None})
     assert emit_frozen_snapshot(**inputs)['ai_summary'] == {
-        'status': expected, 'sections': {'text': '保留', 'empty': ''}}
+        'status': expected, 'sections': {'text': 'Retained ✓', 'empty': ''}}
 
 
 def test_falsey_metrics_are_available(inputs):

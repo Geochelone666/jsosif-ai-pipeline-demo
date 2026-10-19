@@ -91,7 +91,7 @@ def test_dry_run_cli_no_network(snapshot, tmp_path, monkeypatch, capsys):
     assert [p.get_content_type() for p in parsed.iter_parts()] == ['text/plain', 'text/html']
     mail.main([str(snapshot), '--recipients', str(config), '--dry-run'])
     assert 'Subject:' in capsys.readouterr().out
-    with pytest.raises(NotImplementedError, match='发送需 Lucas 明确批准'):
+    with pytest.raises(NotImplementedError, match='Explicit approval is required for email delivery'):
         mail.main([str(snapshot), '--send'])
 
 

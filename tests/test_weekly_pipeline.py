@@ -14,6 +14,7 @@ from report_store import digest, write_json, read_json
 from subscriptions import validate, tickers_for
 from gemini_provider import generate_json, GeminiError
 from refresh_reports import quota_plan
+from snapshot_emit import emit_frozen_snapshot
 
 
 NOW = datetime(2026, 10, 19, 14, tzinfo=timezone.utc)
@@ -34,11 +35,16 @@ def store(tmp_path):
         base = Path('archive/run-1') / ticker
         entry = {'ticker': ticker, 'report_id': f'run-1/{ticker}', 'quality': 'ready',
                  'generated_at': '2026-10-19T12:00:00+00:00', 'as_of': '2026-10-19'}
+        snapshot = emit_frozen_snapshot(
+            ticker=ticker, as_of=entry['as_of'], quant_metrics={'Close': 100},
+            ai={'status': 'Available'}, freshness={}, disclaimer='Not investment advice.')
+        snapshot['quality'] = 'ready'
         for kind in ('md', 'pdf', 'json'):
             relative = base / f'{ticker}-intelligence-20261019.{kind}'
             path = tmp_path / relative
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text({'md': f'# {ticker}\n', 'pdf': '%PDF-1.4 test', 'json': '{}'}[kind])
+            path.write_text({'md': f'# {ticker}\n', 'pdf': '%PDF-1.4 test',
+                             'json': json.dumps(snapshot)}[kind])
             entry[kind] = relative.as_posix()
         entry['sha256'] = {kind: digest(tmp_path / entry[kind]) for kind in ('md', 'pdf', 'json')}
         reports.append(entry)
@@ -123,6 +129,38 @@ def test_corrupt_pdf_blocks_delivery(config, store):
     next(store.rglob('*.pdf')).write_text('%PDF changed')
     assert weekly.deliver(config, store, now=NOW, really_send=True,
                           backend=lambda _: pytest.fail('Must not send'))['deferred'] == 1
+
+
+@pytest.mark.parametrize('corruption', ['identity', 'quality', 'contract', 'pdf', 'paths'])
+def test_rehashed_invalid_archive_is_not_delivered(config, store, corruption):
+    output = store.with_name(store.name + '-verified-site')
+    build(store, output)
+    previous_index = (output / 'index.json').read_bytes()
+    index = read_json(store / 'index.json')
+    entry = index['reports'][0]
+    path = store / entry['json']
+    payload = read_json(path)
+    if corruption == 'identity':
+        payload['identity']['ticker'] = 'JPM'
+    elif corruption == 'quality':
+        payload['quality'] = 'historical'
+    elif corruption == 'contract':
+        payload = {}
+    elif corruption == 'pdf':
+        (store / entry['pdf']).write_bytes(b'Not a PDF')
+    elif corruption == 'paths':
+        entry['json'] = index['reports'][1]['json']
+    if corruption != 'paths':
+        write_json(path, payload)
+    entry['sha256'] = {kind: digest(store / entry[kind]) for kind in ('md', 'json', 'pdf')}
+    write_json(store / 'index.json', index)
+    result = weekly.deliver(config, store, now=NOW, really_send=True,
+                            backend=lambda _: pytest.fail('Invalid archive must not be sent'))
+    assert result['deferred'] == 1
+    assert not (store / 'state/deliveries.json').exists()
+    with pytest.raises(ValueError):
+        build(store, output)
+    assert (output / 'index.json').read_bytes() == previous_index
 
 
 def test_stale_or_disabled_members_are_not_sent(config, store):

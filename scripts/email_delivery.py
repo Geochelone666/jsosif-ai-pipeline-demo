@@ -15,7 +15,7 @@ from typing import Protocol
 ROOT = Path(__file__).resolve().parents[1]
 AI_SECTIONS = ('TAILWINDS', 'HEADWINDS', 'CATALYSTS', 'RISKS')
 MISSING = 'N/A: section or evidence missing from snapshot.'
-DISCLAIMER = 'Not investment advice. 非投资建议。 For analyst research preparation only; verify source data and AI claims.'
+DISCLAIMER = 'Not investment advice. For analyst research preparation only; verify source data and AI claims.'
 
 
 def validate_recipients(recipients):
@@ -268,7 +268,7 @@ def main(argv=None):
     mode.add_argument('--send', action='store_true', help='Send via Gmail SMTP (requires config/gmail.json)')
     args = parser.parse_args(argv)
     if args.send and os.environ.get('JSOSIF_APPROVED_SEND') != '1':
-        raise NotImplementedError('发送需 Lucas 明确批准')
+        raise NotImplementedError('Explicit approval is required for email delivery')
     try:
         message = build_email(args.snapshots, load_recipients(args.recipients),
                               pdf_path=args.pdf, brief=args.brief)
