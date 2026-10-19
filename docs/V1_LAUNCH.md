@@ -166,3 +166,93 @@ policy websites were blocked by the environment's outbound proxy. Consequently,
 no account-specific allowance, retention guarantee or policy approval is claimed.
 Only public headlines and the public stock symbol are sent for classification;
 the member roster and email addresses are not included in AI prompts.
+
+## Repeatable launch rehearsal
+
+The offline suite includes a full 25-holding, 30-member, three-timezone rehearsal
+across two simulated weeks. It imports a real `.xlsx` workbook, generates actual
+Markdown/JSON/PDF artifacts, checks 29 personalized previews and the opt-out,
+repeats delivery to check deduplication, rejects expired reports without reserving
+slots, updates all holdings for the next week, preserves 50 report versions, and
+checks that an uncertain SMTP result remains visible without automatic resubmission.
+The external research sources and email transport are synthetic in this rehearsal;
+it does not establish that real API calls or inbox delivery work.
+
+Run the same tests used by CI:
+
+```bash
+python -m pip install -r requirements-dev.txt
+PYTHONPATH=scripts python -m pytest --import-mode=importlib -q
+```
+
+Browser acceptance is now a separate CI job. It checks historical report reading,
+filter/refresh behavior, CSV import/export, preservation after rejected imports,
+and mobile overflow. All member data used by the browser check is synthetic.
+For a local run against a generated site:
+
+```bash
+python -m pip install -r requirements-browser.txt
+python -m playwright install chromium
+python scripts/browser_smoke.py --site site-build --artifacts review/browser
+```
+
+To use an existing Chromium installation, set `BROWSER_EXECUTABLE` to its path.
+Browser artifacts stay outside the public site. The deployed-site verifier checks
+the expected business date, coverage, matching publication metadata, every current
+Markdown/JSON/PDF hash, and one older PDF when historical versions exist:
+
+```bash
+python scripts/check_site.py --url https://OWNER.github.io/REPOSITORY/ --require-ready
+```
+
+Both verification CLIs default to today's **Toronto** date. Specify
+`--business-date YYYY-MM-DD` when inspecting an earlier run or a delayed scheduled
+publication. A healthy old archive cannot pass as today's successful update.
+
+## Finish external acceptance before importing the real roster
+
+**Live launch acceptance (no email delivery)** runs after its workflow or check
+script merges into `main`, and can also be dispatched manually. It uses the
+repository Secrets directly, so copying credentials into a development workspace
+is unnecessary for this path. It independently checks one authenticated Groq JSON
+request, market history, RSS, SEC, Gmail STARTTLS/login, the automation switches and the deployed site.
+Gmail authentication submits no email envelope, recipients or message body.
+The workflow uploads a sanitized `live-launch-acceptance` JSON artifact even if
+one check fails. A failed check does not hide the remaining check results.
+
+Set `PUBLIC_SITE_URL` only if Pages uses a custom address. Otherwise the workflow
+uses the normal owner/repository Pages address. Run the daily pipeline and deploy
+first; an old or historical-only site must fail the live acceptance check. If the
+acceptance workflow starts before the first daily deployment, rerun it afterwards.
+No roster is required for these checks. Each authenticated AI probe consumes one
+real API request; this is a manually repeatable check, not a periodic quota probe.
+
+A successful live acceptance establishes integration access and public deployment,
+not a guarantee of future provider availability or inbox placement. Before enabling
+weekly email, import the reviewed roster and inspect the personalized `.eml` files.
+Once `EMAIL_DELIVERY_ENABLED=true`, new members are picked up by subsequent scans;
+new holdings enter the next daily collection. A member without eligible reports
+waits without consuming the weekly slot. Do not change member IDs between imports,
+because IDs define durable weekly delivery identity.
+
+Due deliveries blocked by missing or invalid reports fail the sending workflow
+instead of silently reporting success. Their unreserved slots remain retryable.
+Uncertain or interrupted submissions continue to report a reconciliation requirement
+on later scans, and never submit another message until explicitly reconciled.
+Report age uses Toronto calendar dates; member scheduling still uses each member's
+own IANA timezone.
+
+The v1 research universe contains the 25 configured holdings in `scripts/universe.py`.
+Unsupported symbols are rejected on import; supporting new companies requires an
+explicit universe/data-source update before roster activation. FRED is optional;
+missing macro data is labelled unavailable. Streaming quotes, online self-service
+signup and a database-backed member portal are outside this daily pilot's scope.
+
+
+After validating integrations and confirming that old test members are removed,
+production switches can be armed before the formal roster arrives. With
+`EMAIL_DELIVERY_ENABLED=true`, a missing, empty or entirely opted-out roster leaves
+the weekly job idle without SMTP authentication or delivery. An invalid roster
+fails validation. A later valid enabled roster is picked up automatically. Keep
+`PAGES_DEPLOY_ENABLED=true` so future daily runs continue to publish. Live acceptance
+requires both switches to be armed before reporting `ready_for_roster=true`.

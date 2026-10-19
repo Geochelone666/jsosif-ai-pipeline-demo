@@ -193,3 +193,99 @@ def test_missing_sec_identity_never_uses_a_placeholder_contact(monkeypatch):
     monkeypatch.setattr(edgar, 'urlopen', lambda *args, **kw: pytest.fail('No placeholder SEC request'))
     with pytest.raises(ValueError, match='SEC_USER_AGENT'):
         edgar.fetch('https://www.sec.gov/files/company_tickers.json')
+
+
+def test_release_coverage_requires_the_requested_business_date(pipeline, monkeypatch):
+    root, _, _ = pipeline
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_RPD', '10')
+    monkeypatch.setenv('GEMINI_RPM', '10')
+    refresh.refresh(root, now=NOW)
+    assert check(root, business_date='2026-10-18', require_ready=True)['ready']
+    assert not check(root, business_date='2026-10-19', require_ready=True)['ready']
+
+
+def test_full_portfolio_excel_roster_two_week_launch_rehearsal(pipeline, monkeypatch, tmp_path):
+    """External research sources and mail transport are synthetic; rendering is real."""
+    from datetime import timedelta
+    from email import policy
+    from email.parser import BytesParser
+    from openpyxl import Workbook
+    from subscriptions import CSV_FIELDS, import_members_excel, write_private_config
+    from universe import SUPPORTED
+    from deliver_weekly import deliver
+    from build_site import build
+
+    root, _, _ = pipeline
+    monkeypatch.setattr(refresh, 'SUPPORTED', list(SUPPORTED))
+    # The rehearsal's clock must not depend on the actual wall clock.
+    start = NOW - timedelta(days=14)
+    clock = {'now': start}
+    real_archive = refresh.archive
+    def archive(root, ticker, stamp, run_id, generated_at):
+        return real_archive(root, ticker, stamp, run_id, clock['now'].isoformat())
+    monkeypatch.setattr(refresh, 'archive', archive)
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic-test-only')
+    monkeypatch.setenv('GEMINI_RPD', '1000')
+    monkeypatch.setenv('GEMINI_RPM', '1000')
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = 'Members'
+    sheet.append(list(CSV_FIELDS))
+    zones = ('America/Toronto', 'Europe/London', 'Asia/Shanghai')
+    for i in range(30):
+        choices = ';'.join(SUPPORTED[:5]) if i == 0 else SUPPORTED[i % len(SUPPORTED)]
+        sheet.append([f'fixture-{i:03}', f'Synthetic Member {i}', f'member-{i}@example.com',
+                      f'group-{i % 5}', choices, i != 29, zones[i % 3], 0, '09:00'])
+    excel = tmp_path / 'members.local.xlsx'
+    workbook.save(excel)
+    config = import_members_excel({'groups': {}, 'members': []}, excel)
+    private = tmp_path / 'subscriptions.local.json'
+    write_private_config(private, config)
+    assert refresh.refresh(root, config=private, now=start)['status'] == 'complete'
+    assert check(root, business_date=start.date().isoformat(), require_ready=True)['current'] == 25
+    first_hashes = {entry['pdf']: digest(root / entry['pdf'])
+                    for entry in read_json(root / 'index.json')['reports']}
+    monday = start + timedelta(hours=15)
+    previews = tmp_path / 'previews'
+    result = deliver(config, root, now=monday, preview_all=True, preview_dir=previews)
+    assert result['prepared'] == 29 and result['skipped'] == 1
+    assert not (root / 'state/deliveries.json').exists()
+    messages = [BytesParser(policy=policy.default).parsebytes(path.read_bytes())
+                for path in previews.glob('*.eml')]
+    first = next(message for message in messages if str(message['To']) == 'member-0@example.com')
+    assert len(list(first.iter_attachments())) == 5
+    assert 'Hi Synthetic Member 0,' in first.get_body(preferencelist=('plain',)).get_content()
+    for message in messages:
+        assert len(message['To'].addresses) == 1
+        assert 'member-29@example.com' not in str(message['To'])
+    sent = []
+    assert deliver(config, root, now=monday, really_send=True, backend=sent.append)['sent'] == 29
+    assert deliver(config, root, now=monday, really_send=True, backend=sent.append)['skipped'] == 30
+    assert len(sent) == 29
+    # Expired reports do not reserve next week's slots.
+    next_monday = monday + timedelta(days=7)
+    assert deliver(config, root, now=next_monday, really_send=True, backend=sent.append)['deferred'] == 29
+    assert len(read_json(root / 'state/deliveries.json')) == 29
+    clock['now'] = start + timedelta(days=7)
+    assert refresh.refresh(root, config=private, now=clock['now'])['status'] == 'complete'
+    assert len(read_json(root / 'index.json')['reports']) == 50
+    assert all(digest(root / path) == value for path, value in first_hashes.items())
+    attempted = []
+    def uncertain(message):
+        attempted.append(str(message['To']))
+        if str(message['To']) == 'member-0@example.com':
+            raise TimeoutError('Synthetic uncertain SMTP outcome')
+    result = deliver(config, root, now=next_monday, really_send=True, backend=uncertain)
+    assert result['sent'] == 28 and result['unknown'] == 1
+    repeated = deliver(config, root, now=next_monday, really_send=True, backend=uncertain)
+    assert repeated['skipped'] == 29 and repeated['unknown'] == 1
+    assert len(attempted) == 29
+    site = tmp_path / 'site'
+    build(root, site)
+    assert len(list(site.rglob('*.pdf'))) == 50
+    assert not (site / 'state').exists()
+    for path in site.rglob('*'):
+        if path.is_file():
+            assert b'member-0@example.com' not in path.read_bytes()
+            assert b'Synthetic Member' not in path.read_bytes()

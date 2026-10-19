@@ -1,0 +1,46 @@
+name: Live launch acceptance (no email delivery)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/launch-acceptance.yml'
+      - 'scripts/check_integrations.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jsosif-report-data
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.lock
+      - name: Check external integrations without sending mail
+        env:
+          AI_PROVIDER: groq
+          GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+          SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          PAGES_DEPLOY_ENABLED: ${{ vars.PAGES_DEPLOY_ENABLED }}
+          EMAIL_DELIVERY_ENABLED: ${{ vars.EMAIL_DELIVERY_ENABLED }}
+          SITE_URL: ${{ vars.PUBLIC_SITE_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+        run: python scripts/check_integrations.py --site-url "$SITE_URL" --output review/live-acceptance.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-launch-acceptance
+          path: review/live-acceptance.json
+          retention-days: 30

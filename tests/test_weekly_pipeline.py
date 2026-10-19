@@ -460,3 +460,90 @@ def test_competitor_and_ambiguous_ticker_news_requires_review(headline, ticker):
 def test_unambiguous_company_and_cashtag_rules_still_work(headline, ticker):
     item = {'headline': headline, 'pubDate': 'Fri, 16 Oct 2026 12:00:00 GMT'}
     assert ai_extract.classify_rule(item, ticker)[1]['extraction_method'] == 'rule'
+
+
+@pytest.mark.parametrize('instant,as_of,expected', [
+    ('2026-12-03T00:15:00+00:00', '2026-12-02', True),
+    ('2026-12-03T00:15:00+00:00', '2026-12-03', False),
+    ('2026-12-03T05:15:00+00:00', '2026-12-02', False),
+])
+def test_zero_age_uses_toronto_report_date(store, instant, as_of, expected):
+    entry = read_json(store / 'index.json')['reports'][0]
+    entry.update(as_of=as_of, generated_at='2026-12-02T23:30:00+00:00')
+    assert weekly.eligible_report(entry, 'CSCO', {'max_report_age_days': 0},
+                                  datetime.fromisoformat(instant)) is expected
+
+
+@pytest.fixture
+def published(store):
+    from functools import partial
+    from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+    from threading import Thread
+    index = read_json(store / 'index.json')
+    index['last_attempt'] = {'business_date': '2026-10-19', 'status': 'complete',
+                             'expected_tickers': ['CSCO', 'JPM'], 'successful_tickers': ['CSCO', 'JPM'],
+                             'degraded_tickers': [], 'failed_tickers': []}
+    write_json(store / 'index.json', index)
+    output = store.with_name(store.name + '-http-site')
+    build(store, output)
+    class Quiet(SimpleHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+    server = ThreadingHTTPServer(('127.0.0.1', 0), partial(Quiet, directory=str(output)))
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield 'http://127.0.0.1:' + str(server.server_port), output
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join()
+
+
+def test_deployed_publication_verifies_every_current_file(published):
+    from check_site import check
+    base, _ = published
+    result = check(base, business_date='2026-10-19', require_ready=True)
+    assert result['holdings'] == 2 and result['files_verified'] == 6
+
+
+def test_healthy_local_archive_cannot_mask_a_broken_deployed_pdf(published):
+    from check_site import check, SiteError
+    base, output = published
+    next(output.rglob('*.pdf')).write_bytes(b'<html>Unavailable</html>')
+    with pytest.raises(SiteError, match='integrity'):
+        check(base, business_date='2026-10-19', require_ready=True)
+
+
+def test_deployment_check_rejects_stale_day_and_mixed_publications(published):
+    from check_site import check, SiteError
+    base, output = published
+    with pytest.raises(SiteError, match='expected business date'):
+        check(base, business_date='2026-10-20')
+    health = read_json(output / 'health.json')
+    health['published_at'] = '2026-10-18T00:00:00+00:00'
+    write_json(output / 'health.json', health)
+    with pytest.raises(SiteError, match='different publications'):
+        check(base, business_date='2026-10-19')
+
+
+def test_deployment_check_rejects_missing_holding(published):
+    from check_site import check, SiteError
+    base, output = published
+    index = read_json(output / 'index.json')
+    index['reports'] = index['reports'][:1]
+    write_json(output / 'index.json', index)
+    with pytest.raises(SiteError, match='missing'):
+        check(base, business_date='2026-10-19')
+
+
+def test_due_delivery_deferral_fails_the_sending_job_without_contacting_smtp(config, store, monkeypatch):
+    import sys
+    monkeypatch.setattr(sys, 'argv', ['deliver_weekly.py', '--config', 'synthetic.json',
+                                     '--store', str(store), '--send'])
+    monkeypatch.setenv('JSOSIF_APPROVED_SEND', '1')
+    monkeypatch.setattr(weekly, 'load', lambda _: config)
+    monkeypatch.setattr(weekly.GmailSmtpBackend, 'credentials', lambda _: ('synthetic@example.com', 'synthetic'))
+    monkeypatch.setattr(weekly, 'deliver', lambda *a, **kw: {'unknown': 0, 'deferred': 1})
+    with pytest.raises(SystemExit, match='deferred'):
+        weekly.main()

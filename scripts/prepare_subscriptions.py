@@ -4,7 +4,7 @@ import json
 import os
 from pathlib import Path
 
-from subscriptions import import_members_csv, validate, write_private_config
+from subscriptions import import_members_csv, validate, write_private_config, load
 
 
 def prepare(path, *, required=False):
@@ -30,6 +30,11 @@ def main():
         saved = prepare(args.path, required=args.required)
     except (ValueError, OSError):
         parser.error('Private member configuration is missing or invalid; check the JSON/CSV and schema')
+    enabled = sum(member['enabled'] for member in load(args.path)['members']) if saved else 0
+    if os.environ.get('GITHUB_OUTPUT'):
+        with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+            output.write('configured=' + str(saved).lower() + '\n')
+            output.write('email_members=' + str(enabled) + '\n')
     print('Private subscriptions validated and loaded' if saved else 'No private roster configured')
 
 
