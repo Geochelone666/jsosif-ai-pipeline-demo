@@ -1,5 +1,6 @@
 """Offline coverage for graceful price provider failures."""
 import io
+import os
 import json
 from pathlib import Path
 import runpy
@@ -14,6 +15,30 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
 import data_utils
 import price_fetch as pf
+
+
+def test_price_cache_is_shared_only_within_current_batch(tmp_path, monkeypatch):
+    cache = tmp_path / 'cache'
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE', str(cache))
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '1000')
+    history = Mock(side_effect=[
+        pd.DataFrame({'Close': [101.]}, index=pd.to_datetime(['2026-10-16'])),
+        pd.DataFrame({'Close': [102.]}, index=pd.to_datetime(['2026-10-16'])),
+        pd.DataFrame({'Close': [103.]}, index=pd.to_datetime(['2026-10-16'])),
+    ])
+    monkeypatch.setattr(pf.yf, 'Ticker', lambda symbol: Mock(history=history))
+    def fetch():
+        return pf.fetch_symbol_prices('CSCO', '2025-10-02', '2026-10-16',
+                                      '2026-10-17', tmp_path)[0].iloc[-1]
+    assert fetch() == 101.
+    assert fetch() == 101.  # SPY and duplicate requests within the batch may reuse data.
+    path = next(cache.glob('*.csv'))
+    os.utime(path, (1001, 1001))
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '1002')
+    assert fetch() == 102.  # A later batch must observe the provider's changed bar.
+    monkeypatch.delenv('JSOSIF_PRICE_CACHE_BATCH_START')
+    assert fetch() == 103.  # Standalone calls cannot silently reuse an intraday bar.
+    assert history.call_count == 3
 
 
 def http(code):
@@ -168,3 +193,4 @@ def test_quant_pipeline(monkeypatch, tmp_path, capsys, success):
             assert status['attempts'] == 3
         assert 'prices-minimum-history' in captured.err
         assert 'dns_or_connection' in captured.err
+

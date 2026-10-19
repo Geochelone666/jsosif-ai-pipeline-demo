@@ -1,0 +1,64 @@
+name: Weekly member PDF delivery
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type YES to enable real delivery for this manual run; otherwise preview counts only'
+        required: true
+        default: 'NO'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jsosif-report-data
+  cancel-in-progress: false
+
+jobs:
+  deliver:
+    if: github.event_name == 'workflow_dispatch' || vars.EMAIL_DELIVERY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Load and validate private member configuration
+        env:
+          SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          value = os.environ.get('SUBSCRIPTIONS_JSON')
+          if not value:
+              raise SystemExit('Configure the private SUBSCRIPTIONS_JSON repository secret')
+          path = Path(os.environ['RUNNER_TEMP']) / 'subscriptions.json'
+          path.write_text(json.dumps(json.loads(value)))
+          path.chmod(0o600)
+          PY
+          python scripts/subscriptions.py "$RUNNER_TEMP/subscriptions.json"
+      - name: Open persistent report and delivery store
+        run: python scripts/prepare_store.py ../report-store
+      - name: Send due weekly PDF digests or show preview counts
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          JSOSIF_APPROVED_SEND: '1'
+          EVENT_NAME: ${{ github.event_name }}
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          MODE=()
+          if [ "$EVENT_NAME" = schedule ] || [ "$CONFIRM" = YES ]; then
+            MODE=(--send)
+          fi
+          python scripts/deliver_weekly.py --config "$RUNNER_TEMP/subscriptions.json" --store ../report-store --persist-git "${MODE[@]}"
+      - name: Remove private configuration
+        if: always()
+        run: rm -f "$RUNNER_TEMP/subscriptions.json"

@@ -3,7 +3,7 @@ import json
 import os
 import subprocess
 import sys
-from data_utils import DATA, REPORTS, SCRIPTS, number
+from data_utils import ROOT, DATA, REPORTS, SCRIPTS, number
 
 REPORT = REPORTS / 'NVDA-intelligence-20261003.md'
 
@@ -25,3 +25,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

@@ -153,7 +153,9 @@ def test_rss_main_consumes_settings(monkeypatch):
         calls.append((args, kwargs))
         return [], {}
     monkeypatch.setattr(ai_extract, 'fetch_rss', fetch)
-    monkeypatch.setattr(ai_extract, 'extract', lambda *args: {'extraction_stats': {}})
+    monkeypatch.setattr(ai_extract, 'extract', lambda *args, **kwargs: {'extraction_stats': {}})
     ai_extract.main()
     assert calls[0][0][1] == 12
-    assert calls[0][1] == {'max_attempts': 2, 'timeout': 7}
+    assert calls[0][1] == {'max_attempts': 2, 'timeout': 7,
+                         'as_of': data_utils.as_of_date().isoformat(), 'window_days': 7}
+

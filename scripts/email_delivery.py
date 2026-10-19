@@ -61,6 +61,10 @@ def load_snapshot(path):
         raise ValueError('Snapshot sidecar must be an object')
     if metadata.get('ticker', ticker) != ticker or metadata.get('as_of', as_of) != as_of:
         raise ValueError('Snapshot filename and sidecar identity disagree')
+    if 'contract_version' in metadata:
+        from snapshot_contract import validate_snapshot
+        if validate_snapshot(metadata) or metadata['identity']['ticker'] != ticker or metadata['identity']['as_of'] != as_of:
+            raise ValueError('Invalid frozen snapshot identity or contract')
     for label, expected in (('ticker', ticker), ('Report as_of', as_of)):
         found = re.search(r'^- ' + label + r': \*\*([^*]+)\*\*', text, re.M)
         if found and found.group(1) != expected:
@@ -89,13 +93,13 @@ def _normalize_pdf_paths(pdf_path):
     return result
 
 
-def _build_brief_email(snapshots, recipients, pdf_paths):
+def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
     """Short cover-note format: greeting, report list, sign-off.
 
     Details live in the PDF attachments; the body only introduces them.
     """
     title = 'JSOSIF Intelligence Reports | ' + '; '.join(f'{day} {ticker}' for ticker, day, *_ in snapshots)
-    name = _recipient_display_name(recipients[0])
+    name = display_name or _recipient_display_name(recipients[0])
     plain = [
         f'Hi {name},',
         '',
@@ -103,7 +107,8 @@ def _build_brief_email(snapshots, recipients, pdf_paths):
         '',
     ]
     plain += [f'- {ticker} — {day}' for ticker, day, *_ in snapshots]
-    plain += ['', 'Best,', 'Tech Team']
+    plain += ['', 'The attached PDFs include quantitative metrics, news, source links and data dates.',
+              'Wishing you a productive week and all the best with your research.', '', 'Best,', 'Tech Team']
     html = [
         '<html><body>',
         f'<p>Hi {escape(name)},</p>',
@@ -111,7 +116,9 @@ def _build_brief_email(snapshots, recipients, pdf_paths):
         '<ul>',
     ]
     html += [f'<li>{escape(ticker)} &mdash; {escape(day)}</li>' for ticker, day, *_ in snapshots]
-    html += ['</ul>', '<p>Best,<br>Tech Team</p>', '</body></html>']
+    html += ['</ul>', '<p>The attached PDFs include quantitative metrics, news, source links and data dates.</p>',
+             '<p>Wishing you a productive week and all the best with your research.</p>',
+             '<p>Best,<br>Tech Team</p>', '</body></html>']
     message = EmailMessage(policy=policy.SMTP)
     message['Subject'] = title
     message['To'] = ', '.join(recipients)
@@ -123,7 +130,7 @@ def _build_brief_email(snapshots, recipients, pdf_paths):
     return message
 
 
-def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=False):
+def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=False, display_name=None):
     # Empty recipients remain visibly pending in offline review artifacts.
     if not (review_only and recipients == []):
         recipients = validate_recipients(recipients)
@@ -138,7 +145,7 @@ def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=Fa
         raise ValueError('At least one snapshot is required')
     pdf_paths = _normalize_pdf_paths(pdf_path)
     if brief:
-        return _build_brief_email(snapshots, recipients, pdf_paths)
+        return _build_brief_email(snapshots, recipients, pdf_paths, display_name)
     title = 'JSOSIF snapshot | ' + '; '.join(f'{day} {ticker}' for ticker, day, *_ in snapshots)
     plain, html = [title], [f'<html><body><h1>{escape(title)}</h1>']
 
@@ -215,21 +222,31 @@ class GmailSmtpBackend:
     def __init__(self, config_path=None):
         self.config_path = Path(config_path) if config_path else ROOT / 'config' / 'gmail.json'
 
-    def deliver(self, message):
-        import smtplib
-        try:
-            cfg = json.loads(self.config_path.read_text(encoding='utf-8'))
-        except (OSError, ValueError):
-            raise ValueError(f'Cannot read Gmail config: {self.config_path}') from None
+    def credentials(self):
+        cfg = {'address': os.environ.get('GMAIL_USER'), 'app_password': os.environ.get('GMAIL_APP_PASSWORD')}
+        if not all(cfg.values()):
+            try:
+                cfg = json.loads(self.config_path.read_text(encoding='utf-8'))
+            except (OSError, ValueError):
+                raise ValueError('Gmail credentials are not configured') from None
         address = cfg.get('address')
         app_password = cfg.get('app_password')
         if not address or not app_password or app_password.startswith('FILL_IN'):
             raise ValueError(f'Gmail config incomplete: set address and app_password in {self.config_path}')
+        validate_recipients([address])
+        return address, app_password
+
+    def deliver(self, message):
+        import smtplib
+        import ssl
+        address, app_password = self.credentials()
         message['From'] = address
-        with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-            smtp.starttls()
+        with smtplib.SMTP('smtp.gmail.com', 587, timeout=60) as smtp:
+            smtp.starttls(context=ssl.create_default_context())
             smtp.login(address, app_password)
-            smtp.send_message(message)
+            refused = smtp.send_message(message)
+            if refused:
+                raise RuntimeError('SMTP rejected one or more recipients')
 
 
 def send(message, backend=None):
@@ -266,3 +283,4 @@ def main(argv=None):
 
 if __name__ == '__main__':
     main()
+

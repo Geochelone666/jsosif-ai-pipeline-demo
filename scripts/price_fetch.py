@@ -1,5 +1,6 @@
 """Price providers with bounded retries and safe, structured diagnostics."""
 import io
+import os
 from pathlib import Path
 import time
 import urllib.error
@@ -43,6 +44,8 @@ def classify_price_error(exc, source):
             return 'no_valid_prices', False, 'No valid positive prices were available through the requested date'
         if source == 'stooq' and str(exc) == 'unsupported listing':
             return 'unsupported_listing', False, 'The US Stooq fallback is unavailable for international listings'
+    if type(exc).__name__ == 'YFRateLimitError':
+        return 'http_error', True, 'The price service returned HTTP 429'
     return 'dns_or_connection', False, 'The price request could not be completed due to an unexpected error'
 
 
@@ -90,8 +93,20 @@ def fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
 
         def fetch():
             if source == 'yfinance':
-                h = yf.Ticker(symbol).history(start=price_start, end=end,
-                                              auto_adjust=True, timeout=timeout)
+                cache = None
+                if os.environ.get('JSOSIF_PRICE_CACHE'):
+                    cache = Path(os.environ['JSOSIF_PRICE_CACHE']) / f'{symbol}-{price_start}-{end}.csv'
+                # Cache only within one refresh batch. A later run must fetch a new
+                # daily bar, which may have changed since an earlier intraday run.
+                batch_start = os.environ.get('JSOSIF_PRICE_CACHE_BATCH_START')
+                if cache and cache.is_file() and batch_start and cache.stat().st_mtime >= float(batch_start):
+                    h = pd.read_csv(cache, index_col=0, parse_dates=True)
+                else:
+                    h = yf.Ticker(symbol).history(start=price_start, end=end,
+                                                  auto_adjust=True, timeout=timeout)
+                    if cache and not h.empty:
+                        cache.parent.mkdir(parents=True, exist_ok=True)
+                        h.to_csv(cache)
                 if h.empty:
                     raise ValueError('empty history')
                 h.index = pd.to_datetime(h.index).tz_localize(None).normalize()
@@ -132,3 +147,4 @@ def fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
         if status['status'] == 'ok':
             return prices, statuses
     return None, statuses
+
