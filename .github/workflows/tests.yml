@@ -15,7 +15,7 @@ jobs:
           python-version: ${{ matrix.python }}
           cache: pip
       - run: python -m pip install -r requirements-dev.txt
-      - run: PYTHONPATH=scripts python -m pytest --import-mode=importlib tests scripts -q
+      - run: PYTHONPATH=scripts python -m pytest --import-mode=importlib -q
       - name: Build an offline preview from existing historical reports
         run: |
           python scripts/import_history.py --reports reports --store "$RUNNER_TEMP/report-preview"
@@ -24,4 +24,28 @@ jobs:
         with:
           name: research-site-preview-${{ matrix.python }}
           path: site-preview
+          retention-days: 14
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.lock -r requirements-browser.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Build the historical research workspace
+        run: |
+          python scripts/import_history.py --reports reports --store "$RUNNER_TEMP/browser-store"
+          python scripts/build_site.py --store "$RUNNER_TEMP/browser-store" --output site-browser
+      - name: Exercise desktop and mobile member workflows
+        run: python scripts/browser_smoke.py --site site-browser --artifacts review/browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-acceptance
+          path: review/browser
           retention-days: 14

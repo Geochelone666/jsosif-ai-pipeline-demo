@@ -385,7 +385,8 @@ def extract(items, ticker, call_ai=None, as_of=None):
                     sentiment = _norm_text(result['sentiment'])
                     event_type = _norm_text(result['event_type'])
                     confidence = result['confidence']
-                    if (impact is None or horizon is None
+                    if (not isinstance(result['summary'], str) or not result['summary'].strip()
+                            or impact is None or horizon is None
                             or sentiment not in _VALID_SENTIMENTS
                             or event_type not in (*EVENTS, 'unknown')
                             or isinstance(confidence, bool)
@@ -426,7 +427,7 @@ def call_gemini(items, ticker):
     if provider() == 'groq' and len(items) > 5:
         combined = {'ticker': ticker, **{name: [] for name in ('tailwinds', 'headwinds', 'catalysts', 'risks')}}
         for offset in range(0, len(items), 5):
-            result = call_gemini(items[offset:offset + 5], ticker)
+            result, _ = _normalize_ai_payload(call_gemini(items[offset:offset + 5], ticker), ticker)
             for name in ('tailwinds', 'headwinds', 'catalysts', 'risks'):
                 combined[name].extend(result.get(name, []))
         return combined
@@ -436,7 +437,7 @@ def call_gemini(items, ticker):
     prompt = (
         f'Classify relevant {ticker} news into tailwinds, headwinds, catalysts, risks. '
         'Return JSON with ticker and those four arrays. Skip irrelevant news. '
-        'Each item: headline copied exactly, summary grounded only in headline, '
+        'Each item: headline copied exactly, summary at most 35 words grounded only in headline, '
         'impact high/medium/low, horizon short/medium/long, confidence 0-1, '
         'event_type from ' + ', '.join(EVENTS) + ', or unknown; '
         'sentiment positive/negative/neutral/unknown. Do not infer facts absent from headlines. '

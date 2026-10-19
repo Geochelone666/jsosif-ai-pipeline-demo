@@ -102,7 +102,9 @@ jobs:
         run: python scripts/build_site.py --store ../report-store --output site-build
       - name: Record the strict daily release check
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
-        run: python scripts/check_release.py --store ../report-store --require-ready
+        env:
+          REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
+        run: python scripts/check_release.py --store ../report-store --business-date "$REPORT_BUSINESS_DATE" --require-ready
       - name: Back up the persisted archive and recovery state
         if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.collect.outputs.publish == 'true' }}
         run: git -C ../report-store archive --format=tar.gz --output="$RUNNER_TEMP/report-store-backup.tar.gz" HEAD
@@ -121,6 +123,12 @@ jobs:
         id: deployment
         if: ${{ !cancelled() && steps.upload.outcome == 'success' && vars.PAGES_DEPLOY_ENABLED == 'true' }}
         uses: actions/deploy-pages@v4
+      - name: Verify the deployed publication and archived files
+        if: ${{ !cancelled() && steps.deployment.outcome == 'success' }}
+        env:
+          SITE_URL: ${{ steps.deployment.outputs.page_url }}
+          REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
+        run: python scripts/check_site.py --url "$SITE_URL" --business-date "$REPORT_BUSINESS_DATE" --require-ready
       - name: Write the daily production summary
         if: ${{ always() && steps.store.outcome == 'success' }}
         run: |

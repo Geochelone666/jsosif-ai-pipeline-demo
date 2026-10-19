@@ -1,8 +1,9 @@
 """Check archive integrity and daily coverage before declaring a v1 release ready."""
 import argparse
-from datetime import date
+from datetime import date, datetime
 import json
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from report_store import read_json, verified_report_files
 
@@ -26,6 +27,8 @@ def check(store, *, business_date=None, require_ready=False):
     else:
         date.fromisoformat(selected_date)
     expected = set(attempt.get('expected_tickers', []))
+    if selected_date != attempt.get('business_date'):
+        errors.append('The recorded run does not match the expected business date')
     if not expected:
         errors.append('No expected holdings were recorded for the daily run')
     latest = {}
@@ -42,6 +45,8 @@ def check(store, *, business_date=None, require_ready=False):
         errors.append('Reports require complete source evidence: ' + ', '.join(degraded))
     if attempt.get('status') in ('running', 'partial', 'failed'):
         errors.append('The last daily run failed, is incomplete, or was interrupted')
+    if require_ready and attempt.get('status') != 'complete':
+        errors.append('Strict acceptance requires a completed daily run with full source evidence')
     return {'ready': not errors, 'business_date': selected_date, 'checked': len(reports),
             'expected': len(expected), 'current': len(expected & latest.keys()),
             'degraded_tickers': degraded, 'errors': errors}
@@ -50,7 +55,8 @@ def check(store, *, business_date=None, require_ready=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--store', type=Path, required=True)
-    parser.add_argument('--business-date')
+    parser.add_argument('--business-date', default=datetime.now(ZoneInfo('America/Toronto')).date().isoformat(),
+                        help='Expected Toronto report date; defaults to today')
     parser.add_argument('--require-ready', action='store_true')
     args = parser.parse_args()
     result = check(args.store, business_date=args.business_date, require_ready=args.require_ready)

@@ -83,8 +83,8 @@ Tech Team
 2. Configure `Grop_ai_API` (Groq), optional application request/token caps, and
    `SEC_USER_AGENT`. FRED is optional. Check that the daily AI request/token caps can cover
    all requested holdings before they become too old for delivery.
-3. Run **Refresh research archive** and inspect its report-data branch and site
-   artifact. This workflow updates research on every day at 19:00 America/Toronto and never
+3. Run **Daily production research pipeline** and inspect its report-data branch and site
+   artifact. This workflow updates research every day at 19:00 America/Toronto and never
    sends mail. Existing reports are retained with their original dates.
 4. Enable GitHub Pages with **GitHub Actions** as the deployment source, then set
    `PAGES_DEPLOY_ENABLED=true` to publish the site. Until enabled, the workflow

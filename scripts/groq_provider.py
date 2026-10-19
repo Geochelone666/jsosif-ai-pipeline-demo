@@ -3,13 +3,15 @@
 Local caps are application policy, not a statement of an account's Groq limits.
 """
 import json
+import math
 import os
 import time
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+from urllib.request import Request
+from credential_http import urlopen
 
 DEFAULT_MODEL = 'llama-3.1-8b-instant'
 
@@ -45,19 +47,23 @@ def _reserve(model, tokens, sleep):
     ledger = read_json(Path(path), {}) if path else {}
     caps = settings()
     now = time.time()
-    day = datetime.fromtimestamp(now, timezone.utc).date().isoformat()
+    if tokens > caps['TPM']:
+        raise GroqError('Groq prompt exceeds application per-minute token budget')
+    # Determine the UTC application day after waiting: pacing may cross midnight.
+    delay = max(0, ledger.get('groq_next_request_at', 0) - now)
+    if delay > 120:
+        raise GroqError('Groq retry deferred by server or application pacing')
+    next_day = datetime.fromtimestamp(now + delay, timezone.utc).date().isoformat()
+    pending = ledger.get('groq:' + model + ':' + next_day, {})
+    if pending.get('requests', 0) >= caps['RPD'] or pending.get('tokens', 0) + tokens > caps['TPD']:
+        raise GroqError('Groq application daily budget exhausted')
+    if delay:
+        sleep(delay)
+    day = datetime.fromtimestamp(time.time(), timezone.utc).date().isoformat()
     key = 'groq:' + model + ':' + day
     state = ledger.setdefault(key, {'requests': 0, 'tokens': 0})
     if state['requests'] >= caps['RPD'] or state['tokens'] + tokens > caps['TPD']:
         raise GroqError('Groq application daily budget exhausted')
-    if tokens > caps['TPM']:
-        raise GroqError('Groq prompt exceeds application per-minute token budget')
-    # Space reservations conservatively, including failed/retried requests.
-    delay = max(0, ledger.get('groq_next_request_at', 0) - now)
-    if delay > 120:
-        raise GroqError('Groq retry deferred by server or application pacing')
-    if delay:
-        sleep(delay)
     state['requests'] += 1
     state['tokens'] += tokens
     ledger['groq_next_request_at'] = time.time() + max(60 / caps['RPM'], 60 * tokens / caps['TPM'])
@@ -68,7 +74,8 @@ def _reserve(model, tokens, sleep):
 def _retry_delay(headers, fallback):
     value = headers.get('retry-after', '') if headers else ''
     try:
-        return max(0, float(value))
+        delay = float(value)
+        return max(0, delay) if math.isfinite(delay) else fallback
     except ValueError:
         try:
             return max(0, parsedate_to_datetime(value).timestamp() - time.time())
@@ -93,16 +100,6 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
         try:
             with opener(request, timeout=60) as response:
                 payload = json.load(response)
-            text = payload.get('choices', [{}])[0].get('message', {}).get('content')
-            if not isinstance(text, str) or not text.strip():
-                raise GroqError('Groq returned no usable content')
-            usage = payload.get('usage', {})
-            actual = usage.get('total_tokens')
-            if isinstance(actual, int) and actual >= 0:
-                ledger[slot]['tokens'] += actual - reserved
-                _save(path, ledger)
-            return {'text': text, 'model': model, 'usage': {
-                k: usage[k] for k in ('prompt_tokens', 'completion_tokens', 'total_tokens') if k in usage}}
         except HTTPError as exc:
             retry = exc.code in (408, 409, 429) or exc.code >= 500
             delay = _retry_delay(exc.headers, 2 ** (attempt + 1))
@@ -112,10 +109,27 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
             if not retry or attempt + 1 == attempts or delay > 120:
                 raise GroqError(f'Groq HTTP {exc.code}; check account limits and retry guidance') from None
             sleep(delay)
+            continue
         except (URLError, TimeoutError, OSError):
             if attempt + 1 == attempts:
                 raise GroqError('Groq connection failed') from None
             sleep(2 ** (attempt + 1))
+            continue
         except (ValueError, KeyError, IndexError, TypeError):
             raise GroqError('Groq returned an invalid response') from None
+        try:
+            text = payload.get('choices', [{}])[0].get('message', {}).get('content')
+            usage = payload.get('usage', {})
+            actual = usage.get('total_tokens')
+            if not isinstance(text, str) or not text.strip():
+                raise GroqError('Groq returned no usable content')
+            safe_usage = {k: usage[k] for k in ('prompt_tokens', 'completion_tokens', 'total_tokens')
+                          if type(usage.get(k)) is int and usage[k] >= 0}
+        except (AttributeError, KeyError, IndexError, TypeError):
+            raise GroqError('Groq returned an invalid response') from None
+        if type(actual) is int and actual >= 0:
+            ledger[slot]['tokens'] += actual - reserved
+            # Persistence failures are not transport failures and must not retry HTTP.
+            _save(path, ledger)
+        return {'text': text, 'model': model, 'usage': safe_usage}
     raise GroqError('Groq request failed')

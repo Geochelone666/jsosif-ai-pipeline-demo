@@ -102,3 +102,77 @@ def test_daily_request_cap_prevents_another_attempt(setup, monkeypatch):
     groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=lambda _: None)
     with pytest.raises(groq.GroqError, match='daily budget'):
         groq.generate_json('JSON', opener=lambda *a, **kw: pytest.fail('unexpected HTTP'))
+
+
+def test_pacing_across_midnight_charges_the_new_application_day(setup, monkeypatch):
+    from datetime import datetime, timezone
+    from report_store import write_json
+    clock = {'now': datetime(2026, 10, 19, 23, 59, 59, tzinfo=timezone.utc).timestamp()}
+    write_json(setup, {'groq_next_request_at': clock['now'] + 2})
+    monkeypatch.setattr(groq.time, 'time', lambda: clock['now'])
+    def wait(seconds):
+        clock['now'] += seconds
+    groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=wait)
+    ledger = read_json(setup, {})
+    assert 'groq:llama-3.1-8b-instant:2026-10-19' not in ledger
+    assert ledger['groq:llama-3.1-8b-instant:2026-10-20']['requests'] == 1
+
+
+def test_response_persistence_error_does_not_repeat_a_successful_http_call(setup, monkeypatch):
+    save = groq._save
+    saves, calls = [], []
+    def write(path, ledger):
+        saves.append(True)
+        if len(saves) == 2:
+            raise OSError('Synthetic disk failure')
+        save(path, ledger)
+    monkeypatch.setattr(groq, '_save', write)
+    def open_request(*args, **kwargs):
+        calls.append(True)
+        return response()
+    with pytest.raises(OSError, match='disk failure'):
+        groq.generate_json('JSON', opener=open_request, sleep=lambda _: None)
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize('payload', [[], {'choices': []}, {'choices': [None]},
+                                     {'choices': [{'message': {'content': '{}'}}], 'usage': None}])
+def test_malformed_provider_envelopes_have_safe_errors(setup, payload):
+    with pytest.raises(groq.GroqError, match='invalid response'):
+        groq.generate_json('JSON', opener=lambda *a, **kw: io.BytesIO(json.dumps(payload).encode()),
+                           sleep=lambda _: None)
+
+
+def test_batching_normalizes_provider_payloads_before_merging(tmp_path, monkeypatch):
+    import ai_extract
+    import ai_provider
+    import data_utils
+    monkeypatch.setenv('AI_PROVIDER', 'groq')
+    monkeypatch.setattr(data_utils, 'DATA', tmp_path)
+    monkeypatch.setattr(ai_extract.time, 'sleep', lambda _: None)
+    batches = []
+    def generate(prompt, **kwargs):
+        news = json.loads(prompt.split('News: ', 1)[1])
+        batches.append(len(news))
+        payload = {'ticker': 'CSCO', 'tailwinds': [], 'headwinds': [], 'risks': [],
+                   'catalysts': [dict(headline=item['headline']) for item in news]}
+        return {'text': json.dumps([payload]), 'model': 'synthetic'}
+    monkeypatch.setattr(ai_provider, 'generate_json', generate)
+    result = ai_extract.call_gemini([{'headline': f'Synthetic headline {i}'} for i in range(11)], 'CSCO')
+    assert batches == [5, 5, 1]
+    assert len(result['catalysts']) == 11
+
+
+@pytest.mark.parametrize('summary', [None, {}, [], 42, '', '   '])
+def test_malformed_ai_summary_remains_unclassified(summary):
+    from ai_extract import extract
+    headline = 'Will Cisco rise?'
+    item = dict(headline=headline, source='Synthetic', link='https://example.com',
+                pubDate='Sun, 18 Oct 2026 12:00:00 GMT')
+    def generate(*args):
+        return {'ticker': 'CSCO', 'tailwinds': [], 'headwinds': [], 'risks': [],
+                'catalysts': [dict(headline=headline, summary=summary, impact='low', horizon='short',
+                                   confidence=.5, event_type='earnings', sentiment='neutral')]}
+    result = extract([item], 'CSCO', generate, as_of='2026-10-18')
+    assert result['extraction_stats']['ai'] == 0
+    assert result['extraction_stats']['unknown'] == 1

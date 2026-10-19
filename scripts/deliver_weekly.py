@@ -35,8 +35,9 @@ def eligible_report(entry, ticker, config, now):
         if generated.tzinfo is None or generated.utcoffset() is None:
             return False
         age = config.get('max_report_age_days', 4)
-        # Zero means today's UTC report, not an impossible zero-second TTL.
-        return (timedelta(0) <= now.date() - as_of <= timedelta(days=age) and
+        # Report dates belong to Toronto, independently of the recipient's zone.
+        report_today = now.astimezone(ZoneInfo('America/Toronto')).date()
+        return (timedelta(0) <= report_today - as_of <= timedelta(days=age) and
                 timedelta(0) <= now - generated <= timedelta(days=max(1, age)))
     except (KeyError, TypeError, ValueError, OverflowError):
         return False
@@ -79,7 +80,10 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
             # Public archive state never includes names, addresses, or message bodies.
             key = hashlib.sha256((member['id'] + ':' + period).encode()).hexdigest()
             if key in ledger and not preview_all:
-                summary['skipped'] += 1
+                if ledger[key].get('status') in ('sending', 'unknown'):
+                    summary['unknown'] += 1
+                else:
+                    summary['skipped'] += 1
                 continue
             selected = []
             for ticker in tickers_for(config, member):
@@ -165,6 +169,8 @@ def main():
     print(result)
     if result['unknown']:
         raise SystemExit('Delivery needs reconciliation; uncertain messages will not be retried automatically')
+    if args.send and result['deferred']:
+        raise SystemExit('Delivery deferred: eligible reports are missing or invalid; unreserved slots will be retried')
 
 
 if __name__ == '__main__':

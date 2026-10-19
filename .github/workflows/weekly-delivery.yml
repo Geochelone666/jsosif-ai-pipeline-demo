@@ -32,13 +32,19 @@ jobs:
       - name: Install pinned runtime dependencies
         run: python -m pip install -r requirements.lock
       - name: Load and validate private member configuration
+        id: members
         env:
           SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}
           MEMBERS_CSV: ${{ secrets.MEMBERS_CSV }}
-        run: python scripts/prepare_subscriptions.py "$RUNNER_TEMP/subscriptions.json" --required
+        run: python scripts/prepare_subscriptions.py "$RUNNER_TEMP/subscriptions.json"
+      - name: Wait for the reviewed roster
+        if: steps.members.outputs.email_members == '0'
+        run: echo 'No enabled members loaded; no email delivery attempted.' >> "$GITHUB_STEP_SUMMARY"
       - name: Open persistent report and delivery store
+        if: steps.members.outputs.email_members != '0' && steps.members.outputs.configured == 'true'
         run: python scripts/prepare_store.py ../report-store
       - name: Send due weekly PDF digests or show preview counts
+        if: steps.members.outputs.email_members != '0' && steps.members.outputs.configured == 'true'
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
