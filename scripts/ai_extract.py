@@ -422,6 +422,14 @@ def extract(items, ticker, call_ai=None, as_of=None):
 
 
 def call_gemini(items, ticker):
+    from ai_provider import provider
+    if provider() == 'groq' and len(items) > 5:
+        combined = {'ticker': ticker, **{name: [] for name in ('tailwinds', 'headwinds', 'catalysts', 'risks')}}
+        for offset in range(0, len(items), 5):
+            result = call_gemini(items[offset:offset + 5], ticker)
+            for name in ('tailwinds', 'headwinds', 'catalysts', 'risks'):
+                combined[name].extend(result.get(name, []))
+        return combined
     import os
     import time
     from data_utils import DATA, save, ticker_file
@@ -435,7 +443,7 @@ def call_gemini(items, ticker):
         'Distinguish the event subject from companies merely mentioned for comparison. '
         'A competitor winning a contract is not a target-company tailwind. '
         'J means Jacobs, not Johnson & Johnson/J&J; V means Visa. '
-        'News: ' + json.dumps(items)
+        'News: ' + json.dumps([{'headline': item.get('headline', item.get('title', ''))} for item in items])
     )
     path = DATA / ticker_file(ticker, 'ai-prompt.txt')
     path.write_text(prompt, encoding='utf-8')
@@ -447,10 +455,11 @@ def call_gemini(items, ticker):
     if delay:
         time.sleep(delay)
     last_call.write_text(str(time.time()))
-    cli = os.environ.get('GEMINI_CLI')
+    from ai_provider import provider
+    cli = os.environ.get('GEMINI_CLI') if provider() == 'gemini' else None
     if not cli:
-        from gemini_provider import generate_json
-        envelope = generate_json(prompt, model=os.environ.get('GEMINI_MODEL', MODEL))
+        from ai_provider import generate_json
+        envelope = generate_json(prompt)
         save(ticker_file(ticker, 'ai-envelope.json'), envelope)
         return _parse_gemini_json(envelope['text'])
     res = subprocess.run(
@@ -500,9 +509,14 @@ def main():
         fetch_status['detail'] = exc.detail
         print(str(exc), file=sys.stderr)
     else:
-        data = extract(items, ticker, call_gemini, as_of=as_of)
+        enabled = os.environ.get('JSOSIF_AI_ENABLED', '1') == '1'
+        data = extract(items, ticker, call_gemini if enabled else None, as_of=as_of)
+        if not enabled:
+            data['error'] = os.environ.get('JSOSIF_AI_UNAVAILABLE_REASON', 'AI analysis is disabled for this run')
     data['fetched_at'] = datetime.now(timezone.utc).isoformat()
-    data['model'] = os.environ.get('GEMINI_MODEL', MODEL)
+    from ai_provider import model
+    data['model'] = (model()
+                     if os.environ.get('JSOSIF_AI_ENABLED', '1') == '1' else 'rules-only')
     data['fetch_status'] = fetch_status
     save(ticker_file(ticker, 'rss-items.json'), items)
     save(ticker_file(ticker, 'ai-intel.json'), data)

@@ -80,11 +80,11 @@ Tech Team
    commit the real table. Existing JSON can instead be stored in
    `SUBSCRIPTIONS_JSON`; if both exist, CSV replaces members and JSON retains
    group defaults, quality policy and report age limits.
-2. Configure `GEMINI_API_KEY`, actual `GEMINI_RPD`/`GEMINI_RPM`, and
-   `SEC_USER_AGENT`. FRED is optional. Check that the quota rotation can refresh
+2. Configure `Grop_ai_API` (Groq), optional application request/token caps, and
+   `SEC_USER_AGENT`. FRED is optional. Check that the daily AI request/token caps can cover
    all requested holdings before they become too old for delivery.
 3. Run **Refresh research archive** and inspect its report-data branch and site
-   artifact. This workflow updates research on workdays at 22:17 UTC and never
+   artifact. This workflow updates research on every day at 19:00 America/Toronto and never
    sends mail. Existing reports are retained with their original dates.
 4. Enable GitHub Pages with **GitHub Actions** as the deployment source, then set
    `PAGES_DEPLOY_ENABLED=true` to publish the site. Until enabled, the workflow
@@ -116,7 +116,7 @@ The site checks for a new publication every minute by default and retains the
 last loaded view if a check fails. Users can choose five minutes or manual checks.
 
 Browser refresh does not run the research pipeline. The agreed data cadence is
-workday research publication, not streaming exchange quotes. Source dates can
+daily research publication, not streaming exchange quotes. Source dates can
 precede publication, and degraded or imported reports remain clearly labeled.
 No member table, message preview, email address or delivery ledger is published.
 The archive retains saved source snapshots; it cannot reconstruct data that was

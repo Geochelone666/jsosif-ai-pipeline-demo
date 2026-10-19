@@ -70,53 +70,15 @@ python scripts/refresh_reports.py --store report-store --config config/subscript
 python scripts/build_site.py --store report-store --output site-build
 ```
 
-Configure `GEMINI_API_KEY`, actual project quotas `GEMINI_RPD` and `GEMINI_RPM`,
-and `SEC_USER_AGENT` (organization and real contact email). `FRED_API_KEY` is
-optional. `GEMINI_MODEL` defaults to `gemini-3.5-flash-lite`. An explicitly supplied
-`GEMINI_CLI` remains available for standalone compatibility; GitHub uses the
-portable REST client and no home-directory credentials.
-
-`--interval-days` defaults to 1 and controls the minimum calendar-day interval
-between successful refresh batches. `--force` bypasses the interval, but never
-bypasses provider-side or locally tracked API quotas. All stages share one UTC
-business date, including runs that cross midnight.
-
-The planner uses 80% of configured Gemini RPD, subtracts attempts already made
-in the same Pacific quota day, and reserves three attempts per ticker. A repeated
-manual run cannot plan against the same requests again. If a daily batch cannot cover every subscribed stock, it rotates the
-least-recently updated stocks across days. `refresh_plan` in the archive index
-reports the conservative number of collection days for a full rotation (weekday
-schedules can make the calendar duration longer). It is a planning estimate,
-not a guarantee of provider capacity. RPM is enforced per attempt; HTTP 429/5xx
-use bounded retries. Actual token quotas still apply at the provider; token usage
-is captured in per-ticker Gemini envelopes. Other applications sharing the same
-project also consume the published quota.
-
-If a rotation takes longer than your weekly delivery or freshness requirements,
-increase the available quota, reduce the stock list or adjust the requirements;
-the application defers an incomplete/stale digest instead of mislabeling it fresh.
-Research collection includes all configured group and personal holdings, even
-when a member opts out of email. The participation switch controls delivery only.
-Yahoo/RSS have no fixed guaranteed capacity established by this project. Start
-with one collection batch per trading day and inspect observed failures.
-
-Every archived version includes immutable MD, JSON, PDF and the source snapshots.
-Same-day reruns receive separate run IDs. Each file has a SHA-256 integrity check.
-Price history is reused only within the current collection batch; later batches
-fetch again so an earlier provisional daily bar cannot mask the closing price.
-Existing saved Markdown is migrated by `scripts/import_history.py` before the
-first refresh. It preserves the original text/date, renders a historical PDF
-without reading today's mutable data snapshots, and marks these versions
-`historical`. Import is idempotent, and historical versions are excluded from
-weekly delivery even when degraded reports are allowed. Only new collections
-carry fresh source snapshots; historical imports cannot reconstruct missing inputs.
-Source freshness and degraded news are visible in the snapshot and site. Market
-data older than four calendar days is marked degraded; this conservative bound
-may need adjustment for exceptional exchange closures. Future or invalid market
-dates and nonpositive or nonfinite closing prices also fail the market quality
-check. News from another report date or ticker, or a failed news fetch, is degraded.
-Peers display their own
-listing currencies; this project does not convert values to USD.
+Production AI uses **Groq**. Set the repository Secret `Grop_ai_API`; the daily
+workflow maps it to `GROQ_API_KEY` and explicitly sets `AI_PROVIDER=groq`.
+The default model is `llama-3.1-8b-instant`. Local request and token application
+caps are configurable with `GROQ_RPD`, `GROQ_RPM`, `GROQ_TPD`, and `GROQ_TPM`.
+These caps are not the provider's published allowances. Verify account limits in
+Groq Console. Quota exhaustion degrades AI evidence without suppressing market
+collection. See [v1 launch and operations](docs/V1_LAUNCH.md) for configuration,
+policy evidence, acceptance checks and recovery. Gemini remains available for
+explicit standalone compatibility through `AI_PROVIDER=gemini`.
 
 ## Weekly personalized delivery
 
@@ -181,14 +143,14 @@ use random IDs if even guessed identifiers would be sensitive.
 Set repository **Secrets**:
 
 - `SUBSCRIPTIONS_JSON`: contents of the private subscription configuration.
-- `GEMINI_API_KEY`, optional `FRED_API_KEY`.
+- `Grop_ai_API` (Groq), optional `FRED_API_KEY`.
 - `GMAIL_USER` and `GMAIL_APP_PASSWORD` for delivery.
 
 Set repository **Variables**:
 
-- `GEMINI_RPD`, `GEMINI_RPM`: actual model/project limits from AI Studio.
+- Optional `GROQ_RPD`, `GROQ_RPM`, `GROQ_TPD`, `GROQ_TPM`: application caps.
 - `SEC_USER_AGENT`: organization plus contact email.
-- Optional `GEMINI_MODEL`, `REPORT_INTERVAL_DAYS` (default 1).
+- Optional `GROQ_MODEL`; daily collection targets 19:00 America/Toronto.
 - `EMAIL_DELIVERY_ENABLED=true` enables scheduled mail scans.
 - `PAGES_DEPLOY_ENABLED=true` enables website publication after Pages is
   configured to deploy with **GitHub Actions** in repository settings.
@@ -254,7 +216,7 @@ configuration now contains example addresses instead of actual members.
 ## Rollout from the team spreadsheet
 
 See [the rollout checklist](docs/ROLLOUT.md) for collection fields, CSV import,
-private preview, automation settings, and the website's workday update behavior.
+private preview, automation settings, and the website's daily update behavior.
 The public workspace shows latest saved metrics, per-source dates and quality,
 plus every historical version. Use **Read research** or **Inspect** to view a
 version's quantitative table, research sections and freshness evidence inline.

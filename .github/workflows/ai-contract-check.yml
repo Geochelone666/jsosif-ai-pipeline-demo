@@ -1,0 +1,27 @@
+name: Groq API contract check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jsosif-report-data
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify one authenticated JSON response
+        env:
+          AI_PROVIDER: groq
+          GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
+          GROQ_MODEL: ${{ vars.GROQ_MODEL || 'llama-3.1-8b-instant' }}
+        run: python scripts/probe_ai.py

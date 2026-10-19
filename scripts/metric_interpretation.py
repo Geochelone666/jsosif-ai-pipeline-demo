@@ -1,7 +1,7 @@
 """Plain-English, deterministic readings of report metrics (percent units)."""
 import math
 
-# All band thresholds are judgment choices for a demo report, not investment advice.
+# All band thresholds are judgment choices for this research report, not investment advice.
 ZERO = 0
 RSI_OVERSOLD = 30
 RSI_OVERBOUGHT = 70
@@ -100,10 +100,10 @@ def interpret(key, value) -> str:
         if value <= ZERO:
             return 'Non-positive P/E is not a meaningful positive-earnings multiple.'
         if value < PE_LOW:
-            return 'Low trailing earnings multiple under the demo bands.'
+            return 'Low trailing earnings multiple under the research bands.'
         if value <= PE_HIGH:
-            return 'Moderate trailing earnings multiple under the demo bands.'
-        return 'High trailing earnings multiple under the demo bands.'
+            return 'Moderate trailing earnings multiple under the research bands.'
+        return 'High trailing earnings multiple under the research bands.'
     if key.startswith('Return ') and key in METRICS:
         if value == ZERO:
             return 'Unchanged adjusted price over this period.'
@@ -132,5 +132,5 @@ def build_interpretation_section(metrics: dict) -> str:
     if not bullets:
         return ''
     return ('## HOW TO READ THE QUANTITATIVE SECTION\n\n'
-            'These rule-based bands are judgment choices for a demo report, '
+            'These rule-based bands are judgment choices for this research report, '
             'not investment advice.\n\n' + '\n'.join(bullets) + '\n\n')
