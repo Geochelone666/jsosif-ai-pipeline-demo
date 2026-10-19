@@ -1,0 +1,267 @@
+{
+  "contract_version": "1.0",
+  "identity": {
+    "ticker": "MG.TO",
+    "as_of": "2026-10-19",
+    "report_stamp": "20261019"
+  },
+  "quant": [
+    {
+      "metric": "Close",
+      "value": "92.3400",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1D (%)",
+      "value": "-0.9121",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1W (%)",
+      "value": "1.2056",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1M (%)",
+      "value": "4.2447",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return YTD (%)",
+      "value": "29.0929",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1Y (%)",
+      "value": "52.1174",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Annualized volatility (%)",
+      "value": "37.0626",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Beta vs SPY",
+      "value": null,
+      "availability": "missing",
+      "reason": "N/A: source data unavailable"
+    },
+    {
+      "metric": "Max drawdown (%)",
+      "value": "-22.7904",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Sharpe (rf=0)",
+      "value": "1.3125",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/E (trailing)",
+      "value": "24.56",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/B",
+      "value": "1.48",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "EV/EBITDA",
+      "value": "7.00",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Revenue growth (%)",
+      "value": "3.30",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA50",
+      "value": "92.6674",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA50 (%)",
+      "value": "-0.3533",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA200",
+      "value": "85.6189",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA200 (%)",
+      "value": "7.8501",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "RSI (14, Wilder)",
+      "value": "51.2031",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD (12,26)",
+      "value": "0.3043",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD signal (9)",
+      "value": "0.0647",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD histogram",
+      "value": "0.2396",
+      "availability": "ok",
+      "reason": null
+    }
+  ],
+  "ai_summary": {
+    "status": "Available",
+    "sections": {
+      "TAILWINDS": "No items in this run",
+      "HEADWINDS": "### RBC Trims Price Target on Magna International to $68 From $69, Keeps Sector Perform Rating\n- Summary: RBC lowered Magna's price target, signaling a modest downgrade.\n- Date: 2026-10-12 | Impact: medium | Horizon: short | Confidence: 0.8\n- Sources: <https://news.google.com/rss/articles/CBMimAFBVV95cUxPN1NxcnRjSk1GRi1JRDdoSFhoaDFnMzBhWWlac1RfYnBmN2pKeV9pSU5GREZ3dzNpVXg3bzR6OEx4cW40ZDFWN2lYQkpON2hNNmNDTTUydDBIZDFTZUlCRGNFUXZ1b1VKd1hIR25DQmZaX3VHLWNiTkRSZzV3dk96N2Z2cVY3SFRaWElvdTlHV3VPc0Z3dmk4MQ?oc=5>",
+      "CATALYSTS": "No items in this run",
+      "RISKS": "No items in this run"
+    }
+  },
+  "freshness": {
+    "report_as_of": "2026-10-19",
+    "market_data_as_of": "2026-10-19",
+    "market_data_fetched_at": "2026-10-19T19:59:13.122936+00:00",
+    "ai_snapshot_as_of": "2026-10-19",
+    "snapshot_note": "report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.",
+    "assumptions_version": "1",
+    "assumptions_checked": {
+      "prices-adjusted-close": {
+        "status": "uncheckable",
+        "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+      },
+      "prices-lookback-start": {
+        "status": "ok",
+        "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+      },
+      "stooq-us-only": {
+        "status": "ok",
+        "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+      },
+      "prices-normalized-index": {
+        "status": "ok",
+        "detail": "Observed 262 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+      },
+      "prices-trading-calendar": {
+        "status": "uncheckable",
+        "detail": "Observation counts do not establish continuous trading-day coverage."
+      },
+      "prices-currency-usd": {
+        "status": "uncheckable",
+        "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+      },
+      "prices-minimum-history": {
+        "status": "ok",
+        "detail": "Observed 262. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+      },
+      "phase1-artifacts-exist": {
+        "status": "uncheckable",
+        "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+      },
+      "fred-shared-freshness": {
+        "status": "uncheckable",
+        "detail": "A report date does not imply current macro observations."
+      },
+      "supported-ticker": {
+        "status": "ok",
+        "detail": "Observed 'MG.TO'. Unsupported symbols have no configured pipeline universe entry."
+      },
+      "report-as-of-date": {
+        "status": "ok",
+        "detail": "Observed '2026-10-19'. Invalid dates make snapshot selection unreliable."
+      }
+    },
+    "no_refresh_note": "Report date is not a guarantee of data freshness. No data is refreshed by email generation."
+  },
+  "disclaimer": "Not investment advice. For analyst research preparation only; verify source data and AI claims.",
+  "ticker": "MG.TO",
+  "as_of": "2026-10-19",
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 262 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 262. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'MG.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-19'. Invalid dates make snapshot selection unreliable."
+    }
+  },
+  "source_status": {
+    "market": "ok",
+    "news": "ok"
+  },
+  "extraction_stats": {
+    "unique_headlines": 5,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 4
+  },
+  "quality": "ready"
+}
