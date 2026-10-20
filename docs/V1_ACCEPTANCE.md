@@ -207,3 +207,19 @@ branch and schedule/enable gates. Disabled or irrelevant jobs therefore do not
 join the writer queue. The two queues share provider account quotas even though
 isolated checks never write production state. Weekly member delivery also requires
 main, so unmerged code cannot submit member email through that workflow.
+
+## Structured-generation recovery
+
+The first main collection after PR #7 observed a real `V` news failure: Groq
+returned HTTP 400 / `json_validate_failed` for a five-headline structured request.
+RSS and market sources were available. The report was retained as degraded and
+remained ineligible for normal delivery. A specific safe diagnostic identifies this as a structured-generation failure.
+
+The follow-up retries only that specific generation error with successively
+smaller headline batches, retaining the same strict listing-bound schema.
+Each request still passes through durable request/token reservations. A failed
+single-headline request stops; credential, request, rate-limit and exhausted-budget
+errors are not split into extra requests. CI recovery notices include only the
+symbol and batch sizes. Failed-generation content and provider response bodies
+remain private. Offline tests cover recursive recovery, complete relevance-decision
+preservation, bounded persistent failure and listing-identity rejection.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch Google News RSS for the selected ticker, then rule-first extraction with Flash-Lite fallback."""
+"""Fetch ticker news and classify rule-first with the configured AI provider."""
 from email.utils import parsedate_to_datetime
 from datetime import date, timedelta, datetime, timezone
 import html
@@ -465,13 +465,17 @@ def classification_schema(ticker):
 
 def call_gemini(items, ticker):
     from ai_provider import provider
-    if provider() == 'groq' and len(items) > 5:
+
+    def smaller_batches(size):
         combined = {'ticker': ticker, **{name: [] for name in (*KEYS, 'irrelevant')}}
-        for offset in range(0, len(items), 5):
-            result, _ = _normalize_ai_payload(call_gemini(items[offset:offset + 5], ticker), ticker)
+        for offset in range(0, len(items), size):
+            result, _ = _normalize_ai_payload(call_gemini(items[offset:offset + size], ticker), ticker)
             for name in (*KEYS, 'irrelevant'):
                 combined[name].extend(result.get(name, []))
         return combined
+
+    if provider() == 'groq' and len(items) > 5:
+        return smaller_batches(5)
     import os
     import time
     from data_utils import DATA, save, ticker_file
@@ -501,7 +505,21 @@ def call_gemini(items, ticker):
     cli = os.environ.get('GEMINI_CLI') if provider() == 'gemini' else None
     if not cli:
         from ai_provider import generate_json
-        envelope = generate_json(prompt, schema=classification_schema(ticker)) if provider() == 'groq' else generate_json(prompt)
+        from groq_provider import GroqError
+        try:
+            envelope = generate_json(prompt, schema=classification_schema(ticker)) if provider() == 'groq' else generate_json(prompt)
+        except GroqError as exc:
+            if (provider() == 'groq' and exc.code == 400 and exc.provider_code == 'json_validate_failed'
+                    and len(items) > 1):
+                # Retry less content, never relax the schema or bypass provider budgets.
+                if os.environ.get('GITHUB_ACTIONS') == 'true':
+                    print('::notice title=AI batch recovery::' + json.dumps({
+                        'ticker': ticker, 'failed_batch': len(items),
+                        'next_batch': (len(items) + 1) // 2}), flush=True)
+                else:
+                    print(f'{ticker}: retrying structured output with smaller headline batches', file=sys.stderr)
+                return smaller_batches((len(items) + 1) // 2)
+            raise
         save(ticker_file(ticker, 'ai-envelope.json'), envelope)
         return _parse_gemini_json(envelope['text'])
     res = subprocess.run(
