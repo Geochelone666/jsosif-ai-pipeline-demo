@@ -1,0 +1,268 @@
+{
+  "contract_version": "1.0",
+  "identity": {
+    "ticker": "ATD.TO",
+    "as_of": "2026-10-20",
+    "report_stamp": "20261020"
+  },
+  "quant": [
+    {
+      "metric": "Close",
+      "value": "85.3600",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1D (%)",
+      "value": "1.9346",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1W (%)",
+      "value": "8.5453",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1M (%)",
+      "value": "8.0233",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return YTD (%)",
+      "value": "14.7589",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1Y (%)",
+      "value": "15.8642",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Annualized volatility (%)",
+      "value": "26.4828",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Beta vs SPY",
+      "value": null,
+      "availability": "missing",
+      "reason": "N/A: source data unavailable"
+    },
+    {
+      "metric": "Max drawdown (%)",
+      "value": "-17.5708",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Sharpe (rf=0)",
+      "value": "0.6881",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/E (trailing)",
+      "value": "17.90",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/B",
+      "value": "3.33",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "EV/EBITDA",
+      "value": "13.89",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Revenue growth (%)",
+      "value": "25.10",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA50",
+      "value": "82.3788",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA50 (%)",
+      "value": "3.6189",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA200",
+      "value": "81.4787",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA200 (%)",
+      "value": "4.7636",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "RSI (14, Wilder)",
+      "value": "73.2096",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD (12,26)",
+      "value": "0.4386",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD signal (9)",
+      "value": "-0.6787",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD histogram",
+      "value": "1.1172",
+      "availability": "ok",
+      "reason": null
+    }
+  ],
+  "ai_summary": {
+    "status": "AI reviewed headlines; none relevant to the requested company",
+    "sections": {
+      "TAILWINDS": "No items in this run",
+      "HEADWINDS": "No items in this run",
+      "CATALYSTS": "No items in this run",
+      "RISKS": "No items in this run"
+    }
+  },
+  "freshness": {
+    "report_as_of": "2026-10-20",
+    "market_data_as_of": "2026-10-20",
+    "market_data_fetched_at": "2026-10-20T20:02:36.822695+00:00",
+    "ai_snapshot_as_of": "2026-10-20",
+    "snapshot_note": "report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.",
+    "assumptions_version": "1",
+    "assumptions_checked": {
+      "prices-adjusted-close": {
+        "status": "uncheckable",
+        "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+      },
+      "prices-lookback-start": {
+        "status": "ok",
+        "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+      },
+      "stooq-us-only": {
+        "status": "ok",
+        "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+      },
+      "prices-normalized-index": {
+        "status": "ok",
+        "detail": "Observed 263 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+      },
+      "prices-trading-calendar": {
+        "status": "uncheckable",
+        "detail": "Observation counts do not establish continuous trading-day coverage."
+      },
+      "prices-currency-usd": {
+        "status": "uncheckable",
+        "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+      },
+      "prices-minimum-history": {
+        "status": "ok",
+        "detail": "Observed 263. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+      },
+      "phase1-artifacts-exist": {
+        "status": "uncheckable",
+        "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+      },
+      "fred-shared-freshness": {
+        "status": "uncheckable",
+        "detail": "A report date does not imply current macro observations."
+      },
+      "supported-ticker": {
+        "status": "ok",
+        "detail": "Observed 'ATD.TO'. Unsupported symbols have no configured pipeline universe entry."
+      },
+      "report-as-of-date": {
+        "status": "ok",
+        "detail": "Observed '2026-10-20'. Invalid dates make snapshot selection unreliable."
+      }
+    },
+    "no_refresh_note": "Report date is not a guarantee of data freshness. No data is refreshed by email generation."
+  },
+  "disclaimer": "Not investment advice. For analyst research preparation only; verify source data and AI claims.",
+  "ticker": "ATD.TO",
+  "as_of": "2026-10-20",
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 263 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 263. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'ATD.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-20'. Invalid dates make snapshot selection unreliable."
+    }
+  },
+  "source_status": {
+    "market": "ok",
+    "news": "ok"
+  },
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 0,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 2
+  },
+  "quality": "ready"
+}
