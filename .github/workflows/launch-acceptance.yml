@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       research_smoke:
-        description: 'Generate one real CSCO report in an isolated store; no publication or email'
+        description: 'Generate real reports in an isolated store; no publication or email'
         type: boolean
         default: false
       smoke_ticker:

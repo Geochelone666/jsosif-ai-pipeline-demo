@@ -204,7 +204,7 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
         if os.environ.get('GITHUB_ACTIONS') == 'true' and completed % 5 == 0:
             print('::notice title=Research progress::' + json.dumps({
                 'completed': completed, 'total': len(tickers),
-                'degraded': len(attempt['degraded_tickers']), 'failed': len(attempt['failed_tickers'])}))
+                'degraded': len(attempt['degraded_tickers']), 'failed': len(attempt['failed_tickers'])}), flush=True)
     if attempt['failed_tickers']:
         attempt['status'] = 'partial' if attempt['successful_tickers'] else 'failed'
     else:
