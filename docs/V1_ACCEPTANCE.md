@@ -159,3 +159,14 @@ Same-day earnings regression checks also passed: a scheduled date of today stays
 visible when actual EPS is missing; a reported result today becomes the latest
 past event and is not reintroduced by the calendar fallback; an unavailable
 results table can still retain today's scheduled calendar date.
+
+Peer configuration was also reviewed against the archived SEC company directory.
+`JNPR`, `ETFC` and `K` are absent, and `PARA` now identifies Banzai International,
+not the intended media peer. They were replaced with currently listed sector
+peers `FFIV`, `LPLA`, `KHC` and `PSKY`. Convenience-store peers now use `CASY`,
+`MUSA` and `SUN`; the unrelated `ANDE` and legacy `PKI.TO` were removed. OpenText's
+CGI peer uses SEC-listed `GIB` (CGI Inc), replacing the different Canadian
+investment-company symbol `CGI.TO`. Currency labels remain per issuer; monetary
+amounts in different currencies must not be ranked as if converted. All current
+US peer symbols are present in the archived directory. Listing and sector
+membership still require periodic review; a symbol can be reused.
