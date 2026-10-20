@@ -138,3 +138,13 @@ artifact upload. Each completed holding records per-stage durations; acceptance
 reports include those durations and safe API request/token totals. An interrupted
 collection remains unready. The index artifact is retained even if site building
 fails. These diagnostics do not turn a timeout into a successful release.
+
+## Pending-run preservation
+
+GitHub's default concurrency group retains only one pending run even when
+`cancel-in-progress` is false. A later workflow can therefore replace a waiting
+daily refresh or member delivery scan. The existing shared store/API group now
+uses `queue: max`, preserving up to 100 pending runs while retaining a single
+active writer. GitHub documents this behavior in its
+[concurrency reference](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency).
+Queueing prevents replacement; it does not guarantee exact dispatch times.
