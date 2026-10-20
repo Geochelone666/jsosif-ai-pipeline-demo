@@ -984,6 +984,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/COST/COST-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/COST/COST-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/COST/COST-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/V",
+      "ticker": "V",
+      "generated_at": "2026-10-20T19:54:19.653788+00:00",
+      "as_of": "2026-10-20",
+      "quality": "degraded",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "cf4ccbd085195951b788110379b37adebd6be869cea052fc309182a115cf535a",
+        "json": "092bfc78b263a7aa24ca429583d51cdc713332727d1e6317a77610cc97251002",
+        "pdf": "4e58c640cff91c91412877666b0bbe5b51addf6c264db80f11eb68c16c2b6bed"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/V/V-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/V/V-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/V/V-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1053,9 +1070,12 @@
       "CSCO",
       "JPM",
       "BMO.TO",
-      "COST"
+      "COST",
+      "V"
     ],
-    "degraded_tickers": [],
+    "degraded_tickers": [
+      "V"
+    ],
     "failed_tickers": [],
     "failures": [],
     "ai_selected_tickers": [
@@ -1129,6 +1149,15 @@
         "comparables": 2.019,
         "earnings": 1.217,
         "edgar": 2.219,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "V": {
+        "quant": 1.62,
+        "ai_extract": 63.664,
+        "comparables": 2.319,
+        "earnings": 1.116,
+        "edgar": 2.119,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
