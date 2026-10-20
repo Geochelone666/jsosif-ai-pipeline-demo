@@ -223,3 +223,15 @@ errors are not split into extra requests. CI recovery notices include only the
 symbol and batch sizes. Failed-generation content and provider response bodies
 remain private. Offline tests cover recursive recovery, complete relevance-decision
 preservation, bounded persistent failure and listing-identity rejection.
+
+Focused real Visa recovery in
+[39488545689](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39488545689)
+passed strict acceptance. The provider reproduced the five-headline generation
+failure and the `AI batch recovery` notice confirmed a three-headline retry.
+The application ledger recorded six requests. The final report had 25 unique
+headlines: 5 rule classifications, 11 AI classifications, 7 explicit irrelevant
+decisions and 2 retained unclassified items, with no failed source evidence or
+integrity errors. The isolated research job passed; the independent live check
+still reflected the old deployed site and disabled email switch. Offline recovery
+regression: 760 tests passed with pinned Python 3.12 dependencies; CI regression
+and browser checks also passed.
