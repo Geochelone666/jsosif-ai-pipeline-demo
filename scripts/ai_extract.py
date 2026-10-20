@@ -270,7 +270,7 @@ def _normalize_ai_payload(extracted, ticker):
     top_ticker = extracted.get('ticker')
     if isinstance(top_ticker, str) and top_ticker.strip():
         if top_ticker.strip().lower() != ticker.lower():
-            raise ValueError('Gemini returned a different ticker')
+            raise ValueError('AI returned a different ticker')
     payload = {}
     for key in KEYS:
         val = extracted.get(key)
@@ -292,9 +292,10 @@ def _normalize_ai_payload(extracted, ticker):
                         if isinstance(it, dict) and it.get('ticker')}
         bad = {t for t in item_tickers if t != ticker.lower()}
         if bad:
-            raise ValueError('Gemini returned a different ticker')
+            raise ValueError('AI returned a different ticker')
         if item_tickers:
             notes.append('ticker verified from item-level fields')
+    payload['irrelevant'] = extracted.get('irrelevant', []) if isinstance(extracted.get('irrelevant', []), list) else []
     return payload, notes
 
 
@@ -403,6 +404,17 @@ def extract(items, ticker, call_ai=None, as_of=None):
                     used.add(matched)
             for key in KEYS:
                 data[key].extend(staged[key])
+            irrelevant = []
+            for result in payload['irrelevant']:
+                if not isinstance(result, dict) or not isinstance(result.get('headline'), str):
+                    continue
+                matched = _match_pending_headline(result['headline'], by_headline, index)
+                reason = result.get('reason')
+                if matched is not None and matched not in used and isinstance(reason, str) and reason.strip():
+                    irrelevant.append({'headline': matched, 'reason': reason.strip()})
+                    used.add(matched)
+            if irrelevant:
+                data['irrelevant'] = irrelevant
             if notes:
                 data['ai_notes'] = notes
             if skipped:
@@ -419,33 +431,52 @@ def extract(items, ticker, call_ai=None, as_of=None):
         **{method: sum(it['extraction_method'] == method for k in (*KEYS, 'unclassified') for it in data[k])
            for method in ('rule', 'ai', 'unknown')},
     }
+    if data.get('irrelevant'):
+        data['extraction_stats']['irrelevant'] = len(data['irrelevant'])
     return data
+
+
+def classification_schema(ticker):
+    fields = {'headline': {'type': 'string'}, 'summary': {'type': 'string'},
+              'impact': {'type': 'string', 'enum': ['high', 'medium', 'low']},
+              'horizon': {'type': 'string', 'enum': ['short', 'medium', 'long']},
+              'confidence': {'type': 'number'},
+              'event_type': {'type': 'string', 'enum': [*EVENTS, 'unknown']},
+              'sentiment': {'type': 'string', 'enum': ['positive', 'negative', 'neutral', 'unknown']}}
+    item = {'type': 'object', 'properties': fields, 'required': list(fields), 'additionalProperties': False}
+    irrelevant = {'type': 'object', 'properties': {'headline': {'type': 'string'}, 'reason': {'type': 'string'}},
+                  'required': ['headline', 'reason'], 'additionalProperties': False}
+    properties = {'ticker': {'type': 'string', 'enum': [ticker]},
+                  **{name: {'type': 'array', 'items': {'$ref': '#/$defs/news_item'}} for name in KEYS},
+                  'irrelevant': {'type': 'array', 'items': {'$ref': '#/$defs/irrelevant_item'}}}
+    return {'type': 'object', 'properties': properties, 'required': list(properties), 'additionalProperties': False,
+            '$defs': {'news_item': item, 'irrelevant_item': irrelevant}}
 
 
 def call_gemini(items, ticker):
     from ai_provider import provider
     if provider() == 'groq' and len(items) > 5:
-        combined = {'ticker': ticker, **{name: [] for name in ('tailwinds', 'headwinds', 'catalysts', 'risks')}}
+        combined = {'ticker': ticker, **{name: [] for name in (*KEYS, 'irrelevant')}}
         for offset in range(0, len(items), 5):
             result, _ = _normalize_ai_payload(call_gemini(items[offset:offset + 5], ticker), ticker)
-            for name in ('tailwinds', 'headwinds', 'catalysts', 'risks'):
+            for name in (*KEYS, 'irrelevant'):
                 combined[name].extend(result.get(name, []))
         return combined
     import os
     import time
     from data_utils import DATA, save, ticker_file
     prompt = (
-        f'Classify relevant {ticker} news into tailwinds, headwinds, catalysts, risks. '
-        'Return JSON with ticker and those four arrays. Skip irrelevant news. '
-        'Each item: headline copied exactly, summary at most 35 words grounded only in headline, '
-        'impact high/medium/low, horizon short/medium/long, confidence 0-1, '
-        'event_type from ' + ', '.join(EVENTS) + ', or unknown; '
-        'sentiment positive/negative/neutral/unknown. Do not infer facts absent from headlines. '
-        'Distinguish the event subject from companies merely mentioned for comparison. '
-        'A competitor winning a contract is not a target-company tailwind. '
-        'J means Jacobs, not Johnson & Johnson/J&J; V means Visa. '
-        'News: ' + json.dumps([{'headline': item.get('headline', item.get('title', ''))} for item in items])
+        f'Target company: {COMPANIES.get(ticker, ticker)} ({ticker}). '
+        f'Use ticker exactly {ticker}, not another listing. '
+        'Classify only facts grounded in supplied headlines; do not infer article content or listing prices. '
+        'Copy headlines exactly. Summaries must be at most 35 words. Confidence must be 0-1. '
+        'A competitor event is not a target-company event. '
+        'Put each irrelevant headline in irrelevant with a brief reason. Do not force relevance. '
+        'Return the required JSON object. News: ' +
+        json.dumps([{'headline': item.get('headline', item.get('title', ''))} for item in items])
     )
+    if provider() != 'groq':
+        prompt += ' Output JSON schema: ' + json.dumps(classification_schema(ticker))
     path = DATA / ticker_file(ticker, 'ai-prompt.txt')
     path.write_text(prompt, encoding='utf-8')
     last_call = DATA / '.last-ai-call'
@@ -460,7 +491,7 @@ def call_gemini(items, ticker):
     cli = os.environ.get('GEMINI_CLI') if provider() == 'gemini' else None
     if not cli:
         from ai_provider import generate_json
-        envelope = generate_json(prompt)
+        envelope = generate_json(prompt, schema=classification_schema(ticker)) if provider() == 'groq' else generate_json(prompt)
         save(ticker_file(ticker, 'ai-envelope.json'), envelope)
         return _parse_gemini_json(envelope['text'])
     res = subprocess.run(
@@ -512,7 +543,7 @@ def main():
     else:
         enabled = os.environ.get('JSOSIF_AI_ENABLED', '1') == '1'
         data = extract(items, ticker, call_gemini if enabled else None, as_of=as_of)
-        if not enabled:
+        if not enabled and items:
             data['error'] = os.environ.get('JSOSIF_AI_UNAVAILABLE_REASON', 'AI analysis is disabled for this run')
     data['fetched_at'] = datetime.now(timezone.utc).isoformat()
     from ai_provider import model

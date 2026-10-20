@@ -101,6 +101,12 @@ for sec in ("tailwinds", "headwinds", "catalysts", "risks"):
         if u and u not in seen:
             seen.add(u); all_sources.append(u)
 
+ai_status = ('N/A: ' + ai['error'] if ai.get('error') else
+             'No recent headlines returned by RSS; no AI classification performed'
+             if ai.get('fetch_status', {}).get('status') == 'ok' and not ai.get('extraction_stats', {}).get('unique_headlines') else
+             'AI reviewed headlines; none relevant to the requested company'
+             if ai.get('irrelevant') and not any(ai.get(key) for key in ('tailwinds', 'headwinds', 'catalysts', 'risks'))
+             and not ai.get('unclassified') else 'Available')
 report = f"""# {TICKER} Intelligence Report
 
 - ticker: **{TICKER}**
@@ -110,7 +116,7 @@ report = f"""# {TICKER} Intelligence Report
 - AI analysis snapshot as_of: **{ai.get('as_of', 'N/A')}**
 - Snapshot note: report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.
 - Market data fetched_at (UTC): **{quant.get('fetched_at', 'N/A')}**
-- AI status: **{'N/A: ' + ai['error'] if ai.get('error') else 'Available'}**
+- AI status: **{ai_status}**
 - AI model (configured): **{ai.get('model', 'legacy snapshot / rules')}** (RSS headlines; rule and AI item counts: {ai.get('extraction_stats', {})})
 
 {quant_table}

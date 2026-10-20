@@ -4,6 +4,7 @@ import json
 from datetime import date
 from pathlib import Path
 import subprocess
+import time
 
 
 def read_json(path, default=None):
@@ -67,7 +68,27 @@ def verified_report_files(root, entry):
     return paths
 
 
-def persist(root, git=False):
+class StorePushError(subprocess.CalledProcessError):
+    def __init__(self, category):
+        super().__init__(1, ['git', 'push'])
+        self.category = category
+
+    def __str__(self):
+        return 'Report-store push failed (' + self.category + ')'
+
+
+def push_category(stderr):
+    text = stderr.decode(errors='replace').lower() if isinstance(stderr, bytes) else str(stderr).lower()
+    if 'non-fast-forward' in text or 'fetch first' in text:
+        return 'concurrent_writer'
+    if any(word in text for word in ('hook declined', 'protected branch', 'gh006', 'gh013')):
+        return 'repository_policy'
+    if any(word in text for word in ('permission denied', 'authentication failed', '403', '401')):
+        return 'authorization'
+    return 'transport_or_service'
+
+
+def persist(root, git=False, *, sleep=time.sleep):
     """Commit before SMTP, so an interrupted transport cannot trigger a blind retry."""
     if not git:
         return
@@ -80,5 +101,11 @@ def persist(root, git=False):
                         'commit', '-m', 'Update report archive and delivery state'],
                        cwd=root, check=True, capture_output=True)
     # Retry a pending push even if a previous commit succeeded locally.
-    subprocess.run(['git', 'push', 'origin', 'HEAD:report-data'], cwd=root,
-                   check=True, capture_output=True)
+    for attempt in range(3):
+        result = subprocess.run(['git', 'push', 'origin', 'HEAD:report-data'], cwd=root, capture_output=True)
+        if result.returncode == 0:
+            return
+        category = push_category(result.stderr)
+        if category != 'transport_or_service' or attempt == 2:
+            raise StorePushError(category)
+        sleep(2 ** (attempt + 1))

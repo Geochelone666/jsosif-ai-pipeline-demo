@@ -90,7 +90,7 @@ def test_report_template_placement(metrics):
                               for t in node.targets))
     context = dict(TICKER='ACN', AS_OF='2026-10-08', quant={}, q=metrics,
                    ai={k: [] for k in ('tailwinds', 'headwinds', 'catalysts', 'risks')},
-                   quant_table='## QUANTITATIVE\n', all_sources=[],
+                   quant_table='## QUANTITATIVE\n', all_sources=[], ai_status='Available',
                    section=lambda name, items: f'## {name}\n',
                    build_interpretation_section=build_interpretation_section)
     exec(compile(ast.Module(body=[assignment], type_ignores=[]), str(script), 'exec'), context)

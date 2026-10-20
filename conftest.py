@@ -10,7 +10,7 @@ def isolated_provider_environment(monkeypatch):
              'GEMINI_API_KEY', 'GOOGLE_API_KEY', 'GEMINI_MODEL', 'GEMINI_CLI',
              'GEMINI_RPD', 'GEMINI_RPM', 'GROQ_RPD', 'GROQ_RPM', 'GROQ_TPD', 'GROQ_TPM',
              'GMAIL_USER', 'GMAIL_APP_PASSWORD', 'JSOSIF_APPROVED_SEND',
-             'GITHUB_OUTPUT', 'GITHUB_STEP_SUMMARY', 'SUBSCRIPTIONS_JSON', 'MEMBERS_CSV',
+             'GITHUB_OUTPUT', 'GITHUB_STEP_SUMMARY', 'GITHUB_ACTIONS', 'SUBSCRIPTIONS_JSON', 'MEMBERS_CSV',
              'JSOSIF_API_USAGE_PATH', 'JSOSIF_PERSIST_API_USAGE')
     for name in names:
         monkeypatch.delenv(name, raising=False)

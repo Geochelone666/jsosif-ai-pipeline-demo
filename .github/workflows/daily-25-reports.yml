@@ -79,6 +79,7 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
           RECOVERY_RUN: ${{ inputs.force }}
+          PIPELINE_EVENT: ${{ github.event_name }}
         run: |
           CONFIG=()
           if [ -f "$RUNNER_TEMP/subscriptions.json" ]; then
@@ -86,6 +87,7 @@ jobs:
           fi
           MODE=()
           if [ "$RECOVERY_RUN" = true ]; then MODE=(--force); fi
+          if [ "$PIPELINE_EVENT" = schedule ]; then MODE+=(--scheduled); fi
           python scripts/refresh_reports.py --store ../report-store --persist-git --business-date "$REPORT_BUSINESS_DATE" "${CONFIG[@]}" "${MODE[@]}"
       - name: Persist successful reports and API state even after a partial failure
         id: persist

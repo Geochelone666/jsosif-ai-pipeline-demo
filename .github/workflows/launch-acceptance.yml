@@ -7,6 +7,10 @@ on:
         description: 'Generate one real CSCO report in an isolated store; no publication or email'
         type: boolean
         default: false
+      smoke_ticker:
+        description: 'Supported holding, or ALL for a complete isolated portfolio check'
+        type: string
+        default: CSCO
   push:
     branches: [main]
     paths:
@@ -54,7 +58,9 @@ jobs:
     needs: verify
     if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.research_smoke }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
+    env:
+      SMOKE_TICKER: ${{ inputs.smoke_ticker || 'CSCO' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -67,8 +73,15 @@ jobs:
           python - <<'PYCODE'
           import json, os
           from pathlib import Path
+          import sys
+          sys.path.insert(0, 'scripts')
+          from universe import SUPPORTED
+          ticker = os.environ['SMOKE_TICKER'].strip().upper()
+          if ticker != 'ALL' and ticker not in SUPPORTED:
+              raise SystemExit('Choose a supported holding or ALL')
+          tickers = list(SUPPORTED) if ticker == 'ALL' else [ticker]
           Path(os.environ['RUNNER_TEMP'], 'smoke-subscriptions.json').write_text(json.dumps({
-              'groups': {'smoke': {'tickers': ['CSCO']}}, 'members': []}))
+              'groups': {'smoke': {'tickers': tickers}}, 'members': []}))
           PYCODE
       - name: Generate a real report in a temporary archive
         id: collect
@@ -92,7 +105,9 @@ jobs:
           from check_release import check
           from report_store import read_json
           result = check(Path(os.environ['RUNNER_TEMP']) / 'research-smoke', require_ready=True)
-          result['extraction_stats'] = read_json('data/csco-ai-intel.json', {}).get('extraction_stats', {})
+          index = read_json(Path(os.environ['RUNNER_TEMP']) / 'research-smoke/index.json')
+          result['extraction_stats'] = {ticker: read_json('data/' + ticker.lower() + '-ai-intel.json', {}).get('extraction_stats', {})
+                                       for ticker in index['last_attempt']['expected_tickers']}
           print('::notice title=Research smoke::' + json.dumps(result))
           if not result['ready']:
               raise SystemExit('The isolated real report requires complete source evidence')

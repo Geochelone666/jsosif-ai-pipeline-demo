@@ -57,3 +57,17 @@ def test_invalid_news_evidence_is_not_ready(report, changes):
     path, quant, ai = report
     ai.update(deepcopy(changes))
     assert freeze(path, quant, ai)['source_status']['news'] == 'degraded'
+
+
+def test_successful_empty_news_query_is_a_quiet_day_not_an_outage(report):
+    path, quant, ai = report
+    ai.update(fetch_status={'status': 'ok'}, extraction_stats={'unique_headlines': 0, 'rule': 0, 'ai': 0, 'unknown': 0})
+    assert freeze(path, quant, ai)['quality'] == 'ready'
+    ai['fetch_status']['status'] = 'failed'
+    assert freeze(path, quant, ai)['quality'] == 'degraded'
+
+
+def test_empty_news_without_successful_fetch_evidence_is_not_ready(report):
+    path, quant, ai = report
+    ai['extraction_stats'] = {'unique_headlines': 0, 'rule': 0, 'ai': 0, 'unknown': 0}
+    assert freeze(path, quant, ai)['quality'] == 'degraded'
