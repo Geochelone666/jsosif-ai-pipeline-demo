@@ -261,3 +261,14 @@ def test_explicit_irrelevance_is_audited_without_inventing_company_events():
     assert result['extraction_stats']['irrelevant'] == 1
     assert result['irrelevant'][0]['headline'] == headline
     assert all(not result[name] for name in ('tailwinds','headwinds','catalysts','risks'))
+
+
+def test_structured_provider_failure_metadata_excludes_error_bodies():
+    from ai_extract import extract
+    item = {'headline': 'Will Cisco rise?', 'pubDate': 'Mon, 19 Oct 2026 12:00:00 GMT'}
+    def failed(*args):
+        raise groq.GroqError('Groq HTTP 400; check account limits and retry guidance',
+                             status=400, provider_code='json_validate_failed')
+    result = extract([item], 'CSCO', failed, as_of='2026-10-19')
+    assert result['failure'] == {'type': 'provider', 'status': 400, 'code': 'json_validate_failed'}
+    assert result['extraction_stats']['unknown'] == 1

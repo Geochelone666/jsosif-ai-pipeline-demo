@@ -108,6 +108,11 @@ jobs:
           index = read_json(Path(os.environ['RUNNER_TEMP']) / 'research-smoke/index.json')
           result['extraction_stats'] = {ticker: read_json('data/' + ticker.lower() + '-ai-intel.json', {}).get('extraction_stats', {})
                                        for ticker in index['last_attempt']['expected_tickers']}
+          result['source_issues'] = {
+              entry['ticker']: {
+                  'sources': read_json(Path(os.environ['RUNNER_TEMP']) / 'research-smoke' / entry['json']).get('source_status', {}),
+                  'ai_failure': read_json('data/' + entry['ticker'].lower() + '-ai-intel.json', {}).get('failure')}
+              for entry in index['reports'] if entry['quality'] != 'ready'}
           print('::notice title=Research smoke::' + json.dumps(result))
           if not result['ready']:
               raise SystemExit('The isolated real report requires complete source evidence')

@@ -277,3 +277,38 @@ isolated run uploads `isolated-real-research-preview`; it neither publishes the
 website nor writes to `report-data` and never sends email. It consumes real source
 and AI requests and is intended for explicit acceptance, not periodic polling.
 A successful isolated report is separate from a full daily production deployment.
+
+## Full-portfolio acceptance and quiet-news days
+
+The isolated research check accepts `smoke_ticker=ALL` to collect every configured
+holding without publishing or changing `report-data`. It uses the same collector,
+source stages, report renderer and strict integrity check as production. Progress
+notices appear after each five holdings. The final notice includes per-holding
+classification counts and sanitized source-failure categories.
+
+Groq classifications use a strict JSON schema with the requested listing symbol
+as the only valid ticker value. Explicit irrelevant-headline decisions need a
+matching input headline and a nonblank reason; they are retained in the archived
+AI source JSON. Unexplained or malformed results remain unclassified. The model
+must not replace Toronto or Paris symbols with unrelated or alternative listings.
+
+A successful RSS query with no recent headlines is a quiet observation, not a
+source outage. Reports explicitly say that no AI classification was performed.
+A successful AI review that finds no relevant company development is also stated
+explicitly. Failed fetches, incorrect identities, unresolved news without usable
+analysis and provider failures continue to prevent strict readiness. These states
+must not be collapsed into a generic claim that AI analysis was available.
+
+Each API attempt still pushes its conservative reservation before HTTP. Successful
+usage reconciliation is written locally and included in the next reservation or
+ticker checkpoint; a crash before that push retains the larger remote reservation.
+This reduces archive push frequency without allowing a crash to erase consumption.
+Transient store push failures receive bounded retries of the same commit. Conflicts,
+authorization failures and repository-policy rejections fail without a force push.
+
+A manual collection before 19:00 Toronto does not consume that date's evening
+scheduled slot. The evening refresh archives another version; later automatic
+repeats remain idempotent. Both attempts consume the configured API budget, and
+recovery never resets usage counters. Live acceptance before 19:00 checks the last
+expected evening publication and accepts a newer same-day manual publication;
+explicit `--business-date` verification remains exact.

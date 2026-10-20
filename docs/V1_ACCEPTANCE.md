@@ -94,3 +94,23 @@ calls retain their reservation. This avoids both unnecessary waits based on a
 byte-bound estimate and bursts that average-rate spacing alone would permit.
 
 Latest local follow-up regression: 714 tests passed with pinned Python 3.12 dependencies.
+
+## First complete production collection
+
+Run [39312761141](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39312761141)
+collected and archived all 25 holdings on 2026-10-19 and deployed the site. The
+persistent store retained 50 report versions: 25 historical and 25 new. No source
+stage failed outright, but strict acceptance correctly failed because 12 new
+reports had degraded news evidence. The durable ledger recorded 59 Groq attempts
+and 49,519 tokens for that UTC application day.
+
+Observed causes included listing-identity mismatches, three extraction failures
+associated with failed report-store pushes, successful empty RSS queries and
+headlines left unclassified when the model skipped them without an explicit
+relevance decision. A successful later trigger that skips collection does not
+replace this degraded result with a ready publication.
+
+The recovery change adds strict listing-bound output, explicit irrelevant-news
+records, honest quiet-day status, lower-frequency durable API checkpoint pushes,
+bounded transient push retries and preservation of the evening scheduled slot
+after an earlier manual acceptance run. All original report versions remain intact.

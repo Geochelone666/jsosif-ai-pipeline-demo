@@ -64,12 +64,18 @@ def automation():
     return {'daily_publication': 'enabled', 'weekly_delivery': 'enabled'}
 
 
-def run(*, site_url, business_date, checks=None):
+def expected_business_date(now=None):
+    local = (now or datetime.now(ZoneInfo('America/Toronto'))).astimezone(ZoneInfo('America/Toronto'))
+    return (local.date() - timedelta(days=local.hour < 19)).isoformat()
+
+
+def run(*, site_url, business_date, checks=None, allow_newer_site=False):
     from check_site import check
     checks = checks if checks is not None else {
         'ai': ai, 'market': market, 'news': news, 'sec': sec, 'mail_authentication': mail,
         'automation': automation,
-        'deployed_site': lambda: check(site_url, business_date=business_date, require_ready=True)}
+        'deployed_site': lambda: check(site_url, business_date=business_date, require_ready=True,
+                                      allow_newer=allow_newer_site)}
     results = {}
     hints = {'ai': 'Check the Groq Secret, model access and account quotas.',
              'market': 'Check Yahoo/Stooq access and price availability.',
@@ -137,10 +143,11 @@ def publish_ci_results(report):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--site-url', required=True)
-    parser.add_argument('--business-date', default=datetime.now(ZoneInfo('America/Toronto')).date().isoformat())
+    parser.add_argument('--business-date', help='Exact report date; defaults to the latest expected evening publication')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
-    report = run(site_url=args.site_url, business_date=args.business_date)
+    report = run(site_url=args.site_url, business_date=args.business_date or expected_business_date(),
+                 allow_newer_site=args.business_date is None)
     text = json.dumps(report, indent=2)
     print(text)
     publish_ci_results(report)

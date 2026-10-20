@@ -48,7 +48,7 @@ def error_code(response):
         code = error.get('code') or error.get('type')
         allowed = {'invalid_api_key', 'insufficient_permissions', 'permission_denied',
                    'model_not_found', 'rate_limit_exceeded', 'unsupported_country_region_territory',
-                   'access_denied'}
+                   'access_denied', 'json_validate_failed', 'invalid_request_error', 'json_schema_unsupported'}
         return code if isinstance(code, str) and code in allowed else None
     except (OSError, ValueError, TypeError, AttributeError):
         return None

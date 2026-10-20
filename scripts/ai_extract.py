@@ -424,6 +424,14 @@ def extract(items, ticker, call_ai=None, as_of=None):
             # HTTP and CLI transports expose safe messages; never include OS paths.
             detail = type(exc).__name__ if isinstance(exc, OSError) else str(exc)
             data['error'] = f'AI unavailable: {detail}'
+            from groq_provider import GroqError
+            from report_store import StorePushError
+            if isinstance(exc, GroqError):
+                data['failure'] = {'type': 'provider', 'status': exc.code, 'code': exc.provider_code}
+            elif isinstance(exc, StorePushError):
+                data['failure'] = {'type': 'store', 'code': exc.category}
+            else:
+                data['failure'] = {'type': 'analysis', 'code': type(exc).__name__}
     # Preserve unresolved headlines for audit, without inventing report classifications.
     data['unclassified'] = [classify_rule(it, ticker)[1] for it in pending]
     data['extraction_stats'] = {

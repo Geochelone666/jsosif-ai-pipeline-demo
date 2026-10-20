@@ -547,3 +547,14 @@ def test_due_delivery_deferral_fails_the_sending_job_without_contacting_smtp(con
     monkeypatch.setattr(weekly, 'deliver', lambda *a, **kw: {'unknown': 0, 'deferred': 1})
     with pytest.raises(SystemExit, match='deferred'):
         weekly.main()
+
+
+def test_schedule_aware_site_check_accepts_a_newer_manual_publication_but_not_stale_data(published):
+    from check_site import check, SiteError
+    base, _ = published
+    result = check(base, business_date='2026-10-18', allow_newer=True, latest_date='2026-10-20', require_ready=True)
+    assert result['business_date'] == '2026-10-19'
+    with pytest.raises(SiteError, match='stale or future'):
+        check(base, business_date='2026-10-20', allow_newer=True, latest_date='2026-10-20')
+    with pytest.raises(SiteError, match='stale or future'):
+        check(base, business_date='2026-10-18', allow_newer=True, latest_date='2026-10-18')

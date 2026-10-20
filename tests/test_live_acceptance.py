@@ -117,3 +117,11 @@ def test_sec_contact_can_reuse_a_validated_sender_without_a_placeholder(monkeypa
     monkeypatch.setenv('GMAIL_USER', 'not an address')
     with pytest.raises(ValueError):
         edgar.request_identity()
+
+
+@pytest.mark.parametrize('instant,expected', [('2026-10-20T14:00:00+00:00','2026-10-19'),
+                                              ('2026-10-20T23:00:00+00:00','2026-10-20'),
+                                              ('2026-12-03T00:00:00+00:00','2026-12-02')])
+def test_morning_acceptance_checks_the_last_expected_toronto_publication(instant, expected):
+    from datetime import datetime
+    assert live.expected_business_date(datetime.fromisoformat(instant)) == expected
