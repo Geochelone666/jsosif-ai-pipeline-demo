@@ -48,14 +48,14 @@ def error_code(response):
         code = error.get('code') or error.get('type')
         allowed = {'invalid_api_key', 'insufficient_permissions', 'permission_denied',
                    'model_not_found', 'rate_limit_exceeded', 'unsupported_country_region_territory',
-                   'access_denied'}
+                   'access_denied', 'json_validate_failed', 'invalid_request_error', 'json_schema_unsupported'}
         return code if isinstance(code, str) and code in allowed else None
     except (OSError, ValueError, TypeError, AttributeError):
         return None
 
 
 def settings():
-    defaults = {'RPD': 100, 'RPM': 10, 'TPD': 100000, 'TPM': 5000}
+    defaults = {'RPD': 200, 'RPM': 10, 'TPD': 200000, 'TPM': 5000}
     try:
         caps = {name: int(os.environ.get('GROQ_' + name) or value)
                 for name, value in defaults.items()}
@@ -73,6 +73,15 @@ def _save(path, ledger):
     write_json(Path(path), ledger)
     if os.environ.get('JSOSIF_PERSIST_API_USAGE') == '1':
         persist(Path(path).resolve().parents[1], git=True)
+
+
+def reconcile_usage(path, ledger):
+    # The remote reservation already covers this call. Keep the actual usage
+    # locally; the next reservation or ticker checkpoint pushes it durably.
+    # A crash in between retains the conservative remote upper bound.
+    if path:
+        from report_store import write_json
+        write_json(Path(path), ledger)
 
 
 def minute_slot(events, start, tokens, caps):
@@ -131,18 +140,21 @@ def _retry_delay(headers, fallback):
             return fallback
 
 
-def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sleep=time.sleep):
+def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sleep=time.sleep, schema=None):
     key = os.environ.get('GROQ_API_KEY') or os.environ.get('Grop_ai_API')
     if not key:
         raise GroqError('Groq API key is not configured')
     # A byte bound intentionally overestimates input tokens; output is bounded too.
-    reserved = len(prompt.encode('utf-8')) + 1800
+    reserved = len(prompt.encode('utf-8')) + 1800 + (len(json.dumps(schema, separators=(',', ':')).encode('utf-8')) if schema else 0)
     payload = {'model': model, 'messages': [
         {'role': 'system', 'content': 'Return a valid JSON object only.'},
         {'role': 'user', 'content': prompt}], 'temperature': 0,
         'response_format': {'type': 'json_object'}, 'max_completion_tokens': 1600}
     if model.startswith('openai/gpt-oss-'):
         payload['reasoning_effort'] = 'low'
+    if schema is not None:
+        payload['response_format'] = {'type': 'json_schema', 'json_schema': {
+            'name': 'news_classification', 'strict': True, 'schema': schema}}
     body = json.dumps(payload).encode()
     request = Request('https://api.groq.com/openai/v1/chat/completions', data=body,
                       headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json',
@@ -184,6 +196,6 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
             ledger[slot]['tokens'] += actual - reserved
             reservation['tokens'] = actual
             # Persistence failures are not transport failures and must not retry HTTP.
-            _save(path, ledger)
+            reconcile_usage(path, ledger)
         return {'text': text, 'model': model, 'usage': safe_usage}
     raise GroqError('Groq request failed')

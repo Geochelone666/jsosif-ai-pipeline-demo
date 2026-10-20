@@ -141,6 +141,10 @@ def test_partial_failure_keeps_history_and_supports_explicit_recovery(pipeline, 
     first = index['reports'][0]
     original = digest(root / first['pdf'])
     assert index['last_attempt']['failed_tickers'] == ['CSCO']
+    timings = index['last_attempt']['stage_seconds']
+    assert set(timings['CSCO']) == {'quant'}
+    assert 'report_pdf' in timings['JPM']
+    assert all(seconds >= 0 for stages in timings.values() for seconds in stages.values())
     assert not check(root)['ready']
     failure['ticker'] = None
     refresh.refresh(root, now=NOW, force=True)
@@ -285,7 +289,51 @@ def test_full_portfolio_excel_roster_two_week_launch_rehearsal(pipeline, monkeyp
     build(root, site)
     assert len(list(site.rglob('*.pdf'))) == 50
     assert not (site / 'state').exists()
+    import internal_email_check
+    monkeypatch.setenv('GMAIL_USER', 'synthetic-self@example.com')
+    ledger_before = (root / 'state/deliveries.json').read_bytes()
+    preview = internal_email_check.check(root, tmp_path / 'internal-preview', now=next_monday)
+    assert preview['recipient_is_sender'] and len(preview['attachments']) == 5
+    assert 'Hi JSOSIF Test,' in preview['body']
+    assert 'synthetic-self@example.com' not in preview['body']
+    assert (root / 'state/deliveries.json').read_bytes() == ledger_before
     for path in site.rglob('*'):
         if path.is_file():
             assert b'member-0@example.com' not in path.read_bytes()
             assert b'Synthetic Member' not in path.read_bytes()
+
+
+def test_intraday_manual_acceptance_does_not_consume_the_evening_schedule(pipeline):
+    from datetime import timedelta
+    root, calls, _ = pipeline
+    refresh.refresh(root, now=NOW - timedelta(hours=4))
+    first = read_json(root / 'index.json')['reports']
+    hashes = {entry['pdf']: digest(root / entry['pdf']) for entry in first}
+    assert refresh.refresh(root, now=NOW, scheduled=True)['status'] == 'degraded'
+    assert len(read_json(root / 'index.json')['reports']) == 4
+    assert all(digest(root / file) == value for file, value in hashes.items())
+    before = len(calls)
+    assert refresh.refresh(root, now=NOW + timedelta(hours=1), scheduled=True)['status'] == 'skipped'
+    assert len(calls) == before
+
+
+def test_quiet_news_report_renders_real_pdf_without_claiming_ai_classification(pipeline, monkeypatch):
+    root, _, _ = pipeline
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_RPD', '10')
+    monkeypatch.setenv('GEMINI_RPM', '10')
+    run = refresh.subprocess.run
+    def quiet(command, **kwargs):
+        result = run(command, **kwargs)
+        if Path(command[1]).stem == 'ai_extract':
+            target = refresh.DATA / (command[-1].lower() + '-ai-intel.json')
+            data = read_json(target)
+            data.update(fetch_status={'status': 'ok'}, extraction_stats={
+                'unique_headlines': 0, 'rule': 0, 'ai': 0, 'unknown': 0})
+            write_json(target, data)
+        return result
+    monkeypatch.setattr(refresh.subprocess, 'run', quiet)
+    assert refresh.refresh(root, now=NOW)['status'] == 'complete'
+    entry = read_json(root / 'index.json')['reports'][0]
+    assert 'No recent headlines returned by RSS; no AI classification performed' in (root / entry['md']).read_text()
+    assert (root / entry['pdf']).read_bytes().startswith(b'%PDF-')

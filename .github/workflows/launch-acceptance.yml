@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       research_smoke:
-        description: 'Generate one real CSCO report in an isolated store; no publication or email'
+        description: 'Generate real reports in an isolated store; no publication or email'
         type: boolean
         default: false
+      smoke_ticker:
+        description: 'Comma-separated supported holdings, or ALL for a complete isolated portfolio check'
+        type: string
+        default: CSCO
   push:
     branches: [main]
     paths:
@@ -17,7 +21,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: jsosif-report-data
+  group: jsosif-ai-acceptance
+  queue: max
   cancel-in-progress: false
 
 jobs:
@@ -54,7 +59,9 @@ jobs:
     needs: verify
     if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.research_smoke }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
+    env:
+      SMOKE_TICKER: ${{ inputs.smoke_ticker || 'CSCO' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -67,11 +74,20 @@ jobs:
           python - <<'PYCODE'
           import json, os
           from pathlib import Path
+          import sys
+          sys.path.insert(0, 'scripts')
+          from universe import SUPPORTED
+          ticker = os.environ['SMOKE_TICKER'].strip().upper()
+          tickers = list(SUPPORTED) if ticker == 'ALL' else list(dict.fromkeys(t.strip() for t in ticker.split(',')))
+          if not tickers or any(t not in SUPPORTED for t in tickers):
+              raise SystemExit('Choose supported holdings separated by commas, or ALL')
           Path(os.environ['RUNNER_TEMP'], 'smoke-subscriptions.json').write_text(json.dumps({
-              'groups': {'smoke': {'tickers': ['CSCO']}}, 'members': []}))
+              'groups': {'smoke': {'tickers': tickers}}, 'members': []}))
           PYCODE
       - name: Generate a real report in a temporary archive
         id: collect
+        # Leave time to inspect and upload partial evidence after a step timeout.
+        timeout-minutes: 110
         env:
           AI_PROVIDER: groq
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
@@ -79,12 +95,12 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           SEC_USER_AGENT: ${{ vars.SEC_USER_AGENT }}
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-        run: python scripts/refresh_reports.py --store "$RUNNER_TEMP/research-smoke" --config "$RUNNER_TEMP/smoke-subscriptions.json"
+        run: python -u scripts/refresh_reports.py --store "$RUNNER_TEMP/research-smoke" --config "$RUNNER_TEMP/smoke-subscriptions.json"
       - name: Build the isolated report preview
-        if: ${{ !cancelled() && steps.collect.outputs.publish == 'true' }}
+        if: ${{ !cancelled() && (steps.collect.outputs.publish == 'true' || steps.collect.outcome == 'failure') }}
         run: python scripts/build_site.py --store "$RUNNER_TEMP/research-smoke" --output research-smoke-site
       - name: Verify full source evidence and report coverage
-        if: ${{ !cancelled() && steps.collect.outputs.publish == 'true' }}
+        if: ${{ !cancelled() && (steps.collect.outputs.publish == 'true' || steps.collect.outcome == 'failure') }}
         run: |
           PYTHONPATH=scripts python - <<'PYCODE'
           import json, os
@@ -92,7 +108,20 @@ jobs:
           from check_release import check
           from report_store import read_json
           result = check(Path(os.environ['RUNNER_TEMP']) / 'research-smoke', require_ready=True)
-          result['extraction_stats'] = read_json('data/csco-ai-intel.json', {}).get('extraction_stats', {})
+          index = read_json(Path(os.environ['RUNNER_TEMP']) / 'research-smoke/index.json')
+          attempt = index.get('last_attempt', {})
+          result['collection_status'] = attempt.get('status')
+          result['stage_seconds'] = attempt.get('stage_seconds', {})
+          result['api_usage'] = {key: value for key, value in read_json(
+              Path(os.environ['RUNNER_TEMP']) / 'research-smoke/state/api-usage.json', {}).items()
+              if key.startswith('groq:')}
+          result['extraction_stats'] = {ticker: read_json('data/' + ticker.lower() + '-ai-intel.json', {}).get('extraction_stats', {})
+                                       for ticker in index['last_attempt']['expected_tickers']}
+          result['source_issues'] = {
+              entry['ticker']: {
+                  'sources': read_json(Path(os.environ['RUNNER_TEMP']) / 'research-smoke' / entry['json']).get('source_status', {}),
+                  'ai_failure': read_json('data/' + entry['ticker'].lower() + '-ai-intel.json', {}).get('failure')}
+              for entry in index['reports'] if entry['quality'] != 'ready'}
           print('::notice title=Research smoke::' + json.dumps(result))
           if not result['ready']:
               raise SystemExit('The isolated real report requires complete source evidence')
@@ -102,4 +131,10 @@ jobs:
         with:
           name: isolated-real-research-preview
           path: research-smoke-site
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: isolated-real-research-index
+          path: ${{ runner.temp }}/research-smoke/index.json
           retention-days: 14

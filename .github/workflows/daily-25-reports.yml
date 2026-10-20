@@ -18,10 +18,6 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: jsosif-report-data
-  cancel-in-progress: false
-
 jobs:
   schedule:
     runs-on: ubuntu-latest
@@ -39,6 +35,10 @@ jobs:
   refresh:
     needs: schedule
     if: needs.schedule.outputs.run == 'true'
+    concurrency:
+      group: jsosif-report-data
+      queue: max
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 120
     environment:
@@ -66,6 +66,8 @@ jobs:
         run: python scripts/import_history.py --reports reports --store ../report-store
       - name: Generate and archive reports
         id: collect
+        # Preserve time for durable checkpointing and the final job summary.
+        timeout-minutes: 110
         env:
           AI_PROVIDER: groq
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
@@ -79,6 +81,7 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
           RECOVERY_RUN: ${{ inputs.force }}
+          PIPELINE_EVENT: ${{ github.event_name }}
         run: |
           CONFIG=()
           if [ -f "$RUNNER_TEMP/subscriptions.json" ]; then
@@ -86,6 +89,7 @@ jobs:
           fi
           MODE=()
           if [ "$RECOVERY_RUN" = true ]; then MODE=(--force); fi
+          if [ "$PIPELINE_EVENT" = schedule ]; then MODE+=(--scheduled); fi
           python scripts/refresh_reports.py --store ../report-store --persist-git --business-date "$REPORT_BUSINESS_DATE" "${CONFIG[@]}" "${MODE[@]}"
       - name: Persist successful reports and API state even after a partial failure
         id: persist

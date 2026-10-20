@@ -8,10 +8,20 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from data_utils import number, save, ticker_arg, ticker_file, as_of_date
 
+# Foreign listings require an explicit verified US alias. Removing an exchange
+# suffix can select a different issuer (MG/Mistras or JWEL/Jowell Global).
+CANADIAN_SEC_LISTINGS = {
+    'CNQ.TO': ('CNQ', '1017413'), 'BMO.TO': ('BMO', '927971'),
+    'CP.TO': ('CP', '16875'), 'NTR.TO': ('NTR', '1725964'),
+    'MG.TO': ('MGA', '749098'), 'OTEX.TO': ('OTEX', '1002638'),
+}
+
 def resolve_cik(symbol):
-    # SEC uses the US listing symbol for Canadian dual listings.
-    sec_symbol = symbol.removesuffix('.TO')
     if symbol.endswith('.PA'):
+        return None
+    listing = CANADIAN_SEC_LISTINGS.get(symbol)
+    sec_symbol = (listing[0] if listing else None) if symbol.endswith('.TO') else symbol
+    if sec_symbol is None:
         return None
     cache = Path(os.environ['JSOSIF_SEC_CACHE']) if os.environ.get('JSOSIF_SEC_CACHE') else None
     if cache and cache.is_file() and time.time() - cache.stat().st_mtime < 86400:
@@ -21,8 +31,9 @@ def resolve_cik(symbol):
         if cache:
             cache.parent.mkdir(parents=True, exist_ok=True)
             cache.write_text(json.dumps(entries))
-    return next((str(row['cik_str']) for row in entries.values()
-                 if row['ticker'].upper() == sec_symbol), None)
+    cik = next((str(row['cik_str']) for row in entries.values()
+                if row['ticker'].upper() == sec_symbol), None)
+    return None if listing and cik != listing[1] else cik
 
 HEADERS = {'Accept': 'application/json'}
 

@@ -128,3 +128,12 @@ def test_invalid_attempt_budget(monkeypatch, max_attempts):
     with pytest.raises(ValueError, match='positive integer'):
         ai.fetch_rss('test', max_attempts=max_attempts)
 
+
+
+@pytest.mark.parametrize('body', [b'<html><body>Temporarily unavailable</body></html>',
+                                 b'<error>Rate limited</error>', b'<rss/>'])
+def test_xml_error_pages_are_not_successful_quiet_news_days(monkeypatch, body):
+    monkeypatch.setattr(ai.urllib.request, 'urlopen', lambda *a, **kw: io.BytesIO(body))
+    with pytest.raises(ai.RSSFetchError) as error:
+        ai.fetch_rss('Cisco', max_attempts=1)
+    assert error.value.category == 'malformed_xml'

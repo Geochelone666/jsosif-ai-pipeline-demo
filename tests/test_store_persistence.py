@@ -50,3 +50,22 @@ def test_rejected_push_is_not_success_and_can_be_recovered(archive):
     persist(store, git=True)
     assert git('rev-parse', 'HEAD', cwd=store) == local
     assert git('--git-dir', str(remote), 'rev-parse', 'refs/heads/report-data') == local
+
+
+def test_transient_push_failure_retries_the_same_commit_without_force(archive, monkeypatch):
+    import report_store
+    store, remote = archive
+    real_run = subprocess.run
+    pushes = []
+    def run(command, **kwargs):
+        if command[:2] == ['git', 'push']:
+            pushes.append(command)
+            if len(pushes) == 1:
+                return subprocess.CompletedProcess(command, 1, b'', b'temporarily unavailable')
+        return real_run(command, **kwargs)
+    monkeypatch.setattr(report_store.subprocess, 'run', run)
+    delays = []
+    persist(store, git=True, sleep=delays.append)
+    assert delays == [2] and len(pushes) == 2
+    assert all('--force' not in command for command in pushes)
+    assert git('--git-dir', str(remote), 'rev-parse', 'refs/heads/report-data') == git('rev-parse', 'HEAD', cwd=store)

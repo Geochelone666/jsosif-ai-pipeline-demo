@@ -31,7 +31,8 @@ def freeze(path, quant, ai):
                 ai.get('ticker') != payload['identity']['ticker'] or
                 ai.get('as_of') != payload['as_of'] or
                 ai.get('fetch_status', {}).get('status', 'ok') != 'ok' or
-                not ai.get('extraction_stats', {}).get('unique_headlines') or
+                (not ai.get('extraction_stats', {}).get('unique_headlines') and
+                 ai.get('fetch_status', {}).get('status') != 'ok') or
                 (ai.get('extraction_stats', {}).get('unknown', 0) > 0 and
                  ai.get('extraction_stats', {}).get('ai', 0) == 0) else 'ok'}
     payload['extraction_stats'] = ai.get('extraction_stats', {})

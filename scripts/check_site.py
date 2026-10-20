@@ -1,6 +1,6 @@
 """Verify a deployed daily publication over HTTP, including archived file hashes."""
 import argparse
-from datetime import datetime
+from datetime import datetime, date
 import hashlib
 import json
 from pathlib import PurePosixPath
@@ -27,7 +27,7 @@ def _fetch(base, relative):
     return data
 
 
-def check(base, *, business_date, require_ready=False):
+def check(base, *, business_date, require_ready=False, allow_newer=False, latest_date=None):
     parts = urlsplit(base)
     if (parts.scheme not in ('http', 'https') or not parts.netloc or parts.username or
             parts.password or parts.query or parts.fragment):
@@ -35,6 +35,17 @@ def check(base, *, business_date, require_ready=False):
     index = json.loads(_fetch(base, 'index.json'))
     health = json.loads(_fetch(base, 'health.json'))
     attempt = index.get('last_attempt', {})
+    if allow_newer:
+        actual = attempt.get('business_date')
+        try:
+            observed = date.fromisoformat(actual)
+            minimum = date.fromisoformat(business_date)
+            maximum = date.fromisoformat(latest_date or datetime.now(ZoneInfo('America/Toronto')).date().isoformat())
+        except (TypeError, ValueError):
+            raise SiteError('The deployed site has an invalid business date') from None
+        if not minimum <= observed <= maximum:
+            raise SiteError('The deployed site is stale or future-dated')
+        business_date = actual
     if attempt.get('business_date') != business_date or health.get('business_date') != business_date:
         raise SiteError('The deployed site does not contain the expected business date')
     if attempt.get('status') not in ('complete', 'degraded') or health.get('status') != attempt['status']:
@@ -61,7 +72,7 @@ def check(base, *, business_date, require_ready=False):
     if not expected <= selected.keys():
         raise SiteError('Current report versions are missing from the deployed index')
     if require_ready and (attempt['status'] != 'complete' or
-                          any(selected[t]['quality'] != 'ready' for t in expected)):
+                          any(selected[t]['quality'] != 'ready' or selected[t].get('advisory') for t in expected)):
         raise SiteError('Deployed reports have incomplete source evidence')
     verified = 0
 

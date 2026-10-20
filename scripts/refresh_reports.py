@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+from time import monotonic
 import uuid
 
 from data_utils import ROOT, DATA, REPORTS, SUPPORTED
@@ -112,8 +113,8 @@ def ai_budget(tickers, index, root, now, mode='auto'):
 
 
 def refresh(root, *, config=None, now=None, business_date=None, force=False,
-            interval_days=1, ai_mode='auto', stage_timeout=600, persist_git=False):
-    from datetime import date
+            interval_days=1, ai_mode='auto', stage_timeout=600, persist_git=False, scheduled=False):
+    from datetime import date, time
     from zoneinfo import ZoneInfo
 
     now = now or datetime.now(timezone.utc)
@@ -131,11 +132,19 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
         persist(root, git=persist_git)
 
     previous = index.get('last_attempt', {})
-    if not force and previous.get('business_date') == business_date:
+    evening = datetime.combine(report_date, time(19), tzinfo=ZoneInfo('America/Toronto'))
+    try:
+        previous_at = datetime.fromisoformat(previous.get('at', ''))
+        replaces_intraday_test = (scheduled and previous.get('business_date') == business_date
+                                  and previous_at.tzinfo is not None
+                                  and previous_at < evening <= now)
+    except (ValueError, TypeError):
+        replaces_intraday_test = False
+    if not force and not replaces_intraday_test and previous.get('business_date') == business_date:
         print('Daily run already attempted; use --force for an explicit recovery run')
         return {'status': 'skipped', 'publish': False, 'failed': False}
     last = index.get('last_complete_business_date')
-    if last and not force and (report_date - date.fromisoformat(last)).days < interval_days:
+    if last and not force and not replaces_intraday_test and (report_date - date.fromisoformat(last)).days < interval_days:
         print('Refresh interval not elapsed; archive retained')
         return {'status': 'skipped', 'publish': False, 'failed': False}
     tickers = research_tickers(load(config)) if config else list(SUPPORTED)
@@ -147,7 +156,8 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
     attempt = {'run_id': run_id, 'at': now.isoformat(), 'business_date': business_date,
                'status': 'running', 'expected_tickers': tickers, 'successful_tickers': [],
                'degraded_tickers': [], 'failed_tickers': [], 'failures': [],
-               'ai_selected_tickers': selected, 'ai_deferred_tickers': sorted(set(tickers)-set(selected))}
+               'ai_selected_tickers': selected, 'ai_deferred_tickers': sorted(set(tickers)-set(selected)),
+               'stage_seconds': {}}
     index['last_attempt'] = attempt
     checkpoint()
     env = dict(os.environ, REPORT_AS_OF=business_date)
@@ -167,6 +177,7 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
         return {'status': 'failed', 'publish': True, 'failed': True}
     for ticker in tickers:
         stage = 'preflight'
+        timings = attempt['stage_seconds'][ticker] = {}
         try:
             ticker_env = dict(env, JSOSIF_AI_ENABLED='1' if ticker in selected else '0',
                               JSOSIF_AI_UNAVAILABLE_REASON=plan['reason'])
@@ -177,8 +188,13 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                         'ticker': ticker, 'cik': None, 'latest_filing': None, 'revenue': None,
                         'net_income': None, 'error': 'SEC source unavailable: configure SEC_USER_AGENT'})
                     continue
-                subprocess.run([sys.executable, str(ROOT / 'scripts' / f'{stage}.py'), '--ticker', ticker],
-                               cwd=ROOT, env=ticker_env, check=True, timeout=stage_timeout)
+                started = monotonic()
+                try:
+                    subprocess.run([sys.executable, str(ROOT / 'scripts' / f'{stage}.py'), '--ticker', ticker],
+                                   cwd=ROOT, env=ticker_env, check=True, timeout=stage_timeout)
+                finally:
+                    timings[stage] = round(monotonic() - started, 3)
+                    print(f'Research stage: {ticker} {stage} {timings[stage]}s', flush=True)
             stage = 'archive'
             entry = archive(root, ticker, report_date.strftime('%Y%m%d'), run_id,
                             datetime.now(timezone.utc).isoformat())
@@ -192,6 +208,11 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                                         'category': 'timeout' if isinstance(exc, subprocess.TimeoutExpired) else 'stage_failed'})
             print(f'{ticker}: refresh failed; previous versions retained', file=sys.stderr)
         checkpoint()
+        completed = len(attempt['successful_tickers']) + len(attempt['failed_tickers'])
+        if os.environ.get('GITHUB_ACTIONS') == 'true':
+            print('::notice title=Research progress::' + json.dumps({
+                'completed': completed, 'total': len(tickers),
+                'degraded': len(attempt['degraded_tickers']), 'failed': len(attempt['failed_tickers'])}), flush=True)
     if attempt['failed_tickers']:
         attempt['status'] = 'partial' if attempt['successful_tickers'] else 'failed'
     else:
@@ -214,6 +235,7 @@ def main():
     parser.add_argument('--ai-mode', choices=('auto', 'off'), default='auto')
     parser.add_argument('--stage-timeout', type=int, default=600)
     parser.add_argument('--persist-git', action='store_true')
+    parser.add_argument('--scheduled', action='store_true', help='Preserve the evening slot after an earlier manual test')
     args = parser.parse_args()
     lock_dir = ROOT / 'logs'
     lock_dir.mkdir(exist_ok=True)
@@ -221,7 +243,8 @@ def main():
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         result = refresh(args.store, config=args.config, business_date=args.business_date,
                          force=args.force, interval_days=args.interval_days,
-                         ai_mode=args.ai_mode, stage_timeout=args.stage_timeout, persist_git=args.persist_git)
+                         ai_mode=args.ai_mode, stage_timeout=args.stage_timeout, persist_git=args.persist_git,
+                         scheduled=args.scheduled)
     if os.environ.get('GITHUB_OUTPUT'):
         with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
             output.write('publish=' + str(result['publish']).lower() + '\n')

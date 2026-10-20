@@ -26,8 +26,8 @@ source files, PR descriptions, issue comments or chat.
 | --- | --- | --- |
 | `Grop_ai_API` | Secret | Existing Groq key, mapped to `GROQ_API_KEY` in Actions |
 | `GROQ_MODEL` | Optional variable | Defaults to `openai/gpt-oss-20b`; verify account availability |
-| `GROQ_RPD`, `GROQ_RPM` | Optional variables | Application request caps, defaults 100/day and 10/minute |
-| `GROQ_TPD`, `GROQ_TPM` | Optional variables | Application token caps, defaults 100,000/day and 5,000/minute |
+| `GROQ_RPD`, `GROQ_RPM` | Optional variables | Application request caps, defaults 200/day and 10/minute |
+| `GROQ_TPD`, `GROQ_TPM` | Optional variables | Application token caps, defaults 200,000/day and 5,000/minute |
 | `SEC_USER_AGENT` | Optional variable | Organization/contact override; otherwise derive a real contact identity from `GMAIL_USER` |
 | `PAGES_DEPLOY_ENABLED` | Variable: `true` | Enable the Pages deployment step |
 | `SUBSCRIPTIONS_JSON` or `MEMBERS_CSV` | Secret | Private roster and research choices |
@@ -277,3 +277,67 @@ isolated run uploads `isolated-real-research-preview`; it neither publishes the
 website nor writes to `report-data` and never sends email. It consumes real source
 and AI requests and is intended for explicit acceptance, not periodic polling.
 A successful isolated report is separate from a full daily production deployment.
+
+## Full-portfolio acceptance and quiet-news days
+
+The isolated research check accepts `smoke_ticker=ALL` to collect every configured
+holding without publishing or changing `report-data`. It uses the same collector,
+source stages, report renderer and strict integrity check as production. Progress
+notices appear after each five holdings. The final notice includes per-holding
+classification counts and sanitized source-failure categories.
+
+Groq classifications use a strict JSON schema with the requested listing symbol
+as the only valid ticker value. Explicit irrelevant-headline decisions need a
+matching input headline and a nonblank reason; they are retained in the archived
+AI source JSON. Unexplained or malformed results remain unclassified. The model
+must not replace Toronto or Paris symbols with unrelated or alternative listings.
+
+A successful RSS query with no recent headlines is a quiet observation, not a
+source outage. Reports explicitly say that no AI classification was performed.
+A successful AI review that finds no relevant company development is also stated
+explicitly. Failed fetches, incorrect identities, unresolved news without usable
+analysis and provider failures continue to prevent strict readiness. These states
+must not be collapsed into a generic claim that AI analysis was available.
+
+Each API attempt still pushes its conservative reservation before HTTP. Successful
+usage reconciliation is written locally and included in the next reservation or
+ticker checkpoint; a crash before that push retains the larger remote reservation.
+This reduces archive push frequency without allowing a crash to erase consumption.
+Transient store push failures receive bounded retries of the same commit. Conflicts,
+authorization failures and repository-policy rejections fail without a force push.
+
+A manual collection before 19:00 Toronto does not consume that date's evening
+scheduled slot. The evening refresh archives another version; later automatic
+repeats remain idempotent. Both attempts consume the configured API budget, and
+recovery never resets usage counters. Live acceptance before 19:00 checks the last
+expected evening publication and accepts a newer same-day manual publication;
+explicit `--business-date` verification remains exact.
+
+## Internal inbox acceptance without a member roster
+
+The **Internal email acceptance** workflow is manual-only and runs from `main`.
+Its default `PREVIEW` mode validates a five-PDF cover note against fresh eligible
+reports for CNQ.TO, CSCO, JPM, BMO.TO and COST. The only recipient is `GMAIL_USER`;
+there is no recipient input. The synthetic greeting, public attachment names and
+cover note are safe to review in the run output. Address headers stay in the
+runner's temporary preview directory and are deleted without artifact upload.
+
+Real inbox testing requires an explicit `SEND_ONE_TO_SELF` selection and separate
+user authorization. It uses the same weekly sender, integrity checks and durable
+ledger as team delivery. An accepted or uncertain submission will not be blindly
+repeated in the same local week. The internal member ID is fixed and no real
+member roster or global email switch is changed. There is no schedule trigger.
+SMTP acceptance still needs a human confirmation that the message reached the
+inbox. Leave `EMAIL_DELIVERY_ENABLED` false throughout internal acceptance.
+
+
+The observed portfolio's pending headlines require approximately 62 five-headline
+requests before retries. Local daily defaults allow 200 requests and 200,000 tokens
+to leave room for that workload plus a same-day acceptance/recovery attempt.
+These are bounded application budgets, not provider allowances or a guarantee for
+arbitrary future news volume. Explicit repository variables take precedence, and
+provider retry guidance and account limits still apply. The minute caps remain
+10 requests and 5,000 reserved tokens.
+
+Quiet-day acceptance also validates the feed envelope: an XML/HTML error page or
+missing RSS channel is a fetch failure, not an empty successful news query.

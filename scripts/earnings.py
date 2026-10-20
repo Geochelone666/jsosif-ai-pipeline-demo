@@ -9,6 +9,7 @@ def main():
     today = as_of_date()
     data = {'ticker': symbol, 'last_earnings': None, 'next_earnings': None, 'source': 'yfinance'}
     ticker = yf.Ticker(symbol)
+    reported_days = set()
     try:
         dates = ticker.get_earnings_dates(limit=12)
         past, future = [], []
@@ -17,7 +18,8 @@ def main():
                 day = stamp.date()
                 if day <= today and pd.notna(row.get('Reported EPS')):
                     past.append(day)
-                elif day > today:
+                    reported_days.add(day)
+                elif day >= today:
                     future.append(day)
         data['last_earnings'] = max(past).isoformat() if past else None
         data['next_earnings'] = min(future).isoformat() if future else None
@@ -27,7 +29,8 @@ def main():
         try:
             calendar = ticker.calendar
             upcoming = calendar.get('Earnings Date', []) if isinstance(calendar, dict) else []
-            future = [pd.Timestamp(value).date() for value in upcoming if pd.Timestamp(value).date() > today]
+            future = [pd.Timestamp(value).date() for value in upcoming
+                      if pd.Timestamp(value).date() >= today and pd.Timestamp(value).date() not in reported_days]
             data['next_earnings'] = min(future).isoformat() if future else None
         except Exception as exc:
             print(f'calendar unavailable: {type(exc).__name__}')

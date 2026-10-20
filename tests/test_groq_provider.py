@@ -119,14 +119,14 @@ def test_pacing_across_midnight_charges_the_new_application_day(setup, monkeypat
 
 
 def test_response_persistence_error_does_not_repeat_a_successful_http_call(setup, monkeypatch):
-    save = groq._save
+    save = groq.reconcile_usage
     saves, calls = [], []
     def write(path, ledger):
         saves.append(True)
-        if len(saves) == 2:
+        if len(saves) == 1:
             raise OSError('Synthetic disk failure')
         save(path, ledger)
-    monkeypatch.setattr(groq, '_save', write)
+    monkeypatch.setattr(groq, 'reconcile_usage', write)
     def open_request(*args, **kwargs):
         calls.append(True)
         return response()
@@ -221,3 +221,71 @@ def test_minute_request_budget_waits_for_the_oldest_reservation_to_expire():
 def test_successful_token_usage_reconciles_the_rolling_window(setup):
     groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=lambda _: None)
     assert read_json(setup, {})['groq_recent_requests'][0]['tokens'] == 24
+
+
+def test_schema_fixes_the_requested_listing_and_accounts_for_schema_tokens(setup):
+    from ai_extract import classification_schema
+    schema = classification_schema('CNQ.TO')
+    def open_request(request, **kwargs):
+        body = json.loads(request.data)
+        shape = body['response_format']['json_schema']
+        assert body['response_format']['type'] == 'json_schema' and shape['strict']
+        assert shape['schema']['properties']['ticker']['enum'] == ['CNQ.TO']
+        usage = read_json(setup, {})
+        expected = len('JSON'.encode()) + 1800 + len(json.dumps(schema, separators=(',', ':')).encode())
+        assert usage['groq_recent_requests'][0]['tokens'] == expected
+        return response()
+    groq.generate_json('JSON', schema=schema, opener=open_request, sleep=lambda _: None)
+
+
+def test_actual_usage_waits_for_the_next_checkpoint_instead_of_pushing_twice(setup, monkeypatch):
+    import report_store
+    reservations = []
+    monkeypatch.setenv('JSOSIF_PERSIST_API_USAGE', '1')
+    monkeypatch.setattr(report_store, 'persist', lambda *a, **kw: reservations.append(read_json(setup, {})))
+    groq.generate_json('JSON', opener=lambda *a, **kw: response(), sleep=lambda _: None)
+    assert len(reservations) == 1
+    assert reservations[0]['groq_recent_requests'][0]['tokens'] > 24
+    assert read_json(setup, {})['groq_recent_requests'][0]['tokens'] == 24
+
+
+def test_explicit_irrelevance_is_audited_without_inventing_company_events():
+    from ai_extract import extract
+    headline = 'General Mills mentioned in unrelated market roundup'
+    item = {'headline': headline, 'pubDate': 'Mon, 19 Oct 2026 12:00:00 GMT', 'source': 'Fixture'}
+    def answer(*args):
+        return {'ticker': 'GIS', 'tailwinds': [], 'headwinds': [], 'catalysts': [], 'risks': [],
+                'irrelevant': [{'headline': headline, 'reason': 'No company-specific development in the headline'}]}
+    result = extract([item], 'GIS', answer, as_of='2026-10-19')
+    assert result['extraction_stats']['unknown'] == 0
+    assert result['extraction_stats']['irrelevant'] == 1
+    assert result['irrelevant'][0]['headline'] == headline
+    assert all(not result[name] for name in ('tailwinds','headwinds','catalysts','risks'))
+
+
+def test_structured_provider_failure_metadata_excludes_error_bodies():
+    from ai_extract import extract
+    item = {'headline': 'Will Cisco rise?', 'pubDate': 'Mon, 19 Oct 2026 12:00:00 GMT'}
+    def failed(*args):
+        raise groq.GroqError('Groq HTTP 400; check account limits and retry guidance',
+                             status=400, provider_code='json_validate_failed')
+    result = extract([item], 'CSCO', failed, as_of='2026-10-19')
+    assert result['failure'] == {'type': 'provider', 'status': 400, 'code': 'json_validate_failed'}
+    assert result['extraction_stats']['unknown'] == 1
+
+
+def test_measured_portfolio_and_same_day_recovery_fit_default_local_daily_caps(setup, monkeypatch):
+    from datetime import datetime, timezone
+    clock = {'now': datetime(2026, 10, 20, 12, tzinfo=timezone.utc).timestamp()}
+    monkeypatch.setattr(groq.time, 'time', lambda: clock['now'])
+    def wait(seconds):
+        clock['now'] += seconds
+    def completed(*args, **kwargs):
+        return io.BytesIO(json.dumps({'choices': [{'message': {'content': '{}'}}],
+                                     'usage': {'total_tokens': 1500}}).encode())
+    # 62 calls is the observed pending-headline workload. The synthetic 1500-token
+    # response makes two such attempts exceed the former daily application cap.
+    for _ in range(62 * 2):
+        groq.generate_json('JSON', opener=completed, sleep=wait, attempts=1)
+    daily = read_json(setup, {})['groq:openai/gpt-oss-20b:2026-10-20']
+    assert daily == {'requests': 124, 'tokens': 186000}
