@@ -1018,6 +1018,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/JWEL.TO/JWEL.TO-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/JWEL.TO/JWEL.TO-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/JWEL.TO/JWEL.TO-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/VRTX",
+      "ticker": "VRTX",
+      "generated_at": "2026-10-20T19:56:20.906809+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "09ffcc43d1b1f263b097fa3945e720cf92b6c6dcedf6b8a04992097c3c211c4b",
+        "json": "7a13b2fc2e77e168d04ddc96f9a5af175aaab0119bf504e1f46fdf0e5aaf00d4",
+        "pdf": "b8992d23b66a2b20e6cd2966bf67917c3f83289d2564ac998bb130cc7073c5ad"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/VRTX/VRTX-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/VRTX/VRTX-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/VRTX/VRTX-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1089,7 +1106,8 @@
       "BMO.TO",
       "COST",
       "V",
-      "JWEL.TO"
+      "JWEL.TO",
+      "VRTX"
     ],
     "degraded_tickers": [
       "V"
@@ -1185,6 +1203,15 @@
         "comparables": 2.42,
         "earnings": 1.067,
         "edgar": 0.064,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "VRTX": {
+        "quant": 1.969,
+        "ai_extract": 102.119,
+        "comparables": 2.72,
+        "earnings": 1.267,
+        "edgar": 2.168,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
