@@ -114,3 +114,8 @@ The recovery change adds strict listing-bound output, explicit irrelevant-news
 records, honest quiet-day status, lower-frequency durable API checkpoint pushes,
 bounded transient push retries and preservation of the evening scheduled slot
 after an earlier manual acceptance run. All original report versions remain intact.
+
+Recovery regression evidence: 735 tests passed with pinned Python 3.12 dependencies.
+The quiet-day report also passed real PDF rendering and Chromium desktop/mobile
+checks. A two-week synthetic roster rehearsal verified the internal self-preview's
+five attachments and confirmed that previewing did not change the delivery ledger.

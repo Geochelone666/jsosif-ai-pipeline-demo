@@ -338,3 +338,6 @@ These are bounded application budgets, not provider allowances or a guarantee fo
 arbitrary future news volume. Explicit repository variables take precedence, and
 provider retry guidance and account limits still apply. The minute caps remain
 10 requests and 5,000 reserved tokens.
+
+Quiet-day acceptance also validates the feed envelope: an XML/HTML error page or
+missing RSS channel is a fetch failure, not an empty successful news query.

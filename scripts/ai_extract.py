@@ -61,6 +61,8 @@ def fetch_rss(query, n=25, max_attempts=3, sleep=time.sleep, timeout=30,
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 xml = r.read()
             root = ET.fromstring(xml)
+            if root.tag != 'rss' or root.find('channel') is None:
+                raise ET.ParseError('Expected an RSS channel, not an error page')
             break
         except (OSError, http.client.HTTPException, ET.ParseError) as exc:
             if isinstance(exc, urllib.error.HTTPError):

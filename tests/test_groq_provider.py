@@ -272,3 +272,20 @@ def test_structured_provider_failure_metadata_excludes_error_bodies():
     result = extract([item], 'CSCO', failed, as_of='2026-10-19')
     assert result['failure'] == {'type': 'provider', 'status': 400, 'code': 'json_validate_failed'}
     assert result['extraction_stats']['unknown'] == 1
+
+
+def test_measured_portfolio_and_same_day_recovery_fit_default_local_daily_caps(setup, monkeypatch):
+    from datetime import datetime, timezone
+    clock = {'now': datetime(2026, 10, 20, 12, tzinfo=timezone.utc).timestamp()}
+    monkeypatch.setattr(groq.time, 'time', lambda: clock['now'])
+    def wait(seconds):
+        clock['now'] += seconds
+    def completed(*args, **kwargs):
+        return io.BytesIO(json.dumps({'choices': [{'message': {'content': '{}'}}],
+                                     'usage': {'total_tokens': 1500}}).encode())
+    # 62 calls is the observed pending-headline workload. The synthetic 1500-token
+    # response makes two such attempts exceed the former daily application cap.
+    for _ in range(62 * 2):
+        groq.generate_json('JSON', opener=completed, sleep=wait, attempts=1)
+    daily = read_json(setup, {})['groq:openai/gpt-oss-20b:2026-10-20']
+    assert daily == {'requests': 124, 'tokens': 186000}
