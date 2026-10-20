@@ -141,6 +141,10 @@ def test_partial_failure_keeps_history_and_supports_explicit_recovery(pipeline, 
     first = index['reports'][0]
     original = digest(root / first['pdf'])
     assert index['last_attempt']['failed_tickers'] == ['CSCO']
+    timings = index['last_attempt']['stage_seconds']
+    assert set(timings['CSCO']) == {'quant'}
+    assert 'report_pdf' in timings['JPM']
+    assert all(seconds >= 0 for stages in timings.values() for seconds in stages.values())
     assert not check(root)['ready']
     failure['ticker'] = None
     refresh.refresh(root, now=NOW, force=True)

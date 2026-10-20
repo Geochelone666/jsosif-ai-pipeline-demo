@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+from time import monotonic
 import uuid
 
 from data_utils import ROOT, DATA, REPORTS, SUPPORTED
@@ -155,7 +156,8 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
     attempt = {'run_id': run_id, 'at': now.isoformat(), 'business_date': business_date,
                'status': 'running', 'expected_tickers': tickers, 'successful_tickers': [],
                'degraded_tickers': [], 'failed_tickers': [], 'failures': [],
-               'ai_selected_tickers': selected, 'ai_deferred_tickers': sorted(set(tickers)-set(selected))}
+               'ai_selected_tickers': selected, 'ai_deferred_tickers': sorted(set(tickers)-set(selected)),
+               'stage_seconds': {}}
     index['last_attempt'] = attempt
     checkpoint()
     env = dict(os.environ, REPORT_AS_OF=business_date)
@@ -175,6 +177,7 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
         return {'status': 'failed', 'publish': True, 'failed': True}
     for ticker in tickers:
         stage = 'preflight'
+        timings = attempt['stage_seconds'][ticker] = {}
         try:
             ticker_env = dict(env, JSOSIF_AI_ENABLED='1' if ticker in selected else '0',
                               JSOSIF_AI_UNAVAILABLE_REASON=plan['reason'])
@@ -185,8 +188,13 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                         'ticker': ticker, 'cik': None, 'latest_filing': None, 'revenue': None,
                         'net_income': None, 'error': 'SEC source unavailable: configure SEC_USER_AGENT'})
                     continue
-                subprocess.run([sys.executable, str(ROOT / 'scripts' / f'{stage}.py'), '--ticker', ticker],
-                               cwd=ROOT, env=ticker_env, check=True, timeout=stage_timeout)
+                started = monotonic()
+                try:
+                    subprocess.run([sys.executable, str(ROOT / 'scripts' / f'{stage}.py'), '--ticker', ticker],
+                                   cwd=ROOT, env=ticker_env, check=True, timeout=stage_timeout)
+                finally:
+                    timings[stage] = round(monotonic() - started, 3)
+                    print(f'Research stage: {ticker} {stage} {timings[stage]}s', flush=True)
             stage = 'archive'
             entry = archive(root, ticker, report_date.strftime('%Y%m%d'), run_id,
                             datetime.now(timezone.utc).isoformat())
@@ -201,7 +209,7 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
             print(f'{ticker}: refresh failed; previous versions retained', file=sys.stderr)
         checkpoint()
         completed = len(attempt['successful_tickers']) + len(attempt['failed_tickers'])
-        if os.environ.get('GITHUB_ACTIONS') == 'true' and completed % 5 == 0:
+        if os.environ.get('GITHUB_ACTIONS') == 'true':
             print('::notice title=Research progress::' + json.dumps({
                 'completed': completed, 'total': len(tickers),
                 'degraded': len(attempt['degraded_tickers']), 'failed': len(attempt['failed_tickers'])}), flush=True)

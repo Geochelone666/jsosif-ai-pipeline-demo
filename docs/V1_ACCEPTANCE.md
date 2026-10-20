@@ -119,3 +119,22 @@ Recovery regression evidence: 735 tests passed with pinned Python 3.12 dependenc
 The quiet-day report also passed real PDF rendering and Chromium desktop/mobile
 checks. A two-week synthetic roster rehearsal verified the internal self-preview's
 five attachments and confirmed that previewing did not change the delivery ledger.
+
+## Full isolated acceptance timing follow-up
+
+The first isolated full-portfolio recovery run
+[39439070045](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39439070045)
+hit its 90-minute job limit before the strict release check. It supplies no proof
+that all 25 current reports are ready. A subsequent latest-code CSCO check in
+[39448205363](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39448205363)
+passed strict acceptance: 23 headlines, 2 rule classifications, 18 AI
+classifications, 3 explicit irrelevant decisions and no unclassified headlines.
+The research job passed; the separate live verification still failed for the
+existing degraded production site and intentionally disabled email switch.
+
+The isolated job now has the same 120-minute ceiling as production, with a
+110-minute collection-step limit to leave time for partial evidence checks and
+artifact upload. Each completed holding records per-stage durations; acceptance
+reports include those durations and safe API request/token totals. An interrupted
+collection remains unready. The index artifact is retained even if site building
+fails. These diagnostics do not turn a timeout into a successful release.
