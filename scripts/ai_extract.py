@@ -344,7 +344,7 @@ def _parse_gemini_json(text):
     return json.loads(t)
 
 
-def extract(items, ticker, call_ai=None, as_of=None):
+def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True):
     data = {'ticker': ticker, 'as_of': as_of or date.today().isoformat(), **{k: [] for k in KEYS}}
     pending = []
     seen = set()
@@ -434,6 +434,19 @@ def extract(items, ticker, call_ai=None, as_of=None):
                 data['failure'] = {'type': 'store', 'code': exc.category}
             else:
                 data['failure'] = {'type': 'analysis', 'code': type(exc).__name__}
+    if pending and call_ai and _retry_missing and 'error' not in data:
+        # A valid JSON response can still omit inputs. Retry only unresolved
+        # headlines once; keep accepted decisions and the same identity guards.
+        retried = extract(pending, ticker, call_ai, as_of=data['as_of'], _retry_missing=False)
+        for key in (*KEYS, 'irrelevant'):
+            if retried.get(key):
+                data.setdefault(key, []).extend(retried[key])
+        unresolved = {item['headline'] for item in retried['unclassified']}
+        data['ai_coverage_retry'] = {'requested': len(pending), 'unresolved': len(unresolved)}
+        pending = [item for item in pending if item['headline'] in unresolved]
+        for key in ('error', 'failure'):
+            if key in retried:
+                data[key] = retried[key]
     # Preserve unresolved headlines for audit, without inventing report classifications.
     data['unclassified'] = [classify_rule(it, ticker)[1] for it in pending]
     data['extraction_stats'] = {
@@ -485,6 +498,7 @@ def call_gemini(items, ticker):
         'Classify only facts grounded in supplied headlines; do not infer article content or listing prices. '
         'Copy headlines exactly. Summaries must be at most 35 words. Confidence must be 0-1. '
         'A competitor event is not a target-company event. '
+        'Account for EVERY supplied headline exactly once, in one news category or irrelevant. '
         'Put each irrelevant headline in irrelevant with a brief reason. Do not force relevance. '
         'Return the required JSON object. News: ' +
         json.dumps([{'headline': item.get('headline', item.get('title', ''))} for item in items])
