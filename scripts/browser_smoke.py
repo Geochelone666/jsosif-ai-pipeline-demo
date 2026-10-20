@@ -15,7 +15,8 @@ args = parser.parse_args()
 root = args.artifacts.resolve()
 root.mkdir(parents=True, exist_ok=True)
 site = args.site.resolve()
-expected = len(json.loads((site / 'index.json').read_text())['reports'])
+reports = json.loads((site / 'index.json').read_text())['reports']
+expected = len(reports)
 if not expected:
     raise SystemExit('A nonempty site build is required')
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -31,7 +32,7 @@ try:
     page.goto(address);page.wait_for_function("expected => document.querySelector('#stat-versions').textContent===String(expected)", arg=expected)
     assert page.locator('#history tr').count()==expected
     page.select_option('#ticker','CSCO')
-    assert page.locator('#history tr').count()==1
+    assert page.locator('#history tr').count()==sum(report['ticker']=='CSCO' for report in reports)
     page.get_by_role('button',name='Read research').click()
     page.wait_for_selector('#detail-body table')
     assert page.locator('#detail-body tbody tr').count()>=10
@@ -41,6 +42,19 @@ try:
     page.get_by_role('button',name='Refresh now').click()
     page.wait_for_function("!document.querySelector('#refresh-now').disabled")
     assert page.locator('#ticker').input_value()=='CSCO'
+    advisories = [report for report in reports if report.get('advisory')]
+    if advisories:
+      page.select_option('#ticker','')
+      page.select_option('#quality','correction')
+      assert page.locator('#history tr').count()==len(advisories)
+      assert 'Correction needed' in page.locator('#latest').inner_text()
+      page.get_by_role('button',name='Read research').first.click()
+      page.wait_for_selector('#detail-body table')
+      assert 'unverified company identity' in page.locator('#detail-status').inner_text()
+      page.screenshot(path=str(root/'archive-correction-notice.png'),full_page=True)
+      page.get_by_role('button',name='Close details').click()
+      page.select_option('#quality','ready')
+      assert page.locator('#history tr').count()==sum(report['quality']=='ready' and not report.get('advisory') for report in reports)
     page.goto(address+'/members.html')
     csv='id,name,email,groups,tickers,enabled,timezone,send_weekday,send_time\nmember-001,"Example, Analyst",analyst@example.com,research,CSCO;JPM,yes,America/Toronto,2,09:00\nmember-002,Second Analyst,second@example.com,research,COST,no,America/Toronto,4,17:00\n'
     page.locator('#import').set_input_files({'name':'members.local.csv','mimeType':'text/csv','buffer':csv.encode()})

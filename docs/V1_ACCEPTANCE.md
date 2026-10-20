@@ -115,7 +115,7 @@ records, honest quiet-day status, lower-frequency durable API checkpoint pushes,
 bounded transient push retries and preservation of the evening scheduled slot
 after an earlier manual acceptance run. All original report versions remain intact.
 
-Recovery regression evidence: 735 tests passed with pinned Python 3.12 dependencies.
+Recovery regression evidence: 750 tests passed with pinned Python 3.12 dependencies.
 The quiet-day report also passed real PDF rendering and Chromium desktop/mobile
 checks. A two-week synthetic roster rehearsal verified the internal self-preview's
 five attachments and confirmed that previewing did not change the delivery ledger.
@@ -179,3 +179,20 @@ mappings including `JWEL.TO` and `ATD.TO` return unavailable rather than queryin
 a different issuer. Seven listing-identity regressions passed. The isolated
 acceptance input also supports a comma-separated subset for focused source and
 configuration regression runs; all entries must remain supported holdings.
+
+
+Archived foreign-issuer checks are now separate from immutable file integrity.
+The real 50-version archive contains two affected October 19 versions: `MG.TO`
+with Mistras SEC data and `JWEL.TO` with Jowell's issuer identifier. Site builds
+annotate those versions with a correction notice; strict current-release checks
+and email selection reject them. Original PDFs, JSON, Markdown and hashes remain
+unchanged. A corrected latest version can pass while the annotated original
+remains accessible in history. Verified Canadian aliases are also bound to their
+expected SEC CIK, preventing an alias reused by another issuer from being accepted.
+
+Chromium checks passed against all 50 real archived versions, including the
+correction filter, report inspector, ready-only exclusion and mobile layout.
+The smoke script no longer assumes that CSCO has only one historical version.
+CI also exercises a synthetic repeated version and wrong-issuer correction case;
+that 26-version browser fixture passed locally. No real member data or messages
+were used. The complete pinned regression suite passed 750 tests.

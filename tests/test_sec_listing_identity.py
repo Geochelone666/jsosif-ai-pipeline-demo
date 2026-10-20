@@ -22,3 +22,9 @@ def test_unverified_foreign_mapping_is_unavailable_without_querying_another_issu
 
     monkeypatch.setattr(edgar, 'fetch', unexpected_fetch)
     assert edgar.resolve_cik(symbol) is None
+
+
+def test_reused_alias_with_a_different_cik_is_not_accepted(monkeypatch):
+    monkeypatch.delenv('JSOSIF_SEC_CACHE', raising=False)
+    monkeypatch.setattr(edgar, 'fetch', lambda url: {'0': {'ticker': 'MGA', 'cik_str': 1436126}})
+    assert edgar.resolve_cik('MG.TO') is None

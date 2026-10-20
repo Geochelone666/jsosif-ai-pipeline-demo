@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 from tempfile import NamedTemporaryFile
 
 from email_delivery import build_email, send, GmailSmtpBackend
-from report_store import read_json, write_json, verified_report_files, persist
+from report_store import read_json, write_json, verified_report_files, persist, report_advisory
 from subscriptions import load, tickers_for
 
 
@@ -87,7 +87,8 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 continue
             selected = []
             for ticker in tickers_for(config, member):
-                candidates = [r for r in index['reports'] if eligible_report(r, ticker, config, now)]
+                candidates = [r for r in index['reports'] if eligible_report(r, ticker, config, now)
+                              and not r.get('advisory') and not report_advisory(root, r)]
                 if not candidates:
                     selected = []
                     break

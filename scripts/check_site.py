@@ -72,7 +72,7 @@ def check(base, *, business_date, require_ready=False, allow_newer=False, latest
     if not expected <= selected.keys():
         raise SiteError('Current report versions are missing from the deployed index')
     if require_ready and (attempt['status'] != 'complete' or
-                          any(selected[t]['quality'] != 'ready' for t in expected)):
+                          any(selected[t]['quality'] != 'ready' or selected[t].get('advisory') for t in expected)):
         raise SiteError('Deployed reports have incomplete source evidence')
     verified = 0
 

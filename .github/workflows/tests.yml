@@ -40,6 +40,30 @@ jobs:
       - name: Build the historical research workspace
         run: |
           python scripts/import_history.py --reports reports --store "$RUNNER_TEMP/browser-store"
+          # Synthetic browser cases: repeated history and an issuer correction.
+          PYTHONPATH=scripts python - <<'PYCODE'
+          from copy import deepcopy
+          from datetime import datetime, timedelta
+          import os
+          from pathlib import Path
+          import shutil
+          from report_store import read_json, write_json
+          root = Path(os.environ['RUNNER_TEMP']) / 'browser-store'
+          index = read_json(root / 'index.json')
+          original = next(entry for entry in index['reports'] if entry['ticker'] == 'CSCO')
+          replay = deepcopy(original)
+          replay['report_id'] = 'browser-history-replay/CSCO'
+          replay['generated_at'] = (datetime.fromisoformat(original['generated_at']) + timedelta(seconds=1)).isoformat()
+          for kind in ('md', 'json', 'pdf'):
+              target = Path('archive/browser-history-replay/CSCO') / Path(original[kind]).name
+              (root / target).parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(root / original[kind], root / target)
+              replay[kind] = target.as_posix()
+          index['reports'].append(replay)
+          magna = next(entry for entry in index['reports'] if entry['ticker'] == 'MG.TO')
+          write_json(root / Path(magna['json']).parent / 'sources/mg.to-edgar.json', {'cik': '1436126'})
+          write_json(root / 'index.json', index)
+          PYCODE
           python scripts/build_site.py --store "$RUNNER_TEMP/browser-store" --output site-browser
       - name: Exercise desktop and mobile member workflows
         run: python scripts/browser_smoke.py --site site-browser --artifacts review/browser

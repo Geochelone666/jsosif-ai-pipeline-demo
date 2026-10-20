@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 from tempfile import TemporaryDirectory
 
-from report_store import read_json, write_json, verified_report_files
+from report_store import read_json, write_json, verified_report_files, report_advisory
 
 
 def report_summary(snapshot):
@@ -50,6 +50,9 @@ def build(store, output, template=None):
             shutil.copy2(excel_template, stage / 'members.example.xlsx')
         for entry in index['reports']:
             files = verified_report_files(store, entry)
+            advisory = report_advisory(store, entry)
+            if advisory:
+                entry['advisory'] = advisory
             entry['summary'] = report_summary(read_json(files['json']))
             for kind in ('md', 'json', 'pdf'):
                 source = files[kind]

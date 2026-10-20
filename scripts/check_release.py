@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from report_store import read_json, verified_report_files
+from report_store import read_json, verified_report_files, report_advisory
 
 
 def check(store, *, business_date=None, require_ready=False):
@@ -38,7 +38,8 @@ def check(store, *, business_date=None, require_ready=False):
             if ticker not in latest or entry['generated_at'] > latest[ticker]['generated_at']:
                 latest[ticker] = entry
     missing = sorted(expected - latest.keys())
-    degraded = sorted(t for t in expected & latest.keys() if latest[t]['quality'] != 'ready')
+    degraded = sorted(t for t in expected & latest.keys()
+                      if latest[t]['quality'] != 'ready' or latest[t].get('advisory') or report_advisory(root, latest[t]))
     if missing:
         errors.append('Missing current-day reports: ' + ', '.join(missing))
     if require_ready and degraded:

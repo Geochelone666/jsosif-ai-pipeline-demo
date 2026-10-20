@@ -26,6 +26,27 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def report_advisory(root, entry):
+    """Annotate known foreign-issuer source errors without rewriting saved files."""
+    from edgar import CANADIAN_SEC_LISTINGS
+
+    ticker = entry.get('ticker', '')
+    if not ticker.endswith('.TO'):
+        return None
+    message = 'SEC data in this archived version has an unverified company identity. Use a corrected report.'
+    try:
+        relative = Path(entry['json']).parent / 'sources' / (ticker.lower() + '-edgar.json')
+        source = read_json(resolve_file(root, relative.as_posix()))
+        cik = source.get('cik')
+    except (ValueError, OSError, KeyError, TypeError, AttributeError):
+        # Legacy imports have no archived sources and are already excluded from delivery.
+        return None if entry.get('quality') == 'historical' else message
+    if cik is None:
+        return None
+    listing = CANADIAN_SEC_LISTINGS.get(ticker)
+    return None if listing and str(cik) == listing[1] else message
+
+
 def resolve_file(root, relative):
     if not isinstance(relative, str) or not relative or '\\' in relative:
         raise ValueError('Report path must be a relative file path')
