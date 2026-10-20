@@ -51,6 +51,7 @@ try:
       page.get_by_role('button',name='Read research').first.click()
       page.wait_for_selector('#detail-body table')
       assert 'unverified company identity' in page.locator('#detail-status').inner_text()
+      assert 'Correction needed' in page.locator('#detail-status').inner_text()
       page.screenshot(path=str(root/'archive-correction-notice.png'),full_page=True)
       page.get_by_role('button',name='Close details').click()
       page.select_option('#quality','ready')
