@@ -1188,6 +1188,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/PEP/PEP-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/PEP/PEP-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/PEP/PEP-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/NTR.TO",
+      "ticker": "NTR.TO",
+      "generated_at": "2026-10-20T20:15:34.248498+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "4f8dfbef5fe688487e466a82e0582c7fac2e7d78d3931ce078e15edb214f93db",
+        "json": "d74e244ad82ce094e750733b68c47c9084333a308aee027026a010fab80c1607",
+        "pdf": "862b981e4610845b27056b317d0be0551ad4963bb42c60aacef1c5e113e8b06a"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/NTR.TO/NTR.TO-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/NTR.TO/NTR.TO-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/NTR.TO/NTR.TO-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1269,7 +1286,8 @@
       "ACN",
       "J",
       "XYL",
-      "PEP"
+      "PEP",
+      "NTR.TO"
     ],
     "degraded_tickers": [
       "V",
@@ -1456,6 +1474,15 @@
         "comparables": 2.419,
         "earnings": 1.367,
         "edgar": 2.217,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "NTR.TO": {
+        "quant": 1.767,
+        "ai_extract": 48.553,
+        "comparables": 2.168,
+        "earnings": 1.217,
+        "edgar": 2.669,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
