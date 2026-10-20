@@ -26,6 +26,7 @@ from reportlab.platypus import (BaseDocTemplate, Frame, PageTemplate,
 
 from data_utils import DATA, REPORTS, ticker_arg, ticker_file, as_of_date, number
 from metric_interpretation import build_interpretation_section
+from ai_extract import analysis_status
 
 TICKER = ticker_arg()
 AS_OF = as_of_date().isoformat()
@@ -179,7 +180,7 @@ story.append(p(f'{company} &nbsp;|&nbsp; {esc(info.get("sector") or "N/A")} '
                'subtitle'))
 story.append(p('AI status: <b>%s</b> &nbsp;|&nbsp; Configured model: <b>%s</b> '
                '&nbsp;|&nbsp; News snapshot: <b>%s</b>'
-               % (esc('N/A: ' + ai['error'] if ai.get('error') else 'Available'),
+               % (esc(analysis_status(ai)),
                   esc(ai.get('model', 'legacy snapshot / rules')), esc(ai.get('as_of', 'N/A'))),
                'small'))
 story.append(p('Report rendering uses saved source snapshots with separate observation dates. '

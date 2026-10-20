@@ -268,3 +268,35 @@ historical inspection, report tables, correction filtering, refresh, synthetic
 member CSV/JSON import/export and invalid-import preservation. No JavaScript
 errors were observed. This validates the browser against real archived content;
 it does not replace strict production source-readiness checks.
+
+## Focused live recovery acceptance
+
+Research job `118874005945` in
+[39493676255](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39493676255)
+passed strict isolated acceptance for V, XYL, DIS and AMTM on 2026-10-20:
+4 expected/current reports, no degraded holdings or integrity errors. The
+application ledger recorded 18 requests and 24,549 tokens, including conservative
+failed-call reservations. Structured batch recovery was exercised for V and XYL.
+The separate integration job remains blocked by the older degraded production
+publication and the intentionally disabled formal email switch.
+
+| Holding | Unique headlines | Rule | AI | Unclassified | Explicitly irrelevant |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| V | 25 | 5 | 13 | 0 | 7 |
+| XYL | 16 | 6 | 5 | 0 | 5 |
+| DIS | 22 | 1 | 13 | 1 | 7 |
+| AMTM | 4 | 2 | 1 | 0 | 1 |
+
+Strict source readiness permits residual unclassified headlines when usable AI
+analysis exists. It does not establish exhaustive news coverage. DIS retains one
+unclassified item without promoting it into a research conclusion. Reports now
+label residual unclassified coverage as `Partial` with its count in both Markdown
+and PDF, replacing the generic `Available` label for this case. An offline replay
+of actual archived XYL sources verified the partial label in both output formats
+without API calls. Six status regressions bring the suite to 771 passing tests.
+The full 25-holding production run and deployed HTTP verification are still
+required after merge; the isolated four-holding run does not replace them.
+
+All five PDFs in the accepted self-delivery were parsed successfully, contained
+the expected ticker and date, and matched the report IDs in the durable delivery
+ledger. Inbox placement and mailbox rendering still await owner confirmation.

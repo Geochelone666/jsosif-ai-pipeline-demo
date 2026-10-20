@@ -5,6 +5,7 @@ import os
 import sys
 from datetime import date
 from metric_interpretation import build_interpretation_section
+from ai_extract import analysis_status
 from data_utils import DATA, REPORTS, ticker_arg, ticker_file, as_of_date
 from assumptions import VERSION, AssumptionViolation, check_all, checked_mapping, required_paths
 TICKER = ticker_arg()
@@ -101,12 +102,7 @@ for sec in ("tailwinds", "headwinds", "catalysts", "risks"):
         if u and u not in seen:
             seen.add(u); all_sources.append(u)
 
-ai_status = ('N/A: ' + ai['error'] if ai.get('error') else
-             'No recent headlines returned by RSS; no AI classification performed'
-             if ai.get('fetch_status', {}).get('status') == 'ok' and not ai.get('extraction_stats', {}).get('unique_headlines') else
-             'AI reviewed headlines; none relevant to the requested company'
-             if ai.get('irrelevant') and not any(ai.get(key) for key in ('tailwinds', 'headwinds', 'catalysts', 'risks'))
-             and not ai.get('unclassified') else 'Available')
+ai_status = analysis_status(ai)
 report = f"""# {TICKER} Intelligence Report
 
 - ticker: **{TICKER}**
@@ -134,7 +130,7 @@ Market data sample: {quant.get('history_count', {})}.
 ## Research notes and limitations
 
 - Daily multi-source research; AI items require human spot checks; RSS coverage is not guaranteed.
-- News classifications use source headlines, with rule-based extraction and Gemini when its daily budget is available.
+- News classifications use source headlines, with rule-based extraction and the configured AI provider when its daily budget is available.
 - Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
 """
 

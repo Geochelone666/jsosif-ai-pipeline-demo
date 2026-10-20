@@ -1,7 +1,7 @@
 """Omitted news gets one bounded retry without hiding unresolved evidence."""
 import pytest
 
-from ai_extract import KEYS, extract
+from ai_extract import KEYS, analysis_status, extract
 from groq_provider import GroqError
 
 
@@ -67,3 +67,16 @@ def test_provider_error_does_not_trigger_coverage_retry():
     result = extract([{'headline': 'Unclear story'}], 'XYL', ai)
     assert len(calls) == 1
     assert result['failure']['status'] == 429
+
+
+@pytest.mark.parametrize('data,expected', [
+    ({'error': 'Provider unavailable', 'unclassified': [{}]}, 'N/A: Provider unavailable'),
+    ({'unclassified': [{}]}, 'Partial: 1 headline remains unclassified and excluded from research conclusions'),
+    ({'extraction_stats': {'unknown': 2}}, 'Partial: 2 headlines remain unclassified and excluded from research conclusions'),
+    ({'fetch_status': {'status': 'ok'}, 'extraction_stats': {'unique_headlines': 0}},
+     'No recent headlines returned by RSS; no AI classification performed'),
+    ({'irrelevant': [{}]}, 'AI reviewed headlines; none relevant to the requested company'),
+    ({'tailwinds': [{}]}, 'Available'),
+])
+def test_analysis_status_distinguishes_incomplete_and_quiet_analysis(data, expected):
+    assert analysis_status(data) == expected

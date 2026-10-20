@@ -344,6 +344,22 @@ def _parse_gemini_json(text):
     return json.loads(t)
 
 
+def analysis_status(data):
+    """Describe incomplete analysis explicitly without inventing decisions."""
+    if data.get('error'):
+        return 'N/A: ' + data['error']
+    unresolved = len(data.get('unclassified', [])) or data.get('extraction_stats', {}).get('unknown', 0)
+    if unresolved:
+        noun = 'headline remains' if unresolved == 1 else 'headlines remain'
+        return f'Partial: {unresolved} {noun} unclassified and excluded from research conclusions'
+    if (data.get('fetch_status', {}).get('status') == 'ok'
+            and not data.get('extraction_stats', {}).get('unique_headlines')):
+        return 'No recent headlines returned by RSS; no AI classification performed'
+    if data.get('irrelevant') and not any(data.get(key) for key in KEYS):
+        return 'AI reviewed headlines; none relevant to the requested company'
+    return 'Available'
+
+
 def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True):
     data = {'ticker': ticker, 'as_of': as_of or date.today().isoformat(), **{k: [] for k in KEYS}}
     pending = []
