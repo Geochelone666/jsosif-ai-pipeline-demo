@@ -262,3 +262,9 @@ also succeeded without changing the archive or delivery state, demonstrating
 that the weekly delivery slot was skipped instead of submitted again. Neither
 run enabled formal member delivery. SMTP acceptance does not establish inbox
 placement or visual rendering; confirmation from the mailbox owner is pending.
+
+The actual 75-version archive also passed Chromium desktop/mobile acceptance:
+historical inspection, report tables, correction filtering, refresh, synthetic
+member CSV/JSON import/export and invalid-import preservation. No JavaScript
+errors were observed. This validates the browser against real archived content;
+it does not replace strict production source-readiness checks.
