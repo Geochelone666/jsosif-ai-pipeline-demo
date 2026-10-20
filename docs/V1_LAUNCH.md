@@ -26,8 +26,8 @@ source files, PR descriptions, issue comments or chat.
 | --- | --- | --- |
 | `Grop_ai_API` | Secret | Existing Groq key, mapped to `GROQ_API_KEY` in Actions |
 | `GROQ_MODEL` | Optional variable | Defaults to `openai/gpt-oss-20b`; verify account availability |
-| `GROQ_RPD`, `GROQ_RPM` | Optional variables | Application request caps, defaults 100/day and 10/minute |
-| `GROQ_TPD`, `GROQ_TPM` | Optional variables | Application token caps, defaults 100,000/day and 5,000/minute |
+| `GROQ_RPD`, `GROQ_RPM` | Optional variables | Application request caps, defaults 200/day and 10/minute |
+| `GROQ_TPD`, `GROQ_TPM` | Optional variables | Application token caps, defaults 200,000/day and 5,000/minute |
 | `SEC_USER_AGENT` | Optional variable | Organization/contact override; otherwise derive a real contact identity from `GMAIL_USER` |
 | `PAGES_DEPLOY_ENABLED` | Variable: `true` | Enable the Pages deployment step |
 | `SUBSCRIPTIONS_JSON` or `MEMBERS_CSV` | Secret | Private roster and research choices |
@@ -329,3 +329,12 @@ repeated in the same local week. The internal member ID is fixed and no real
 member roster or global email switch is changed. There is no schedule trigger.
 SMTP acceptance still needs a human confirmation that the message reached the
 inbox. Leave `EMAIL_DELIVERY_ENABLED` false throughout internal acceptance.
+
+
+The observed portfolio's pending headlines require approximately 62 five-headline
+requests before retries. Local daily defaults allow 200 requests and 200,000 tokens
+to leave room for that workload plus a same-day acceptance/recovery attempt.
+These are bounded application budgets, not provider allowances or a guarantee for
+arbitrary future news volume. Explicit repository variables take precedence, and
+provider retry guidance and account limits still apply. The minute caps remain
+10 requests and 5,000 reserved tokens.

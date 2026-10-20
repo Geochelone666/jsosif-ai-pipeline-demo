@@ -55,7 +55,7 @@ def error_code(response):
 
 
 def settings():
-    defaults = {'RPD': 100, 'RPM': 10, 'TPD': 100000, 'TPM': 5000}
+    defaults = {'RPD': 200, 'RPM': 10, 'TPD': 200000, 'TPM': 5000}
     try:
         caps = {name: int(os.environ.get('GROQ_' + name) or value)
                 for name, value in defaults.items()}
