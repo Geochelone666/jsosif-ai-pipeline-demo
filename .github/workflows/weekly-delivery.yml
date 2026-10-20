@@ -13,14 +13,13 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: jsosif-report-data
-  queue: max
-  cancel-in-progress: false
-
 jobs:
   deliver:
-    if: github.event_name == 'workflow_dispatch' || vars.EMAIL_DELIVERY_ENABLED == 'true'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.EMAIL_DELIVERY_ENABLED == 'true')
+    concurrency:
+      group: jsosif-report-data
+      queue: max
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

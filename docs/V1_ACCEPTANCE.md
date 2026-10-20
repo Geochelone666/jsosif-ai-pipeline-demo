@@ -196,3 +196,14 @@ The smoke script no longer assumes that CSCO has only one historical version.
 CI also exercises a synthetic repeated version and wrong-issuer correction case;
 that 26-version browser fixture passed locally. No real member data or messages
 were used. The complete pinned regression suite passed 750 tests.
+
+During rollout, the corrected-source run `39482375158` was canceled by a waiting
+scheduled workflow still using the main branch's old shared concurrency policy.
+It completed seven holdings without degraded or failed reports before cancellation,
+but did not complete strict portfolio acceptance. Read-only live/API checks now
+use a separate `jsosif-ai-acceptance` queue. Production archive/delivery writers
+retain `jsosif-report-data` with `queue: max`, applied at job level after the main
+branch and schedule/enable gates. Disabled or irrelevant jobs therefore do not
+join the writer queue. The two queues share provider account quotas even though
+isolated checks never write production state. Weekly member delivery also requires
+main, so unmerged code cannot submit member email through that workflow.

@@ -14,14 +14,13 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: jsosif-report-data
-  queue: max
-  cancel-in-progress: false
-
 jobs:
   verify:
     if: github.ref == 'refs/heads/main'
+    concurrency:
+      group: jsosif-report-data
+      queue: max
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
