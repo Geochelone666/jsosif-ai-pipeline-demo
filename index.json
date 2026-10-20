@@ -1273,6 +1273,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/GIS/GIS-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/GIS/GIS-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/GIS/GIS-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/NVO",
+      "ticker": "NVO",
+      "generated_at": "2026-10-20T20:23:54.866503+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "69464699c0a05bf8ca584183b4b6ed564e0a450f6d090a19dc37a7def5d1f423",
+        "json": "3191b5ec7209c573c803535fae514b63c7a0d433530d2e451b2d37f1a5e4777c",
+        "pdf": "4c66794132ad2618503aa205b8eda85dd6019648a4aabd1e111de3bf31484f07"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/NVO/NVO-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/NVO/NVO-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/NVO/NVO-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1359,7 +1376,8 @@
       "DIS",
       "MG.TO",
       "OTEX.TO",
-      "GIS"
+      "GIS",
+      "NVO"
     ],
     "degraded_tickers": [
       "V",
@@ -1592,6 +1610,15 @@
         "comparables": 2.318,
         "earnings": 1.216,
         "edgar": 2.918,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "NVO": {
+        "quant": 1.968,
+        "ai_extract": 64.966,
+        "comparables": 2.919,
+        "earnings": 1.216,
+        "edgar": 2.668,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
