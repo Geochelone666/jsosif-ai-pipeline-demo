@@ -1137,6 +1137,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/ACN/ACN-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/ACN/ACN-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/ACN/ACN-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/J",
+      "ticker": "J",
+      "generated_at": "2026-10-20T20:10:33.600598+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "0d0cd6cedfcf8defc945702143c6695f4222dbe367b91424393296b92a5b37f3",
+        "json": "65a27df82c7245f17ffb605ccf5bfbf7ae4430a44ebdce79343e0d4c2bb8c553",
+        "pdf": "c2a898c20a043ac86da3307dbd9bc0aebb3ffab1e92e18de1dfe60ba1bd5060c"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/J/J-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/J/J-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/J/J-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1215,7 +1232,8 @@
       "CP.TO",
       "ATD.TO",
       "SCHW",
-      "ACN"
+      "ACN",
+      "J"
     ],
     "degraded_tickers": [
       "V"
@@ -1374,6 +1392,15 @@
         "comparables": 2.218,
         "earnings": 1.166,
         "edgar": 2.167,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "J": {
+        "quant": 1.567,
+        "ai_extract": 50.944,
+        "comparables": 1.867,
+        "earnings": 0.966,
+        "edgar": 2.818,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
