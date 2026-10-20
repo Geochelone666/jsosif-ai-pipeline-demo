@@ -312,3 +312,20 @@ repeats remain idempotent. Both attempts consume the configured API budget, and
 recovery never resets usage counters. Live acceptance before 19:00 checks the last
 expected evening publication and accepts a newer same-day manual publication;
 explicit `--business-date` verification remains exact.
+
+## Internal inbox acceptance without a member roster
+
+The **Internal email acceptance** workflow is manual-only and runs from `main`.
+Its default `PREVIEW` mode validates a five-PDF cover note against fresh eligible
+reports for CNQ.TO, CSCO, JPM, BMO.TO and COST. The only recipient is `GMAIL_USER`;
+there is no recipient input. The synthetic greeting, public attachment names and
+cover note are safe to review in the run output. Address headers stay in the
+runner's temporary preview directory and are deleted without artifact upload.
+
+Real inbox testing requires an explicit `SEND_ONE_TO_SELF` selection and separate
+user authorization. It uses the same weekly sender, integrity checks and durable
+ledger as team delivery. An accepted or uncertain submission will not be blindly
+repeated in the same local week. The internal member ID is fixed and no real
+member roster or global email switch is changed. There is no schedule trigger.
+SMTP acceptance still needs a human confirmation that the message reached the
+inbox. Leave `EMAIL_DELIVERY_ENABLED` false throughout internal acceptance.

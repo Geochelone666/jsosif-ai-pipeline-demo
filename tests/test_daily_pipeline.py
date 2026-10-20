@@ -285,6 +285,14 @@ def test_full_portfolio_excel_roster_two_week_launch_rehearsal(pipeline, monkeyp
     build(root, site)
     assert len(list(site.rglob('*.pdf'))) == 50
     assert not (site / 'state').exists()
+    import internal_email_check
+    monkeypatch.setenv('GMAIL_USER', 'synthetic-self@example.com')
+    ledger_before = (root / 'state/deliveries.json').read_bytes()
+    preview = internal_email_check.check(root, tmp_path / 'internal-preview', now=next_monday)
+    assert preview['recipient_is_sender'] and len(preview['attachments']) == 5
+    assert 'Hi JSOSIF Test,' in preview['body']
+    assert 'synthetic-self@example.com' not in preview['body']
+    assert (root / 'state/deliveries.json').read_bytes() == ledger_before
     for path in site.rglob('*'):
         if path.is_file():
             assert b'member-0@example.com' not in path.read_bytes()
