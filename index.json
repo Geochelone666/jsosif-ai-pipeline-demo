@@ -1001,6 +1001,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/V/V-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/V/V-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/V/V-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/JWEL.TO",
+      "ticker": "JWEL.TO",
+      "generated_at": "2026-10-20T19:54:28.119275+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "86c8db1b27ca4c6c3e912f82e8a9bc21f3a61464318bc080d3cc4c766e261075",
+        "json": "a36a6d233e92fade5fe1e2f0060451caa727d8be9b4b8eab54c043919b0f32a5",
+        "pdf": "e5d12797ab8605fcd9f44d79a5f7294f8422573eb2ab036f58034dec271c5961"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/JWEL.TO/JWEL.TO-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/JWEL.TO/JWEL.TO-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/JWEL.TO/JWEL.TO-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1071,7 +1088,8 @@
       "JPM",
       "BMO.TO",
       "COST",
-      "V"
+      "V",
+      "JWEL.TO"
     ],
     "degraded_tickers": [
       "V"
@@ -1158,6 +1176,15 @@
         "comparables": 2.319,
         "earnings": 1.116,
         "edgar": 2.119,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "JWEL.TO": {
+        "quant": 1.768,
+        "ai_extract": 0.515,
+        "comparables": 2.42,
+        "earnings": 1.067,
+        "edgar": 0.064,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
