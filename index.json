@@ -899,6 +899,23 @@
       "md": "archive/20261019T193942Z-038adf28/AMTM/AMTM-intelligence-20261019.md",
       "json": "archive/20261019T193942Z-038adf28/AMTM/AMTM-intelligence-20261019.json",
       "pdf": "archive/20261019T193942Z-038adf28/AMTM/AMTM-intelligence-20261019.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/CNQ.TO",
+      "ticker": "CNQ.TO",
+      "generated_at": "2026-10-20T19:42:06.418614+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "2a6a2ceaed63bd5c1526024b64e4f1fd6ebc07f7a7ef0225ec10363f91a65aff",
+        "json": "0bf7371093c732830b6c54c58d69f517a5fa8dc9f6b30440925130c3757a81e2",
+        "pdf": "cc83ff6df6d3a61516eb2c1bac9ef1b4e32aa0b174a15864d58cfed588f878c8"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/CNQ.TO/CNQ.TO-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/CNQ.TO/CNQ.TO-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/CNQ.TO/CNQ.TO-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -963,7 +980,9 @@
       "MC.PA",
       "AMTM"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "CNQ.TO"
+    ],
     "degraded_tickers": [],
     "failed_tickers": [],
     "failures": [],
@@ -995,7 +1014,17 @@
       "AMTM"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {}
+    "stage_seconds": {
+      "CNQ.TO": {
+        "quant": 2.218,
+        "ai_extract": 2.868,
+        "comparables": 2.167,
+        "earnings": 1.016,
+        "edgar": 2.868,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      }
+    }
   },
   "last_complete_refresh": "2026-10-19T19:39:42.351364+00:00",
   "last_complete_business_date": "2026-10-19"
