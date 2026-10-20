@@ -154,3 +154,8 @@ Live queue validation on 2026-10-20 retained all three test runs
 active run. None replaced another. After observing the three pending runs, they
 were explicitly canceled as test cleanup before executing their API probes.
 The cancellations are expected cleanup, not failed provider checks.
+
+Same-day earnings regression checks also passed: a scheduled date of today stays
+visible when actual EPS is missing; a reported result today becomes the latest
+past event and is not reintroduced by the calendar fallback; an unavailable
+results table can still retain today's scheduled calendar date.
