@@ -148,3 +148,9 @@ uses `queue: max`, preserving up to 100 pending runs while retaining a single
 active writer. GitHub documents this behavior in its
 [concurrency reference](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency).
 Queueing prevents replacement; it does not guarantee exact dispatch times.
+
+Live queue validation on 2026-10-20 retained all three test runs
+`39480403715`, `39480448767` and `39480453534` in the pending state behind an
+active run. None replaced another. After observing the three pending runs, they
+were explicitly canceled as test cleanup before executing their API probes.
+The cancellations are expected cleanup, not failed provider checks.
