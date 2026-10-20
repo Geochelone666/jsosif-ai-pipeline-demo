@@ -967,6 +967,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/BMO.TO/BMO.TO-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/BMO.TO/BMO.TO-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/BMO.TO/BMO.TO-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/COST",
+      "ticker": "COST",
+      "generated_at": "2026-10-20T19:53:07.200945+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "fd4623b8823a72a1b18d0947c82c2fd97482315c28228540c3aa2ec0efc68e21",
+        "json": "60483c1bfa68b7d988232ff9035f458465b1d289f800c8d5c241d898ede4b5ca",
+        "pdf": "99abc4d8cb42a6cfb36a0367ba16cce02d81f090da44cb1f9b64ecdc608f39da"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/COST/COST-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/COST/COST-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/COST/COST-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1035,7 +1052,8 @@
       "CNQ.TO",
       "CSCO",
       "JPM",
-      "BMO.TO"
+      "BMO.TO",
+      "COST"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -1102,6 +1120,15 @@
         "comparables": 2.018,
         "earnings": 1.117,
         "edgar": 2.82,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "COST": {
+        "quant": 2.219,
+        "ai_extract": 170.012,
+        "comparables": 2.019,
+        "earnings": 1.217,
+        "edgar": 2.219,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
