@@ -1052,6 +1052,23 @@
       "md": "archive/20261020T194153Z-06eba6a0/ENB/ENB-intelligence-20261020.md",
       "json": "archive/20261020T194153Z-06eba6a0/ENB/ENB-intelligence-20261020.json",
       "pdf": "archive/20261020T194153Z-06eba6a0/ENB/ENB-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261020T194153Z-06eba6a0/PFE",
+      "ticker": "PFE",
+      "generated_at": "2026-10-20T20:01:36.265339+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "04f181c725d777637ad193742e1a2b478ce304f27e3b2413d0a09287c21309ae",
+        "json": "46ae41765fedbeddd02ebcf6cb65080c055090ed2d92076190ec8b582250845f",
+        "pdf": "3cfb7e0cfad77cda38e39b6f084a6fe86bfb137ddfa146f23f75be8fd92dfcd7"
+      },
+      "md": "archive/20261020T194153Z-06eba6a0/PFE/PFE-intelligence-20261020.md",
+      "json": "archive/20261020T194153Z-06eba6a0/PFE/PFE-intelligence-20261020.json",
+      "pdf": "archive/20261020T194153Z-06eba6a0/PFE/PFE-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1125,7 +1142,8 @@
       "V",
       "JWEL.TO",
       "VRTX",
-      "ENB"
+      "ENB",
+      "PFE"
     ],
     "degraded_tickers": [
       "V"
@@ -1239,6 +1257,15 @@
         "comparables": 1.818,
         "earnings": 1.267,
         "edgar": 3.018,
+        "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "PFE": {
+        "quant": 2.067,
+        "ai_extract": 65.364,
+        "comparables": 2.267,
+        "earnings": 1.268,
+        "edgar": 2.017,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
