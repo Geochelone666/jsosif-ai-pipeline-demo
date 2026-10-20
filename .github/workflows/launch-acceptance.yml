@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
       smoke_ticker:
-        description: 'Supported holding, or ALL for a complete isolated portfolio check'
+        description: 'Comma-separated supported holdings, or ALL for a complete isolated portfolio check'
         type: string
         default: CSCO
   push:
@@ -78,9 +78,9 @@ jobs:
           sys.path.insert(0, 'scripts')
           from universe import SUPPORTED
           ticker = os.environ['SMOKE_TICKER'].strip().upper()
-          if ticker != 'ALL' and ticker not in SUPPORTED:
-              raise SystemExit('Choose a supported holding or ALL')
-          tickers = list(SUPPORTED) if ticker == 'ALL' else [ticker]
+          tickers = list(SUPPORTED) if ticker == 'ALL' else list(dict.fromkeys(t.strip() for t in ticker.split(',')))
+          if not tickers or any(t not in SUPPORTED for t in tickers):
+              raise SystemExit('Choose supported holdings separated by commas, or ALL')
           Path(os.environ['RUNNER_TEMP'], 'smoke-subscriptions.json').write_text(json.dumps({
               'groups': {'smoke': {'tickers': tickers}}, 'members': []}))
           PYCODE

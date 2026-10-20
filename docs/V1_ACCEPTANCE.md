@@ -170,3 +170,12 @@ investment-company symbol `CGI.TO`. Currency labels remain per issuer; monetary
 amounts in different currencies must not be ranked as if converted. All current
 US peer symbols are present in the archived directory. Listing and sector
 membership still require periodic review; a symbol can be reused.
+
+SEC listing resolution now uses explicit verified dual-listing aliases instead
+of removing `.TO`. The archived directory confirms `MG` is Mistras
+(CIK 1436126), while Magna uses `MGA` (CIK 749098). `JWEL` is Jowell Global,
+not Jamieson Wellness. `MG.TO` now resolves through `MGA`; unverified foreign
+mappings including `JWEL.TO` and `ATD.TO` return unavailable rather than querying
+a different issuer. Seven listing-identity regressions passed. The isolated
+acceptance input also supports a comma-separated subset for focused source and
+configuration regression runs; all entries must remain supported holdings.

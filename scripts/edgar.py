@@ -8,10 +8,18 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 from data_utils import number, save, ticker_arg, ticker_file, as_of_date
 
+# Foreign listings require an explicit verified US alias. Removing an exchange
+# suffix can select a different issuer (MG/Mistras or JWEL/Jowell Global).
+CANADIAN_SEC_SYMBOLS = {
+    'CNQ.TO': 'CNQ', 'BMO.TO': 'BMO', 'CP.TO': 'CP',
+    'NTR.TO': 'NTR', 'MG.TO': 'MGA', 'OTEX.TO': 'OTEX',
+}
+
 def resolve_cik(symbol):
-    # SEC uses the US listing symbol for Canadian dual listings.
-    sec_symbol = symbol.removesuffix('.TO')
     if symbol.endswith('.PA'):
+        return None
+    sec_symbol = CANADIAN_SEC_SYMBOLS.get(symbol) if symbol.endswith('.TO') else symbol
+    if sec_symbol is None:
         return None
     cache = Path(os.environ['JSOSIF_SEC_CACHE']) if os.environ.get('JSOSIF_SEC_CACHE') else None
     if cache and cache.is_file() and time.time() - cache.stat().st_mtime < 86400:
