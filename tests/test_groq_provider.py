@@ -64,6 +64,17 @@ def test_auth_failure_not_retried_or_exposed(setup):
     assert 'synthetic-test-key' not in str(error.value)
 
 
+def test_generation_validation_has_safe_specific_diagnostic(setup):
+    def fail(request, **kwargs):
+        body = io.BytesIO(json.dumps({'error': {'code': 'json_validate_failed',
+                                               'failed_generation': 'private provider text'}}).encode())
+        raise HTTPError(request.full_url, 400, 'private response', {}, body)
+    with pytest.raises(groq.GroqError, match='structured output failed validation') as error:
+        groq.generate_json('JSON', opener=fail, sleep=lambda _: pytest.fail('unchanged request retried'))
+    assert error.value.code == 400 and error.value.provider_code == 'json_validate_failed'
+    assert 'private' not in str(error.value)
+
+
 def test_explicit_groq_never_uses_google_key(monkeypatch):
     from ai_provider import generate_json
     monkeypatch.setenv('AI_PROVIDER', 'groq')

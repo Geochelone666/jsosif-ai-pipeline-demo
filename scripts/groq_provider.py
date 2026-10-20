@@ -171,8 +171,10 @@ def generate_json(prompt, model=DEFAULT_MODEL, *, attempts=3, opener=urlopen, sl
                 ledger['groq_next_request_at'] = max(ledger.get('groq_next_request_at', 0), time.time() + delay)
                 _save(path, ledger)
             if not retry or attempt + 1 == attempts or delay > 120:
-                raise GroqError(f'Groq HTTP {exc.code}; check account limits and retry guidance',
-                                status=exc.code, provider_code=error_code(exc)) from None
+                code = error_code(exc)
+                hint = ('structured output failed validation' if code == 'json_validate_failed'
+                        else 'check account limits and retry guidance')
+                raise GroqError(f'Groq HTTP {exc.code}; {hint}', status=exc.code, provider_code=code) from None
             sleep(delay)
             continue
         except (URLError, TimeoutError, OSError):
