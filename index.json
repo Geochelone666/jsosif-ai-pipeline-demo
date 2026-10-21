@@ -1630,6 +1630,23 @@
       "md": "archive/20261021T001734Z-ada75ac4/NTR.TO/NTR.TO-intelligence-20261020.md",
       "json": "archive/20261021T001734Z-ada75ac4/NTR.TO/NTR.TO-intelligence-20261020.json",
       "pdf": "archive/20261021T001734Z-ada75ac4/NTR.TO/NTR.TO-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261021T001734Z-ada75ac4/DIS",
+      "ticker": "DIS",
+      "generated_at": "2026-10-21T01:09:24.101998+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-19",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "b741e9307b33f93a7a9aafefccef3da3d3d467c06aca1028468b5b8c20f47d8e",
+        "json": "330e11748bb84af0ccee54d94d7227505eb2ca7c7c63b00e4644322c7c20e3a6",
+        "pdf": "8074e82ae90636a688f7b56ebf59301d3bd5cf6d703d74d550d278dbda4402ee"
+      },
+      "md": "archive/20261021T001734Z-ada75ac4/DIS/DIS-intelligence-20261020.md",
+      "json": "archive/20261021T001734Z-ada75ac4/DIS/DIS-intelligence-20261020.json",
+      "pdf": "archive/20261021T001734Z-ada75ac4/DIS/DIS-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1712,7 +1729,8 @@
       "J",
       "XYL",
       "PEP",
-      "NTR.TO"
+      "NTR.TO",
+      "DIS"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -1907,6 +1925,15 @@
         "edgar": 2.67,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "DIS": {
+        "quant": 1.718,
+        "ai_extract": 242.866,
+        "comparables": 1.52,
+        "earnings": 1.169,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.315
       }
     }
   },
