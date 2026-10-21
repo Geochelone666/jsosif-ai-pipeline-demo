@@ -1511,6 +1511,23 @@
       "md": "archive/20261021T001734Z-ada75ac4/CP.TO/CP.TO-intelligence-20261020.md",
       "json": "archive/20261021T001734Z-ada75ac4/CP.TO/CP.TO-intelligence-20261020.json",
       "pdf": "archive/20261021T001734Z-ada75ac4/CP.TO/CP.TO-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261021T001734Z-ada75ac4/ATD.TO",
+      "ticker": "ATD.TO",
+      "generated_at": "2026-10-21T00:50:01.415693+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "6d9218819f5afa9c64964a6e6dc645da32095b0e6549cd5d0bd59d859f27230a",
+        "json": "b776d321d66777ce83173ed18e94b3dbdd918bdf5711bbea7271f82452f0ef6a",
+        "pdf": "93694040a70aa945987ec509d4733e3b654a1dad01e022e8a9840826ca2d17f2"
+      },
+      "md": "archive/20261021T001734Z-ada75ac4/ATD.TO/ATD.TO-intelligence-20261020.md",
+      "json": "archive/20261021T001734Z-ada75ac4/ATD.TO/ATD.TO-intelligence-20261020.json",
+      "pdf": "archive/20261021T001734Z-ada75ac4/ATD.TO/ATD.TO-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1586,7 +1603,8 @@
       "VRTX",
       "ENB",
       "PFE",
-      "CP.TO"
+      "CP.TO",
+      "ATD.TO"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -1718,6 +1736,15 @@
         "edgar": 2.871,
         "regenerate_report": 0.114,
         "report_pdf": 0.264
+      },
+      "ATD.TO": {
+        "quant": 1.77,
+        "ai_extract": 48.785,
+        "comparables": 1.718,
+        "earnings": 1.168,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
       }
     }
   },
