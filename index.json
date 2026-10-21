@@ -1732,6 +1732,23 @@
       "md": "archive/20261021T001734Z-ada75ac4/MC.PA/MC.PA-intelligence-20261020.md",
       "json": "archive/20261021T001734Z-ada75ac4/MC.PA/MC.PA-intelligence-20261020.json",
       "pdf": "archive/20261021T001734Z-ada75ac4/MC.PA/MC.PA-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261021T001734Z-ada75ac4/AMTM",
+      "ticker": "AMTM",
+      "generated_at": "2026-10-21T01:17:39.678924+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-19",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "a91b6baaa20b622092bbecf9c8a6d162dbe73dee07c52c37a25b7a3560908ac4",
+        "json": "d798c23c22949288995964aba583e8b95253c5c1591865e364129dd5707a7eda",
+        "pdf": "2b56a9951f0b8e43238ab89c2514d03ee2a40f9ee9e19a3513b45eb4aac9a2ce"
+      },
+      "md": "archive/20261021T001734Z-ada75ac4/AMTM/AMTM-intelligence-20261020.md",
+      "json": "archive/20261021T001734Z-ada75ac4/AMTM/AMTM-intelligence-20261020.json",
+      "pdf": "archive/20261021T001734Z-ada75ac4/AMTM/AMTM-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1820,7 +1837,8 @@
       "OTEX.TO",
       "GIS",
       "NVO",
-      "MC.PA"
+      "MC.PA",
+      "AMTM"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2068,6 +2086,15 @@
         "earnings": 1.318,
         "edgar": 0.114,
         "regenerate_report": 0.165,
+        "report_pdf": 0.265
+      },
+      "AMTM": {
+        "quant": 1.77,
+        "ai_extract": 52.732,
+        "comparables": 1.822,
+        "earnings": 1.168,
+        "edgar": 2.622,
+        "regenerate_report": 0.114,
         "report_pdf": 0.265
       }
     }
