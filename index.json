@@ -1460,6 +1460,23 @@
       "md": "archive/20261021T001734Z-ada75ac4/VRTX/VRTX-intelligence-20261020.md",
       "json": "archive/20261021T001734Z-ada75ac4/VRTX/VRTX-intelligence-20261020.json",
       "pdf": "archive/20261021T001734Z-ada75ac4/VRTX/VRTX-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261021T001734Z-ada75ac4/ENB",
+      "ticker": "ENB",
+      "generated_at": "2026-10-21T00:46:06.481107+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-19",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "ef5b5b9c007429e3aa0424c7d55c62382acc3f58626e5a88abb324a346ebb5c0",
+        "json": "5ee6030db273e041098d9071321c7e4c833a2c14939e4775ba065387dc345d74",
+        "pdf": "41b22e8721221f8d53b946f841b0fb295ebf5c4cbb44fd6c0576dc689a3ca130"
+      },
+      "md": "archive/20261021T001734Z-ada75ac4/ENB/ENB-intelligence-20261020.md",
+      "json": "archive/20261021T001734Z-ada75ac4/ENB/ENB-intelligence-20261020.json",
+      "pdf": "archive/20261021T001734Z-ada75ac4/ENB/ENB-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1532,7 +1549,8 @@
       "COST",
       "V",
       "JWEL.TO",
-      "VRTX"
+      "VRTX",
+      "ENB"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -1637,6 +1655,15 @@
         "edgar": 2.169,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "ENB": {
+        "quant": 1.668,
+        "ai_extract": 294.891,
+        "comparables": 1.568,
+        "earnings": 1.117,
+        "edgar": 3.122,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.315
       }
     }
   },
