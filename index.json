@@ -1375,6 +1375,23 @@
       "md": "archive/20261021T001734Z-ada75ac4/JPM/JPM-intelligence-20261020.md",
       "json": "archive/20261021T001734Z-ada75ac4/JPM/JPM-intelligence-20261020.json",
       "pdf": "archive/20261021T001734Z-ada75ac4/JPM/JPM-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261021T001734Z-ada75ac4/BMO.TO",
+      "ticker": "BMO.TO",
+      "generated_at": "2026-10-21T00:29:45.737712+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "a3d554e64dd020bc50482ebc7567344258e4f4e0a7f49bd8dcdd20f5898426fd",
+        "json": "0647b4527ffa3848426f45cbc29ca76aba6486deef85dc44349ee56fe1f6cd39",
+        "pdf": "76271c08c49278ae490941823fb53aaabbbe9b418a27615ce845c744a6b34b9e"
+      },
+      "md": "archive/20261021T001734Z-ada75ac4/BMO.TO/BMO.TO-intelligence-20261020.md",
+      "json": "archive/20261021T001734Z-ada75ac4/BMO.TO/BMO.TO-intelligence-20261020.json",
+      "pdf": "archive/20261021T001734Z-ada75ac4/BMO.TO/BMO.TO-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1442,7 +1459,8 @@
     "successful_tickers": [
       "CNQ.TO",
       "CSCO",
-      "JPM"
+      "JPM",
+      "BMO.TO"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -1502,6 +1520,15 @@
         "edgar": 2.171,
         "regenerate_report": 0.165,
         "report_pdf": 0.365
+      },
+      "BMO.TO": {
+        "quant": 1.92,
+        "ai_extract": 48.475,
+        "comparables": 1.769,
+        "earnings": 1.268,
+        "edgar": 2.673,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.265
       }
     }
   },
