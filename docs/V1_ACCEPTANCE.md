@@ -235,3 +235,68 @@ integrity errors. The isolated research job passed; the independent live check
 still reflected the old deployed site and disabled email switch. Offline recovery
 regression: 760 tests passed with pinned Python 3.12 dependencies; CI regression
 and browser checks also passed.
+
+## Omitted-headline recovery and authorized internal delivery
+
+On 2026-10-20, production run
+[39485590328](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39485590328)
+archived all 25 holdings and deployed 75 report versions, but strict release and
+HTTP publication checks remained unready: V and DIS had structured-output failures,
+while XYL and AMTM had headlines omitted from otherwise valid AI responses. All
+350 files from the earlier 50-version archive retained their original Git blobs.
+
+The follow-up retries only unresolved headlines once after a successful response.
+Accepted decisions remain intact; relevance and listing identity are checked again.
+Persistent omissions stay unclassified, and provider or quota errors are not
+retried by this coverage repair. The prompt explicitly requests one decision per
+input headline. Regression evidence: 765 tests passed with pinned Python 3.12
+dependencies, including omitted-input recovery, bounded retries, identity checks
+and preservation of accepted decisions after a retry fails.
+
+The user explicitly authorized one real self-delivery. Internal acceptance run
+[39493346224](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39493346224)
+succeeded, and its durable ledger records SMTP acceptance with five report IDs.
+A second identical invocation,
+[39493470580](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39493470580),
+also succeeded without changing the archive or delivery state, demonstrating
+that the weekly delivery slot was skipped instead of submitted again. Neither
+run enabled formal member delivery. SMTP acceptance does not establish inbox
+placement or visual rendering; confirmation from the mailbox owner is pending.
+
+The actual 75-version archive also passed Chromium desktop/mobile acceptance:
+historical inspection, report tables, correction filtering, refresh, synthetic
+member CSV/JSON import/export and invalid-import preservation. No JavaScript
+errors were observed. This validates the browser against real archived content;
+it does not replace strict production source-readiness checks.
+
+## Focused live recovery acceptance
+
+Research job `118874005945` in
+[39493676255](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/39493676255)
+passed strict isolated acceptance for V, XYL, DIS and AMTM on 2026-10-20:
+4 expected/current reports, no degraded holdings or integrity errors. The
+application ledger recorded 18 requests and 24,549 tokens, including conservative
+failed-call reservations. Structured batch recovery was exercised for V and XYL.
+The separate integration job remains blocked by the older degraded production
+publication and the intentionally disabled formal email switch.
+
+| Holding | Unique headlines | Rule | AI | Unclassified | Explicitly irrelevant |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| V | 25 | 5 | 13 | 0 | 7 |
+| XYL | 16 | 6 | 5 | 0 | 5 |
+| DIS | 22 | 1 | 13 | 1 | 7 |
+| AMTM | 4 | 2 | 1 | 0 | 1 |
+
+Strict source readiness permits residual unclassified headlines when usable AI
+analysis exists. It does not establish exhaustive news coverage. DIS retains one
+unclassified item without promoting it into a research conclusion. Reports now
+label residual unclassified coverage as `Partial` with its count in both Markdown
+and PDF, replacing the generic `Available` label for this case. An offline replay
+of actual archived XYL sources verified the partial label in both output formats
+without API calls. Six status regressions bring the suite to 771 passing tests.
+The full 25-holding production run and deployed HTTP verification are still
+required after merge; the isolated four-holding run does not replace them.
+
+All five PDFs in the accepted self-delivery were parsed successfully, contained
+the expected ticker and date, and matched the report IDs in the durable delivery
+ledger. Inbox placement and mailbox rendering still await owner confirmation.
