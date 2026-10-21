@@ -1528,6 +1528,23 @@
       "md": "archive/20261021T001734Z-ada75ac4/ATD.TO/ATD.TO-intelligence-20261020.md",
       "json": "archive/20261021T001734Z-ada75ac4/ATD.TO/ATD.TO-intelligence-20261020.json",
       "pdf": "archive/20261021T001734Z-ada75ac4/ATD.TO/ATD.TO-intelligence-20261020.pdf"
+    },
+    {
+      "report_id": "20261021T001734Z-ada75ac4/SCHW",
+      "ticker": "SCHW",
+      "generated_at": "2026-10-21T00:53:14.377220+00:00",
+      "as_of": "2026-10-20",
+      "quality": "ready",
+      "market_as_of": "2026-10-19",
+      "news_as_of": "2026-10-20",
+      "sha256": {
+        "md": "936ee182d6defa0fa4cf3c151268a05861e80895d4caff8c14c0571a752a4281",
+        "json": "b58e2290503b630e7d928445e7f2af0566c552fb237016d89b646705161a046f",
+        "pdf": "7bbb57f61d536dad7e08d8ed2b03ef3bb97e6b4a1ac4267ec275286204d69794"
+      },
+      "md": "archive/20261021T001734Z-ada75ac4/SCHW/SCHW-intelligence-20261020.md",
+      "json": "archive/20261021T001734Z-ada75ac4/SCHW/SCHW-intelligence-20261020.json",
+      "pdf": "archive/20261021T001734Z-ada75ac4/SCHW/SCHW-intelligence-20261020.pdf"
     }
   ],
   "refresh_plan": {
@@ -1604,7 +1621,8 @@
       "ENB",
       "PFE",
       "CP.TO",
-      "ATD.TO"
+      "ATD.TO",
+      "SCHW"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -1745,6 +1763,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "SCHW": {
+        "quant": 1.668,
+        "ai_extract": 184.27,
+        "comparables": 1.718,
+        "earnings": 1.219,
+        "edgar": 2.219,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.315
       }
     }
   },
