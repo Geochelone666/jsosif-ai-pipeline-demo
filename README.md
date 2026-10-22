@@ -193,8 +193,11 @@ for team/public use before publishing provider data.
 
 ```bash
 python -m pip install -r requirements-dev.txt
-PYTHONPATH=scripts python -m pytest --import-mode=importlib tests scripts -q
+PYTHONPATH=scripts python -m pytest --import-mode=importlib -q
 ```
+
+This matches CI: it also collects the archived experiment tests under
+`verification/`. Pass `tests scripts` to run only the current pipeline suites.
 
 The offline CI runs on pushes and PRs. Tests cover news date boundaries, provider
 usage/errors, subscriptions, DST, weekly deduplication, uncertain SMTP outcomes,
