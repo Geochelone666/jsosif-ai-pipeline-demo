@@ -2854,6 +2854,23 @@
       "md": "archive/20261022T025901Z-695d9f64/SPGI/SPGI-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/SPGI/SPGI-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/SPGI/SPGI-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/SYY",
+      "ticker": "SYY",
+      "generated_at": "2026-10-22T04:21:52.623085+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "13cdd7b0afee1a0c1230bcd6beb651df076320e76ca5b365670fccdce6aac9bf",
+        "json": "dea1bba333ae1313c0dcfa993c6f576e3c85a0d3a223e2a8c8ca12044f66b737",
+        "pdf": "9e223950d8474f66eb1110c98db5fd47b7f4b26cf43026dffcc56acb804ec520"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/SYY/SYY-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/SYY/SYY-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/SYY/SYY-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -3010,7 +3027,8 @@
       "PFE",
       "SCHW",
       "SHOP.TO",
-      "SPGI"
+      "SPGI",
+      "SYY"
     ],
     "degraded_tickers": [
       "META",
@@ -3026,7 +3044,8 @@
       "PEP",
       "PFE",
       "SCHW",
-      "SPGI"
+      "SPGI",
+      "SYY"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3460,6 +3479,15 @@
         "earnings": 1.119,
         "edgar": 1.969,
         "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "SYY": {
+        "quant": 1.367,
+        "ai_extract": 12.798,
+        "comparables": 1.418,
+        "earnings": 1.066,
+        "edgar": 2.471,
+        "regenerate_report": 0.165,
         "report_pdf": 0.265
       }
     }
