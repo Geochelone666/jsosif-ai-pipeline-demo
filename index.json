@@ -2701,6 +2701,23 @@
       "md": "archive/20261022T025901Z-695d9f64/NTR.TO/NTR.TO-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/NTR.TO/NTR.TO-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/NTR.TO/NTR.TO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/NVAX",
+      "ticker": "NVAX",
+      "generated_at": "2026-10-22T04:19:12.009414+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "8fab28e0f022b12d91a65b672ed2aa82fc962089d88187869afe970f2260fb6c",
+        "json": "8664d5b941e9bf7d7942577c29480e001ae81c4bf1745148663fbf7a21f29188",
+        "pdf": "dbafc69697687e23396da63b47a24d8f1a66cc788d7f0053cf708ad2ed2c719c"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/NVAX/NVAX-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/NVAX/NVAX-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/NVAX/NVAX-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2848,7 +2865,8 @@
       "MSFT",
       "MU",
       "NFLX",
-      "NTR.TO"
+      "NTR.TO",
+      "NVAX"
     ],
     "degraded_tickers": [
       "META",
@@ -2856,7 +2874,8 @@
       "MSFT",
       "MU",
       "NFLX",
-      "NTR.TO"
+      "NTR.TO",
+      "NVAX"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3208,6 +3227,15 @@
         "comparables": 1.569,
         "earnings": 1.117,
         "edgar": 2.521,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "NVAX": {
+        "quant": 1.468,
+        "ai_extract": 11.695,
+        "comparables": 1.468,
+        "earnings": 1.016,
+        "edgar": 1.919,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
       }
