@@ -2378,6 +2378,23 @@
       "md": "archive/20261022T025901Z-695d9f64/CSCO/CSCO-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/CSCO/CSCO-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/CSCO/CSCO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/CSU.TO",
+      "ticker": "CSU.TO",
+      "generated_at": "2026-10-22T03:38:53.803726+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "07853a2e4dfeccd8bcde57d9870f3660a5f43deefa4e28313b7bdb5175a6cfba",
+        "json": "475e34ed915000c12f504bceca9826d7c7eebd767e300500dc89e7ee13ee0a04",
+        "pdf": "6665c998ba0d046f1483b580c09e10bed484ad6ea9a1ac1914c1cfd50e5f71f7"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/CSU.TO/CSU.TO-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/CSU.TO/CSU.TO-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/CSU.TO/CSU.TO-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2506,7 +2523,8 @@
       "CNQ.TO",
       "COST",
       "CP.TO",
-      "CSCO"
+      "CSCO",
+      "CSU.TO"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2688,6 +2706,15 @@
         "comparables": 1.468,
         "earnings": 1.117,
         "edgar": 1.969,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "CSU.TO": {
+        "quant": 1.568,
+        "ai_extract": 2.32,
+        "comparables": 1.468,
+        "earnings": 1.117,
+        "edgar": 0.114,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
       }
