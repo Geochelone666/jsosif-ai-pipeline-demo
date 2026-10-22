@@ -2565,6 +2565,23 @@
       "md": "archive/20261022T025901Z-695d9f64/MC.PA/MC.PA-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/MC.PA/MC.PA-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/MC.PA/MC.PA-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/MCK",
+      "ticker": "MCK",
+      "generated_at": "2026-10-22T04:11:10.315375+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "6697fe1d5716f9ddc7002ae019613b016f2ffd94d2722139bd472d3ad5d442c2",
+        "json": "54bc54f083e8ab6a0c37afba0cf8a6145c6d608b701c361a283e6e2be03e5c89",
+        "pdf": "fe43ec93e3cb6022a0d5afb045d4f9b798b464f2deb5582c85a0c0c37f20c163"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/MCK/MCK-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/MCK/MCK-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/MCK/MCK-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2704,7 +2721,8 @@
       "J",
       "JPM",
       "JWEL.TO",
-      "MC.PA"
+      "MC.PA",
+      "MCK"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2985,6 +3003,15 @@
         "comparables": 1.62,
         "earnings": 1.067,
         "edgar": 0.114,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "MCK": {
+        "quant": 1.518,
+        "ai_extract": 114.114,
+        "comparables": 1.519,
+        "earnings": 1.217,
+        "edgar": 1.969,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
       }
