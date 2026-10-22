@@ -1,0 +1,134 @@
+{
+  "ticker": "NFLX",
+  "errors": [
+    "SPY yfinance: The price request could not be completed due to an unexpected error after 1 attempts (dns_or_connection)",
+    "SPY stooq: The price service returned HTTP 404 after 1 attempts (http_error)",
+    "warning: Beta vs SPY unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/NFLX/history/",
+    "https://finance.yahoo.com/quote/NFLX/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 65.04000091552734,
+    "Return 1D (%)": -5.313730377273496,
+    "Return 1W (%)": -7.836189320123321,
+    "Return 1M (%)": -11.341329914943065,
+    "Return YTD (%)": -30.631399921443926,
+    "Return 1Y (%)": -47.6054297367716,
+    "Annualized volatility (%)": 36.95414826109249,
+    "Max drawdown (%)": -47.6054297367716,
+    "Sharpe (rf=0)": -1.5695300371487835,
+    "Beta vs SPY": null,
+    "MA50": 74.65900024414063,
+    "Close vs MA50 (%)": -12.883911246009749,
+    "MA200": 82.51739986419678,
+    "Close vs MA200 (%)": -21.180258924097107,
+    "RSI (14, Wilder)": 32.61164459333108,
+    "MACD (12,26)": -1.5134223247808194,
+    "MACD signal (9)": -1.454158730319199,
+    "MACD histogram": -0.05926359446162044,
+    "P/E (trailing)": 18.797688,
+    "P/B": 9.182549,
+    "EV/EBITDA": 17.285,
+    "Revenue growth (%)": 11.799999999999999
+  },
+  "as_of": "2026-10-21",
+  "verification": {
+    "base_date": "2025-10-21",
+    "base_close": 124.13500213623047,
+    "end_close": 65.04000091552734,
+    "manual_1Y_pct": -47.605429736771605,
+    "passed": true
+  },
+  "fetched_at": "2026-10-22T04:18:14.696031+00:00",
+  "requested_as_of": "2026-10-21",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "NFLX",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "failed",
+      "category": "dns_or_connection",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price request could not be completed due to an unexpected error"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "stooq",
+      "status": "failed",
+      "category": "http_error",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price service returned HTTP 404"
+    }
+  ],
+  "metric_notes": {
+    "Beta vs SPY": {
+      "status": "undefined",
+      "reason": "undefined: SPY prices are missing"
+    }
+  },
+  "history_count": {
+    "NFLX": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'NFLX'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-21'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}

@@ -2667,6 +2667,23 @@
       "md": "archive/20261022T025901Z-695d9f64/MU/MU-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/MU/MU-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/MU/MU-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/NFLX",
+      "ticker": "NFLX",
+      "generated_at": "2026-10-22T04:18:32.312310+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "ccdad4d24ac7ddb49fe19cce40891299914628bbf907a3c2c5e4fde78a877486",
+        "json": "fe33601d126dcf32be6e271bfc90a20e9ddb9e24e9b8396605a9f4355fda5bdc",
+        "pdf": "a443be450f4e657f47494e786aee0946cc9427c858bc370c6e4ade269d3f69a6"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/NFLX/NFLX-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/NFLX/NFLX-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/NFLX/NFLX-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2812,13 +2829,15 @@
       "META",
       "MG.TO",
       "MSFT",
-      "MU"
+      "MU",
+      "NFLX"
     ],
     "degraded_tickers": [
       "META",
       "MG.TO",
       "MSFT",
-      "MU"
+      "MU",
+      "NFLX"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3154,6 +3173,15 @@
         "edgar": 1.919,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "NFLX": {
+        "quant": 1.418,
+        "ai_extract": 12.396,
+        "comparables": 1.419,
+        "earnings": 1.117,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.315
       }
     }
   },
