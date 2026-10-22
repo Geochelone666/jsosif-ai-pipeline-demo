@@ -1783,6 +1783,23 @@
       "md": "archive/20261022T010757Z-7c0bccbb/CSCO/CSCO-intelligence-20261021.md",
       "json": "archive/20261022T010757Z-7c0bccbb/CSCO/CSCO-intelligence-20261021.json",
       "pdf": "archive/20261022T010757Z-7c0bccbb/CSCO/CSCO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T010757Z-7c0bccbb/JPM",
+      "ticker": "JPM",
+      "generated_at": "2026-10-22T01:22:38.012383+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-20",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "894a37339982c71d7e79fb69a5f82dc9ffdf6e84c96ed1eba10c506f5e8b3b99",
+        "json": "e14ef74bde361c579a03e5edac01aa769f144a250264d8d48fd40e8dc415c7c3",
+        "pdf": "4cf90b005bb7cf34d06d5b023b8719fd470490cf054e9d18560afd7d1f78aed8"
+      },
+      "md": "archive/20261022T010757Z-7c0bccbb/JPM/JPM-intelligence-20261021.md",
+      "json": "archive/20261022T010757Z-7c0bccbb/JPM/JPM-intelligence-20261021.json",
+      "pdf": "archive/20261022T010757Z-7c0bccbb/JPM/JPM-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -1849,7 +1866,8 @@
     ],
     "successful_tickers": [
       "CNQ.TO",
-      "CSCO"
+      "CSCO",
+      "JPM"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -1900,6 +1918,15 @@
         "edgar": 2.069,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
+      },
+      "JPM": {
+        "quant": 183.537,
+        "ai_extract": 183.953,
+        "comparables": 2.32,
+        "earnings": 1.368,
+        "edgar": 2.169,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.215
       }
     }
   },
