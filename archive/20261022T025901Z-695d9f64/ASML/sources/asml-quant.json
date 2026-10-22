@@ -1,0 +1,134 @@
+{
+  "ticker": "ASML",
+  "errors": [
+    "SPY yfinance: The price request could not be completed due to an unexpected error after 1 attempts (dns_or_connection)",
+    "SPY stooq: The price service returned HTTP 404 after 1 attempts (http_error)",
+    "warning: Beta vs SPY unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/ASML/history/",
+    "https://finance.yahoo.com/quote/ASML/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 1676.68994140625,
+    "Return 1D (%)": 2.8114331600203935,
+    "Return 1W (%)": 1.6175722064393883,
+    "Return 1M (%)": -2.0235844827208638,
+    "Return YTD (%)": 57.47336281148565,
+    "Return 1Y (%)": 64.65372259723472,
+    "Annualized volatility (%)": 46.11623036976193,
+    "Max drawdown (%)": -21.95313939004605,
+    "Sharpe (rf=0)": 1.3155505077295915,
+    "Beta vs SPY": null,
+    "MA50": 1733.246201171875,
+    "Close vs MA50 (%)": -3.2630251678836264,
+    "MA200": 1581.9512976074218,
+    "Close vs MA200 (%)": 5.988720635212541,
+    "RSI (14, Wilder)": 44.19594448869199,
+    "MACD (12,26)": -22.511118494431685,
+    "MACD signal (9)": -5.904751220982815,
+    "MACD histogram": -16.606367273448868,
+    "P/E (trailing)": 40.1314,
+    "P/B": 1440.7526,
+    "EV/EBITDA": 2204.733,
+    "Revenue growth (%)": 55.2
+  },
+  "as_of": "2026-10-21",
+  "verification": {
+    "base_date": "2025-10-21",
+    "base_close": 1018.3128051757812,
+    "end_close": 1676.68994140625,
+    "manual_1Y_pct": 64.6537225972347,
+    "passed": true
+  },
+  "fetched_at": "2026-10-22T03:14:27.567013+00:00",
+  "requested_as_of": "2026-10-21",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "ASML",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "failed",
+      "category": "dns_or_connection",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price request could not be completed due to an unexpected error"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "stooq",
+      "status": "failed",
+      "category": "http_error",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price service returned HTTP 404"
+    }
+  ],
+  "metric_notes": {
+    "Beta vs SPY": {
+      "status": "undefined",
+      "reason": "undefined: SPY prices are missing"
+    }
+  },
+  "history_count": {
+    "ASML": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'ASML'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-21'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
