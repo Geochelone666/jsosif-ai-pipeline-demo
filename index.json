@@ -2752,6 +2752,23 @@
       "md": "archive/20261022T025901Z-695d9f64/NVO/NVO-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/NVO/NVO-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/NVO/NVO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/OTEX.TO",
+      "ticker": "OTEX.TO",
+      "generated_at": "2026-10-22T04:20:12.109438+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "a71e64b148f506f21d9c1e5c11219ff4fb1b6cecfc10ce3320fd56dd15c5d8e6",
+        "json": "a97f05246de736e4517af86e7d42bb98dd77c2962296e5aaac46cd095f36d9ef",
+        "pdf": "59f3a3df9f573340f58d0efa5dff87497a505c22077866e0d7009356b6b7c813"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/OTEX.TO/OTEX.TO-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/OTEX.TO/OTEX.TO-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/OTEX.TO/OTEX.TO-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2902,7 +2919,8 @@
       "NTR.TO",
       "NVAX",
       "NVDA",
-      "NVO"
+      "NVO",
+      "OTEX.TO"
     ],
     "degraded_tickers": [
       "META",
@@ -2913,7 +2931,8 @@
       "NTR.TO",
       "NVAX",
       "NVDA",
-      "NVO"
+      "NVO",
+      "OTEX.TO"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3293,6 +3312,15 @@
         "earnings": 1.117,
         "edgar": 2.571,
         "regenerate_report": 0.164,
+        "report_pdf": 0.265
+      },
+      "OTEX.TO": {
+        "quant": 1.469,
+        "ai_extract": 11.545,
+        "comparables": 1.368,
+        "earnings": 1.117,
+        "edgar": 2.019,
+        "regenerate_report": 0.114,
         "report_pdf": 0.265
       }
     }
