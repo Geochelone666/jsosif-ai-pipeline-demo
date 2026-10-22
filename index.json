@@ -2021,6 +2021,23 @@
       "md": "archive/20261022T010757Z-7c0bccbb/XYL/XYL-intelligence-20261021.md",
       "json": "archive/20261022T010757Z-7c0bccbb/XYL/XYL-intelligence-20261021.json",
       "pdf": "archive/20261022T010757Z-7c0bccbb/XYL/XYL-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T010757Z-7c0bccbb/PEP",
+      "ticker": "PEP",
+      "generated_at": "2026-10-22T02:30:24.364199+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "c3e988b388641be07b2125fbfa672c2ff3e84fb2b711c445ecca601c318785a1",
+        "json": "f48e89317585cef5be9c64c078c09aba2fce635fe49474d0355584fa2767f530",
+        "pdf": "d41be08201092fd659d9664aa9bc89dcd1c5f9c92ab494999b85a749765e0272"
+      },
+      "md": "archive/20261022T010757Z-7c0bccbb/PEP/PEP-intelligence-20261021.md",
+      "json": "archive/20261022T010757Z-7c0bccbb/PEP/PEP-intelligence-20261021.json",
+      "pdf": "archive/20261022T010757Z-7c0bccbb/PEP/PEP-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2101,7 +2118,8 @@
       "SCHW",
       "ACN",
       "J",
-      "XYL"
+      "XYL",
+      "PEP"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2278,6 +2296,15 @@
         "edgar": 2.268,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
+      },
+      "PEP": {
+        "quant": 183.651,
+        "ai_extract": 182.5,
+        "comparables": 1.97,
+        "earnings": 1.669,
+        "edgar": 2.221,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
       }
     }
   },
