@@ -2106,6 +2106,23 @@
       "md": "archive/20261022T010757Z-7c0bccbb/OTEX.TO/OTEX.TO-intelligence-20261021.md",
       "json": "archive/20261022T010757Z-7c0bccbb/OTEX.TO/OTEX.TO-intelligence-20261021.json",
       "pdf": "archive/20261022T010757Z-7c0bccbb/OTEX.TO/OTEX.TO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T010757Z-7c0bccbb/GIS",
+      "ticker": "GIS",
+      "generated_at": "2026-10-22T02:51:34.445629+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "8dc4e9bc7cf1f129ee88fd2854b2abc585b7c30bcf47df656993ed5388920610",
+        "json": "c07ece539bff5f1ea3afdeb448c3866c511c6a778bf1997e3e8303c9c08730a8",
+        "pdf": "bbb5abc2f5890fd870cdbdd72e9aedff665753f8e6a9d0d7e72a41d71c03c14e"
+      },
+      "md": "archive/20261022T010757Z-7c0bccbb/GIS/GIS-intelligence-20261021.md",
+      "json": "archive/20261022T010757Z-7c0bccbb/GIS/GIS-intelligence-20261021.json",
+      "pdf": "archive/20261022T010757Z-7c0bccbb/GIS/GIS-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2191,7 +2208,8 @@
       "NTR.TO",
       "DIS",
       "MG.TO",
-      "OTEX.TO"
+      "OTEX.TO",
+      "GIS"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2413,6 +2431,15 @@
         "edgar": 2.068,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
+      },
+      "GIS": {
+        "quant": 183.491,
+        "ai_extract": 183.629,
+        "comparables": 2.27,
+        "earnings": 1.218,
+        "edgar": 2.671,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
       }
     }
   },

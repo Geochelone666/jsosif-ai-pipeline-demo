@@ -1,0 +1,208 @@
+# GIS Intelligence Report
+
+- ticker: **GIS**
+- Report as_of: **2026-10-21**
+- Market data as_of: **2026-10-21**
+- Quant sources: https://finance.yahoo.com/quote/GIS/history/, https://finance.yahoo.com/quote/GIS/key-statistics/
+- AI analysis snapshot as_of: **2026-10-21**
+- Snapshot note: report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.
+- Market data fetched_at (UTC): **2026-10-22T02:48:24.224716+00:00**
+- AI status: **Available**
+- AI model (configured): **openai/gpt-oss-20b** (RSS headlines; rule and AI item counts: {'unique_headlines': 23, 'rule': 7, 'ai': 9, 'unknown': 0, 'irrelevant': 7})
+
+## QUANTITATIVE
+
+| Metric | Value |
+|---|---:|
+| Close | 32.5700 |
+| Return 1D (%) | -2.5725 |
+| Return 1W (%) | 1.4326 |
+| Return 1M (%) | -6.2719 |
+| Return YTD (%) | -25.1246 |
+| Return 1Y (%) | -28.3157 |
+| Annualized volatility (%) | 29.1006 |
+| Beta vs SPY | N/A |
+| Max drawdown (%) | -33.2524 |
+| Sharpe (rf=0) | -1.0029 |
+| P/E (trailing) | N/A |
+| P/B | 2.34 |
+| EV/EBITDA | 8.96 |
+| Revenue growth (%) | -2.80 |
+| MA50 | 35.5056 |
+| Close vs MA50 (%) | -8.2679 |
+| MA200 | 36.5331 |
+| Close vs MA200 (%) | -10.8479 |
+| RSI (14, Wilder) | 44.7995 |
+| MACD (12,26) | -0.6592 |
+| MACD signal (9) | -0.9757 |
+| MACD histogram | 0.3165 |
+
+Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
+Market data sample: {'GIS': 265}.
+
+## HOW TO READ THE QUANTITATIVE SECTION
+
+These rule-based bands are judgment choices for this research report, not investment advice.
+
+- **Close**: The latest adjusted closing price is measured in the quoted currency. This value: 32.5700 -> Price level only; it does not by itself indicate valuation.
+- **Return 1D (%)**: The adjusted closing price change over one trading day is measured as a percentage. This value: -2.5725 -> Adjusted price fell over this period.
+- **Return 1W (%)**: The adjusted closing price change over one week is measured as a percentage. This value: 1.4326 -> Adjusted price rose over this period.
+- **Return 1M (%)**: The adjusted closing price change over one month is measured as a percentage. This value: -6.2719 -> Adjusted price fell over this period.
+- **Return YTD (%)**: The adjusted closing price change over the year to date is measured as a percentage. This value: -25.1246 -> Adjusted price fell over this period.
+- **Return 1Y (%)**: The adjusted closing price change over one year is measured as a percentage. This value: -28.3157 -> Adjusted price fell over this period.
+- **Annualized volatility (%)**: The variability of daily returns is scaled to one year as a percentage. This value: 29.1006 -> Moderate annualized volatility.
+- **Max drawdown (%)**: The largest peak-to-trough price decline in the sampled history is measured as a percentage. This value: -33.2524 -> Deep peak-to-trough loss magnitude.
+- **Sharpe (rf=0)**: Sharpe measures annualized return per unit of volatility using a zero risk-free rate. This value: -1.0029 -> Negative risk-adjusted return.
+- **RSI (14, Wilder)**: The 14-period relative strength index compares recent gains with losses on a 0 to 100 scale. This value: 44.7995 -> Neutral momentum reading.
+- **MACD histogram**: The difference between MACD and its signal line measures their momentum gap in price units. This value: 0.3165 -> Positive momentum relative to the MACD signal line.
+- **Close vs MA50 (%)**: The closing price distance from its 50-day moving average is measured as a percentage. This value: -8.2679 -> Clearly below the moving-average trend level.
+- **Close vs MA200 (%)**: The closing price distance from its 200-day moving average is measured as a percentage. This value: -10.8479 -> Clearly below the moving-average trend level.
+
+## TAILWINDS
+
+### General Mills (NYSE:GIS) Stock Price Up 2.4% - Here's Why
+- Summary: General Mills (NYSE:GIS) Stock Price Up 2.4% - Here's Why
+- Date: 2026-10-15 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMirwFBVV95cUxQdEgxSTh5ZktpRzFvU1pLaEdhXzZqYUI4QjZzQXBkRTdyUHh0WTFlVGZCQnYxeFZsbEZDYmxEU2poRmZSeG81b1VBUjQwZEYwN2R6VFE0NS0xSjEzRExHcWk4UFZIVmhlR0FSX1VWSnlWVHV5Q293UlNDamRwVHZ6WDBOOXlWVkR6MW5TdHFjSTh0RUtrYlAyd2R6X1Z0bnRLSnEwTUtaeG5CZU5fTk1v?oc=5>
+
+### General Mills (NYSE:GIS) Stock Price Up 2.5% - Time to Buy?
+- Summary: GIS shares rose 2.5%, suggesting a short‑term upside.
+- Date: 2026-10-20 | Impact: medium | Horizon: short | Confidence: 0.9
+- Sources: <https://news.google.com/rss/articles/CBMisgFBVV95cUxNLVNaRHhyX3ZmS0d3eUlYZkZWYUxUaWx6Y2VNaHgxbHBLdzBLQlN3dHF1OUNDeDIwSVV0aHlyS1RyU1VIREJraHdjVU5TX0l2TjJLUDU3aHVUWWxVUVhRNVpsYlIwNG9HSEhUUU9LbnExZUlGM09BaXpTU016djZNNk11LXJMdnVreGpHVWZrb09wSGo2Vklkbl96X3NHRVVBTG5HT1pYaktpakhUNi1oSUtn?oc=5>
+
+## HEADWINDS
+
+### General Mills (NYSE:GIS) Stock Falls 2.6% - Here's What Happened
+- Summary: General Mills (NYSE:GIS) Stock Falls 2.6% - Here's What Happened
+- Date: 2026-10-21 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiuAFBVV95cUxOQkFZdjFhZXl2bTYzMXRCZ2p6dlI2ajQ4U0NKS0d4U05JT3R0OURaSU52ZzIydDJhWTRfNl84RDNmTjhYRTEtQkdnWlk1TDdRNEVyY1lCRWtQYjVreFl6ekJiOThSTVI2c2k3VnFlMnhqbVk2Q3JJR1BFMVdGTHZnSXd4OVVtcW9sSE9TZ0ZLXzFOXzRDUEVaTG1BYXhuQlU4aHRLWTdobGVrSHctS0JqZEtzcEplZ2Nt?oc=5>
+
+### General Mills (NYSE:GIS) Stock Falls 1.6% - Here's Why
+- Summary: General Mills (NYSE:GIS) Stock Falls 1.6% - Here's Why
+- Date: 2026-10-19 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiqwFBVV95cUxPSndhN1M5MzdTRVNDaU9QTWFpc2N4X0lJOG9VUzlnLUhWZjNoclQ1MUl5Q1Nhb3RsLV9mN0dJV1plZ1Vwa3VUdjFzRGtxcDgwdjRZenQxZEdtMVJFQW5oTS1NblVseWR3OXVuSmNyam1TUE5iSGpvbklIYnRpZFFFOWNZY01rZkFXYUxpR05QNm1FeUpUdWdCQzgwaWIzNkFYMlR1ZTMzdTJyNXM?oc=5>
+
+### GIS Stock Is Down 13% in the Past Month: Is the Sell-Off a Chance?
+- Summary: GIS Stock Is Down 13% in the Past Month: Is the Sell-Off a Chance?
+- Date: 2026-10-14 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMikAFBVV95cUxNT0VCMWxNOXIxMk9SYmlMLVFjOVhnZ1pqR0NHMUxSNENhTmRxek45aTVOU0xSNWRqd0kyREszSmM0UVQ5aHFCQXVPdktQWnBoeHdlTE11QXhrbXc0eER0c2lWaHJNalp3bkFCOUlVYXpZVTFwQjk4b0RTQ1ZLX3FmMFl6VFZWNk5Fdl9ZRnVTc3U?oc=5>
+
+## CATALYSTS
+
+### General Mills (GIS) After Debt Tenders And Dividend Hold Is The Stock Still Undervalued
+- Summary: General Mills (GIS) After Debt Tenders And Dividend Hold Is The Stock Still Undervalued
+- Date: 2026-10-20 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMi2gFBVV95cUxQMEZxQnp0aXlpMndXMFVub3M1NFJnMXJyNjJJbkt3Yk9ETGlia2RWdGxIYjVFNGVrdVFfdVd0OVl4eGtxRGVZUEgtU1JkRV9CZGhOR0xQcV9KNF93X3JFX1NpeDBzRTJPRVp4MzY0SmhDcWNab2xYaGtBYlJiemNBTXMzRURLU1U4NmVLdTJrV3dXNUx6amtQVFBrZ2Z1dkNJUVZXMnk3WUpVRWVuRFo4X1lqZmZSdXlxalBDc0dzMGkwazNKSGRaSWg3QXJYUDc5QW1GcU96Tl9nd9IB3wFBVV95cUxPem9Pa3ViWXU0WUlRY2VyMTdseWJiNmgwbU9YU2FpSU1Nd2JPbXhVRmNBZktvVzd1WV9OaTlTeEJIdXFQUE1FVU9HdHVBRlczT0NCTzZVZlM1Mjh0ZVYwblF3TjNpUlF1UWRZZ3dyOTFwSF9IaXRNX1RJYW1LRXBDMEpDUFJYRG1RaHAzdlhVcWwtck05aWtvU3VXUVd5dmt6RkNqZWIwSkR3U3hrRERxUkE2TzJ2X0dSbExhcEZyRmlLUmNDYU9hYUMtd2lEczFjb2FwQ3VIaVBpQW13VmRr?oc=5>
+
+### General Mills Stock Is Down 30%, and Wall Street Analysts Keep Cutting Their Price Targets. Here's Why History Says They're Missing the Bigger Picture.
+- Summary: General Mills Stock Is Down 30%, and Wall Street Analysts Keep Cutting Their Price Targets. Here's Why History Says They're Missing the Bigger Picture.
+- Date: 2026-10-20 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMimAFBVV95cUxPM0E2YW1vN0tDaC1Oc3dsa2x4MVJILWhBbGdIV0xuNjgxV2NKblpXN08yU0tsNkZOX1NVT2k3TG5OUkFVWlRvcW9KVFZTQlA2WldtZE9iZ0l4SnhLWWNFYzBrTlYzODgwWnF1aFF2YWZyUk9HekxRSkltNnoxWjAxX0Z3MFVQNkljMHdBZGpadjRkR1M2V0ZOTQ?oc=5>
+
+### General Mills, Inc. $GIS Shares Purchased by Assenagon Asset Management S.A.
+- Summary: General Mills, Inc. $GIS Shares Purchased by Assenagon Asset Management S.A.
+- Date: 2026-10-21 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMizAFBVV95cUxQTW5wM3lRQ0w4MjNOUXJiX0dFZnRVeXZHcmhCWHhUeEF5NW8ybkM2WldoUFpHNTI2TDB0ZnJpWTNveW9EbjZHVzcxS1RsU1Bxa0ZKRmlXeDdjYTlEX09yTlI3RzE2TVQxVUJiYWRpVGFoRk1BVkJBS3lyeUhqN0YzYXNpTXNvNEZQcUxBY19qZHgzVG1tdHZTMl9BalVLajBRa3ZxMDJ3ZWFTa0NFbjhCODlQRkswa3VPQWxZZkQxZzZhNG1IUjc4ZUNVRng?oc=5>
+
+### General Mills (GIS): Buy, Sell, or Hold Post Q3 Earnings?
+- Summary: Analysts discuss post-Q3 earnings outlook for GIS, evaluating buy/sell/hold recommendations.
+- Date: 2026-10-20 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMilgFBVV95cUxNNDRncUZFR1VXdGd5WXJFZFNSaWduaHBQRUR0S1BvUl9fN01FMkkxWkNqRVhJLU9KSUlSZktkU1pFUWc3REJVRzYyZUt2VklpaEc1ay0teFlCVVdCdDJndENGaC1Kem5tM3ZZcVpUTTVRNm5ieUVnSVZuaFVEMGVqZW1DVmVNdWtpbHB2THNkOUZSb0NCYkE?oc=5>
+
+### Wagyu beef and hot honey chicken are now meat-stick flavors
+- Summary: GIS introduces new Wagyu beef and hot honey chicken flavors to its meat-stick line.
+- Date: 2026-10-21 | Impact: low | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiugFBVV95cUxQTHFaU0laTzlvaXB4LUl1MDhnSURnb2lTY0QyOFRnajhPVDJ5X3M1RTh4UXRLdzJ0bkZLTUp5eTFHNzdHZWJGbnFlOXIyRi16LTZBZEpldUNpWlVsN3FXMWVmRFRSU1BiRnk0SEtMRUhlWlpCZXc2RUdoNnhFMVEwVS1UQXNhQ2FoTXEzSmsxUVJrMXpvM0ZYYzBJc3JSVDBMNGdEVTBaZ0FtYlFZOEtMRUZ0TE52X0lnU3c?oc=5>
+
+### Better Dividend Stock: General Mills vs. J.M. Smucker
+- Summary: Comparison of dividend yields between GIS and J.M. Smucker for investors.
+- Date: 2026-10-19 | Impact: low | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiggFBVV95cUxQOEVvSmRDM0FfZHJzQ3ZuYXhZV2RJX2ZNWlF5bHAxNWp3Mnlpb1NudHdVemNwbzhPZlRMZXFCRjRwU0trVnI2R1QzQXhDZUxpVDluS01xdEhnaTJxTEFsZ2ozTEFCR3I1UFprWllCbVFULURyMUEtVC1HdjhxT3FjX1lR?oc=5>
+
+### Better Dividend Stock for Retirees: General Mills vs. Campbell’s
+- Summary: Retirement investors compare dividend performance of GIS and Campbell's.
+- Date: 2026-10-19 | Impact: low | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMikAFBVV95cUxQVmRHajlaTnBPSmdJMU9GdVJKeHlUcGZtU2kzUXJ1bDM1bFJzYlZoNjY0cmJhS3d3RUlKTmFyb3BLcHRFNm93OHpydTVKN0FXSjBTejhCbHRZeGlsVE4zeU56QjJXckh1aXFISGtpVWhMUndEWXB4em5Ub0JQM01ZUzRBMWhWRGt0bnJ6aWRoSUc?oc=5>
+
+### General Mills, Inc. $GIS Stock: Cyndeo Wealth Partners LLC Reduces Holdings
+- Summary: Cyndeo Wealth Partners LLC decreases its GIS holdings, indicating a sell action.
+- Date: 2026-10-20 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMizAFBVV95cUxPV0tPYzlvQVp1WTFmUG1tT0REd1cwNkhEVzdxTnZMWVVscm9Eem1VTF9MUVNYNnl3cTF3ZEQzWFNQaG9LSVVfbkl3b2lUWGlBazc4bWo3dGdJN2ZuV0pqMjJwWVFfWTFlbGltTHRicm1TcjZ3VVpBRUZONFVXTzJKMTRGQkFXUU14TFlzN1NuaHlrd0ZBMFZycFYwQ0ZaR1BJekNnLUtCNHR2di1Qc1JTaEhtblRfVnotb1JibWlBM2kzYk0xZnBJVW54Zmo?oc=5>
+
+### How Investors Are Reacting To General Mills (GIS) Debt Paydown Focus
+- Summary: Investors focus on GIS debt paydown, indicating potential financial strengthening.
+- Date: 2026-10-17 | Impact: high | Horizon: short | Confidence: 0.9
+- Sources: <https://news.google.com/rss/articles/CBMi2gFBVV95cUxPcGRhZVNPdnd0TV93Y1BGZ19NMkQ4dzA2WjJ2NE54Q0tMUE5NRUthN29abkVHY1h5UEk5b0hvRTR4VGhDZHotci1KUXRqSUd4ZzRJeUdUU1lEcG9oWHNFbndyZVdCMzMzUGNnRG4tdzJyaUJXamVmbHRiaVFvN0daWllGd2ppYXFUVlhHQ2g3S3IzaVhTVkhCa2lkZU9USldONnppNW03OWFKLUEwZVZOX1NQa1hkNF9ITWdRcVJBZkd5aUU3NHpXWThxbjVuNzU2WUtEVEM4VzBRd9IB3wFBVV95cUxQLTU2b0Nub2xZazJ3SzAwZXJ4dWFNSFMxVzM2N2pBaHBOWFN1bjVVdjJnZ0lLLXFEdDVDY2xlUnZJa0RiOHRiZm9RVnY2QmRKTnBwT1ItWmFWb1Ayb0VINXVOSFh4WEpqSzgwc29iRGViMUI3SUh2U3B2MUVCdk9Cd09BNVBUbi15NW9qa3MyaU9QekJDWUVpOXZuUndtS0xoVGJBT3NUdHRiUDN3OWJ3NVFvWDlPN2pib2UtejV0RTZZX2lLdnNob0xFSVBqUHhMcmZTa2g4ZVNjNFVxSmJV?oc=5>
+
+### Frank Rimerman Advisors LLC Purchases New Shares in General Mills, Inc. $GIS
+- Summary: Advisor purchases new GIS shares, signaling confidence in the company.
+- Date: 2026-10-19 | Impact: medium | Horizon: short | Confidence: 0.85
+- Sources: <https://news.google.com/rss/articles/CBMizwFBVV95cUxQOWxDcUo2SnhVdzVwTG5rREY0RXllZmR2LXFSVFRaU1RWZzZnRmJyLVN0c2llcGhKWlE2YkFmcWNfLTJqdlVOelFhQUEyNTFhNlFQTEQ3eHBDbFBOMTBZOVEtVXhieUpQRFdpLXRiM09iRkRaMjBrS05YMHN2NGlkTC0yYkROQ2F5dVppNW81eHduamZ4MDZXaHBudHBfVklqZlp2TkRaYlVCLTRQZkZJSDZWbVd2RU1LNnZCYVJjZXBFLXYwTnUwd3g5ZllzZW8?oc=5>
+
+### How Investors Are Reacting To General Mills (GIS) Debt Tender Offers And Deleveraging Pivot
+- Summary: GIS debt tender offers and deleveraging pivot attract investor attention.
+- Date: 2026-10-14 | Impact: high | Horizon: short | Confidence: 0.9
+- Sources: <https://news.google.com/rss/articles/CBMiowFBVV95cUxOSFgxSENDbzRJdXY2bjI3SmtIVWdUSW5lVVAxMWtIaEphUHI1OGl6MUNrTTdrdGpkbEVNb1pTei1KLUI5RXBIU1JDejQ4ZzN1ZExhYXA1SzJWZkdsRFpJaDhDdncyNDBnNWlTZHI5MzQwS256aEFvZ3F4RzhxTGpBMzd3emFWVXpLdGstS1B3dWhtQ0xOX05TaGVjWm56UVd6N2VJ?oc=5>
+
+## RISKS
+
+No items in this run
+
+## PEER COMPARABLES
+
+| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (listing currency) | 1Y return (%) |
+|---|---:|---:|---:|---:|---:|---:|
+| **GIS** | **N/A** | **2.34** | **8.96** | **-2.80** | **17,414,760,448.00 USD** | **-28.32** |
+| KHC | N/A | 0.77 | 8.07 | -1.40 | 27,866,857,472.00 USD | -1.84 |
+| CPB | 14.93 | 1.51 | 8.14 | -7.90 | 5,833,470,464.00 USD | -33.02 |
+| SJM | 59.72 | 2.37 | 9.08 | 5.00 | 13,653,070,848.00 USD | 27.05 |
+
+Peers fetched as_of: 2026-10-21; GIS reuses existing data (market data as_of: 2026-10-21); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
+
+## EARNINGS CALENDAR
+
+- Last reported earnings: 2026-09-23
+- Next expected earnings: 2026-12-23 (yfinance; expected dates may change)
+
+## MACRO (FRED)
+
+N/A: no FRED API key configured; skipped
+
+## LATEST FILING (EDGAR)
+
+- Form: 10-Q
+- Filing date: 2026-09-23
+- Revenue (latest available single quarter): 4,389,500,000.00 USD; period 2026-06-01/2026-08-30; fiscal year/reporting period 2027/Q1
+- Net income (latest available single quarter): 397,000,000.00 USD; period 2026-06-01/2026-08-30; fiscal year/reporting period 2027/Q1
+- SEC link: https://www.sec.gov/Archives/edgar/data/40704/000162828026063201/gis-20260830.htm
+
+SEC requests use the configured organization and contact identity; unavailable source data is shown as N/A. Financial values use directly reported periods of approximately three months, without deriving quarters from cumulative values; fiscal year/period labels come from original facts and may refer to later comparative statements.
+
+API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-application-programming-interfaces), [FRED observations](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).
+
+## SOURCES
+
+- https://news.google.com/rss/articles/CBMirwFBVV95cUxQdEgxSTh5ZktpRzFvU1pLaEdhXzZqYUI4QjZzQXBkRTdyUHh0WTFlVGZCQnYxeFZsbEZDYmxEU2poRmZSeG81b1VBUjQwZEYwN2R6VFE0NS0xSjEzRExHcWk4UFZIVmhlR0FSX1VWSnlWVHV5Q293UlNDamRwVHZ6WDBOOXlWVkR6MW5TdHFjSTh0RUtrYlAyd2R6X1Z0bnRLSnEwTUtaeG5CZU5fTk1v?oc=5
+- https://news.google.com/rss/articles/CBMisgFBVV95cUxNLVNaRHhyX3ZmS0d3eUlYZkZWYUxUaWx6Y2VNaHgxbHBLdzBLQlN3dHF1OUNDeDIwSVV0aHlyS1RyU1VIREJraHdjVU5TX0l2TjJLUDU3aHVUWWxVUVhRNVpsYlIwNG9HSEhUUU9LbnExZUlGM09BaXpTU016djZNNk11LXJMdnVreGpHVWZrb09wSGo2Vklkbl96X3NHRVVBTG5HT1pYaktpakhUNi1oSUtn?oc=5
+- https://news.google.com/rss/articles/CBMiuAFBVV95cUxOQkFZdjFhZXl2bTYzMXRCZ2p6dlI2ajQ4U0NKS0d4U05JT3R0OURaSU52ZzIydDJhWTRfNl84RDNmTjhYRTEtQkdnWlk1TDdRNEVyY1lCRWtQYjVreFl6ekJiOThSTVI2c2k3VnFlMnhqbVk2Q3JJR1BFMVdGTHZnSXd4OVVtcW9sSE9TZ0ZLXzFOXzRDUEVaTG1BYXhuQlU4aHRLWTdobGVrSHctS0JqZEtzcEplZ2Nt?oc=5
+- https://news.google.com/rss/articles/CBMiqwFBVV95cUxPSndhN1M5MzdTRVNDaU9QTWFpc2N4X0lJOG9VUzlnLUhWZjNoclQ1MUl5Q1Nhb3RsLV9mN0dJV1plZ1Vwa3VUdjFzRGtxcDgwdjRZenQxZEdtMVJFQW5oTS1NblVseWR3OXVuSmNyam1TUE5iSGpvbklIYnRpZFFFOWNZY01rZkFXYUxpR05QNm1FeUpUdWdCQzgwaWIzNkFYMlR1ZTMzdTJyNXM?oc=5
+- https://news.google.com/rss/articles/CBMikAFBVV95cUxNT0VCMWxNOXIxMk9SYmlMLVFjOVhnZ1pqR0NHMUxSNENhTmRxek45aTVOU0xSNWRqd0kyREszSmM0UVQ5aHFCQXVPdktQWnBoeHdlTE11QXhrbXc0eER0c2lWaHJNalp3bkFCOUlVYXpZVTFwQjk4b0RTQ1ZLX3FmMFl6VFZWNk5Fdl9ZRnVTc3U?oc=5
+- https://news.google.com/rss/articles/CBMie0FVX3lxTE9naFdaQTFjcXkwbnM4YUs1c3V0LTZjdXFmeURmV3JKdk5iRlZYMjd5RWZEVUV6NzIxWjhZVEZCSTZvTVZvQzh1R0pXZ2VmTTV6SWYxaW9pVC1kUU9GZE16YnlHYWx4WXhWY0YxaWZLN2JvczY3RmRSR0I2aw?oc=5
+- https://news.google.com/rss/articles/CBMi2gFBVV95cUxQMEZxQnp0aXlpMndXMFVub3M1NFJnMXJyNjJJbkt3Yk9ETGlia2RWdGxIYjVFNGVrdVFfdVd0OVl4eGtxRGVZUEgtU1JkRV9CZGhOR0xQcV9KNF93X3JFX1NpeDBzRTJPRVp4MzY0SmhDcWNab2xYaGtBYlJiemNBTXMzRURLU1U4NmVLdTJrV3dXNUx6amtQVFBrZ2Z1dkNJUVZXMnk3WUpVRWVuRFo4X1lqZmZSdXlxalBDc0dzMGkwazNKSGRaSWg3QXJYUDc5QW1GcU96Tl9nd9IB3wFBVV95cUxPem9Pa3ViWXU0WUlRY2VyMTdseWJiNmgwbU9YU2FpSU1Nd2JPbXhVRmNBZktvVzd1WV9OaTlTeEJIdXFQUE1FVU9HdHVBRlczT0NCTzZVZlM1Mjh0ZVYwblF3TjNpUlF1UWRZZ3dyOTFwSF9IaXRNX1RJYW1LRXBDMEpDUFJYRG1RaHAzdlhVcWwtck05aWtvU3VXUVd5dmt6RkNqZWIwSkR3U3hrRERxUkE2TzJ2X0dSbExhcEZyRmlLUmNDYU9hYUMtd2lEczFjb2FwQ3VIaVBpQW13VmRr?oc=5
+- https://news.google.com/rss/articles/CBMimAFBVV95cUxPM0E2YW1vN0tDaC1Oc3dsa2x4MVJILWhBbGdIV0xuNjgxV2NKblpXN08yU0tsNkZOX1NVT2k3TG5OUkFVWlRvcW9KVFZTQlA2WldtZE9iZ0l4SnhLWWNFYzBrTlYzODgwWnF1aFF2YWZyUk9HekxRSkltNnoxWjAxX0Z3MFVQNkljMHdBZGpadjRkR1M2V0ZOTQ?oc=5
+- https://news.google.com/rss/articles/CBMizAFBVV95cUxQTW5wM3lRQ0w4MjNOUXJiX0dFZnRVeXZHcmhCWHhUeEF5NW8ybkM2WldoUFpHNTI2TDB0ZnJpWTNveW9EbjZHVzcxS1RsU1Bxa0ZKRmlXeDdjYTlEX09yTlI3RzE2TVQxVUJiYWRpVGFoRk1BVkJBS3lyeUhqN0YzYXNpTXNvNEZQcUxBY19qZHgzVG1tdHZTMl9BalVLajBRa3ZxMDJ3ZWFTa0NFbjhCODlQRkswa3VPQWxZZkQxZzZhNG1IUjc4ZUNVRng?oc=5
+- https://news.google.com/rss/articles/CBMilgFBVV95cUxNNDRncUZFR1VXdGd5WXJFZFNSaWduaHBQRUR0S1BvUl9fN01FMkkxWkNqRVhJLU9KSUlSZktkU1pFUWc3REJVRzYyZUt2VklpaEc1ay0teFlCVVdCdDJndENGaC1Kem5tM3ZZcVpUTTVRNm5ieUVnSVZuaFVEMGVqZW1DVmVNdWtpbHB2THNkOUZSb0NCYkE?oc=5
+- https://news.google.com/rss/articles/CBMi0AFBVV95cUxOVzdWcHAxTmoyVVo0ZlpJY0dmdkhUcGRyMENNZUc4MmwycmRjd2ZRSEtxQnFaMFBTN1VTampaczVOWFZ1SDBJYXRaTGNhbldXQUE2czRMbFQ1Wm5lbDlvTVlGY3dTS3ZMUHh5cDNZOExSdS02NF9NZmZOLWxpMFJRQnMzOTl1elZkcEt5cFNXbDdCLUU5bnh1NjBrS3h0U1MxdGVKWGs2dWxaX0Juc1JtTWJQZEZyYTFXREhSenFYSzBoWUpwYU5kWXFXTlU5SF9K?oc=5
+- https://news.google.com/rss/articles/CBMiugFBVV95cUxQTHFaU0laTzlvaXB4LUl1MDhnSURnb2lTY0QyOFRnajhPVDJ5X3M1RTh4UXRLdzJ0bkZLTUp5eTFHNzdHZWJGbnFlOXIyRi16LTZBZEpldUNpWlVsN3FXMWVmRFRSU1BiRnk0SEtMRUhlWlpCZXc2RUdoNnhFMVEwVS1UQXNhQ2FoTXEzSmsxUVJrMXpvM0ZYYzBJc3JSVDBMNGdEVTBaZ0FtYlFZOEtMRUZ0TE52X0lnU3c?oc=5
+- https://news.google.com/rss/articles/CBMiggFBVV95cUxQOEVvSmRDM0FfZHJzQ3ZuYXhZV2RJX2ZNWlF5bHAxNWp3Mnlpb1NudHdVemNwbzhPZlRMZXFCRjRwU0trVnI2R1QzQXhDZUxpVDluS01xdEhnaTJxTEFsZ2ozTEFCR3I1UFprWllCbVFULURyMUEtVC1HdjhxT3FjX1lR?oc=5
+- https://news.google.com/rss/articles/CBMikAFBVV95cUxQVmRHajlaTnBPSmdJMU9GdVJKeHlUcGZtU2kzUXJ1bDM1bFJzYlZoNjY0cmJhS3d3RUlKTmFyb3BLcHRFNm93OHpydTVKN0FXSjBTejhCbHRZeGlsVE4zeU56QjJXckh1aXFISGtpVWhMUndEWXB4em5Ub0JQM01ZUzRBMWhWRGt0bnJ6aWRoSUc?oc=5
+- https://news.google.com/rss/articles/CBMizAFBVV95cUxPV0tPYzlvQVp1WTFmUG1tT0REd1cwNkhEVzdxTnZMWVVscm9Eem1VTF9MUVNYNnl3cTF3ZEQzWFNQaG9LSVVfbkl3b2lUWGlBazc4bWo3dGdJN2ZuV0pqMjJwWVFfWTFlbGltTHRicm1TcjZ3VVpBRUZONFVXTzJKMTRGQkFXUU14TFlzN1NuaHlrd0ZBMFZycFYwQ0ZaR1BJekNnLUtCNHR2di1Qc1JTaEhtblRfVnotb1JibWlBM2kzYk0xZnBJVW54Zmo?oc=5
+- https://news.google.com/rss/articles/CBMi2gFBVV95cUxPcGRhZVNPdnd0TV93Y1BGZ19NMkQ4dzA2WjJ2NE54Q0tMUE5NRUthN29abkVHY1h5UEk5b0hvRTR4VGhDZHotci1KUXRqSUd4ZzRJeUdUU1lEcG9oWHNFbndyZVdCMzMzUGNnRG4tdzJyaUJXamVmbHRiaVFvN0daWllGd2ppYXFUVlhHQ2g3S3IzaVhTVkhCa2lkZU9USldONnppNW03OWFKLUEwZVZOX1NQa1hkNF9ITWdRcVJBZkd5aUU3NHpXWThxbjVuNzU2WUtEVEM4VzBRd9IB3wFBVV95cUxQLTU2b0Nub2xZazJ3SzAwZXJ4dWFNSFMxVzM2N2pBaHBOWFN1bjVVdjJnZ0lLLXFEdDVDY2xlUnZJa0RiOHRiZm9RVnY2QmRKTnBwT1ItWmFWb1Ayb0VINXVOSFh4WEpqSzgwc29iRGViMUI3SUh2U3B2MUVCdk9Cd09BNVBUbi15NW9qa3MyaU9QekJDWUVpOXZuUndtS0xoVGJBT3NUdHRiUDN3OWJ3NVFvWDlPN2pib2UtejV0RTZZX2lLdnNob0xFSVBqUHhMcmZTa2g4ZVNjNFVxSmJV?oc=5
+- https://news.google.com/rss/articles/CBMizwFBVV95cUxQOWxDcUo2SnhVdzVwTG5rREY0RXllZmR2LXFSVFRaU1RWZzZnRmJyLVN0c2llcGhKWlE2YkFmcWNfLTJqdlVOelFhQUEyNTFhNlFQTEQ3eHBDbFBOMTBZOVEtVXhieUpQRFdpLXRiM09iRkRaMjBrS05YMHN2NGlkTC0yYkROQ2F5dVppNW81eHduamZ4MDZXaHBudHBfVklqZlp2TkRaYlVCLTRQZkZJSDZWbVd2RU1LNnZCYVJjZXBFLXYwTnUwd3g5ZllzZW8?oc=5
+- https://news.google.com/rss/articles/CBMiowFBVV95cUxOSFgxSENDbzRJdXY2bjI3SmtIVWdUSW5lVVAxMWtIaEphUHI1OGl6MUNrTTdrdGpkbEVNb1pTei1KLUI5RXBIU1JDejQ4ZzN1ZExhYXA1SzJWZkdsRFpJaDhDdncyNDBnNWlTZHI5MzQwS256aEFvZ3F4RzhxTGpBMzd3emFWVXpLdGstS1B3dWhtQ0xOX05TaGVjWm56UVd6N2VJ?oc=5
+
+## Research notes and limitations
+
+- Daily multi-source research; AI items require human spot checks; RSS coverage is not guaranteed.
+- News classifications use source headlines, with rule-based extraction and the configured AI provider when its daily budget is available.
+- Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
