@@ -2259,6 +2259,23 @@
       "md": "archive/20261022T025901Z-695d9f64/ATD.TO/ATD.TO-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/ATD.TO/ATD.TO-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/ATD.TO/ATD.TO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/BMO.TO",
+      "ticker": "BMO.TO",
+      "generated_at": "2026-10-22T03:18:34.198093+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "0095c191c7289ec10046861b5fb774df5de12dbad500fd34a6b65a82e97e4fae",
+        "json": "9b2d773b2a9daad09b759ef7e146f33073097ae8e366ea6a27a458ad59544809",
+        "pdf": "567748bc74f9519a67d5e818cdb807ec97a70882f3d05753ecdafe4a3d00b9d0"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/BMO.TO/BMO.TO-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/BMO.TO/BMO.TO-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/BMO.TO/BMO.TO-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2380,7 +2397,8 @@
       "AMTM",
       "AMZN",
       "ASML",
-      "ATD.TO"
+      "ATD.TO",
+      "BMO.TO"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2500,6 +2518,15 @@
         "earnings": 1.218,
         "edgar": 0.114,
         "regenerate_report": 0.165,
+        "report_pdf": 0.265
+      },
+      "BMO.TO": {
+        "quant": 1.518,
+        "ai_extract": 2.572,
+        "comparables": 1.619,
+        "earnings": 1.168,
+        "edgar": 2.472,
+        "regenerate_report": 0.164,
         "report_pdf": 0.265
       }
     }
