@@ -418,3 +418,35 @@ def test_invalid_collection_budget_rejected_before_provider_calls(pipeline, budg
     with pytest.raises(ValueError, match='Time budget'):
         refresh.refresh(root, now=NOW, time_budget_seconds=budget)
     assert calls == []
+
+
+def test_exactly_one_scheduled_run_per_toronto_day_for_a_full_year():
+    """Both crons fire every UTC day; across both DST changes exactly one runs per local date."""
+    from datetime import timedelta
+    start = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    runs = {}
+    for offset in range(366):
+        day = start + timedelta(days=offset)
+        for cron, hour in (('0 23 * * *', 23), ('0 0 * * *', 0)):
+            fired = day.replace(hour=hour)
+            # Simulate up to 90 minutes of Actions queueing delay.
+            result = decision('schedule', fired + timedelta(minutes=90), cron)
+            if result['run']:
+                runs.setdefault(result['business_date'], []).append(cron)
+    assert all(len(crons) == 1 for crons in runs.values())
+    # UTC days 2026-01-01..2027-01-01 cover Toronto evenings 2025-12-31..2026-12-31
+    # (366 dates) with no gaps.
+    days = sorted(runs)
+    assert days[0] == '2025-12-31' and days[-1] == '2026-12-31' and len(days) == 366
+    # Summer uses the 23:00 UTC trigger, winter the 00:00 UTC one.
+    assert runs['2026-07-01'] == ['0 23 * * *'] and runs['2026-12-01'] == ['0 0 * * *']
+    assert runs['2026-03-08'] == ['0 23 * * *'] and runs['2026-11-01'] == ['0 0 * * *']
+
+
+def test_naive_and_unknown_schedule_inputs_rejected():
+    with pytest.raises(ValueError, match='timezone-aware'):
+        decision('schedule', datetime(2026, 10, 20, 23), '0 23 * * *')
+    with pytest.raises(ValueError, match='Unknown daily schedule'):
+        decision('schedule', datetime(2026, 10, 20, 23, tzinfo=timezone.utc), '5 23 * * *')
+    assert decision('workflow_dispatch', datetime(2026, 10, 20, 3, tzinfo=timezone.utc)) == {
+        'run': True, 'business_date': '2026-10-19'}
