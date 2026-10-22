@@ -6,17 +6,18 @@ from urllib.parse import urlencode
 from urllib.request import urlopen
 from data_utils import number, save, as_of_date
 
+CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config', 'fred.json')
 SERIES = {'UNRATE': 'Unemployment rate (%)', 'CPIAUCSL': 'Consumer Price Index (1982–1984=100)', 'FEDFUNDS': 'Federal funds rate (%)', 'NAPM': 'ISM Manufacturing PMI'}
 
 def main():
     # Team key: project config first, then env var (legacy personal key).
     key = ''
-    cfg_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config', 'fred.json')
     try:
-        with open(cfg_path, encoding='utf-8') as f:
+        with open(CONFIG_PATH, encoding='utf-8') as f:
             key = json.load(f).get('api_key', '').strip()
-    except (OSError, ValueError):
-        pass
+    except (OSError, ValueError, AttributeError):
+        # Unreadable, non-object or non-string api_key: fall back to the env var.
+        key = ''
     if not key:
         key = os.environ.get('FRED_API_KEY', '').strip()
     if not key:
