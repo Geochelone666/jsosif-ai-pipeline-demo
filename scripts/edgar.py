@@ -24,13 +24,20 @@ def resolve_cik(symbol):
     if sec_symbol is None:
         return None
     cache = Path(os.environ['JSOSIF_SEC_CACHE']) if os.environ.get('JSOSIF_SEC_CACHE') else None
+    entries = None
     if cache and cache.is_file() and time.time() - cache.stat().st_mtime < 86400:
-        entries = json.loads(cache.read_text())
-    else:
+        try:
+            entries = json.loads(cache.read_text(encoding='utf-8'))
+        except (OSError, ValueError):
+            entries = None  # A torn/corrupt cache must not hide SEC data for a day.
+    if not isinstance(entries, dict):
         entries = fetch('https://www.sec.gov/files/company_tickers.json')
         if cache:
             cache.parent.mkdir(parents=True, exist_ok=True)
-            cache.write_text(json.dumps(entries))
+            # Write-then-rename so concurrent or interrupted runs never see half a file.
+            tmp = cache.with_name(cache.name + '.tmp')
+            tmp.write_text(json.dumps(entries), encoding='utf-8')
+            tmp.replace(cache)
     cik = next((str(row['cik_str']) for row in entries.values()
                 if row['ticker'].upper() == sec_symbol), None)
     return None if listing and cik != listing[1] else cik
