@@ -2735,6 +2735,23 @@
       "md": "archive/20261022T025901Z-695d9f64/NVDA/NVDA-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/NVDA/NVDA-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/NVDA/NVDA-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/NVO",
+      "ticker": "NVO",
+      "generated_at": "2026-10-22T04:19:53.116076+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "b1842cf5364be5b3576c1ec6f61cea9cfce3d11951c27139e11b8c2d5559dbf1",
+        "json": "54ec1e38ccfcfe3b951a56a71d9faa31703aadca71d0362548f71a23a87aaaec",
+        "pdf": "d30e38674f947fe7579694191d7e3884653ac20a51cf643b009797d7442a74a1"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/NVO/NVO-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/NVO/NVO-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/NVO/NVO-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2884,7 +2901,8 @@
       "NFLX",
       "NTR.TO",
       "NVAX",
-      "NVDA"
+      "NVDA",
+      "NVO"
     ],
     "degraded_tickers": [
       "META",
@@ -2894,7 +2912,8 @@
       "NFLX",
       "NTR.TO",
       "NVAX",
-      "NVDA"
+      "NVDA",
+      "NVO"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3265,6 +3284,15 @@
         "earnings": 1.217,
         "edgar": 2.019,
         "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "NVO": {
+        "quant": 1.518,
+        "ai_extract": 12.347,
+        "comparables": 1.769,
+        "earnings": 1.117,
+        "edgar": 2.571,
+        "regenerate_report": 0.164,
         "report_pdf": 0.265
       }
     }
