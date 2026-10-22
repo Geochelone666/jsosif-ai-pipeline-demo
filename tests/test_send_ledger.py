@@ -104,3 +104,14 @@ def test_invalid_record_does_not_append(ledger, changes):
     with pytest.raises(ValueError):
         ledger.record(dict(entry(), **changes))
     assert ledger._path().read_bytes() == before
+
+
+def test_undecodable_line_is_skipped_not_fatal(ledger, caplog):
+    ledger.record(entry())
+    path = ledger._path()
+    with path.open('ab') as stream:
+        stream.write(b'\xff\xfe not utf-8\n')
+    ledger.record(entry(snapshot='CSCO-2026-10-02'))
+    rows = ledger.query()
+    assert [row['snapshot_id'] for row in rows] == ['CNQ.TO-2026-10-01', 'CSCO-2026-10-02']
+    assert 'Skipping malformed ledger line 2' in caplog.text

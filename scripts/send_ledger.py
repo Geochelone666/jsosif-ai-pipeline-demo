@@ -70,7 +70,8 @@ def query(since=None, until=None, ticker=None, dry_run=None) -> list[dict]:
     lower, upper = _bound(since), _bound(until, end=True)
     rows = []
     try:
-        stream = _path().open(encoding='utf-8')
+        # A torn or corrupted line must not hide every other audit record.
+        stream = _path().open(encoding='utf-8', errors='replace')
     except FileNotFoundError:
         return rows
     with stream:
