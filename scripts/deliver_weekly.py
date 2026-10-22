@@ -51,6 +51,8 @@ def due_period(member, now):
     hour, minute = map(int, member['send_time'].split(':'))
     due = datetime.combine(monday + timedelta(days=member['send_weekday']),
                            datetime.min.time(), tzinfo=local.tzinfo).replace(hour=hour, minute=minute)
+    if member.get('delivery_start_date') and due.date() < date.fromisoformat(member['delivery_start_date']):
+        return None
     # Compare instants: the repeated fall-back hour must not move an already due
     # send back into the future. ZoneInfo's default fold=0 chooses its first occurrence.
     return monday.isoformat() if now.astimezone(timezone.utc) >= due.astimezone(timezone.utc) else None
