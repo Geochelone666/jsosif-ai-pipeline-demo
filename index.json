@@ -2293,6 +2293,23 @@
       "md": "archive/20261022T025901Z-695d9f64/BRK-B/BRK-B-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/BRK-B/BRK-B-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/BRK-B/BRK-B-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/CAT",
+      "ticker": "CAT",
+      "generated_at": "2026-10-22T03:27:33.767153+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "cfa620477d920824b8424d31d4d1d9c6ed7aa7ac1c391e0f49b7efb2d3f66f4c",
+        "json": "2ed726954f19c1063c97d72fa1ef08274b6d671be9769269824d890873afa17b",
+        "pdf": "c26b814f8148a03e195ad9f558050d88de311dd50d6e6374016bdcafeb68485c"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/CAT/CAT-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/CAT/CAT-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/CAT/CAT-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2416,7 +2433,8 @@
       "ASML",
       "ATD.TO",
       "BMO.TO",
-      "BRK-B"
+      "BRK-B",
+      "CAT"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2554,6 +2572,15 @@
         "earnings": 1.167,
         "edgar": 2.02,
         "regenerate_report": 0.164,
+        "report_pdf": 0.315
+      },
+      "CAT": {
+        "quant": 1.619,
+        "ai_extract": 231.985,
+        "comparables": 1.568,
+        "earnings": 1.069,
+        "edgar": 1.919,
+        "regenerate_report": 0.114,
         "report_pdf": 0.315
       }
     }
