@@ -2837,6 +2837,23 @@
       "md": "archive/20261022T025901Z-695d9f64/SHOP.TO/SHOP.TO-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/SHOP.TO/SHOP.TO-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/SHOP.TO/SHOP.TO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/SPGI",
+      "ticker": "SPGI",
+      "generated_at": "2026-10-22T04:21:32.025337+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "ecebc038b481065c2c44790975c81bd09c560d15a75bc7f3bdb77b2539f6e63d",
+        "json": "a341e272d6f64dbb3fb0372cddc563b9953f5dd288a97d9e3ad074365c3c4f42",
+        "pdf": "3aa44d976249872ee472b70e9069a08aee1b45181517af468f0ca4bf75a6bbe9"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/SPGI/SPGI-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/SPGI/SPGI-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/SPGI/SPGI-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2992,7 +3009,8 @@
       "PEP",
       "PFE",
       "SCHW",
-      "SHOP.TO"
+      "SHOP.TO",
+      "SPGI"
     ],
     "degraded_tickers": [
       "META",
@@ -3007,7 +3025,8 @@
       "OTEX.TO",
       "PEP",
       "PFE",
-      "SCHW"
+      "SCHW",
+      "SPGI"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3431,6 +3450,15 @@
         "comparables": 1.417,
         "earnings": 1.066,
         "edgar": 0.114,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "SPGI": {
+        "quant": 1.267,
+        "ai_extract": 6.381,
+        "comparables": 1.317,
+        "earnings": 1.119,
+        "edgar": 1.969,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
       }
