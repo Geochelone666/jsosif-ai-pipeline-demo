@@ -212,7 +212,7 @@ class GmailSmtpBackend:
     """Send via Gmail SMTP using an App Password from project config.
 
     Config file (default: ROOT/config/gmail.json):
-        {"address": "JsosifTech1@gmail.com", "app_password": "..."}
+        {"address": "team-sender@example.com", "app_password": "..."}
 
     The config lives in the project, not in Muse's vault — team-owned.
     """
