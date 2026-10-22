@@ -1,0 +1,134 @@
+{
+  "ticker": "XYL",
+  "errors": [
+    "SPY yfinance: The price request could not be completed due to an unexpected error after 1 attempts (dns_or_connection)",
+    "SPY stooq: The price service returned HTTP 404 after 1 attempts (http_error)",
+    "warning: Beta vs SPY unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/XYL/history/",
+    "https://finance.yahoo.com/quote/XYL/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 106.3499984741211,
+    "Return 1D (%)": 1.2664272267832954,
+    "Return 1W (%)": 3.513724630536119,
+    "Return 1M (%)": -0.8299136585017797,
+    "Return YTD (%)": -21.033441424285325,
+    "Return 1Y (%)": -26.733615448674186,
+    "Annualized volatility (%)": 25.31027125335633,
+    "Max drawdown (%)": -33.119246490927864,
+    "Sharpe (rf=0)": -1.1058728346328515,
+    "Beta vs SPY": null,
+    "MA50": 107.58278533935547,
+    "Close vs MA50 (%)": -1.14589602913302,
+    "MA200": 118.06605281829835,
+    "Close vs MA200 (%)": -9.923304848861225,
+    "RSI (14, Wilder)": 56.587614079631294,
+    "MACD (12,26)": -0.7397364453990463,
+    "MACD signal (9)": -1.483861282848148,
+    "MACD histogram": 0.7441248374491019,
+    "P/E (trailing)": 25.02353,
+    "P/B": 2.3829262,
+    "EV/EBITDA": 13.577,
+    "Revenue growth (%)": 1.5
+  },
+  "as_of": "2026-10-21",
+  "verification": {
+    "base_date": "2025-10-21",
+    "base_close": 145.15524291992188,
+    "end_close": 106.3499984741211,
+    "manual_1Y_pct": -26.733615448674193,
+    "passed": true
+  },
+  "fetched_at": "2026-10-22T04:23:34.341409+00:00",
+  "requested_as_of": "2026-10-21",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "XYL",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "failed",
+      "category": "dns_or_connection",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price request could not be completed due to an unexpected error"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "stooq",
+      "status": "failed",
+      "category": "http_error",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price service returned HTTP 404"
+    }
+  ],
+  "metric_notes": {
+    "Beta vs SPY": {
+      "status": "undefined",
+      "reason": "undefined: SPY prices are missing"
+    }
+  },
+  "history_count": {
+    "XYL": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'XYL'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-21'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
