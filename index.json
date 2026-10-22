@@ -2599,6 +2599,23 @@
       "md": "archive/20261022T025901Z-695d9f64/MCO/MCO-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/MCO/MCO-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/MCO/MCO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/META",
+      "ticker": "META",
+      "generated_at": "2026-10-22T04:17:12.042935+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "1384a967024f445141a8335c39b9c4617926fc83423ddc451364317082ddaafe",
+        "json": "90d90e459a8ca42e3939f1ef16d54708579515e99850135f82ca79403b893ef5",
+        "pdf": "10cce97b5a276b4ae1323d45758fd69b9b93be42ac620e75624c32003f3f6b23"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/META/META-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/META/META-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/META/META-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2740,9 +2757,12 @@
       "JWEL.TO",
       "MC.PA",
       "MCK",
-      "MCO"
+      "MCO",
+      "META"
     ],
-    "degraded_tickers": [],
+    "degraded_tickers": [
+      "META"
+    ],
     "failed_tickers": [],
     "failures": [],
     "ai_selected_tickers": [
@@ -3039,6 +3059,15 @@
         "comparables": 1.718,
         "earnings": 1.318,
         "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "META": {
+        "quant": 1.468,
+        "ai_extract": 113.811,
+        "comparables": 1.367,
+        "earnings": 1.167,
+        "edgar": 1.869,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
       }
