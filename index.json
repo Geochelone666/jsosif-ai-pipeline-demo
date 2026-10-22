@@ -2004,6 +2004,23 @@
       "md": "archive/20261022T010757Z-7c0bccbb/J/J-intelligence-20261021.md",
       "json": "archive/20261022T010757Z-7c0bccbb/J/J-intelligence-20261021.json",
       "pdf": "archive/20261022T010757Z-7c0bccbb/J/J-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T010757Z-7c0bccbb/XYL",
+      "ticker": "XYL",
+      "generated_at": "2026-10-22T02:24:10.827790+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "f3eff1c4c5f0bb4e895afc1dc3d12814f706e7021cf661b97d19fd2c4ddd7b89",
+        "json": "a0a452af93afd829fe415e7922309ec621a872cf7cac2771221530f77e98dd6a",
+        "pdf": "f4628a4b333562b684a07cc969b9674057bfb45136de5930581d8e1b96d2a19d"
+      },
+      "md": "archive/20261022T010757Z-7c0bccbb/XYL/XYL-intelligence-20261021.md",
+      "json": "archive/20261022T010757Z-7c0bccbb/XYL/XYL-intelligence-20261021.json",
+      "pdf": "archive/20261022T010757Z-7c0bccbb/XYL/XYL-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2083,7 +2100,8 @@
       "ATD.TO",
       "SCHW",
       "ACN",
-      "J"
+      "J",
+      "XYL"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2249,6 +2267,15 @@
         "comparables": 2.271,
         "earnings": 1.368,
         "edgar": 2.32,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "XYL": {
+        "quant": 183.689,
+        "ai_extract": 2.568,
+        "comparables": 2.218,
+        "earnings": 1.217,
+        "edgar": 2.268,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
