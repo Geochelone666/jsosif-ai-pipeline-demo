@@ -114,7 +114,12 @@ def _fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
                         cache.parent.mkdir(parents=True, exist_ok=True)
                         # Write-then-rename: a reader in this batch never sees half a file.
                         tmp = cache.with_name(cache.name + '.tmp')
-                        h.to_csv(tmp)
+                        # Store exchange-local wall-clock dates without UTC offsets: a
+                        # year of history spans DST, and mixed offsets cannot be parsed
+                        # back into one DatetimeIndex.
+                        local = h.copy()
+                        local.index = pd.to_datetime(local.index).tz_localize(None)
+                        local.to_csv(tmp)
                         tmp.replace(cache)
                 if h.empty:
                     raise ValueError('empty history')

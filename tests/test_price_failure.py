@@ -41,6 +41,25 @@ def test_price_cache_is_shared_only_within_current_batch(tmp_path, monkeypatch):
     assert history.call_count == 3
 
 
+def test_price_cache_round_trips_history_spanning_dst(tmp_path, monkeypatch):
+    # Yahoo returns exchange-local timestamps; a year of history mixes -04:00/-05:00.
+    cache = tmp_path / 'cache'
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE', str(cache))
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '0')
+    idx = pd.bdate_range('2026-10-26', '2026-11-06', tz='America/New_York')
+    live = pd.DataFrame({'Close': [100. + i for i in range(len(idx))]}, index=idx.rename('Date'))
+    history = Mock(return_value=live)
+    monkeypatch.setattr(pf.yf, 'Ticker', lambda symbol: Mock(history=history))
+    def fetch():
+        return pf.fetch_symbol_prices('CSCO', '2026-10-26', '2026-11-06', '2026-11-07', tmp_path)
+    first, _ = fetch()
+    second, statuses = fetch()  # Served from the batch CSV cache (e.g. a resumed holding).
+    assert history.call_count == 1
+    assert statuses[-1]['source'] == 'yfinance' and statuses[-1]['status'] == 'ok'
+    pd.testing.assert_series_equal(first, second, check_freq=False)
+    assert first.index[0] == pd.Timestamp('2026-10-26') and first.index[-1] == pd.Timestamp('2026-11-06')
+
+
 def test_unreadable_price_cache_is_refetched_and_replaced(tmp_path, monkeypatch):
     cache = tmp_path / 'cache'
     monkeypatch.setenv('JSOSIF_PRICE_CACHE', str(cache))
