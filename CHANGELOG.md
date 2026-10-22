@@ -6,6 +6,9 @@
 - `fred.py`: a `config/fred.json` that is not a JSON object, or has a null
   `api_key`, no longer crashes the shared FRED stage; it falls back to
   `FRED_API_KEY`.
+- A corrupt SEC ticker cache or shared price cache no longer blocks SEC data or
+  price collection; both are refetched and now written atomically.
+- `send_ledger.py --list` skips undecodable lines instead of failing.
 - `build_review_bundle.py --sector` works on a fresh clone via the tracked
   `config/sectors.json` when `data/<ticker>-info.json` has not been generated.
 
