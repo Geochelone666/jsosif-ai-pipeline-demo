@@ -1,0 +1,134 @@
+{
+  "ticker": "TSM",
+  "errors": [
+    "SPY yfinance: The price request could not be completed due to an unexpected error after 1 attempts (dns_or_connection)",
+    "SPY stooq: The price service returned HTTP 404 after 1 attempts (http_error)",
+    "warning: Beta vs SPY unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/TSM/history/",
+    "https://finance.yahoo.com/quote/TSM/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 431.8900146484375,
+    "Return 1D (%)": 1.6020580340858182,
+    "Return 1W (%)": 0.4395382903342959,
+    "Return 1M (%)": -2.976591536140505,
+    "Return YTD (%)": 43.23796869328926,
+    "Return 1Y (%)": 48.19903500060108,
+    "Annualized volatility (%)": 38.88928802920811,
+    "Max drawdown (%)": -21.54658010802104,
+    "Sharpe (rf=0)": 1.2096873113148299,
+    "Beta vs SPY": null,
+    "MA50": 434.1543731689453,
+    "Close vs MA50 (%)": -0.5215560778485284,
+    "MA200": 395.10167572021487,
+    "Close vs MA200 (%)": 9.311106783124279,
+    "RSI (14, Wilder)": 45.969697052157834,
+    "MACD (12,26)": -3.6300557475348683,
+    "MACD signal (9)": 1.4058564041504638,
+    "MACD histogram": -5.0359121516853325,
+    "P/E (trailing)": 27.990278,
+    "P/B": 82.96053,
+    "EV/EBITDA": 4.076,
+    "Revenue growth (%)": 50.9
+  },
+  "as_of": "2026-10-21",
+  "verification": {
+    "base_date": "2025-10-21",
+    "base_close": 291.4256591796875,
+    "end_close": 431.8900146484375,
+    "manual_1Y_pct": 48.19903500060108,
+    "passed": true
+  },
+  "fetched_at": "2026-10-22T04:22:41.204562+00:00",
+  "requested_as_of": "2026-10-21",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "TSM",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "failed",
+      "category": "dns_or_connection",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price request could not be completed due to an unexpected error"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "stooq",
+      "status": "failed",
+      "category": "http_error",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price service returned HTTP 404"
+    }
+  ],
+  "metric_notes": {
+    "Beta vs SPY": {
+      "status": "undefined",
+      "reason": "undefined: SPY prices are missing"
+    }
+  },
+  "history_count": {
+    "TSM": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'TSM'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-21'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
