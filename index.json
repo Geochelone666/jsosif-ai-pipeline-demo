@@ -2888,6 +2888,23 @@
       "md": "archive/20261022T025901Z-695d9f64/T/T-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/T/T-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/T/T-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/TD.TO",
+      "ticker": "TD.TO",
+      "generated_at": "2026-10-22T04:22:30.296381+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "405c0f9a4ad1891b32aec75c13fb406bd67dbc73adfa3647a6a8cf216fc258a1",
+        "json": "70da623772a326395a5e5800fda5c8177d3cb5581577cff13d9ecfa6e1de23ba",
+        "pdf": "b2c3f93f23a88519469867065f185f241f23a30209d92451892c73e4c1d34876"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/TD.TO/TD.TO-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/TD.TO/TD.TO-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/TD.TO/TD.TO-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -3046,7 +3063,8 @@
       "SHOP.TO",
       "SPGI",
       "SYY",
-      "T"
+      "T",
+      "TD.TO"
     ],
     "degraded_tickers": [
       "META",
@@ -3064,7 +3082,8 @@
       "SCHW",
       "SPGI",
       "SYY",
-      "T"
+      "T",
+      "TD.TO"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3515,6 +3534,15 @@
         "comparables": 1.619,
         "earnings": 1.167,
         "edgar": 1.718,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "TD.TO": {
+        "quant": 1.418,
+        "ai_extract": 12.447,
+        "comparables": 1.418,
+        "earnings": 1.117,
+        "edgar": 0.114,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
       }

@@ -1,0 +1,140 @@
+{
+  "ticker": "TD.TO",
+  "errors": [
+    "SPY yfinance: The price request could not be completed due to an unexpected error after 1 attempts (dns_or_connection)",
+    "SPY stooq: The price service returned HTTP 404 after 1 attempts (http_error)",
+    "warning: enterpriseToEbitda unavailable (N/A)",
+    "warning: Beta vs SPY unavailable (N/A)",
+    "warning: EV/EBITDA unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/TD.TO/history/",
+    "https://finance.yahoo.com/quote/TD.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 175.11000061035156,
+    "Return 1D (%)": 1.9800790656016032,
+    "Return 1W (%)": 4.499607899129732,
+    "Return 1M (%)": 1.279334557521472,
+    "Return YTD (%)": 39.449709954916436,
+    "Return 1Y (%)": 60.14928927528804,
+    "Annualized volatility (%)": 16.984764647767534,
+    "Max drawdown (%)": -8.004789959319536,
+    "Sharpe (rf=0)": 2.8711813059136997,
+    "Beta vs SPY": null,
+    "MA50": 167.17382110595702,
+    "Close vs MA50 (%)": 4.747262132247654,
+    "MA200": 150.02251476287842,
+    "Close vs MA200 (%)": 16.72248054708705,
+    "RSI (14, Wilder)": 66.03439054829967,
+    "MACD (12,26)": 1.1563051597782703,
+    "MACD signal (9)": 0.26703046542316067,
+    "MACD histogram": 0.8892746943551096,
+    "P/E (trailing)": 19.116812,
+    "P/B": 2.3155959,
+    "EV/EBITDA": null,
+    "Revenue growth (%)": 11.5
+  },
+  "as_of": "2026-10-21",
+  "verification": {
+    "base_date": "2025-10-21",
+    "base_close": 109.34172821044922,
+    "end_close": 175.11000061035156,
+    "manual_1Y_pct": 60.149289275288055,
+    "passed": true
+  },
+  "fetched_at": "2026-10-22T04:22:14.679498+00:00",
+  "requested_as_of": "2026-10-21",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "TD.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "failed",
+      "category": "dns_or_connection",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price request could not be completed due to an unexpected error"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "stooq",
+      "status": "failed",
+      "category": "http_error",
+      "retryable": false,
+      "attempts": 1,
+      "detail": "The price service returned HTTP 404"
+    }
+  ],
+  "metric_notes": {
+    "Beta vs SPY": {
+      "status": "undefined",
+      "reason": "undefined: SPY prices are missing"
+    },
+    "EV/EBITDA": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    }
+  },
+  "history_count": {
+    "TD.TO": 264
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 264 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 264. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'TD.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-21'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
