@@ -54,3 +54,9 @@ state/
 # Local scheduler locks and rotated logs
 logs/
 
+
+# Pipeline working directory: every collector stage rewrites these per run and
+# the durable copies live in the report-store branch. The send ledger written
+# here records recipient addresses, so nothing in data/ may be committed.
+data/*
+!data/.gitkeep
