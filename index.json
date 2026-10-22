@@ -2786,6 +2786,23 @@
       "md": "archive/20261022T025901Z-695d9f64/PEP/PEP-intelligence-20261021.md",
       "json": "archive/20261022T025901Z-695d9f64/PEP/PEP-intelligence-20261021.json",
       "pdf": "archive/20261022T025901Z-695d9f64/PEP/PEP-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T025901Z-695d9f64/PFE",
+      "ticker": "PFE",
+      "generated_at": "2026-10-22T04:20:52.400464+00:00",
+      "as_of": "2026-10-21",
+      "quality": "degraded",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "1842d5561fbed89c71cb050ccaf75e381f68e321db39a3a5be3f5f79ea86d191",
+        "json": "4c086a54d998ad12edde7ee6581424ed687260381fa879266e8c59ff946b0bf6",
+        "pdf": "683fd229325846a0fd90672724d4aa5755314e04ca3f529bf9ca3e870982686e"
+      },
+      "md": "archive/20261022T025901Z-695d9f64/PFE/PFE-intelligence-20261021.md",
+      "json": "archive/20261022T025901Z-695d9f64/PFE/PFE-intelligence-20261021.json",
+      "pdf": "archive/20261022T025901Z-695d9f64/PFE/PFE-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2938,7 +2955,8 @@
       "NVDA",
       "NVO",
       "OTEX.TO",
-      "PEP"
+      "PEP",
+      "PFE"
     ],
     "degraded_tickers": [
       "META",
@@ -2951,7 +2969,8 @@
       "NVDA",
       "NVO",
       "OTEX.TO",
-      "PEP"
+      "PEP",
+      "PFE"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -3349,6 +3368,15 @@
         "earnings": 1.118,
         "edgar": 1.869,
         "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      },
+      "PFE": {
+        "quant": 1.819,
+        "ai_extract": 12.096,
+        "comparables": 1.668,
+        "earnings": 1.167,
+        "edgar": 1.869,
+        "regenerate_report": 0.164,
         "report_pdf": 0.265
       }
     }
