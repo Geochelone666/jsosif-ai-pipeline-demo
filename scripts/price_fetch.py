@@ -101,14 +101,21 @@ def _fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
                 # Cache only within one refresh batch. A later run must fetch a new
                 # daily bar, which may have changed since an earlier intraday run.
                 batch_start = os.environ.get('JSOSIF_PRICE_CACHE_BATCH_START')
+                h = None
                 if cache and cache.is_file() and batch_start and cache.stat().st_mtime >= float(batch_start):
-                    h = pd.read_csv(cache, index_col=0, parse_dates=True)
-                else:
+                    try:
+                        h = pd.read_csv(cache, index_col=0, parse_dates=True)
+                    except (OSError, ValueError):
+                        h = None  # Unreadable cache: fetch again rather than fail every attempt.
+                if h is None:
                     h = yf.Ticker(symbol).history(start=price_start, end=end,
                                                   auto_adjust=True, timeout=timeout)
                     if cache and not h.empty:
                         cache.parent.mkdir(parents=True, exist_ok=True)
-                        h.to_csv(cache)
+                        # Write-then-rename: a reader in this batch never sees half a file.
+                        tmp = cache.with_name(cache.name + '.tmp')
+                        h.to_csv(tmp)
+                        tmp.replace(cache)
                 if h.empty:
                     raise ValueError('empty history')
                 h.index = pd.to_datetime(h.index).tz_localize(None).normalize()

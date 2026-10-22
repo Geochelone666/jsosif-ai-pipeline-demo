@@ -41,6 +41,22 @@ def test_price_cache_is_shared_only_within_current_batch(tmp_path, monkeypatch):
     assert history.call_count == 3
 
 
+def test_unreadable_price_cache_is_refetched_and_replaced(tmp_path, monkeypatch):
+    cache = tmp_path / 'cache'
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE', str(cache))
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '0')
+    cache.mkdir()
+    corrupt = cache / 'CSCO-2025-10-02-2026-10-17.csv'
+    corrupt.write_bytes(b'\xff\xfe\x00garbage')
+    history = Mock(return_value=pd.DataFrame({'Close': [101.]}, index=pd.to_datetime(['2026-10-16'])))
+    monkeypatch.setattr(pf.yf, 'Ticker', lambda symbol: Mock(history=history))
+    prices, statuses = pf.fetch_symbol_prices('CSCO', '2025-10-02', '2026-10-16', '2026-10-17', tmp_path)
+    assert prices.iloc[-1] == 101. and statuses[-1]['status'] == 'ok'
+    assert history.call_count == 1
+    assert pd.read_csv(corrupt, index_col=0).iloc[-1, 0] == 101.
+    assert not list(cache.glob('*.tmp'))
+
+
 def http(code):
     return HTTPError('https://example.invalid', code, 'untrusted server text', {}, None)
 
