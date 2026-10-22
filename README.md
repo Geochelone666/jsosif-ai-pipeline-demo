@@ -138,6 +138,35 @@ not proof of inbox delivery. State contains hashed member/week keys, timestamps
 and report IDs, but no email addresses, names or email bodies. Keep IDs stable;
 use random IDs if even guessed identifiers would be sensitive.
 
+## Environment variables (local runs)
+
+GitHub Actions sets these from the Secrets/Variables listed below. For local
+runs, export only what you need; nothing is required for the offline tests.
+
+| Variable | Used by | Meaning |
+| --- | --- | --- |
+| `AI_PROVIDER` | AI extraction | `groq` or `gemini`; defaults to `groq` when a Groq key is set, else `gemini` |
+| `GROQ_API_KEY` / `Grop_ai_API` | Groq provider | Groq API key (either name) |
+| `GROQ_MODEL`, `GROQ_RPD`, `GROQ_RPM`, `GROQ_TPD`, `GROQ_TPM` | Groq provider | Model override and application rate caps |
+| `GEMINI_API_KEY` / `GOOGLE_API_KEY` | Gemini provider | Gemini API key (either name) |
+| `GEMINI_MODEL`, `GEMINI_RPD`, `GEMINI_RPM` | Gemini provider | Model override and rate caps |
+| `GEMINI_CLI` | AI extraction | Path to a Gemini CLI binary to use instead of the REST API |
+| `FRED_API_KEY` | `fred.py` | Optional; `config/fred.json` `api_key` wins. Without either, macro data is skipped |
+| `SEC_USER_AGENT` | `edgar.py` | Organization plus contact email for SEC requests; EDGAR is skipped without it (or `GMAIL_USER`) |
+| `REPORT_AS_OF` | collectors | Snapshot date `YYYY-MM-DD`, not in the future; default today |
+| `JSOSIF_RSS_COUNT` | `ai_extract.py` | Headlines fetched per stock (default 25) |
+| `JSOSIF_CONFIG` | `config.py` | Alternative path for `config.json` |
+| `SUBSCRIPTIONS_JSON`, `MEMBERS_CSV` | delivery | Member roster contents (see below) |
+| `GMAIL_USER`, `GMAIL_APP_PASSWORD` | email delivery | Sender account; `config/gmail.json` is the local alternative |
+| `JSOSIF_APPROVED_SEND=1` | `deliver_weekly.py`, `distribute_team_reports.py` | Required together with `--send` before any email is sent |
+| `INTERNAL_EMAIL_CONFIRM=SEND_ONE_TO_SELF` | `internal_email_check.py` | Required to send the single self-test email |
+| `SEND_LEDGER_PATH` | `send_ledger.py` | Send audit log location (default `data/send_ledger.jsonl`, git-ignored; it contains recipient addresses) |
+| `BROWSER_EXECUTABLE` | `browser_smoke.py` | Chromium binary for the browser smoke test |
+
+`refresh_reports.py` sets the `JSOSIF_*_CACHE`, `JSOSIF_API_USAGE_PATH` and
+`JSOSIF_AI_*` variables for its child stages; do not set them by hand.
+`data/` is a per-run working directory and is not committed.
+
 ## GitHub automation and Pages
 
 Set repository **Secrets**:
