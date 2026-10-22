@@ -1,5 +1,7 @@
 """Price providers with bounded retries and safe, structured diagnostics."""
 import io
+import hashlib
+import json
 import os
 from pathlib import Path
 import time
@@ -83,7 +85,7 @@ def stooq_url(symbol, price_start, as_of):
             f'&d1={price_start.replace("-", "")}&d2={as_of.replace("-", "")}')
 
 
-def fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
+def _fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
                         max_attempts=3, sleep=time.sleep):
     """Try Yahoo then Stooq; return prices and one diagnostic per provider."""
     statuses = []
@@ -148,3 +150,65 @@ def fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
             return prices, statuses
     return None, statuses
 
+
+def fetch_symbol_prices(symbol, price_start, as_of, end, data_dir, timeout=30,
+                        max_attempts=3, sleep=time.sleep):
+    """Share the benchmark across subprocesses without retaining stale daily bars.
+
+    Successful Yahoo or Stooq benchmark data is reusable only in this batch.
+    A total outage is cached for five minutes, then retried so recovery is visible.
+    Standalone calls and individual holdings retain their normal provider behavior.
+    """
+    directory = os.environ.get('JSOSIF_PRICE_CACHE')
+    batch = os.environ.get('JSOSIF_PRICE_CACHE_BATCH_START')
+    cache = None
+    if symbol == 'SPY' and directory and batch:
+        key = hashlib.sha256(f'{symbol}:{price_start}:{as_of}:{end}'.encode()).hexdigest()
+        cache = Path(directory) / f'benchmark-{key}.json'
+        try:
+            saved = json.loads(cache.read_text())
+            statuses = saved['statuses']
+            valid = (saved['batch'] == batch and isinstance(statuses, list) and statuses
+                     and all(isinstance(s, dict) and s.get('symbol') == symbol
+                             and s.get('source') in ('yfinance', 'stooq')
+                             and s.get('status') in ('ok', 'failed')
+                             and isinstance(s.get('detail'), str)
+                             and type(s.get('attempts')) is int
+                             and type(s.get('retryable')) is bool for s in statuses))
+            age = time.time() - saved['saved_at']
+            if valid and age >= 0 and (saved['prices'] is not None or age < 300):
+                prices = None
+                if saved['prices'] is not None:
+                    frame = pd.DataFrame(saved['prices'], columns=['Date', 'Close'])
+                    frame.index = pd.to_datetime(frame.pop('Date'))
+                    prices, warnings = clean_prices_series(frame, symbol, as_of)
+                    if warnings or len(prices) != len(saved['prices']) or statuses[-1]['status'] != 'ok':
+                        raise ValueError('Invalid benchmark cache')
+                    # Retain the original provider's CSV as the normal audit artifact.
+                    source = statuses[-1]['source']
+                    target = Path(data_dir) / f'{symbol}-{source}.csv'
+                    target.write_text(saved['raw_csv'])
+                elif any(s['status'] == 'ok' for s in statuses):
+                    raise ValueError('Invalid failed benchmark cache')
+                for status in statuses:
+                    status['cache_hit'] = True
+                    status['observed_at'] = saved['saved_at']
+                return prices, statuses
+        except (OSError, ValueError, KeyError, TypeError, AttributeError, OverflowError):
+            pass  # A cache failure must not hide a functioning provider.
+    prices, statuses = _fetch_symbol_prices(
+        symbol, price_start, as_of, end, data_dir, timeout=timeout,
+        max_attempts=max_attempts, sleep=sleep)
+    if cache is not None:
+        from report_store import write_json
+        raw = None
+        if prices is not None:
+            raw = (Path(data_dir) / f'{symbol}-{statuses[-1]["source"]}.csv').read_text()
+        try:
+            write_json(cache, {'batch': batch, 'saved_at': time.time(), 'statuses': statuses,
+                              'prices': None if prices is None else
+                              [[stamp.isoformat(), float(value)] for stamp, value in prices.items()],
+                              'raw_csv': raw})
+        except OSError:
+            pass  # Cache persistence is optional; fetched prices remain usable.
+    return prices, statuses

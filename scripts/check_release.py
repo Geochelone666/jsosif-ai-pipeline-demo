@@ -44,7 +44,7 @@ def check(store, *, business_date=None, require_ready=False):
         errors.append('Missing current-day reports: ' + ', '.join(missing))
     if require_ready and degraded:
         errors.append('Reports require complete source evidence: ' + ', '.join(degraded))
-    if attempt.get('status') in ('running', 'partial', 'failed'):
+    if attempt.get('status') in ('running', 'partial', 'failed', 'interrupted'):
         errors.append('The last daily run failed, is incomplete, or was interrupted')
     if require_ready and attempt.get('status') != 'complete':
         errors.append('Strict acceptance requires a completed daily run with full source evidence')

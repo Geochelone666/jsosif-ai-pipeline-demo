@@ -142,3 +142,37 @@ or degraded reports still defer the complete member digest; they are never
 silently dropped from the requested list. GitHub Actions can delay both nightly
 collection and the 15-minute delivery scanner; configured times are due times,
 not guaranteed SMTP submission times.
+
+## Recover a slow or interrupted collection
+
+Use **Daily production research pipeline → Run workflow → resume=true** to retry
+outstanding holdings for the current Toronto business date. Leave `force=false`.
+Resume verifies file hashes, snapshot identity, ready quality and issuer advisories
+before reusing a same-day version. Missing, degraded or invalid versions are
+collected again. A fully recovered date makes no new provider calls. Use
+`force=true` only when all holdings should be collected again; it cannot be
+combined with resume. Neither option submits email.
+
+The collector has a 210-minute work budget within the 230-minute collection step.
+Each subprocess is bounded by the remaining work budget. On exhaustion it records
+`interrupted`, the pending symbols and a recovery reason, leaving time for durable
+checkpointing and publication. The always-run finalizer also marks a collector
+that crashed or was cancelled as interrupted, but only when its workflow run ID
+owns the current attempt. A non-cancelled partial run can publish its saved
+reports and interrupted status; strict release/site verification remains red until
+all requested evidence is ready. Cancelled jobs retain their checkpoints but do
+not deploy a site.
+
+SPY benchmark requests share successful Yahoo or Stooq data only within a single
+collection batch. If both providers fail, the failure is reused for five minutes
+before another request is allowed. Benchmark metrics remain unavailable during an
+outage; no price is invented or carried from an earlier batch. Other holdings
+retain their normal provider behavior.
+
+Resume does not delete or rewrite history. If an older archived file is corrupt,
+regenerating a current report cannot repair that historical file; restore it from
+an intact report-store backup before the site's integrity checks can pass.
+
+The legacy `scripts/scheduler.py` scans only at 09:00 each day. Use the Actions
+weekly delivery workflow for members with noon/evening preferences; the legacy
+scheduler is not a replacement for that workflow.

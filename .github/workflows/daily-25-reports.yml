@@ -9,7 +9,11 @@ on:
   workflow_dispatch:
     inputs:
       force:
-        description: 'Explicit recovery: retry a previously attempted business date'
+        description: 'Recompute every holding, including ready reports (cannot combine with resume)'
+        type: boolean
+        default: false
+      resume:
+        description: 'Recover missing, invalid or degraded reports; reuse ready same-day reports'
         type: boolean
         default: false
 
@@ -81,6 +85,7 @@ jobs:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
           RECOVERY_RUN: ${{ inputs.force }}
+          RESUME_RUN: ${{ inputs.resume }}
           PIPELINE_EVENT: ${{ github.event_name }}
         run: |
           CONFIG=()
@@ -88,22 +93,23 @@ jobs:
             CONFIG=(--config "$RUNNER_TEMP/subscriptions.json")
           fi
           MODE=()
-          if [ "$RECOVERY_RUN" = true ]; then MODE=(--force); fi
+          if [ "$RECOVERY_RUN" = true ]; then MODE+=(--force); fi
+          if [ "$RESUME_RUN" = true ]; then MODE+=(--resume); fi
           if [ "$PIPELINE_EVENT" = schedule ]; then MODE+=(--scheduled); fi
-          python scripts/refresh_reports.py --store ../report-store --persist-git --business-date "$REPORT_BUSINESS_DATE" "${CONFIG[@]}" "${MODE[@]}"
+          python scripts/refresh_reports.py --store ../report-store --persist-git --time-budget-seconds 12600 --business-date "$REPORT_BUSINESS_DATE" "${CONFIG[@]}" "${MODE[@]}"
       - name: Persist successful reports and API state even after a partial failure
         id: persist
         if: ${{ always() && steps.store.outcome == 'success' }}
+        env:
+          REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
+          COLLECTION_OUTCOME: ${{ steps.collect.outcome }}
         run: |
-          if [ -d ../report-store ]; then
-            PYTHONPATH=scripts python - <<'PY'
-          from report_store import persist
-          persist('../report-store', git=True)
-          PY
-          fi
+          python scripts/finalize_refresh.py --store ../report-store \
+            --business-date "$REPORT_BUSINESS_DATE" --outcome "$COLLECTION_OUTCOME" \
+            --persist-git >> "$GITHUB_OUTPUT"
       - name: Build latest and historical website
         id: build
-        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.collect.outputs.publish == 'true' }}
+        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.persist.outputs.publish == 'true' }}
         run: python scripts/build_site.py --store ../report-store --output site-build
       - name: Record the strict daily release check
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
@@ -111,10 +117,10 @@ jobs:
           REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
         run: python scripts/check_release.py --store ../report-store --business-date "$REPORT_BUSINESS_DATE" --require-ready
       - name: Back up the persisted archive and recovery state
-        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.collect.outputs.publish == 'true' }}
+        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.persist.outputs.publish == 'true' }}
         run: git -C ../report-store archive --format=tar.gz --output="$RUNNER_TEMP/report-store-backup.tar.gz" HEAD
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.collect.outputs.publish == 'true' }}
+        if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.persist.outputs.publish == 'true' }}
         with:
           name: report-store-${{ github.run_id }}
           path: ${{ runner.temp }}/report-store-backup.tar.gz
@@ -143,8 +149,12 @@ jobs:
           print('# Daily research pipeline')
           print('Business date:', attempt.get('business_date', 'not collected'))
           print('Collection status:', attempt.get('status', 'not collected'))
-          for key in ('successful_tickers', 'degraded_tickers', 'failed_tickers', 'ai_deferred_tickers'):
+          for key in ('successful_tickers', 'reused_tickers', 'pending_tickers', 'degraded_tickers', 'failed_tickers', 'ai_deferred_tickers'):
               print('- ' + key + ': ' + str(len(attempt.get(key, []))))
+          if attempt.get('interruption_reason'):
+              print('Interrupted:', attempt['interruption_reason'])
+          if attempt.get('pending_tickers'):
+              print('Recovery: dispatch this workflow with resume=true to retry only outstanding reports.')
           PY
       - name: Remove private configuration
         if: always()
