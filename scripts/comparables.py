@@ -32,6 +32,31 @@ PEERS = {
     'MC.PA': ['RMS.PA', 'CFR.SW', 'KER.PA'],
     'AMTM': ['LDOS', 'CACI', 'SAIC'],
 }
+PEERS.update({'SPGI': ['MCO', 'MSCI', 'FDS'],
+ 'MCO': ['SPGI', 'MSCI', 'FDS'],
+ 'TD.TO': ['RY.TO', 'BMO.TO', 'BNS.TO'],
+ 'GOOGL': ['META', 'MSFT', 'AMZN'],
+ 'AMZN': ['WMT', 'MSFT', 'GOOGL'],
+ 'META': ['GOOGL', 'SNAP', 'PINS'],
+ 'AMD': ['NVDA', 'INTC', 'AVGO'],
+ 'NVDA': ['AMD', 'AVGO', 'INTC'],
+ 'MCK': ['COR', 'CAH', 'CNC'],
+ 'ISRG': ['MDT', 'SYK', 'BSX'],
+ 'EW': ['MDT', 'BSX', 'ABT'],
+ 'T': ['VZ', 'TMUS', 'BCE'],
+ 'CAT': ['DE', 'CNH', 'CMI'],
+ 'MSFT': ['ORCL', 'GOOGL', 'AMZN'],
+ 'NFLX': ['DIS', 'WBD', 'CMCSA'],
+ 'SHOP.TO': ['WIX', 'CRM', 'GDDY'],
+ 'AAPL': ['MSFT', 'GOOGL', 'SONY'],
+ 'TSM': ['UMC', 'GFS', 'INTC'],
+ 'MU': ['WDC', 'STX', 'NXPI'],
+ 'CSU.TO': ['DSG.TO', 'OTEX.TO', 'TOI.V'],
+ 'NVAX': ['MRNA', 'BNTX', 'GSK'],
+ 'BRK-B': ['MKL', 'FFH.TO', 'L'],
+ 'TMC': ['MP', 'LAC', 'VALE'],
+ 'ASML': ['AMAT', 'LRCX', 'KLAC'],
+ 'SYY': ['USFD', 'PFGC', 'CHEF']})
 FIELDS = {'pe': 'trailingPE', 'pb': 'priceToBook', 'ev_ebitda': 'enterpriseToEbitda', 'revenue_growth': 'revenueGrowth', 'mktcap': 'marketCap'}
 
 def main():

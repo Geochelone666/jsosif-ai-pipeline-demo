@@ -3,7 +3,7 @@ import argparse
 import csv
 from copy import deepcopy
 import io
-from datetime import time
+from datetime import time, date
 import json
 import re
 import os
@@ -51,6 +51,11 @@ def validate(config):
             ZoneInfo(member['timezone'])
         except (KeyError, ValueError):
             raise ValueError('timezone must be an IANA time zone') from None
+        if 'delivery_start_date' in member:
+            value = member['delivery_start_date']
+            if not isinstance(value, str) or not re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}', value):
+                raise ValueError('delivery_start_date must be YYYY-MM-DD')
+            date.fromisoformat(value)
         assigned = member.get('groups')
         requested = member.get('tickers', [])
         if (not isinstance(requested, list) or

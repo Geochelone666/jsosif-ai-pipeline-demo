@@ -247,7 +247,8 @@ def test_full_portfolio_excel_roster_two_week_launch_rehearsal(pipeline, monkeyp
     private = tmp_path / 'subscriptions.local.json'
     write_private_config(private, config)
     assert refresh.refresh(root, config=private, now=start)['status'] == 'complete'
-    assert check(root, business_date=start.date().isoformat(), require_ready=True)['current'] == 25
+    assert check(root, business_date=start.date().isoformat(), require_ready=True)['current'] == len(
+        {t for group in config['groups'].values() for t in group['tickers']})
     first_hashes = {entry['pdf']: digest(root / entry['pdf'])
                     for entry in read_json(root / 'index.json')['reports']}
     monday = start + timedelta(hours=15)
@@ -273,7 +274,7 @@ def test_full_portfolio_excel_roster_two_week_launch_rehearsal(pipeline, monkeyp
     assert len(read_json(root / 'state/deliveries.json')) == 29
     clock['now'] = start + timedelta(days=7)
     assert refresh.refresh(root, config=private, now=clock['now'])['status'] == 'complete'
-    assert len(read_json(root / 'index.json')['reports']) == 50
+    assert len(read_json(root / 'index.json')['reports']) == 2 * len(first_hashes)
     assert all(digest(root / path) == value for path, value in first_hashes.items())
     attempted = []
     def uncertain(message):
@@ -287,7 +288,7 @@ def test_full_portfolio_excel_roster_two_week_launch_rehearsal(pipeline, monkeyp
     assert len(attempted) == 29
     site = tmp_path / 'site'
     build(root, site)
-    assert len(list(site.rglob('*.pdf'))) == 50
+    assert len(list(site.rglob('*.pdf'))) == 2 * len(first_hashes)
     assert not (site / 'state').exists()
     import internal_email_check
     monkeypatch.setenv('GMAIL_USER', 'synthetic-self@example.com')

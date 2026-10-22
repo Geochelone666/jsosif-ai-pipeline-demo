@@ -109,7 +109,19 @@ ALIASES = {
     'GOOGL': ('alphabet', 'google', 'goog'), 'AMZN': ('amazon', 'amazon.com', 'aws'), 'TSLA': ('tesla',),
 }
 from universe import COMPANIES
-ALIASES.update({ticker: (name.lower(),) for ticker, name in COMPANIES.items()})
+for symbol, company in COMPANIES.items():
+    ALIASES[symbol] = tuple(dict.fromkeys((*ALIASES.get(symbol, ()), company.lower())))
+ALIASES.update({
+    'MCO': ("moody's", 'moodys', 'moody’s'),
+    'SPGI': ('s&p global', 'sp global'),
+    'TD.TO': ('toronto-dominion', 'td bank'),
+    'META': ('meta platforms', 'facebook', 'instagram'),
+    'AMD': ('advanced micro devices', 'amd'),
+    'TSM': ('taiwan semiconductor', 'tsmc'),
+    'BRK-B': ('berkshire hathaway', 'berkshire'),
+    'EW': ('edwards lifesciences',),
+    'TMC': ('the metals company',),
+})
 ALIASES['J'] = ('jacobs solutions', 'jacobs')
 # Specific corporate events precede generic earnings/market vocabulary.
 EVENTS = {

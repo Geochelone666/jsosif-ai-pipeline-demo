@@ -121,3 +121,24 @@ precede publication, and degraded or imported reports remain clearly labeled.
 No member table, message preview, email address or delivery ledger is published.
 The archive retains saved source snapshots; it cannot reconstruct data that was
 never collected. Existing historical reports are imported without refreshing them.
+
+## Signup pilot activation
+
+The pilot adds 25 explicitly requested symbols to the original 25 holdings.
+Personal tickers still replace group defaults. Sector-only requests use the
+original portfolio holdings in that sector; C-Suite with no stocks stays disabled.
+Participant names, email addresses and feedback belong only in the private
+`SUBSCRIPTIONS_JSON` secret, never in source control or Pages.
+
+An optional member `delivery_start_date` (ISO YYYY-MM-DD in the member's timezone)
+prevents activation from catching up a weekly slot whose scheduled date is before
+that date. It does not change the selected weekday or local send time. The pilot
+starts on 2026-10-22, so elapsed Monday/Tuesday/Wednesday slots start next week.
+Existing configurations without this field retain their catch-up behavior.
+
+Collection allows 230 minutes within a 240-minute job to accommodate expanded
+coverage and provider retries while leaving time to persist and publish. Missing
+or degraded reports still defer the complete member digest; they are never
+silently dropped from the requested list. GitHub Actions can delay both nightly
+collection and the 15-minute delivery scanner; configured times are due times,
+not guaranteed SMTP submission times.

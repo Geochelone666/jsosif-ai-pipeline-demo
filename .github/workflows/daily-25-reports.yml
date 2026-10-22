@@ -40,7 +40,7 @@ jobs:
       queue: max
       cancel-in-progress: false
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -67,7 +67,7 @@ jobs:
       - name: Generate and archive reports
         id: collect
         # Preserve time for durable checkpointing and the final job summary.
-        timeout-minutes: 110
+        timeout-minutes: 230
         env:
           AI_PROVIDER: groq
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
