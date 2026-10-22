@@ -2089,6 +2089,23 @@
       "md": "archive/20261022T010757Z-7c0bccbb/MG.TO/MG.TO-intelligence-20261021.md",
       "json": "archive/20261022T010757Z-7c0bccbb/MG.TO/MG.TO-intelligence-20261021.json",
       "pdf": "archive/20261022T010757Z-7c0bccbb/MG.TO/MG.TO-intelligence-20261021.pdf"
+    },
+    {
+      "report_id": "20261022T010757Z-7c0bccbb/OTEX.TO",
+      "ticker": "OTEX.TO",
+      "generated_at": "2026-10-22T02:45:19.556497+00:00",
+      "as_of": "2026-10-21",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-21",
+      "sha256": {
+        "md": "1f2c1b767a4d23faf7c76462879a4ab15ad5f236ac57d11197bb3269cd796bb2",
+        "json": "dc6e9ce8a68099b812ba344b0e3978cf6211db16e7f8a340fc6307f9952c8b7e",
+        "pdf": "a04e9f346d44d7aa9a3d41cdd54237b98bf597f5933339eaa7980b9a103170ed"
+      },
+      "md": "archive/20261022T010757Z-7c0bccbb/OTEX.TO/OTEX.TO-intelligence-20261021.md",
+      "json": "archive/20261022T010757Z-7c0bccbb/OTEX.TO/OTEX.TO-intelligence-20261021.json",
+      "pdf": "archive/20261022T010757Z-7c0bccbb/OTEX.TO/OTEX.TO-intelligence-20261021.pdf"
     }
   ],
   "refresh_plan": {
@@ -2173,7 +2190,8 @@
       "PEP",
       "NTR.TO",
       "DIS",
-      "MG.TO"
+      "MG.TO",
+      "OTEX.TO"
     ],
     "degraded_tickers": [],
     "failed_tickers": [],
@@ -2386,6 +2404,15 @@
         "edgar": 2.721,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
+      },
+      "OTEX.TO": {
+        "quant": 183.723,
+        "ai_extract": 2.217,
+        "comparables": 2.269,
+        "earnings": 1.117,
+        "edgar": 2.068,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
       }
     }
   },
