@@ -184,3 +184,30 @@ def test_latest_report_only(repo):
     _, manifest = run(repo)
     assert len(manifest) == 2
     assert '2026-10-09 AAA' in manifest[0]['subject']
+
+
+def test_sector_falls_back_to_tracked_map_without_pipeline_data(repo):
+    (repo / 'data').mkdir()
+    (repo / 'data' / 'zzz-info.json').write_text(json.dumps({'sectorKey': 'energy'}))
+    (repo / 'config').mkdir(exist_ok=True)
+    (repo / 'config' / 'sectors.json').write_text(json.dumps({'sectors': {'AAA': 'technology'}}))
+    config = repo / 'teams.yaml'
+    config.write_text('tech:\n  name: Tech\n  email: tech@example.com\n  sectors: [technology]\n  role: analyst\n')
+    review.main(['--recipients', str(config), '--sector', 'technology', '--out', str(repo / 'review')])
+    manifest = json.loads((repo / 'review/manifest.json').read_text())
+    assert [row['ticker'] for row in manifest] == ['AAA']
+
+
+def test_sector_without_any_data_is_a_clear_error(repo, capsys):
+    config = repo / 'teams.yaml'
+    config.write_text('tech:\n  name: Tech\n  email: tech@example.com\n  sectors: [technology]\n  role: analyst\n')
+    with pytest.raises(SystemExit):
+        review.main(['--recipients', str(config), '--sector', 'technology', '--out', str(repo / 'review')])
+    assert 'config/sectors.json' in capsys.readouterr().err
+
+
+def test_tracked_sector_map_covers_committed_reports():
+    root = Path(__file__).resolve().parents[1]
+    sectors = json.loads((root / 'config' / 'sectors.json').read_text())['sectors']
+    tickers = {path.name.split('-intelligence-')[0] for path in (root / 'reports').glob('*-intelligence-*.md')}
+    assert tickers <= set(sectors)

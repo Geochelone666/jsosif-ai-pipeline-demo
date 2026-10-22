@@ -96,12 +96,30 @@ def select_holdings(sector):
     selected = []
     for ticker, path in holdings:
         info_path = ROOT / 'data' / f'{ticker.lower()}-info.json'
-        info = json.loads(info_path.read_text(encoding='utf-8'))
-        if not isinstance(info, dict):
-            raise ValueError(f'Invalid cached sector data for {ticker}')
-        if info.get('sectorKey', str(info.get('sector', '')).lower()) == sector:
+        if info_path.is_file():
+            info = json.loads(info_path.read_text(encoding='utf-8'))
+            if not isinstance(info, dict):
+                raise ValueError(f'Invalid cached sector data for {ticker}')
+            key = info.get('sectorKey', str(info.get('sector', '')).lower())
+        else:
+            # data/ is a per-run working directory and is not committed; fall
+            # back to the tracked sector map so a fresh clone can still filter.
+            key = _sector_map().get(ticker)
+            if key is None:
+                raise ValueError(f'No sector data for {ticker}: run the pipeline or add it to config/sectors.json')
+        if key == sector:
             selected.append((ticker, path))
     return selected
+
+
+def _sector_map():
+    path = ROOT / 'config' / 'sectors.json'
+    if not path.is_file():
+        return {}
+    sectors = json.loads(path.read_text(encoding='utf-8')).get('sectors')
+    if not isinstance(sectors, dict):
+        raise ValueError(f'Invalid sector map {path}')
+    return sectors
 
 
 def build(out, addresses, holdings):
