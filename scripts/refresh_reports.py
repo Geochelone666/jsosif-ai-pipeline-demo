@@ -12,7 +12,7 @@ from time import monotonic
 import uuid
 
 from data_utils import ROOT, DATA, REPORTS, SUPPORTED
-from report_store import read_json, write_json, digest, persist
+from report_store import read_json, write_json, digest, persist, verified_report_files, report_advisory
 from snapshot_contract import validate_snapshot
 from subscriptions import load, research_tickers
 from gemini_provider import quota_day
@@ -112,10 +112,46 @@ def ai_budget(tickers, index, root, now, mode='auto'):
     return selected, plan
 
 
+
+def reusable_reports(root, index, tickers, business_date):
+    """Only intact, ready same-day reports can satisfy an explicit resume."""
+    reusable = {}
+    for entry in index.get('reports', []):
+        if (entry.get('ticker') not in tickers or entry.get('as_of') != business_date
+                or entry.get('quality') != 'ready' or entry.get('advisory')):
+            continue
+        try:
+            verified_report_files(root, entry)
+            if report_advisory(root, entry):
+                continue
+        except (ValueError, OSError, KeyError, TypeError):
+            continue
+        ticker = entry['ticker']
+        if ticker not in reusable or entry['generated_at'] > reusable[ticker]['generated_at']:
+            reusable[ticker] = entry
+    return reusable
+
 def refresh(root, *, config=None, now=None, business_date=None, force=False,
-            interval_days=1, ai_mode='auto', stage_timeout=600, persist_git=False, scheduled=False):
+            interval_days=1, ai_mode='auto', stage_timeout=600, persist_git=False, scheduled=False,
+            resume=False, time_budget_seconds=None):
     from datetime import date, time
     from zoneinfo import ZoneInfo
+
+    started_at = monotonic()
+    if force and resume:
+        raise ValueError('Choose resume or force, not both')
+    if time_budget_seconds is not None and (isinstance(time_budget_seconds, bool)
+            or not math.isfinite(time_budget_seconds) or time_budget_seconds <= 0):
+        raise ValueError('Time budget must be a positive finite number')
+    def remaining():
+        return None if time_budget_seconds is None else time_budget_seconds - (monotonic() - started_at)
+
+    def run_stage(command, **kwargs):
+        budget = remaining()
+        if budget is not None and budget <= 0:
+            raise subprocess.TimeoutExpired(command, time_budget_seconds)
+        return subprocess.run(command, timeout=min(stage_timeout, budget) if budget is not None else stage_timeout,
+                              **kwargs)
 
     now = now or datetime.now(timezone.utc)
     business_date = business_date or now.astimezone(ZoneInfo('America/Toronto')).date().isoformat()
@@ -140,23 +176,26 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                                   and previous_at < evening <= now)
     except (ValueError, TypeError):
         replaces_intraday_test = False
-    if not force and not replaces_intraday_test and previous.get('business_date') == business_date:
-        print('Daily run already attempted; use --force for an explicit recovery run')
+    if not force and not resume and not replaces_intraday_test and previous.get('business_date') == business_date:
+        print('Daily run already attempted; use --resume to recover outstanding reports or --force to recompute all')
         return {'status': 'skipped', 'publish': False, 'failed': False}
     last = index.get('last_complete_business_date')
-    if last and not force and not replaces_intraday_test and (report_date - date.fromisoformat(last)).days < interval_days:
+    if last and not force and not resume and not replaces_intraday_test and (report_date - date.fromisoformat(last)).days < interval_days:
         print('Refresh interval not elapsed; archive retained')
         return {'status': 'skipped', 'publish': False, 'failed': False}
     tickers = research_tickers(load(config)) if config else list(SUPPORTED)
     if not tickers:
         return {'status': 'skipped', 'publish': False, 'failed': False}
-    selected, plan = ai_budget(tickers, index, root, now, ai_mode)
+    reused = reusable_reports(root, index, tickers, business_date) if resume else {}
+    pending = [ticker for ticker in tickers if ticker not in reused]
+    selected, plan = ai_budget(pending, index, root, now, ai_mode)
     index['refresh_plan'] = plan
     run_id = now.strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:8]
     attempt = {'run_id': run_id, 'at': now.isoformat(), 'business_date': business_date,
-               'status': 'running', 'expected_tickers': tickers, 'successful_tickers': [],
+               'status': 'running', 'expected_tickers': tickers, 'successful_tickers': sorted(reused),
+               'reused_tickers': sorted(reused), 'workflow_run_id': os.environ.get('GITHUB_RUN_ID'),
                'degraded_tickers': [], 'failed_tickers': [], 'failures': [],
-               'ai_selected_tickers': selected, 'ai_deferred_tickers': sorted(set(tickers)-set(selected)),
+               'ai_selected_tickers': selected, 'ai_deferred_tickers': sorted(set(pending)-set(selected)),
                'stage_seconds': {}}
     index['last_attempt'] = attempt
     checkpoint()
@@ -168,14 +207,23 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
     env['JSOSIF_PRICE_CACHE_BATCH_START'] = str(now.timestamp())
     DATA.mkdir(exist_ok=True); REPORTS.mkdir(exist_ok=True)
     try:
-        subprocess.run([sys.executable, str(ROOT / 'scripts/fred.py')], cwd=ROOT, env=env,
-                       check=True, timeout=stage_timeout)
+        if pending:
+            run_stage([sys.executable, str(ROOT / 'scripts/fred.py')], cwd=ROOT, env=env, check=True)
     except (subprocess.SubprocessError, OSError):
-        attempt.update(status='failed', failed_tickers=tickers,
+        attempt.update(status='partial' if reused else 'failed', failed_tickers=pending,
+                       pending_tickers=pending,
                        failures=[{'stage': 'fred', 'category': 'shared_prerequisite_failed'}])
+        attempt['finished_at'] = datetime.now(timezone.utc).isoformat()
+        if remaining() is not None and remaining() <= 0:
+            attempt.update(status='interrupted', interruption_reason='time_budget_exhausted')
         checkpoint()
-        return {'status': 'failed', 'publish': True, 'failed': True}
-    for ticker in tickers:
+        return {'status': attempt['status'], 'publish': True, 'failed': True}
+    for ticker in pending:
+        if remaining() is not None and remaining() <= 0:
+            break
+        attempt['current_ticker'] = ticker
+        attempt['last_progress_at'] = datetime.now(timezone.utc).isoformat()
+        checkpoint()
         stage = 'preflight'
         timings = attempt['stage_seconds'][ticker] = {}
         try:
@@ -190,8 +238,8 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                     continue
                 started = monotonic()
                 try:
-                    subprocess.run([sys.executable, str(ROOT / 'scripts' / f'{stage}.py'), '--ticker', ticker],
-                                   cwd=ROOT, env=ticker_env, check=True, timeout=stage_timeout)
+                    run_stage([sys.executable, str(ROOT / 'scripts' / f'{stage}.py'), '--ticker', ticker],
+                              cwd=ROOT, env=ticker_env, check=True)
                 finally:
                     timings[stage] = round(monotonic() - started, 3)
                     print(f'Research stage: {ticker} {stage} {timings[stage]}s', flush=True)
@@ -213,7 +261,14 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
             print('::notice title=Research progress::' + json.dumps({
                 'completed': completed, 'total': len(tickers),
                 'degraded': len(attempt['degraded_tickers']), 'failed': len(attempt['failed_tickers'])}), flush=True)
-    if attempt['failed_tickers']:
+    outstanding = set(tickers) - set(attempt['successful_tickers'])
+    budget_expired = remaining() is not None and remaining() <= 0 and bool(outstanding)
+    attempt['pending_tickers'] = sorted(outstanding | set(attempt['degraded_tickers']))
+    attempt.pop('current_ticker', None)
+    if budget_expired:
+        attempt['status'] = 'interrupted'
+        attempt['interruption_reason'] = 'time_budget_exhausted'
+    elif attempt['failed_tickers']:
         attempt['status'] = 'partial' if attempt['successful_tickers'] else 'failed'
     else:
         attempt['status'] = 'degraded' if attempt['degraded_tickers'] else 'complete'
@@ -221,7 +276,7 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
         index['last_complete_business_date'] = business_date
     attempt['finished_at'] = datetime.now(timezone.utc).isoformat()
     checkpoint()
-    return {'status': attempt['status'], 'publish': True, 'failed': bool(attempt['failed_tickers'])}
+    return {'status': attempt['status'], 'publish': True, 'failed': bool(attempt['failed_tickers']) or budget_expired}
 
 
 def main():
@@ -230,7 +285,10 @@ def main():
     parser.add_argument('--store', type=Path, required=True)
     parser.add_argument('--config', type=Path)
     parser.add_argument('--interval-days', type=int, default=1)
-    parser.add_argument('--force', action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--force', action='store_true')
+    mode.add_argument('--resume', action='store_true', help='Reuse verified ready reports for the same business date')
+    parser.add_argument('--time-budget-seconds', type=float)
     parser.add_argument('--business-date')
     parser.add_argument('--ai-mode', choices=('auto', 'off'), default='auto')
     parser.add_argument('--stage-timeout', type=int, default=600)
@@ -244,7 +302,8 @@ def main():
         result = refresh(args.store, config=args.config, business_date=args.business_date,
                          force=args.force, interval_days=args.interval_days,
                          ai_mode=args.ai_mode, stage_timeout=args.stage_timeout, persist_git=args.persist_git,
-                         scheduled=args.scheduled)
+                         scheduled=args.scheduled, resume=args.resume,
+                         time_budget_seconds=args.time_budget_seconds)
     if os.environ.get('GITHUB_OUTPUT'):
         with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
             output.write('publish=' + str(result['publish']).lower() + '\n')

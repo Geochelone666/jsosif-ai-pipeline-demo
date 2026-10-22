@@ -194,3 +194,56 @@ def test_quant_pipeline(monkeypatch, tmp_path, capsys, success):
         assert 'prices-minimum-history' in captured.err
         assert 'dns_or_connection' in captured.err
 
+
+
+def test_benchmark_outage_is_shared_briefly_then_retried(tmp_path, monkeypatch):
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE', str(tmp_path / 'cache'))
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '1000')
+    clock = {'now': 2000.}
+    monkeypatch.setattr(pf.time, 'time', lambda: clock['now'])
+    ticker, http_fetch = fail_providers(monkeypatch)
+    def fetch():
+        return fetch_symbol(tmp_path, 'SPY')
+    assert fetch()[0] is None
+    first_calls = (ticker.history.call_count, http_fetch.call_count)
+    prices, statuses = fetch()
+    assert prices is None and all(s['cache_hit'] for s in statuses)
+    assert (ticker.history.call_count, http_fetch.call_count) == first_calls
+    clock['now'] += 301
+    fetch()
+    assert (ticker.history.call_count, http_fetch.call_count) == tuple(n * 2 for n in first_calls)
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '2001')
+    fetch()
+    assert (ticker.history.call_count, http_fetch.call_count) == tuple(n * 3 for n in first_calls)
+
+
+def test_benchmark_stooq_cache_preserves_provider_and_audit_csv(tmp_path, monkeypatch):
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE', str(tmp_path / 'cache'))
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '1000')
+    ticker, _ = fail_providers(monkeypatch)
+    raw = b'Date,Close\n2026-10-06,100\n2026-10-07,101\n'
+    http_fetch = Mock(side_effect=lambda *a, **kw: io.BytesIO(raw))
+    monkeypatch.setattr(pf.urllib.request, 'urlopen', http_fetch)
+    first, statuses = fetch_symbol(tmp_path, 'SPY')
+    yahoo_calls = ticker.history.call_count
+    (tmp_path / 'SPY-stooq.csv').unlink()
+    second, cached = fetch_symbol(tmp_path, 'SPY')
+    pd.testing.assert_series_equal(first, second, check_names=False)
+    assert cached[-1]['source'] == 'stooq' and cached[-1]['cache_hit']
+    assert ticker.history.call_count == yahoo_calls and http_fetch.call_count == 1
+    assert (tmp_path / 'SPY-stooq.csv').read_bytes() == raw
+    # Another batch must request the provider again, even if its bar could change.
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '1001')
+    fetch_symbol(tmp_path, 'SPY')
+    assert http_fetch.call_count == 2
+
+
+def test_corrupt_benchmark_cache_does_not_suppress_provider_recovery(tmp_path, monkeypatch):
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE', str(tmp_path / 'cache'))
+    monkeypatch.setenv('JSOSIF_PRICE_CACHE_BATCH_START', '1000')
+    ticker, _ = fail_providers(monkeypatch)
+    fetch_symbol(tmp_path, 'SPY')
+    next((tmp_path / 'cache').glob('benchmark-*.json')).write_text('{broken')
+    ticker.history.side_effect = None
+    ticker.history.return_value = pd.DataFrame({'Close': [123.]}, index=pd.to_datetime(['2026-10-07']))
+    assert fetch_symbol(tmp_path, 'SPY')[0].iloc[-1] == 123.

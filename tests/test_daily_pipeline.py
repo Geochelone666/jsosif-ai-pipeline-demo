@@ -338,3 +338,83 @@ def test_quiet_news_report_renders_real_pdf_without_claiming_ai_classification(p
     entry = read_json(root / 'index.json')['reports'][0]
     assert 'No recent headlines returned by RSS; no AI classification performed' in (root / entry['md']).read_text()
     assert (root / entry['pdf']).read_bytes().startswith(b'%PDF-')
+
+
+def test_resume_only_collects_outstanding_reports_and_reuses_intact_ready_versions(pipeline, monkeypatch):
+    root, calls, failure = pipeline
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_RPD', '100')
+    monkeypatch.setenv('GEMINI_RPM', '100')
+    failure['ticker'] = 'CSCO'
+    refresh.refresh(root, now=NOW)
+    original = read_json(root / 'index.json')['reports'][0]
+    old_digest = digest(root / original['pdf'])
+    calls.clear(); failure['ticker'] = None
+    result = refresh.refresh(root, now=NOW, resume=True)
+    assert result == {'status': 'complete', 'publish': True, 'failed': False}
+    assert {ticker for ticker, stage, _ in calls if stage == 'quant'} == {'CSCO'}
+    index = read_json(root / 'index.json')
+    assert index['last_attempt']['reused_tickers'] == ['JPM']
+    assert len(index['reports']) == 2
+    assert digest(root / original['pdf']) == old_digest
+    assert check(root, require_ready=True)['ready']
+    calls.clear()
+    refresh.refresh(root, now=NOW, resume=True)
+    assert calls == []  # A fully recovered date performs no provider calls.
+
+
+def test_resume_retries_degraded_reports(pipeline):
+    root, calls, _ = pipeline
+    refresh.refresh(root, now=NOW)  # Missing AI credentials makes both reports degraded.
+    calls.clear()
+    refresh.refresh(root, now=NOW, resume=True)
+    assert {ticker for ticker, stage, _ in calls if stage == 'quant'} == {'CSCO', 'JPM'}
+    assert read_json(root / 'index.json')['last_attempt']['reused_tickers'] == []
+
+
+def test_resume_does_not_trust_a_modified_pdf(pipeline, monkeypatch):
+    root, calls, _ = pipeline
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_RPD', '100'); monkeypatch.setenv('GEMINI_RPM', '100')
+    refresh.refresh(root, now=NOW)
+    entry = next(r for r in read_json(root / 'index.json')['reports'] if r['ticker'] == 'CSCO')
+    (root / entry['pdf']).write_bytes(b'%PDF-corrupted')
+    calls.clear()
+    refresh.refresh(root, now=NOW, resume=True)
+    assert {ticker for ticker, stage, _ in calls if stage == 'quant'} == {'CSCO'}
+    assert read_json(root / 'index.json')['last_attempt']['reused_tickers'] == ['JPM']
+    assert not check(root, require_ready=True)['ready']  # Corrupt history still requires restoration.
+
+
+def test_time_budget_stops_provider_work_and_preserves_publishable_checkpoint(pipeline, monkeypatch):
+    root, calls, _ = pipeline
+    clock = {'seconds': 0.}
+    monkeypatch.setattr(refresh, 'monotonic', lambda: clock['seconds'])
+    original_run = refresh.subprocess.run
+    def elapsed(command, **kwargs):
+        result = original_run(command, **kwargs)
+        if Path(command[1]).stem == 'quant':
+            clock['seconds'] += 6
+        return result
+    monkeypatch.setattr(refresh.subprocess, 'run', elapsed)
+    result = refresh.refresh(root, now=NOW, time_budget_seconds=5)
+    assert result == {'status': 'interrupted', 'publish': True, 'failed': True}
+    assert [ticker for ticker, stage, _ in calls if stage == 'quant'] == ['CSCO']
+    attempt = read_json(root / 'index.json')['last_attempt']
+    assert attempt['interruption_reason'] == 'time_budget_exhausted'
+    assert attempt['pending_tickers'] == ['CSCO', 'JPM']
+    assert 'current_ticker' not in attempt
+    assert not check(root)['ready']
+
+
+def test_resume_and_force_are_mutually_exclusive(pipeline):
+    with pytest.raises(ValueError, match='Choose resume or force'):
+        refresh.refresh(pipeline[0], now=NOW, resume=True, force=True)
+
+
+@pytest.mark.parametrize('budget', [0, -1, float('nan'), float('inf'), True])
+def test_invalid_collection_budget_rejected_before_provider_calls(pipeline, budget):
+    root, calls, _ = pipeline
+    with pytest.raises(ValueError, match='Time budget'):
+        refresh.refresh(root, now=NOW, time_budget_seconds=budget)
+    assert calls == []
