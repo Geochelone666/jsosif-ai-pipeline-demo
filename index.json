@@ -3636,6 +3636,23 @@
       "md": "archive/20261023T010737Z-6309c248/PEP/PEP-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/PEP/PEP-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/PEP/PEP-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/PFE",
+      "ticker": "PFE",
+      "generated_at": "2026-10-23T02:47:59.248552+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "712e457d30454944790567ddfa783948e6b99a5bc59e90329747a83fac1744a6",
+        "json": "593e27608a581b9aab0ab9ad15bc4ff56041a522d296e2438d6d628de391e6a2",
+        "pdf": "b07a291a6f9088970fcd25197f0a82cb342ce97c48362480168cfa0b42cc103c"
+      },
+      "md": "archive/20261023T010737Z-6309c248/PFE/PFE-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/PFE/PFE-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/PFE/PFE-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3788,7 +3805,8 @@
       "NVDA",
       "NVO",
       "OTEX.TO",
-      "PEP"
+      "PEP",
+      "PFE"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -4188,6 +4206,15 @@
         "comparables": 2.422,
         "earnings": 1.367,
         "edgar": 2.219,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "PFE": {
+        "quant": 1.269,
+        "ai_extract": 111.106,
+        "comparables": 2.018,
+        "earnings": 1.167,
+        "edgar": 1.968,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
