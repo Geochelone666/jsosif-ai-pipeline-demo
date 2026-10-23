@@ -1,0 +1,128 @@
+{
+  "ticker": "TD.TO",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped",
+    "warning: enterpriseToEbitda unavailable (N/A)",
+    "warning: EV/EBITDA unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/TD.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/TD.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 175.13999938964844,
+    "Return 1D (%)": 0.017131391235403193,
+    "Return 1W (%)": 3.011407474724326,
+    "Return 1M (%)": 2.1119370964899353,
+    "Return YTD (%)": 39.473591156300316,
+    "Return 1Y (%)": 59.51112887166754,
+    "Annualized volatility (%)": 16.984182683706248,
+    "Max drawdown (%)": -8.004789959319536,
+    "Sharpe (rf=0)": 2.847626181203607,
+    "Beta vs SPY": 0.6748286963135952,
+    "MA50": 167.31796966552736,
+    "Close vs MA50 (%)": 4.6749489847130565,
+    "MA200": 150.2637046813965,
+    "Close vs MA200 (%)": 16.555092103576886,
+    "RSI (14, Wilder)": 66.08075252476837,
+    "MACD (12,26)": 1.5389556869472756,
+    "MACD signal (9)": 0.5214155097276965,
+    "MACD histogram": 1.0175401772195791,
+    "P/E (trailing)": 18.751606,
+    "P/B": 2.3159926,
+    "EV/EBITDA": null,
+    "Revenue growth (%)": 11.5
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 109.79798126220703,
+    "end_close": 175.13999938964844,
+    "manual_1Y_pct": 59.51112887166754,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T03:00:19.054896+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "TD.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {
+    "EV/EBITDA": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    }
+  },
+  "history_count": {
+    "TD.TO": 265,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'TD.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
