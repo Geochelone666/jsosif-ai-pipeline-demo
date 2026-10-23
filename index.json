@@ -3568,6 +3568,23 @@
       "md": "archive/20261023T010737Z-6309c248/NVAX/NVAX-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/NVAX/NVAX-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/NVAX/NVAX-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/NVDA",
+      "ticker": "NVDA",
+      "generated_at": "2026-10-23T02:41:46.616707+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "88a1b491f3fe155bef71f0a26e520eeb7aef73953d5e2ba5488cbd33bde4cc27",
+        "json": "541095731d711d63da5be957ba1926a3ca553a807d6ab068bfb6492b7557e013",
+        "pdf": "bf50dbf8094c48297138bc0410a46eca966efac169042af68b87d5ff0818113b"
+      },
+      "md": "archive/20261023T010737Z-6309c248/NVDA/NVDA-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/NVDA/NVDA-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/NVDA/NVDA-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3716,7 +3733,8 @@
       "MU",
       "NFLX",
       "NTR.TO",
-      "NVAX"
+      "NVAX",
+      "NVDA"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -4080,6 +4098,15 @@
         "comparables": 2.418,
         "earnings": 1.416,
         "edgar": 2.117,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "NVDA": {
+        "quant": 1.015,
+        "ai_extract": 295.266,
+        "comparables": 1.467,
+        "earnings": 1.217,
+        "edgar": 1.867,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
