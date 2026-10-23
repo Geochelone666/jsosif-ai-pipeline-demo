@@ -3670,6 +3670,23 @@
       "md": "archive/20261023T010737Z-6309c248/SCHW/SCHW-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/SCHW/SCHW-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/SCHW/SCHW-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/SHOP.TO",
+      "ticker": "SHOP.TO",
+      "generated_at": "2026-10-23T02:52:58.613055+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "75eb39624304f306bbdfcacb81d6c4d38c907ed595478a216cb3d1d06bf88f63",
+        "json": "5e6d8a7a08e17fdd3fbe9f1dbc144726af61699241c9cb18b88a44f08ca5b1cc",
+        "pdf": "7b302ede4d093ee73a4ad8bf97e98a44343f1e12652b90c19d29e509cd5e94c6"
+      },
+      "md": "archive/20261023T010737Z-6309c248/SHOP.TO/SHOP.TO-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/SHOP.TO/SHOP.TO-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/SHOP.TO/SHOP.TO-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3824,7 +3841,8 @@
       "OTEX.TO",
       "PEP",
       "PFE",
-      "SCHW"
+      "SCHW",
+      "SHOP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -4242,6 +4260,15 @@
         "comparables": 1.768,
         "earnings": 1.066,
         "edgar": 2.118,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
+      },
+      "SHOP.TO": {
+        "quant": 0.866,
+        "ai_extract": 52.351,
+        "comparables": 1.768,
+        "earnings": 1.066,
+        "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
       }
