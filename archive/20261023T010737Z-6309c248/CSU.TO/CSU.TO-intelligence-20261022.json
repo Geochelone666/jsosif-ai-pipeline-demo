@@ -1,0 +1,268 @@
+{
+  "contract_version": "1.0",
+  "identity": {
+    "ticker": "CSU.TO",
+    "as_of": "2026-10-22",
+    "report_stamp": "20261022"
+  },
+  "quant": [
+    {
+      "metric": "Close",
+      "value": "3408.5701",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1D (%)",
+      "value": "5.3309",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1W (%)",
+      "value": "3.8008",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1M (%)",
+      "value": "23.0415",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return YTD (%)",
+      "value": "3.4104",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1Y (%)",
+      "value": "-7.4415",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Annualized volatility (%)",
+      "value": "45.1402",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Beta vs SPY",
+      "value": "0.1882",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Max drawdown (%)",
+      "value": "-41.2334",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Sharpe (rf=0)",
+      "value": "0.0525",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/E (trailing)",
+      "value": "54.40",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/B",
+      "value": "12.45",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "EV/EBITDA",
+      "value": "32.75",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Revenue growth (%)",
+      "value": "17.30",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA50",
+      "value": "3001.6087",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA50 (%)",
+      "value": "13.5581",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA200",
+      "value": "2764.8397",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA200 (%)",
+      "value": "23.2827",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "RSI (14, Wilder)",
+      "value": "71.9160",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD (12,26)",
+      "value": "96.9880",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD signal (9)",
+      "value": "56.9966",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD histogram",
+      "value": "39.9914",
+      "availability": "ok",
+      "reason": null
+    }
+  ],
+  "ai_summary": {
+    "status": "Available",
+    "sections": {
+      "TAILWINDS": "No items in this run",
+      "HEADWINDS": "No items in this run",
+      "CATALYSTS": "### I’d Keep Constellation Software Stock Despite its 3% Organic Growth: Here’s Why\n- Summary: Opinion piece arguing to hold CSU stock despite modest growth.\n- Date: 2026-10-21 | Impact: low | Horizon: short | Confidence: 0.8\n- Sources: <https://news.google.com/rss/articles/CBMijAFBVV95cUxOTmdtaVJLbUt5R3pqSy1JMklpNWZmbnB5Tl9XTGxNMEZsN2RabzQtSGN5OHlmR1M3Y0tGTDJnOWMwNTU4Nzc4UkRqNDVfOGdnQkVfbWZOS2hEdm1XeTltUG5BM01waUVEZjhSUmRlX2V3UnpnU1kycDZLNnp3elVFaVlsR0lwcnpfanRmNA?oc=5>",
+      "RISKS": "No items in this run"
+    }
+  },
+  "freshness": {
+    "report_as_of": "2026-10-22",
+    "market_data_as_of": "2026-10-22",
+    "market_data_fetched_at": "2026-10-23T01:49:19.767671+00:00",
+    "ai_snapshot_as_of": "2026-10-22",
+    "snapshot_note": "report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.",
+    "assumptions_version": "1",
+    "assumptions_checked": {
+      "prices-adjusted-close": {
+        "status": "uncheckable",
+        "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+      },
+      "prices-lookback-start": {
+        "status": "ok",
+        "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+      },
+      "stooq-us-only": {
+        "status": "ok",
+        "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+      },
+      "prices-normalized-index": {
+        "status": "ok",
+        "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+      },
+      "prices-trading-calendar": {
+        "status": "uncheckable",
+        "detail": "Observation counts do not establish continuous trading-day coverage."
+      },
+      "prices-currency-usd": {
+        "status": "uncheckable",
+        "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+      },
+      "prices-minimum-history": {
+        "status": "ok",
+        "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+      },
+      "phase1-artifacts-exist": {
+        "status": "uncheckable",
+        "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+      },
+      "fred-shared-freshness": {
+        "status": "uncheckable",
+        "detail": "A report date does not imply current macro observations."
+      },
+      "supported-ticker": {
+        "status": "ok",
+        "detail": "Observed 'CSU.TO'. Unsupported symbols have no configured pipeline universe entry."
+      },
+      "report-as-of-date": {
+        "status": "ok",
+        "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+      }
+    },
+    "no_refresh_note": "Report date is not a guarantee of data freshness. No data is refreshed by email generation."
+  },
+  "disclaimer": "Not investment advice. For analyst research preparation only; verify source data and AI claims.",
+  "ticker": "CSU.TO",
+  "as_of": "2026-10-22",
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'CSU.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  },
+  "source_status": {
+    "market": "ok",
+    "news": "ok"
+  },
+  "extraction_stats": {
+    "unique_headlines": 3,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 2
+  },
+  "quality": "ready"
+}
