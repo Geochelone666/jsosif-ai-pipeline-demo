@@ -1,0 +1,121 @@
+{
+  "ticker": "XYL",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/XYL/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/XYL/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 109.26000213623047,
+    "Return 1D (%)": 2.7362517196626746,
+    "Return 1W (%)": 5.6979773949393575,
+    "Return 1M (%)": 1.3073747631509702,
+    "Return YTD (%)": -18.872717607298895,
+    "Return 1Y (%)": -24.110145721345187,
+    "Annualized volatility (%)": 25.460395812680925,
+    "Max drawdown (%)": -33.119246490927864,
+    "Sharpe (rf=0)": -0.9593038400844238,
+    "Beta vs SPY": 0.7740352101224158,
+    "MA50": 107.33863067626953,
+    "Close vs MA50 (%)": 1.7900092891586672,
+    "MA200": 117.91350044250488,
+    "Close vs MA200 (%)": -7.3388528657020835,
+    "RSI (14, Wilder)": 64.95659783306036,
+    "MACD (12,26)": -0.2577973617273557,
+    "MACD signal (9)": -1.2386484986150055,
+    "MACD histogram": 0.9808511368876498,
+    "P/E (trailing)": 25.35035,
+    "P/B": 2.448129,
+    "EV/EBITDA": 13.921,
+    "Revenue growth (%)": 1.5
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 143.97181701660156,
+    "end_close": 109.26000213623047,
+    "manual_1Y_pct": -24.110145721345194,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T03:12:18.691989+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "XYL",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "XYL": 266,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'XYL'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
