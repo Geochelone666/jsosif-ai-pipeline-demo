@@ -1,0 +1,122 @@
+{
+  "ticker": "MC.PA",
+  "errors": [
+    "warning: MC.PA invalid/missing prices skipped",
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/MC.PA/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/MC.PA/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 388.6000061035156,
+    "Return 1D (%)": 0.4783467623828308,
+    "Return 1W (%)": -0.24386644056526574,
+    "Return 1M (%)": -4.167692699502934,
+    "Return YTD (%)": -38.76952551166186,
+    "Return 1Y (%)": -35.417395105116775,
+    "Annualized volatility (%)": 26.970217143531382,
+    "Max drawdown (%)": -41.0024992898988,
+    "Sharpe (rf=0)": -1.465921505691649,
+    "Beta vs SPY": 0.5869130209875218,
+    "MA50": 414.9139990234375,
+    "Close vs MA50 (%)": -6.342035453577322,
+    "MA200": 474.71785903930663,
+    "Close vs MA200 (%)": -18.140849621724563,
+    "RSI (14, Wilder)": 42.363332868018716,
+    "MACD (12,26)": -6.88834026747918,
+    "MACD signal (9)": -9.479990145990438,
+    "MACD histogram": 2.5916498785112587,
+    "P/E (trailing)": 17.675478,
+    "P/B": 2.8081915,
+    "EV/EBITDA": 10.859,
+    "Revenue growth (%)": -2.9000000000000004
+  },
+  "as_of": "2026-10-21",
+  "verification": {
+    "base_date": "2025-10-21",
+    "base_close": 601.7100219726562,
+    "end_close": 388.6000061035156,
+    "manual_1Y_pct": -35.417395105116775,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T02:13:40.627036+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "MC.PA",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: MC.PA invalid/missing prices skipped"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "MC.PA": 269,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 269 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 269. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'MC.PA'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}

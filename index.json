@@ -3398,6 +3398,23 @@
       "md": "archive/20261023T010737Z-6309c248/JWEL.TO/JWEL.TO-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/JWEL.TO/JWEL.TO-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/JWEL.TO/JWEL.TO-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/MC.PA",
+      "ticker": "MC.PA",
+      "generated_at": "2026-10-23T02:14:29.385394+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "ba219eb2c9c680f7e2c736d3d08088afc566c1e541e33e961c2c7ddc3d3ae0df",
+        "json": "ca90588ea5003482d09e9fbe9566d83d4cabec1975d7695e2c08ceb7244c7571",
+        "pdf": "067ec17ce82f6854bcb92fb442516a574a366dcc59d223d1a675a64bb7e01b2d"
+      },
+      "md": "archive/20261023T010737Z-6309c248/MC.PA/MC.PA-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/MC.PA/MC.PA-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/MC.PA/MC.PA-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3536,7 +3553,8 @@
       "ISRG",
       "J",
       "JPM",
-      "JWEL.TO"
+      "JWEL.TO",
+      "MC.PA"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -3811,6 +3829,15 @@
         "earnings": 1.318,
         "edgar": 0.064,
         "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "MC.PA": {
+        "quant": 1.116,
+        "ai_extract": 45.439,
+        "comparables": 1.768,
+        "earnings": 1.166,
+        "edgar": 0.064,
+        "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
     },
