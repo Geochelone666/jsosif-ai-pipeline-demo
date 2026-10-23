@@ -3466,6 +3466,23 @@
       "md": "archive/20261023T010737Z-6309c248/META/META-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/META/META-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/META/META-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/MG.TO",
+      "ticker": "MG.TO",
+      "generated_at": "2026-10-23T02:24:42.331531+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "8c1fd98045fb5e4bb4350754d8e5c3868761b58bc9ccc55db843a11aa12395da",
+        "json": "68ec726ba25031b9d94ee7f7d74c1093a0fe32d3fd1fb25093a11edf49850fe8",
+        "pdf": "f0730aaf56421cca4386c0e3dfa35283fd74a5aaf1a0a5fbd79f387d83cea48e"
+      },
+      "md": "archive/20261023T010737Z-6309c248/MG.TO/MG.TO-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/MG.TO/MG.TO-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/MG.TO/MG.TO-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3608,7 +3625,8 @@
       "MC.PA",
       "MCK",
       "MCO",
-      "META"
+      "META",
+      "MG.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -3919,6 +3937,15 @@
         "earnings": 1.015,
         "edgar": 1.967,
         "regenerate_report": 0.064,
+        "report_pdf": 0.164
+      },
+      "MG.TO": {
+        "quant": 1.067,
+        "ai_extract": 50.541,
+        "comparables": 1.767,
+        "earnings": 0.966,
+        "edgar": 2.668,
+        "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
     },
