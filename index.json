@@ -3041,6 +3041,23 @@
       "md": "archive/20261023T010737Z-6309c248/AMD/AMD-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/AMD/AMD-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/AMD/AMD-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/AMTM",
+      "ticker": "AMTM",
+      "generated_at": "2026-10-23T01:20:53.766521+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-21",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "20242aadcbd134be2bb48a7255e8977f643c49952cf08200b77b9455cb53237b",
+        "json": "2c291c5720582b7418972eda6c3fa5bfdec1dcc809d78983eaa8279c2a65e47f",
+        "pdf": "253ae80131c92f64f266bf316059589a579a464667b140dbc27698e7e9d826db"
+      },
+      "md": "archive/20261023T010737Z-6309c248/AMTM/AMTM-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/AMTM/AMTM-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/AMTM/AMTM-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3158,7 +3175,8 @@
     "successful_tickers": [
       "AAPL",
       "ACN",
-      "AMD"
+      "AMD",
+      "AMTM"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -3245,6 +3263,15 @@
         "edgar": 2.068,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
+      },
+      "AMTM": {
+        "quant": 1.117,
+        "ai_extract": 51.02,
+        "comparables": 2.119,
+        "earnings": 1.268,
+        "edgar": 3.219,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
       }
     },
     "current_ticker": "AMTM",
