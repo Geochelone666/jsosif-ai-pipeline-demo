@@ -1,0 +1,121 @@
+{
+  "ticker": "MCK",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/MCK/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/MCK/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 1012.3400268554688,
+    "Return 1D (%)": -0.3111741156603842,
+    "Return 1W (%)": 1.3718669396453276,
+    "Return 1M (%)": 13.58909025064663,
+    "Return YTD (%)": 23.783034697981908,
+    "Return 1Y (%)": 27.740076318211226,
+    "Annualized volatility (%)": 30.96127378073837,
+    "Max drawdown (%)": -27.169099818123353,
+    "Sharpe (rf=0)": 0.9443679441434154,
+    "Beta vs SPY": -0.26851551572135046,
+    "MA50": 906.9575671386718,
+    "Close vs MA50 (%)": 11.619337390751848,
+    "MA200": 856.5077813720703,
+    "Close vs MA200 (%)": 18.193908902236156,
+    "RSI (14, Wilder)": 71.3194184673302,
+    "MACD (12,26)": 35.43305387682767,
+    "MACD signal (9)": 27.298835820161784,
+    "MACD histogram": 8.134218056665887,
+    "P/E (trailing)": 27.133207,
+    "P/B": -27.695887,
+    "EV/EBITDA": 18.046,
+    "Revenue growth (%)": 7.7
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 792.4999389648438,
+    "end_close": 1012.3400268554688,
+    "manual_1Y_pct": 27.74007631821122,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T02:14:32.900662+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "MCK",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "MCK": 266,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'MCK'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
