@@ -338,3 +338,26 @@ cron. These observed gaps mean the current GitHub schedule cannot establish
 near-exact member delivery times. A dependable external scheduler is a separate
 operational requirement if prompt delivery is required. This roster correction
 does not change live member configuration, delivery records or scheduling.
+
+## GitHub-only delivery isolation follow-up
+
+The independent sender correction separates `delivery-state` from the report
+archive and keeps all sender workflows in their own short concurrency group.
+A trusted completed daily workflow also triggers an enabled due-member scan.
+Cron and runner startup remain best effort; this change does not establish
+exact-time delivery with GitHub as the only runtime.
+
+Validation: 836 tests and 57 subtests passed with pinned Python 3.12 dependencies.
+The new tests use actual local Git remotes to exercise research pushes during a
+reserved SMTP transaction, stale-sender rejection before SMTP, migrated accepted
+and uncertain reservations, interrupted cutover recovery, missing/corrupt state,
+retired legacy entry points and exclusion of unexpected private fields. SMTP is
+replaced with an in-memory backend; no live members were contacted. All workflow
+YAML files parsed. The current production ledger's three existing reservations
+passed the migration validator without printing their keys or report IDs.
+
+Production cutover has not run as part of this local validation. Merging the
+migration files starts the guarded no-email migration; a current-main
+`confirm=NO` check and inspection of both state branches are required afterward.
+See [delivery scheduling and cutover](DELIVERY_SCHEDULING.md) for the complete
+state transition, backups and recovery requirements.

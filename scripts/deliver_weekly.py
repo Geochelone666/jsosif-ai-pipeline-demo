@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta, timezone
 from email.utils import format_datetime, make_msgid
 import fcntl
 import hashlib
+import json
 import os
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -59,17 +60,34 @@ def due_period(member, now):
 
 
 def deliver(config, root, *, now=None, really_send=False, git=False, backend=send,
-            preview_dir=None, preview_all=False):
+            preview_dir=None, preview_all=False, ledger_store=None):
     if really_send and (preview_dir is not None or preview_all):
         raise ValueError('Preview options cannot be combined with real delivery')
     now = now or datetime.now(timezone.utc)
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
-    # All writers use this same store and the workflow also serializes across runners.
-    with (root / '.delivery.lock').open('a') as lock:
+    ledger_root = Path(ledger_store) if ledger_store is not None else root
+    if ledger_store is not None:
+        if root.resolve() == ledger_root.resolve() or root.resolve() in ledger_root.resolve().parents or ledger_root.resolve() in root.resolve().parents:
+            raise ValueError('Report and delivery stores must be separate directories')
+        from prepare_delivery_store import load_ledger, assert_cutover
+
+    def checkpoint():
+        if ledger_store is None:
+            persist(ledger_root, git)
+        else:
+            persist(ledger_root, git, branch='delivery-state')
+
+    # Sender runs serialize with each other, independently of report collection.
+    with (ledger_root / '.delivery.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         index = read_json(root / 'index.json', {'reports': []})
-        ledger = read_json(root / 'state/deliveries.json', {})
+        ledger = (load_ledger(ledger_root) if ledger_store is not None
+                  else read_json(root / 'state/deliveries.json', {}))
+        if not isinstance(ledger, dict):
+            raise ValueError('Legacy delivery state is retired or invalid; use the independent delivery ledger')
+        if ledger_store is not None:
+            assert_cutover(root, ledger_root)
         summary = {'sent': 0, 'prepared': 0, 'skipped': 0, 'deferred': 0, 'unknown': 0}
         for member in config['members']:
             period = due_period(member, now) if member['enabled'] else None
@@ -120,6 +138,8 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                     store = root.resolve()
                     if resolved == store or store in resolved.parents:
                         raise ValueError('Private email previews must be outside the report store')
+                    if resolved == ledger_root.resolve() or ledger_root.resolve() in resolved.parents:
+                        raise ValueError('Private email previews must be outside the delivery store')
                     directory.mkdir(parents=True, exist_ok=True, mode=0o700)
                     target = directory / f'{key}.eml'
                     temporary = None
@@ -135,8 +155,8 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 continue
             ledger[key] = {'period': period, 'status': 'sending', 'updated_at': now.isoformat(),
                            'reports': [r['report_id'] for r in selected]}
-            write_json(root / 'state/deliveries.json', ledger)
-            persist(root, git)  # Failure here prevents the SMTP call.
+            write_json(ledger_root / 'state/deliveries.json', ledger)
+            checkpoint()  # Failure here prevents the SMTP call.
             try:
                 backend(message)
             except Exception:
@@ -147,8 +167,8 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
             else:
                 ledger[key]['status'] = 'accepted'
                 summary['sent'] += 1
-            write_json(root / 'state/deliveries.json', ledger)
-            persist(root, git)
+            write_json(ledger_root / 'state/deliveries.json', ledger)
+            checkpoint()
         return summary
 
 
@@ -156,6 +176,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config', type=Path, required=True)
     parser.add_argument('--store', type=Path, required=True)
+    parser.add_argument('--ledger-store', type=Path, help='Independent delivery-state worktree')
     parser.add_argument('--send', action='store_true')
     parser.add_argument('--persist-git', action='store_true')
     parser.add_argument('--preview-dir', type=Path, help='Write private .eml previews outside the report store')
@@ -163,12 +184,17 @@ def main():
     args = parser.parse_args()
     if args.send and os.environ.get('JSOSIF_APPROVED_SEND') != '1':
         parser.error('Set JSOSIF_APPROVED_SEND=1 to enable delivery')
+    if args.send and args.ledger_store is None:
+        parser.error('Real delivery requires --ledger-store; initialize the independent ledger first')
     if args.send and (args.preview_dir or args.preview_all):
         parser.error('Preview options cannot be combined with send')
     if args.send:
         GmailSmtpBackend().credentials()  # Fail configuration checks before reserving a weekly slot.
     result = deliver(load(args.config), args.store, really_send=args.send, git=args.persist_git,
-                     preview_dir=args.preview_dir, preview_all=args.preview_all)
+                     preview_dir=args.preview_dir, preview_all=args.preview_all, ledger_store=args.ledger_store)
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        print('::notice title=Weekly delivery summary::' + json.dumps(
+            {'mode': 'send' if args.send else 'preview', **result}), flush=True)
     print(result)
     if result['unknown']:
         raise SystemExit('Delivery needs reconciliation; uncertain messages will not be retried automatically')

@@ -540,7 +540,7 @@ def test_deployment_check_rejects_missing_holding(published):
 def test_due_delivery_deferral_fails_the_sending_job_without_contacting_smtp(config, store, monkeypatch):
     import sys
     monkeypatch.setattr(sys, 'argv', ['deliver_weekly.py', '--config', 'synthetic.json',
-                                     '--store', str(store), '--send'])
+                                     '--store', str(store), '--ledger-store', str(store.parent / 'ledger'), '--send'])
     monkeypatch.setenv('JSOSIF_APPROVED_SEND', '1')
     monkeypatch.setattr(weekly, 'load', lambda _: config)
     monkeypatch.setattr(weekly.GmailSmtpBackend, 'credentials', lambda _: ('synthetic@example.com', 'synthetic'))

@@ -90,8 +90,11 @@ alone does not prove that repository administration or Pages deployment is allow
 
 ## Failure and recovery
 
-The source workflow and weekly sender share the `jsosif-report-data` concurrency
-group. Local collectors also lock their shared source directory. An explicit
+Research writers use `jsosif-report-data`; weekly and internal senders share the
+separate `jsosif-email-delivery` group and persist their ledger on `delivery-state`.
+The one-time [cutover](DELIVERY_SCHEDULING.md) holds both groups, preserves all
+legacy reservations and retires the old sender state before enabling the new path.
+Local collectors also lock their shared source directory. An explicit
 `--force` rerun archives new versions rather than overwriting old reports.
 Do not delete `report-data`, reset it to an old source commit, or force-push it.
 
@@ -104,18 +107,22 @@ timeout categories. Do not assume that an interrupted `running` state completed.
 
 Automatic runs attempt a business date once. After correcting the cause, use an
 explicit recovery run. The prior valid versions remain available throughout.
-The pipeline has per-stage timeouts and a two-hour job ceiling. A failed ticker
+The pipeline has per-stage timeouts and a four-hour job ceiling. A failed ticker
 does not prevent the remaining holdings from being collected.
 
-`report-data` is the durable store for immutable report files, source snapshots,
-quota counters and hashed delivery reservations. Delivery records contain no
+`report-data` is the durable store for immutable report files, source snapshots
+and quota counters. After cutover, `delivery-state` is the authoritative store for
+hashed delivery reservations and the migration manifest. Delivery records contain no
 names or addresses. Every daily publication also uploads a compressed backup of
 the persisted Git tree, retained as an Actions artifact for 30 days. This backup
-retention does not delete Git history or archived reports.
+retention does not delete Git history or archived reports. Sender workflows also
+back up the two validated delivery-state JSON files for 30 days; private member
+configuration and message previews are excluded.
 
 Recover on a clean machine by cloning the `report-data` branch into a separate
 store directory, checking integrity, and rebuilding the site with the current
-application code. Retain the delivery ledger and API reservations during recovery;
+application code. Restore `delivery-state` separately and verify its migration
+manifest against the report archive. Retain delivery and API reservations during recovery;
 restoring reports without them can permit duplicate sends or quota overspending.
 
 ## What counts as launched

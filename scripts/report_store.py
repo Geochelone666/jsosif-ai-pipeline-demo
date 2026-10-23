@@ -109,10 +109,12 @@ def push_category(stderr):
     return 'transport_or_service'
 
 
-def persist(root, git=False, *, sleep=time.sleep):
+def persist(root, git=False, *, sleep=time.sleep, branch='report-data'):
     """Commit before SMTP, so an interrupted transport cannot trigger a blind retry."""
     if not git:
         return
+    if branch not in ('report-data', 'delivery-state'):
+        raise ValueError('Unknown persistent store branch')
     root = Path(root)
     subprocess.run(['git', 'add', '--all'], cwd=root, check=True, capture_output=True)
     changed = subprocess.run(['git', 'diff', '--cached', '--quiet'], cwd=root).returncode
@@ -123,7 +125,7 @@ def persist(root, git=False, *, sleep=time.sleep):
                        cwd=root, check=True, capture_output=True)
     # Retry a pending push even if a previous commit succeeded locally.
     for attempt in range(3):
-        result = subprocess.run(['git', 'push', 'origin', 'HEAD:report-data'], cwd=root, capture_output=True)
+        result = subprocess.run(['git', 'push', 'origin', 'HEAD:' + branch], cwd=root, capture_output=True)
         if result.returncode == 0:
             return
         category = push_category(result.stderr)

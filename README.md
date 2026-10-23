@@ -82,15 +82,22 @@ explicit standalone compatibility through `AI_PROVIDER=gemini`.
 
 ## Weekly personalized delivery
 
+Complete the guarded [delivery-ledger cutover](docs/DELIVERY_SCHEDULING.md) once
+before using the independent sender. Existing weekly reservations are retained.
+
 ```bash
-python scripts/deliver_weekly.py --config config/subscriptions.local.json --store report-store
+python scripts/prepare_store.py ../report-store
+python scripts/prepare_delivery_store.py ../delivery-store --archive ../report-store
+python scripts/deliver_weekly.py --config config/subscriptions.local.json \
+  --store ../report-store --ledger-store ../delivery-store
 ```
 
 Default mode shows preview counts and never consumes the weekly send slot.
 To inspect actual `.eml` messages before the scheduled time, use:
 
 ```bash
-python scripts/deliver_weekly.py --config config/subscriptions.local.json --store report-store \
+python scripts/deliver_weekly.py --config config/subscriptions.local.json \
+  --store ../report-store --ledger-store ../delivery-store \
   --preview-all --preview-dir review/weekly
 ```
 
@@ -110,9 +117,13 @@ A nonexistent spring-forward time moves forward by the DST gap (for example,
 02:30 becomes 03:30 when the clock skips an hour). Due checks compare UTC instants,
 so the repeated hour cannot undo an already due delivery.
 
-Actual delivery requires `--send`, `JSOSIF_APPROVED_SEND=1`, `GMAIL_USER`, and
+Actual delivery requires `--send`, `--ledger-store`, `JSOSIF_APPROVED_SEND=1`, `GMAIL_USER`, and
 `GMAIL_APP_PASSWORD`. A local ignored `config/gmail.json` remains supported for
 legacy usage. Scheduled delivery does not regenerate reports.
+Sender jobs share `jsosif-email-delivery`, separately from the research writer.
+Research completion also triggers a due-member scan when delivery is enabled.
+GitHub cron and runner availability remain best effort; exact delivery times are
+not guaranteed. See the cutover guide for migration, backups and recovery.
 
 `max_report_age_days` defaults to 4. Zero means a report dated today in Toronto and generated
 within the last 24 hours; positive values bound both the Toronto report date and elapsed

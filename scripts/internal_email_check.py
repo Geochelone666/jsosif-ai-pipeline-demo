@@ -25,7 +25,7 @@ def self_config(sender, now):
         'send_weekday': local.weekday(), 'send_time': '00:00'}]})
 
 
-def check(store, preview_dir, *, send=False, git=False, now=None):
+def check(store, preview_dir, *, send=False, git=False, now=None, ledger_store=None):
     now = now or datetime.now(timezone.utc)
     sender = os.environ.get('GMAIL_USER', '')
     config = self_config(sender, now)
@@ -35,9 +35,9 @@ def check(store, preview_dir, *, send=False, git=False, now=None):
         authenticated_sender, _ = GmailSmtpBackend().credentials()
         if authenticated_sender.lower() != sender.lower():
             raise ValueError('Internal delivery must use the configured sender itself')
-        result = deliver(config, store, now=now, really_send=True, git=git)
+        result = deliver(config, store, now=now, really_send=True, git=git, ledger_store=ledger_store)
     else:
-        result = deliver(config, store, now=now, preview_dir=preview_dir, preview_all=True)
+        result = deliver(config, store, now=now, preview_dir=preview_dir, preview_all=True, ledger_store=ledger_store)
         if result['prepared']:
             paths = list(Path(preview_dir).glob('*.eml'))
             if len(paths) != 1:
@@ -58,11 +58,14 @@ def check(store, preview_dir, *, send=False, git=False, now=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--store', type=Path, required=True)
+    parser.add_argument('--ledger-store', type=Path)
     parser.add_argument('--preview-dir', type=Path, required=True)
     parser.add_argument('--send', action='store_true')
     parser.add_argument('--persist-git', action='store_true')
     args = parser.parse_args()
-    result = check(args.store, args.preview_dir, send=args.send, git=args.persist_git)
+    if args.send and args.ledger_store is None:
+        parser.error('Real internal delivery requires the independent --ledger-store')
+    result = check(args.store, args.preview_dir, send=args.send, git=args.persist_git, ledger_store=args.ledger_store)
     print(json.dumps(result))
 
 
