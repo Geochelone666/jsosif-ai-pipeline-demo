@@ -26,6 +26,15 @@ def test_browser_validator_matches_subscription_schema(tmp_path):
         changed = deepcopy(fixture)
         changed['members'][0][field] = value
         values.append(changed)
+    for start in ('2026-10-26', '2028-02-29', '2026-02-30', '0000-01-01',
+                  '2026-1-1', 'tomorrow', '', None, 20261026):
+        changed = deepcopy(fixture)
+        changed['members'][0]['delivery_start_date'] = start
+        values.append(changed)
+    from universe import SUPPORTED
+    changed = deepcopy(fixture)
+    changed['groups']['energy']['tickers'] = list(SUPPORTED)
+    values.append(changed)
     changed = deepcopy(fixture)
     changed['groups']['energy']['tickers'] = ['UNKNOWN']
     values.append(changed)

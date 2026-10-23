@@ -147,3 +147,43 @@ process.stdout.write(JSON.stringify({config, exported}));
         for field in ('preferred_frequency', 'preferred_weekdays', 'preferred_time', 'content_preferences', 'feedback'):
             assert member.pop(field) == ''
     assert reimported == python
+
+
+def test_browser_csv_retains_start_date_and_matches_supported_holdings(tmp_path):
+    from datetime import datetime, timezone
+    from deliver_weekly import due_period
+    from subscriptions import CSV_FIELDS
+    from universe import SUPPORTED
+
+    node = shutil.which('node')
+    if not node:
+        pytest.skip('Node required for browser spreadsheet validation')
+    root = Path(__file__).resolve().parents[1]
+    script = (root / 'docs/members.html').read_text().split('<script>', 1)[1].split('</script>', 1)[0]
+    member = {'id': 'pilot', 'name': 'Example Analyst', 'email': 'pilot@example.com',
+              'groups': ['research'], 'tickers': [], 'enabled': True,
+              'timezone': 'America/Toronto', 'send_weekday': 0, 'send_time': '09:00',
+              'delivery_start_date': '2026-10-26'}
+    other = {k: v for k, v in member.items() if k != 'delivery_start_date'}
+    other.update(id='other', email='other@example.com', enabled=False)
+    config = {'groups': {'research': {'tickers': list(SUPPORTED)}}, 'members': [member, other]}
+    target = tmp_path / 'start-date-roundtrip.js'
+    target.write_text(script + '''
+const fs = require('node:fs');
+const config = JSON.parse(fs.readFileSync(0, 'utf8'));
+const csv = JSOSIFConfig.membersCsv(config);
+process.stdout.write(JSON.stringify({csv, supported: JSOSIFConfig.supported,
+    imported: JSOSIFConfig.importMembersCsv(csv, config)}));
+''')
+    result = subprocess.run([node, str(target)], input=json.dumps(config),
+                            capture_output=True, text=True, check=True)
+    value = json.loads(result.stdout)
+    assert set(value['supported']) == set(SUPPORTED)
+    assert value['csv'].splitlines()[0].split(',') == list(CSV_FIELDS)
+    imported = import_members_csv(config, value['csv'])
+    assert imported == value['imported']
+    first, second = imported['members']
+    assert first['delivery_start_date'] == '2026-10-26'
+    assert 'delivery_start_date' not in second
+    assert due_period(first, datetime(2026, 10, 23, 14, tzinfo=timezone.utc)) is None
+    assert due_period(first, datetime(2026, 10, 26, 13, tzinfo=timezone.utc)) == '2026-10-26'

@@ -300,3 +300,41 @@ required after merge; the isolated four-holding run does not replace them.
 All five PDFs in the accepted self-delivery were parsed successfully, contained
 the expected ticker and date, and matched the report IDs in the durable delivery
 ledger. Inbox placement and mailbox rendering still await owner confirmation.
+
+## Member onboarding review on 2026-10-23
+
+The deployed archive contains 223 report versions. Its latest completed business
+date is 2026-10-22: 50 expected/current holdings, no degraded holdings or integrity
+errors. The daily production job passed both strict release and deployed HTTP
+verification. All 900 archive files present at the previous 100-version checkpoint
+retain their original Git blobs.
+
+The current private roster passed a manual `confirm=NO` delivery check in
+[40012159322](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/40012159322),
+without submitting email. Live acceptance
+[40012163720](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/40012163720)
+verified the deployed site, automation switches, Gmail authentication, Groq,
+market data, news and SEC access. The durable delivery ledger has two accepted
+member records in addition to the internal self-test, with no uncertain records.
+SMTP acceptance does not prove inbox placement for every member.
+
+The review found two roster editing defects: the browser supported only the
+original 25 holdings, and spreadsheet export did not retain `delivery_start_date`.
+The correction supports the current universe, validates real calendar dates,
+preserves optional start dates across CSV/browser imports and exports, and imports
+native Excel date cells. Blank spreadsheet dates remain unset. Future-start
+round-trip tests verify that editing a roster does not make a future Monday
+delivery eligible in the current week. Markdown instructions use the actual
+Toronto report date policy rather than the outdated UTC description.
+
+Local validation: 819 tests and 57 subtests passed with pinned Python 3.12
+dependencies; dependency checks passed. Chromium desktop/mobile checks against
+all 223 actual report versions passed, including an AAPL member import and start
+date preservation in CSV and JSON downloads. Tests use synthetic members only.
+
+Observed scheduling limitation: recent scheduled member scans were created at
+02:02, 07:24, 12:51 and 17:39 UTC on 2026-10-23 despite a configured quarter-hour
+cron. These observed gaps mean the current GitHub schedule cannot establish
+near-exact member delivery times. A dependable external scheduler is a separate
+operational requirement if prompt delivery is required. This roster correction
+does not change live member configuration, delivery records or scheduling.

@@ -6,6 +6,7 @@ from threading import Thread
 from playwright.sync_api import sync_playwright
 
 import argparse
+import csv
 import json
 import os
 parser = argparse.ArgumentParser(description='Exercise the research and member pages in Chromium using synthetic members')
@@ -57,17 +58,22 @@ try:
       page.select_option('#quality','ready')
       assert page.locator('#history tr').count()==sum(report['quality']=='ready' and not report.get('advisory') for report in reports)
     page.goto(address+'/members.html')
-    csv='id,name,email,groups,tickers,enabled,timezone,send_weekday,send_time\nmember-001,"Example, Analyst",analyst@example.com,research,CSCO;JPM,yes,America/Toronto,2,09:00\nmember-002,Second Analyst,second@example.com,research,COST,no,America/Toronto,4,17:00\n'
-    page.locator('#import').set_input_files({'name':'members.local.csv','mimeType':'text/csv','buffer':csv.encode()})
+    member_csv='id,name,email,groups,tickers,enabled,timezone,send_weekday,send_time,delivery_start_date\nmember-001,"Example, Analyst",analyst@example.com,research,AAPL;CSCO;JPM,yes,America/Toronto,2,09:00,2026-10-26\nmember-002,Second Analyst,second@example.com,research,COST,no,America/Toronto,4,17:00,\n'
+    page.locator('#import').set_input_files({'name':'members.local.csv','mimeType':'text/csv','buffer':member_csv.encode()})
     page.wait_for_function("document.querySelector('#status').textContent.includes('2 members')")
     assert page.locator('#members tr').count()==2
+    assert page.locator('#members input[type=date]').first.input_value()=='2026-10-26'
     page.get_by_role('button',name='Validate configuration').click()
     assert '2 members' in page.locator('#status').inner_text()
     with page.expect_download() as pending:page.get_by_role('button',name='Download member CSV').click()
     download=pending.value;download.save_as(root/'browser-export.local.csv')
     assert 'CSCO;JPM' in (root/'browser-export.local.csv').read_text()
+    exported=list(csv.DictReader((root/'browser-export.local.csv').read_text().splitlines()))
+    assert exported[0]['delivery_start_date']=='2026-10-26'
+    assert 'AAPL' in exported[0]['tickers']
     with page.expect_download() as pending:page.get_by_role('button',name='Download private JSON configuration').click()
     pending.value.save_as(root/'browser-export.local.json')
+    assert json.loads((root/'browser-export.local.json').read_text())['members'][0]['delivery_start_date']=='2026-10-26'
     page.screenshot(path=str(root/'member-subscription-table.png'),full_page=True)
     # A rejected spreadsheet must leave the imported table intact.
     page.locator('#import').set_input_files({'name':'bad.csv','mimeType':'text/csv','buffer':b'id,name\n'})
