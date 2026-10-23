@@ -1,0 +1,121 @@
+{
+  "ticker": "ASML",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/ASML/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/ASML/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 1560.5400390625,
+    "Return 1D (%)": -6.927333401089908,
+    "Return 1W (%)": -5.84635979398056,
+    "Return 1M (%)": -10.719147704936383,
+    "Return YTD (%)": 46.56467475489232,
+    "Return 1Y (%)": 55.285216974507435,
+    "Annualized volatility (%)": 46.64698717837764,
+    "Max drawdown (%)": -21.95313939004605,
+    "Sharpe (rf=0)": 1.179726672335171,
+    "Beta vs SPY": 2.219426611473334,
+    "MA50": 1728.2556030273438,
+    "Close vs MA50 (%)": -9.70432635491304,
+    "MA200": 1583.5727416992188,
+    "Close vs MA200 (%)": -1.454477084014727,
+    "RSI (14, Wilder)": 33.60072905369205,
+    "MACD (12,26)": -31.67482431906319,
+    "MACD signal (9)": -11.058765840616143,
+    "MACD histogram": -20.616058478447048,
+    "P/E (trailing)": 41.25139,
+    "P/B": 1339.956,
+    "EV/EBITDA": 2051.957,
+    "Revenue growth (%)": 55.2
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 1004.9508056640625,
+    "end_close": 1560.5400390625,
+    "manual_1Y_pct": 55.285216974507435,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T01:23:58.204784+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "ASML",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "ASML": 266,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'ASML'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
