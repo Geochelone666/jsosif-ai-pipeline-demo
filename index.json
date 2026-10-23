@@ -3194,6 +3194,23 @@
       "md": "archive/20261023T010737Z-6309c248/COST/COST-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/COST/COST-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/COST/COST-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/CP.TO",
+      "ticker": "CP.TO",
+      "generated_at": "2026-10-23T01:43:19.873196+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "f102b9d7c6bdc57fbc42243c4e29b14020ff529998d3418434670cde7a25adcc",
+        "json": "e82ff429063556e9b61195ab713d0b5fc33460a257e22bc9d0b02f4c05fd93b0",
+        "pdf": "5267b12fe5704d1c6bfb27d1710413bf8b83dd6fb03462488228004131d93d11"
+      },
+      "md": "archive/20261023T010737Z-6309c248/CP.TO/CP.TO-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/CP.TO/CP.TO-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/CP.TO/CP.TO-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3320,7 +3337,8 @@
       "BRK-B",
       "CAT",
       "CNQ.TO",
-      "COST"
+      "COST",
+      "CP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -3487,6 +3505,15 @@
         "earnings": 1.119,
         "edgar": 2.518,
         "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "CP.TO": {
+        "quant": 0.917,
+        "ai_extract": 54.297,
+        "comparables": 2.168,
+        "earnings": 1.367,
+        "edgar": 2.918,
+        "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
     },
