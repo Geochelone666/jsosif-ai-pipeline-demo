@@ -1,0 +1,121 @@
+{
+  "ticker": "SYY",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/SYY/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/SYY/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 83.97000122070312,
+    "Return 1D (%)": 2.3275697281681884,
+    "Return 1W (%)": 2.21545911262202,
+    "Return 1M (%)": 7.497243251215258,
+    "Return YTD (%)": 17.252727034671867,
+    "Return 1Y (%)": 9.928157921730495,
+    "Annualized volatility (%)": 27.401742047313377,
+    "Max drawdown (%)": -23.97982238928994,
+    "Sharpe (rf=0)": 0.4868261815183332,
+    "Beta vs SPY": 0.15036100338888414,
+    "MA50": 80.19308258056641,
+    "Close vs MA50 (%)": 4.709781091582577,
+    "MA200": 79.23821540832519,
+    "Close vs MA200 (%)": 5.971595634750737,
+    "RSI (14, Wilder)": 67.147646923796,
+    "MACD (12,26)": 0.926039724862008,
+    "MACD signal (9)": 0.2442575169941264,
+    "MACD histogram": 0.6817822078678817,
+    "P/E (trailing)": 22.942623,
+    "P/B": 15.072698,
+    "EV/EBITDA": 11.906,
+    "Revenue growth (%)": 4.7
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 76.3862533569336,
+    "end_close": 83.97000122070312,
+    "manual_1Y_pct": 9.928157921730499,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T02:57:03.414754+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "SYY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "SYY": 266,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'SYY'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
