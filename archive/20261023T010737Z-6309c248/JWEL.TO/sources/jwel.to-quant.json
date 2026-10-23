@@ -1,0 +1,121 @@
+{
+  "ticker": "JWEL.TO",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/JWEL.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/JWEL.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 45.529998779296875,
+    "Return 1D (%)": -0.02196340805750152,
+    "Return 1W (%)": 0.1319497624434396,
+    "Return 1M (%)": 0.2642566225236509,
+    "Return YTD (%)": 37.809163533883414,
+    "Return 1Y (%)": 34.5683499958509,
+    "Annualized volatility (%)": 22.283104147167478,
+    "Max drawdown (%)": -14.622056877948243,
+    "Sharpe (rf=0)": 1.44651834340196,
+    "Beta vs SPY": 0.27992560908426356,
+    "MA50": 45.4420694732666,
+    "Close vs MA50 (%)": 0.19349758285547303,
+    "MA200": 38.5511773109436,
+    "Close vs MA200 (%)": 18.102745376785624,
+    "RSI (14, Wilder)": 65.32905740401475,
+    "MACD (12,26)": 0.09644496736904529,
+    "MACD signal (9)": 0.12454586560462932,
+    "MACD histogram": -0.028100898235584038,
+    "P/E (trailing)": 24.744564,
+    "P/B": 3.7073526,
+    "EV/EBITDA": 16.35,
+    "Revenue growth (%)": 17.4
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 33.8341064453125,
+    "end_close": 45.529998779296875,
+    "manual_1Y_pct": 34.56834999585091,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T02:13:32.778999+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "JWEL.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "JWEL.TO": 265,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 265 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 265. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'JWEL.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
