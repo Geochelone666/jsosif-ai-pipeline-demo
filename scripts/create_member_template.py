@@ -5,6 +5,7 @@ from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.worksheet.datavalidation import DataValidation
+from openpyxl.utils import get_column_letter
 
 from subscriptions import CSV_FIELDS
 
@@ -17,18 +18,19 @@ def create(path):
     sheet.append(['member-001', 'Example Analyst', 'analyst@example.com', 'energy',
                   'CNQ.TO;ENB', False, 'America/Toronto', 2, time(8, 30),
                   'Weekly', 'Wednesday', 'Before 9 AM', 'Metrics;News',
-                  'Example only. Replace this row with reviewed member details.'])
-    widths = [19, 26, 34, 22, 26, 16, 26, 19, 19, 24, 26, 24, 30, 55]
+                  'Example only. Replace this row with reviewed member details.', ''])
+    widths = [19, 26, 34, 22, 26, 16, 26, 19, 19, 24, 26, 24, 30, 55, 24]
     for column, width in zip(sheet.columns, widths):
         sheet.column_dimensions[column[0].column_letter].width = width
     for cell in sheet[1]:
         cell.font = Font(name='Calibri', bold=True, color='FFFFFF')
-        cell.fill = PatternFill('solid', fgColor='173B4D' if cell.column <= 9 else '52626E')
+        cell.fill = PatternFill('solid', fgColor='173B4D' if cell.column <= 9 or cell.value == 'delivery_start_date' else '52626E')
         cell.alignment = Alignment(vertical='center', wrap_text=True)
     sheet.row_dimensions[1].height = 32
     sheet['I2'].number_format = 'hh:mm'
+    sheet['O2'].number_format = 'yyyy-mm-dd'
     sheet.freeze_panes = 'A2'
-    sheet.auto_filter.ref = f'A1:N{sheet.max_row}'
+    sheet.auto_filter.ref = f'A1:{get_column_letter(len(CSV_FIELDS))}{sheet.max_row}'
     enabled = DataValidation(type='list', formula1='"true,false,yes,no"')
     enabled.errorTitle = 'Choose participation'
     enabled.error = 'Use true/yes only after reviewing email participation.'
@@ -55,6 +57,7 @@ def create(path):
         ('Time zone', 'The paper form uses Toronto time. Use America/Toronto unless the member confirms a different zone.'),
         ('Exact time', 'send_time needs HH:MM. Before 9 AM or After 5 PM belongs in preferred_time until an exact time is confirmed.'),
         ('Weekday', 'send_weekday is one confirmed day: Monday=0, Tuesday=1, Wednesday=2, Thursday=3, Friday=4, Saturday=5, Sunday=6.'),
+        ('Delivery start date', 'Optional delivery_start_date uses YYYY-MM-DD. Only weekly occurrences on or after this date are eligible. A blank date allows the current weekly occurrence, including catch-up after its scheduled time.'),
         ('Optional survey data', 'preferred_frequency, preferred_weekdays, preferred_time, content_preferences and feedback are retained privately, not interpreted as delivery instructions.'),
         ('Privacy', 'Keep the completed workbook private. Do not commit real names or addresses to the repository.'),
         ('Import', 'python scripts/subscriptions.py config/subscriptions.local.json --import-excel config/members.local.xlsx'),

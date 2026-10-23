@@ -114,9 +114,13 @@ Actual delivery requires `--send`, `JSOSIF_APPROVED_SEND=1`, `GMAIL_USER`, and
 `GMAIL_APP_PASSWORD`. A local ignored `config/gmail.json` remains supported for
 legacy usage. Scheduled delivery does not regenerate reports.
 
-`max_report_age_days` defaults to 4. Zero means a report dated today in UTC and generated
-within the last 24 hours; positive values bound both the UTC report date and elapsed
+`max_report_age_days` defaults to 4. Zero means a report dated today in Toronto and generated
+within the last 24 hours; positive values bound both the Toronto report date and elapsed
 generation age. The member editor canonicalizes time zone names before export.
+Optional `delivery_start_date` is preserved in JSON, CSV and Excel imports and
+browser exports. Use `YYYY-MM-DD` in the member's local calendar; only weekly
+occurrences on or after that date are eligible. A blank spreadsheet value leaves
+the start date unset and permits the current week's due delivery.
 Degraded reports are blocked unless the
 private configuration explicitly sets `allow_degraded: true`. Missing/old reports
 defer the whole member digest and are retried by later scans within the same week.

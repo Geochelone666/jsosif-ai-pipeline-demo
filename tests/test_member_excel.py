@@ -1,6 +1,6 @@
 """Reviewed paper responses can be imported from Excel without activating email."""
 from copy import deepcopy
-from datetime import time
+from datetime import time, datetime
 import json
 from pathlib import Path
 import subprocess
@@ -82,3 +82,31 @@ def test_excel_cli_creates_owner_only_json(tmp_path):
                     '--import-excel', str(path)], capture_output=True, check=True)
     assert target.stat().st_mode & 0o777 == 0o600
     assert not json.loads(target.read_text())['members'][0]['enabled']
+
+
+def test_excel_start_date_preserves_the_future_delivery_gate(tmp_path):
+    from deliver_weekly import due_period
+    from datetime import timezone
+
+    path = tmp_path / 'members.xlsx'
+    create(path)
+    workbook = load_workbook(path)
+    sheet = workbook['Members']
+    sheet['H2'] = 0
+    sheet['I2'] = time(9)
+    sheet['O2'] = datetime(2026, 10, 26)
+    workbook.save(path)
+    member = import_members_excel({'groups': {}, 'members': []}, path)['members'][0]
+    assert member['delivery_start_date'] == '2026-10-26'
+    assert due_period(member, datetime(2026, 10, 23, 14, tzinfo=timezone.utc)) is None
+    assert due_period(member, datetime(2026, 10, 26, 13, tzinfo=timezone.utc)) == '2026-10-26'
+
+
+def test_excel_start_date_rejects_time_components(tmp_path):
+    path = tmp_path / 'members.xlsx'
+    create(path)
+    workbook = load_workbook(path)
+    workbook['Members']['O2'] = datetime(2026, 10, 26, 12)
+    workbook.save(path)
+    with pytest.raises(ValueError, match='must not include a time'):
+        import_members_excel({'groups': {}, 'members': []}, path)

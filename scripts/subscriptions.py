@@ -3,7 +3,7 @@ import argparse
 import csv
 from copy import deepcopy
 import io
-from datetime import time, date
+from datetime import time, date, datetime
 import json
 import re
 import os
@@ -95,7 +95,7 @@ def research_tickers(config):
 
 CSV_FIELDS = ('id', 'name', 'email', 'groups', 'tickers', 'enabled', 'timezone',
               'send_weekday', 'send_time', 'preferred_frequency', 'preferred_weekdays', 'preferred_time',
-              'content_preferences', 'feedback')
+              'content_preferences', 'feedback', 'delivery_start_date')
 REQUIRED_CSV_FIELDS = {'id', 'name', 'email', 'groups', 'enabled', 'timezone',
                        'send_weekday', 'send_time'}
 
@@ -120,6 +120,8 @@ def import_members_csv(config, text):
         if None in row or any(value is None for value in row.values()):
             raise ValueError(f'CSV row {number}: incorrect number of columns')
         row = {key: value.strip() for key, value in row.items()}
+        if not row.get('delivery_start_date'):
+            row.pop('delivery_start_date', None)
         if row['enabled'].lower() not in ('true', 'false', 'yes', 'no'):
             raise ValueError(f'CSV row {number}: enabled must be true/false or yes/no')
         if not re.fullmatch('[0-6]', row['send_weekday']):
@@ -159,10 +161,14 @@ def import_members_excel(config, path):
             if all(cell.value is None for cell in row):
                 continue
             values = []
-            for cell in row:
+            for column, cell in enumerate(row):
                 if cell.data_type == 'f':
                     raise ValueError('Member spreadsheets must contain values, not formulas')
                 value = cell.value
+                if headers[column] == 'delivery_start_date' and isinstance(value, date):
+                    if isinstance(value, datetime) and value.time() != time():
+                        raise ValueError('Delivery start dates must not include a time')
+                    value = value.date().isoformat() if isinstance(value, datetime) else value.isoformat()
                 if isinstance(value, time):
                     if value.second or value.microsecond:
                         raise ValueError('Send times must have minute precision')
