@@ -70,15 +70,18 @@ jobs:
             MODE=(--send)
           fi
           python scripts/deliver_weekly.py --config "$RUNNER_TEMP/subscriptions.json" --store ../report-store --ledger-store ../delivery-store --persist-git "${MODE[@]}"
+      - name: Stage hashed delivery state for backup
+        if: always() && steps.ledger.outcome == 'success'
+        run: |
+          mkdir -p "$RUNNER_TEMP/delivery-state-backup"
+          cp ../delivery-store/state/deliveries.json ../delivery-store/state/migration.json "$RUNNER_TEMP/delivery-state-backup/"
       - name: Back up hashed delivery state
         if: always() && steps.ledger.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: delivery-state-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            ../delivery-store/state/deliveries.json
-            ../delivery-store/state/migration.json
-          if-no-files-found: ignore
+          path: ${{ runner.temp }}/delivery-state-backup/
+          if-no-files-found: error
           retention-days: 30
       - name: Remove private configuration
         if: always()
