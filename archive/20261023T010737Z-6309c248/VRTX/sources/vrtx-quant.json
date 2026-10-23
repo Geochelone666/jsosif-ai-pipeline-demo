@@ -1,0 +1,121 @@
+{
+  "ticker": "VRTX",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/VRTX/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/VRTX/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 535.1699829101562,
+    "Return 1D (%)": 2.0304207622854564,
+    "Return 1W (%)": 5.1931170339373445,
+    "Return 1M (%)": 3.918521341860881,
+    "Return YTD (%)": 18.045262087952764,
+    "Return 1Y (%)": 25.497134379106413,
+    "Annualized volatility (%)": 29.01618239557279,
+    "Max drawdown (%)": -15.211254913322614,
+    "Sharpe (rf=0)": 0.9292450454370306,
+    "Beta vs SPY": 0.4979793776225175,
+    "MA50": 522.5590020751953,
+    "Close vs MA50 (%)": 2.4133123312161997,
+    "MA200": 477.1712501525879,
+    "Close vs MA200 (%)": 12.154699751718434,
+    "RSI (14, Wilder)": 61.53328469958444,
+    "MACD (12,26)": -0.15380753221813848,
+    "MACD signal (9)": -3.5323750125292164,
+    "MACD histogram": 3.378567480311078,
+    "P/E (trailing)": 30.988417,
+    "P/B": 6.6962376,
+    "EV/EBITDA": 25.443,
+    "Revenue growth (%)": 12.5
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 426.44000244140625,
+    "end_close": 535.1699829101562,
+    "manual_1Y_pct": 25.497134379106406,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T03:09:17.747730+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "VRTX",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "VRTX": 266,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'VRTX'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
