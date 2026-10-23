@@ -18,7 +18,7 @@ jobs:
   verify:
     if: github.ref == 'refs/heads/main'
     concurrency:
-      group: jsosif-report-data
+      group: jsosif-email-delivery
       queue: max
       cancel-in-progress: false
     runs-on: ubuntu-latest
@@ -34,6 +34,9 @@ jobs:
       - run: python -m pip install -r requirements.lock
       - name: Open the persisted archive
         run: python scripts/prepare_store.py ../report-store
+      - name: Open the independent delivery ledger
+        id: ledger
+        run: python scripts/prepare_delivery_store.py ../delivery-store --archive ../report-store
       - name: Preview or explicitly send one acceptance digest to the sender
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
@@ -42,7 +45,17 @@ jobs:
         run: |
           MODE=()
           if [ "$INTERNAL_EMAIL_CONFIRM" = SEND_ONE_TO_SELF ]; then MODE=(--send --persist-git); fi
-          python scripts/internal_email_check.py --store ../report-store --preview-dir "$RUNNER_TEMP/internal-email-preview" "${MODE[@]}"
+          python scripts/internal_email_check.py --store ../report-store --ledger-store ../delivery-store --preview-dir "$RUNNER_TEMP/internal-email-preview" "${MODE[@]}"
+      - name: Back up hashed delivery state
+        if: always() && steps.ledger.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: delivery-state-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ../delivery-store/state/deliveries.json
+            ../delivery-store/state/migration.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Remove private message previews
         if: always()
         run: rm -rf "$RUNNER_TEMP/internal-email-preview"

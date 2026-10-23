@@ -1,0 +1,42 @@
+name: Initialize independent delivery ledger
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/migrate-delivery-ledger.yml'
+      - 'scripts/prepare_delivery_store.py'
+
+permissions:
+  contents: write
+  actions: read
+
+# The one-time cutover holds both sender and legacy archive locks.
+concurrency:
+  group: jsosif-email-delivery
+  queue: max
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    if: github.ref == 'refs/heads/main'
+    concurrency:
+      group: jsosif-report-data
+      queue: max
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Open the legacy report archive
+        run: python scripts/prepare_store.py ../report-store
+      - name: Preserve existing delivery reservations without sending mail
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/prepare_delivery_store.py ../delivery-store --archive ../report-store --initialize --persist-git

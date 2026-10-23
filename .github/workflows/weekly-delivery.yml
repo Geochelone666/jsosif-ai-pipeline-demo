@@ -3,6 +3,9 @@ name: Weekly member PDF delivery
 on:
   schedule:
     - cron: '7,22,37,52 * * * *'
+  workflow_run:
+    workflows: ['Daily production research pipeline']
+    types: [completed]
   workflow_dispatch:
     inputs:
       confirm:
@@ -15,9 +18,15 @@ permissions:
 
 jobs:
   deliver:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.EMAIL_DELIVERY_ENABLED == 'true')
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' || vars.EMAIL_DELIVERY_ENABLED == 'true') &&
+      (github.event_name != 'workflow_run' ||
+       (github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.head_repository.full_name == github.repository &&
+        contains(fromJSON('["schedule","workflow_dispatch"]'), github.event.workflow_run.event)))
     concurrency:
-      group: jsosif-report-data
+      group: jsosif-email-delivery
       queue: max
       cancel-in-progress: false
     runs-on: ubuntu-latest
@@ -40,9 +49,13 @@ jobs:
       - name: Wait for the reviewed roster
         if: steps.members.outputs.email_members == '0'
         run: echo 'No enabled members loaded; no email delivery attempted.' >> "$GITHUB_STEP_SUMMARY"
-      - name: Open persistent report and delivery store
+      - name: Open the immutable report archive
         if: steps.members.outputs.email_members != '0' && steps.members.outputs.configured == 'true'
         run: python scripts/prepare_store.py ../report-store
+      - name: Open the independent delivery ledger
+        id: ledger
+        if: steps.members.outputs.email_members != '0' && steps.members.outputs.configured == 'true'
+        run: python scripts/prepare_delivery_store.py ../delivery-store --archive ../report-store
       - name: Send due weekly PDF digests or show preview counts
         if: steps.members.outputs.email_members != '0' && steps.members.outputs.configured == 'true'
         env:
@@ -53,10 +66,20 @@ jobs:
           CONFIRM: ${{ inputs.confirm }}
         run: |
           MODE=()
-          if [ "$EVENT_NAME" = schedule ] || [ "$CONFIRM" = YES ]; then
+          if [ "$EVENT_NAME" = schedule ] || [ "$EVENT_NAME" = workflow_run ] || [ "$CONFIRM" = YES ]; then
             MODE=(--send)
           fi
-          python scripts/deliver_weekly.py --config "$RUNNER_TEMP/subscriptions.json" --store ../report-store --persist-git "${MODE[@]}"
+          python scripts/deliver_weekly.py --config "$RUNNER_TEMP/subscriptions.json" --store ../report-store --ledger-store ../delivery-store --persist-git "${MODE[@]}"
+      - name: Back up hashed delivery state
+        if: always() && steps.ledger.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: delivery-state-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ../delivery-store/state/deliveries.json
+            ../delivery-store/state/migration.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Remove private configuration
         if: always()
         run: rm -f "$RUNNER_TEMP/subscriptions.json"
