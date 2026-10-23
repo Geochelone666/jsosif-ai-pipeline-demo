@@ -3279,6 +3279,23 @@
       "md": "archive/20261023T010737Z-6309c248/ENB/ENB-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/ENB/ENB-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/ENB/ENB-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/EW",
+      "ticker": "EW",
+      "generated_at": "2026-10-23T01:58:17.489305+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "c1dda2d851841592333a6ff97601ea017f5f3e9a99ea93c20a47e51084b8cf77",
+        "json": "03b95e9d749426942981ee86133025de0439722fd2f2a740282f1223795fcddb",
+        "pdf": "58dc1bf7c2ed7eccb079c3b155e4f18208af7d89134503a5922d455e7c8022c5"
+      },
+      "md": "archive/20261023T010737Z-6309c248/EW/EW-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/EW/EW-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/EW/EW-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3410,7 +3427,8 @@
       "CSCO",
       "CSU.TO",
       "DIS",
-      "ENB"
+      "ENB",
+      "EW"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -3621,6 +3639,15 @@
         "comparables": 2.268,
         "earnings": 1.219,
         "edgar": 2.82,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "EW": {
+        "quant": 1.217,
+        "ai_extract": 109.74,
+        "comparables": 2.469,
+        "earnings": 1.268,
+        "edgar": 2.67,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }

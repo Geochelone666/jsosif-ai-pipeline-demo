@@ -1,0 +1,121 @@
+{
+  "ticker": "EW",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/EW/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/EW/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 90.08999633789062,
+    "Return 1D (%)": 1.9117588041183131,
+    "Return 1W (%)": 2.2587944361362133,
+    "Return 1M (%)": 1.4755548283463593,
+    "Return YTD (%)": 5.6774150591092365,
+    "Return 1Y (%)": 17.243623934774032,
+    "Annualized volatility (%)": 25.495833062368472,
+    "Max drawdown (%)": -13.185546345365328,
+    "Sharpe (rf=0)": 0.7531650791756338,
+    "Beta vs SPY": 0.5894862711656096,
+    "MA50": 88.13039978027344,
+    "Close vs MA50 (%)": 2.2235194240612266,
+    "MA200": 85.20645000457763,
+    "Close vs MA200 (%)": 5.731427999935024,
+    "RSI (14, Wilder)": 60.12625221268192,
+    "MACD (12,26)": 0.23341212244910992,
+    "MACD signal (9)": -0.26239962652661253,
+    "MACD histogram": 0.49581174897572244,
+    "P/E (trailing)": 53.625,
+    "P/B": 4.892207,
+    "EV/EBITDA": 24.282,
+    "Revenue growth (%)": 13.600000000000001
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 76.83999633789062,
+    "end_close": 90.08999633789062,
+    "manual_1Y_pct": 17.243623934774035,
+    "passed": true
+  },
+  "fetched_at": "2026-10-23T01:56:20.963451+00:00",
+  "requested_as_of": "2026-10-22",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "EW",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792717661.7371902
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "EW": 266,
+    "SPY": 265
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'EW'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-22'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
