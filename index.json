@@ -3755,6 +3755,23 @@
       "md": "archive/20261023T010737Z-6309c248/TD.TO/TD.TO-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/TD.TO/TD.TO-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/TD.TO/TD.TO-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/TMC",
+      "ticker": "TMC",
+      "generated_at": "2026-10-23T03:01:20.712841+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "06e859691f4378c5ef024a546f01b3f497e8c5eb7eb9c335ad4fba9ae9478d5b",
+        "json": "4e7f40c9b29518e1e70e2a11ef209c0f02d443969898f5f37a30cd849629cd95",
+        "pdf": "f4c931143f6dd9883bb2b89790b27431aaf0be45bd9eb847c72d390668caa006"
+      },
+      "md": "archive/20261023T010737Z-6309c248/TMC/TMC-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/TMC/TMC-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/TMC/TMC-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3914,7 +3931,8 @@
       "SPGI",
       "SYY",
       "T",
-      "TD.TO"
+      "TD.TO",
+      "TMC"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -4378,6 +4396,15 @@
         "earnings": 1.016,
         "edgar": 0.064,
         "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "TMC": {
+        "quant": 0.916,
+        "ai_extract": 2.267,
+        "comparables": 1.667,
+        "earnings": 1.218,
+        "edgar": 2.117,
+        "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
     },
