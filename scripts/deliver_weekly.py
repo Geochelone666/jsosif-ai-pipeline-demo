@@ -89,6 +89,7 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
         if ledger_store is not None:
             assert_cutover(root, ledger_root)
         summary = {'sent': 0, 'prepared': 0, 'skipped': 0, 'deferred': 0, 'unknown': 0}
+        deferred_reasons = {'missing_or_ineligible_report': 0, 'invalid_report_or_message': 0}
         for member in config['members']:
             period = due_period(member, now) if member['enabled'] else None
             if preview_all and member['enabled']:
@@ -115,6 +116,7 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 selected.append(max(candidates, key=lambda r: datetime.fromisoformat(r['generated_at'])))
             if not selected:
                 summary['deferred'] += 1
+                deferred_reasons['missing_or_ineligible_report'] += 1
                 continue
             paths, pdfs = [], []
             try:
@@ -129,6 +131,7 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                     raise ValueError('Digest exceeds the 20 MiB encoded message budget')
             except (ValueError, OSError, KeyError, TypeError):
                 summary['deferred'] += 1
+                deferred_reasons['invalid_report_or_message'] += 1
                 continue
             if not really_send:
                 if preview_dir is not None:
@@ -169,6 +172,10 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 summary['sent'] += 1
             write_json(ledger_root / 'state/deliveries.json', ledger)
             checkpoint()
+        if summary['deferred']:
+            # Aggregate-only diagnostics: never expose member IDs, email addresses,
+            # private holdings, or message content in GitHub Actions logs.
+            print('Delivery deferral reasons: ' + json.dumps(deferred_reasons, sort_keys=True), flush=True)
         return summary
 
 
