@@ -3313,6 +3313,23 @@
       "md": "archive/20261023T010737Z-6309c248/GIS/GIS-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/GIS/GIS-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/GIS/GIS-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/GOOGL",
+      "ticker": "GOOGL",
+      "generated_at": "2026-10-23T02:04:29.750048+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "ae07c2a57fe93ed6400ae2f3df16ccbd574ef2d5655acc8c37318fbca8ebff11",
+        "json": "e93ce5b56234ec4cb36057652bd7fc7549ad008843af5f94b06bc6009b0dc697",
+        "pdf": "8bdc7e38300a1e66165fbf101f7ccd66ec18e4876cbf3bb235f010ee13493673"
+      },
+      "md": "archive/20261023T010737Z-6309c248/GOOGL/GOOGL-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/GOOGL/GOOGL-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/GOOGL/GOOGL-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3446,7 +3463,8 @@
       "DIS",
       "ENB",
       "EW",
-      "GIS"
+      "GIS",
+      "GOOGL"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -3675,6 +3693,15 @@
         "comparables": 3.07,
         "earnings": 1.417,
         "edgar": 2.77,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "GOOGL": {
+        "quant": 1.116,
+        "ai_extract": 228.066,
+        "comparables": 2.168,
+        "earnings": 1.367,
+        "edgar": 2.368,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
