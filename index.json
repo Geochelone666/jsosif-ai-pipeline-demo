@@ -3126,6 +3126,23 @@
       "md": "archive/20261023T010737Z-6309c248/BMO.TO/BMO.TO-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/BMO.TO/BMO.TO-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/BMO.TO/BMO.TO-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261023T010737Z-6309c248/BRK-B",
+      "ticker": "BRK-B",
+      "generated_at": "2026-10-23T01:34:03.362172+00:00",
+      "as_of": "2026-10-22",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-22",
+      "sha256": {
+        "md": "fadaed6d0737a59261fe3aaae84461ed085316f489c19f08372f70ac159c33ef",
+        "json": "71354e01bbda2ad04d76ea5bf8c6f517c8c0d12d73291651db4e38017e727d65",
+        "pdf": "ce80e97561c11ac6409973f7f588c0f5acb2cc6e0fd151b33df328559b42e2e1"
+      },
+      "md": "archive/20261023T010737Z-6309c248/BRK-B/BRK-B-intelligence-20261022.md",
+      "json": "archive/20261023T010737Z-6309c248/BRK-B/BRK-B-intelligence-20261022.json",
+      "pdf": "archive/20261023T010737Z-6309c248/BRK-B/BRK-B-intelligence-20261022.pdf"
     }
   ],
   "refresh_plan": {
@@ -3248,7 +3265,8 @@
       "AMZN",
       "ASML",
       "ATD.TO",
-      "BMO.TO"
+      "BMO.TO",
+      "BRK-B"
     ],
     "reused_tickers": [],
     "workflow_run_id": "39882160747",
@@ -3380,6 +3398,15 @@
         "edgar": 2.668,
         "regenerate_report": 0.064,
         "report_pdf": 0.164
+      },
+      "BRK-B": {
+        "quant": 0.865,
+        "ai_extract": 293.105,
+        "comparables": 1.868,
+        "earnings": 1.266,
+        "edgar": 2.267,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
       }
     },
     "current_ticker": "BRK-B",
