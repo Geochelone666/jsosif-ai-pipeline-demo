@@ -1,0 +1,127 @@
+{
+  "ticker": "GIS",
+  "errors": [
+    "warning: trailingPE unavailable (N/A)",
+    "warning: P/E (trailing) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/GIS/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/GIS/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 34.38999938964844,
+    "Return 1D (%)": -2.245596670478467,
+    "Return 1W (%)": 3.803194328133741,
+    "Return 1M (%)": -2.167168954662557,
+    "Return YTD (%)": -20.94054728510394,
+    "Return 1Y (%)": -23.2992919900875,
+    "Annualized volatility (%)": 30.166272851420988,
+    "Max drawdown (%)": -33.25242023415774,
+    "Sharpe (rf=0)": -0.7326878001542557,
+    "Beta vs SPY": -0.36307364413166,
+    "MA50": 35.38391483306885,
+    "Close vs MA50 (%)": -2.8089470826205054,
+    "MA200": 36.474960289001466,
+    "Close vs MA200 (%)": -5.716143027527076,
+    "RSI (14, Wilder)": 54.7812021445045,
+    "MACD (12,26)": -0.2634117119545749,
+    "MACD signal (9)": -0.7418725358511792,
+    "MACD histogram": 0.47846082389660427,
+    "P/E (trailing)": null,
+    "P/B": 2.4680636,
+    "EV/EBITDA": 9.249,
+    "Revenue growth (%)": -2.8000000000000003
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 44.836612701416016,
+    "end_close": 34.38999938964844,
+    "manual_1Y_pct": -23.299291990087504,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T04:02:40.484404+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "GIS",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1792814209.393851
+    }
+  ],
+  "metric_notes": {
+    "P/E (trailing)": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    }
+  },
+  "history_count": {
+    "GIS": 267,
+    "SPY": 267
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'GIS'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
