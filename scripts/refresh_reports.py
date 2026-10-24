@@ -89,7 +89,23 @@ def ai_budget(tickers, index, root, now, mode='auto'):
             settings()
         except GroqError as exc:
             return [], {'reason': str(exc)}
-        return list(tickers), {'reason': 'Groq requests enforce durable request and token application budgets',
+        from ai_provider import model as configured_model
+        from groq_provider import settings as groq_settings
+        selected_model = configured_model()
+        caps = groq_settings()
+        usage = read_json(Path(root) / 'state/api-usage.json', {})
+        usage = usage if isinstance(usage, dict) else {}
+        day = now.astimezone(timezone.utc).date().isoformat()
+        spent = usage.get('groq:' + selected_model + ':' + day, {})
+        spent = spent if isinstance(spent, dict) else {}
+        requests = max(0, spent.get('requests', 0)) if type(spent.get('requests', 0)) is int else 0
+        tokens = max(0, spent.get('tokens', 0)) if type(spent.get('tokens', 0)) is int else 0
+        return list(tickers), {'reason': 'Groq enforces durable per-model request/token application budgets',
+                               'provider': 'groq', 'model': selected_model, 'quota_day_utc': day,
+                               'request_cap': caps['RPD'], 'token_cap': caps['TPD'],
+                               'used_requests': requests, 'used_tokens': tokens,
+                               'remaining_requests': max(0, caps['RPD'] - requests),
+                               'remaining_tokens': max(0, caps['TPD'] - tokens),
                                'selected_tickers': list(tickers)}
     if os.environ.get('GEMINI_CLI'):
         return list(tickers), {'reason': 'Configured Gemini CLI', 'selected_tickers': list(tickers)}
