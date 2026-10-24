@@ -2,7 +2,8 @@
 
 Quantitative metrics, recent headline research, PDF reports, a versioned website,
 and one personalized weekly email per participating member. The active universe
-contains 25 holdings in `scripts/universe.py`.
+contains 50 supported holdings in `scripts/universe.py` (25 original holdings
+and 25 pilot additions).
 
 Reports support analyst research preparation. Check source dates and missing data;
 they are not investment advice. News summaries use RSS headlines, not full articles.
@@ -26,7 +27,7 @@ Copy `config/subscriptions.example.json` to **ignored**
 - `groups`: group IDs used for team membership and default stock lists.
 - `tickers`: optional personal stock list. A nonempty list replaces group defaults;
   leave it empty to inherit the union of selected groups. At least a group or
-  personal holding is required. Only the 25 supported holdings are accepted.
+  personal holding is required. Only the 50 supported holdings are accepted.
 - `enabled`: participation switch, a JSON boolean.
 - `timezone`: IANA zone such as `America/Toronto`.
 - `send_weekday`: Monday = 0 through Sunday = 6.
@@ -199,9 +200,12 @@ Set repository **Variables**:
 - `PAGES_DEPLOY_ENABLED=true` enables website publication after Pages is
   configured to deploy with **GitHub Actions** in repository settings.
 
-`Refresh research archive` runs after typical market closing times, Monday–Friday
-at 22:17 UTC. It collects only the union of enabled members' stocks; without
-`SUBSCRIPTIONS_JSON`, it collects the full 25-stock universe. It never sends mail.
+`Daily production research pipeline` targets 19:00 America/Toronto every day,
+including weekends. UTC triggers at 23:00 and 00:00 are gated to one intended
+Toronto date across daylight saving changes. It collects the union of configured
+group and personal holdings, including members who opt out of email; without a
+private roster, it collects all 50 supported holdings. The collector sends no mail,
+but completion can trigger a separately gated due-member scan when delivery is enabled.
 `Weekly member PDF delivery` checks due members every 15 minutes at offset minutes.
 Manual runs default to preview; type `YES` in the confirmation input to send.
 Both workflows accept the private `MEMBERS_CSV` repository secret directly.
@@ -212,13 +216,16 @@ GitHub schedules can be delayed or dropped, so delivery is best-effort within th
 remaining local week. It does not guarantee minute-exact arrival. A durable
 external scheduler is needed if strict arrival deadlines are required.
 
-Both workflows serialize through the same concurrency group and use the
-`report-data` branch as the persistent store. Successful report versions and quota
-state are pushed even when another stock fails. The sender pushes its reservation
-before SMTP and its result afterwards. A failed push blocks delivery. The branch
-is initialized only after an explicit remote check proves it is absent; connection
-failures never initialize over unknown state. Do not delete or rewrite this branch.
-Back it up as the report archive grows; it is not a substitute for an independent backup.
+Research writers serialize through `jsosif-report-data` and persist immutable
+report versions and quota state to `report-data`, including successful reports
+from partial runs. Weekly and internal senders serialize separately through
+`jsosif-email-delivery` and persist reservations/results to `delivery-state`.
+The sender pushes its reservation before SMTP and its result afterwards; a failed
+push blocks delivery. Opening a report store initializes it only after an explicit
+remote check proves the branch is absent. Missing delivery state fails closed and
+requires the guarded cutover, never an empty replacement ledger. Connection
+failures do not initialize over unknown state. Preserve and back up both branches;
+see [the delivery cutover guide](docs/DELIVERY_SCHEDULING.md).
 
 Publication runs only after the store has been persisted successfully. The site
 builder stages and validates all files before replacing its previous output; a
@@ -227,7 +234,8 @@ missing store or corrupt report preserves the last good site.
 The Pages build copies only indexed report files, never private configuration,
 delivery state, quota state or credentials. It shows latest reports, a stock/date/
 quality filter, all historical versions and PDF/JSON/MD downloads. The browser
-rechecks the index every five minutes; new data appears after the next successful
+rechecks the index every minute by default; readers can choose five minutes or
+manual refresh. New data appears after the next successful
 refresh/deployment, not as a streaming market feed. These report files and the
 report-data branch are public in a public repository. Private group reports require
 a separate authenticated hosting/storage design. Confirm data redistribution rights
