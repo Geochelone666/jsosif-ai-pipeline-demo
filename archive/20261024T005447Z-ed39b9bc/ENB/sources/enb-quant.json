@@ -1,0 +1,121 @@
+{
+  "ticker": "ENB",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/ENB/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/ENB/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 48.150001525878906,
+    "Return 1D (%)": 0.29161259995902356,
+    "Return 1W (%)": 0.10395645185876656,
+    "Return 1M (%)": 0.6269656454013672,
+    "Return YTD (%)": 4.737678137672141,
+    "Return 1Y (%)": 6.1806651302076965,
+    "Annualized volatility (%)": 18.09223014368826,
+    "Max drawdown (%)": -19.846160550103566,
+    "Sharpe (rf=0)": 0.4229642207786884,
+    "Beta vs SPY": -0.16750854485362324,
+    "MA50": 48.47920021057129,
+    "Close vs MA50 (%)": -0.6790513937162679,
+    "MA200": 51.24479524612427,
+    "Close vs MA200 (%)": -6.03923521477906,
+    "RSI (14, Wilder)": 54.20195133291184,
+    "MACD (12,26)": -0.11145351304450202,
+    "MACD signal (9)": -0.4046812253163747,
+    "MACD histogram": 0.29322771227187266,
+    "P/E (trailing)": 25.748663,
+    "P/B": 2.52309,
+    "EV/EBITDA": 12.977,
+    "Revenue growth (%)": 97.1
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 45.34724044799805,
+    "end_close": 48.150001525878906,
+    "manual_1Y_pct": 6.1806651302077045,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T01:40:34.052398+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "ENB",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792803292.7818959
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "ENB": 267,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'ENB'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
