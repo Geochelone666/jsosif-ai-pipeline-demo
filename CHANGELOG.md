@@ -3,6 +3,9 @@
 ## Unreleased — 2026-10-22
 
 ### Fixed
+- Public site indexes now export an explicit metadata schema, excluding unknown
+  top-level and nested operational fields. Invalid public metadata preserves the
+  previous site; original archive files remain unchanged.
 - `fred.py`: a `config/fred.json` that is not a JSON object, or has a null
   `api_key`, no longer crashes the shared FRED stage; it falls back to
   `FRED_API_KEY`.

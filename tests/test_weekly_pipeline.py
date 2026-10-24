@@ -558,3 +558,56 @@ def test_schedule_aware_site_check_accepts_a_newer_manual_publication_but_not_st
         check(base, business_date='2026-10-20', allow_newer=True, latest_date='2026-10-20')
     with pytest.raises(SiteError, match='stale or future'):
         check(base, business_date='2026-10-18', allow_newer=True, latest_date='2026-10-18')
+
+
+def test_site_exports_only_public_index_metadata_without_rewriting_store(store, tmp_path):
+    index = read_json(store / 'index.json')
+    private = {'email': 'private-member@example.com', 'token': 'synthetic-private-token'}
+    index.update(members=[private], credentials=private, future_private_metadata=private,
+                 refresh_plan={'private_configuration': private})
+    index['last_attempt'] = {
+        'business_date': '2026-10-19', 'status': 'complete',
+        'expected_tickers': ['CSCO', 'JPM'], 'successful_tickers': ['CSCO', 'JPM'],
+        'members': [private], 'future_private_metadata': private,
+        'failures': [{'ticker': 'CSCO', 'stage': 'quant', 'category': 'timeout',
+                      'raw_response': private}],
+        'stage_seconds': {'CSCO': {'quant': 1.25, 'private_configuration': private}},
+    }
+    index['reports'][0].update(members=[private], future_private_metadata=private)
+    index['reports'][0]['sha256']['private_configuration'] = private
+    write_json(store / 'index.json', index)
+    before = (store / 'index.json').read_bytes()
+    output = tmp_path.parent / (tmp_path.name + '-public-site')
+    published = build(store, output)
+    for path in output.rglob('*'):
+        if path.is_file():
+            assert b'private-member@example.com' not in path.read_bytes()
+            assert b'synthetic-private-token' not in path.read_bytes()
+    assert published == read_json(output / 'index.json')
+    assert published['last_attempt']['status'] == 'complete'
+    assert published['last_attempt']['expected_tickers'] == ['CSCO', 'JPM']
+    assert len(published['reports']) == 2
+    assert set(published['reports'][0]['sha256']) == {'md', 'json', 'pdf'}
+    assert (store / 'index.json').read_bytes() == before
+
+
+@pytest.mark.parametrize('location', ['top', 'report', 'hash', 'attempt', 'tickers'])
+def test_invalid_public_metadata_preserves_previous_site(store, tmp_path, location):
+    output = tmp_path.parent / (tmp_path.name + '-site')
+    build(store, output)
+    before = {p.relative_to(output): p.read_bytes() for p in output.rglob('*') if p.is_file()}
+    index = read_json(store / 'index.json')
+    private = {'email': 'private-member@example.com'}
+    if location == 'top':
+        index['last_complete_refresh'] = private
+    elif location == 'report':
+        index['reports'][0]['market_as_of'] = private
+    elif location == 'hash':
+        index['reports'][0]['sha256']['pdf'] = private
+    else:
+        index['last_attempt'] = ({'status': private} if location == 'attempt'
+                                 else {'expected_tickers': [private]})
+    write_json(store / 'index.json', index)
+    with pytest.raises(ValueError, match='Invalid public'):
+        build(store, output)
+    assert {p.relative_to(output): p.read_bytes() for p in output.rglob('*') if p.is_file()} == before

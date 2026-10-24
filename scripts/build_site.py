@@ -1,12 +1,48 @@
 """Build a static latest/history site from the persisted archive, excluding private state."""
 import argparse
-from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 import shutil
 from tempfile import TemporaryDirectory
 
 from report_store import read_json, write_json, verified_report_files, report_advisory
+
+
+def public_index(index):
+    """Project archive metadata into the public schema; unknown fields stay private.
+
+    Report files retain their verified bytes. This boundary applies to index
+    metadata only, including nested report hashes and collection diagnostics.
+    """
+    def strings(source, fields):
+        result = {}
+        for key in fields:
+            if key in source:
+                value = source[key]
+                if value is not None and not isinstance(value, str):
+                    raise ValueError('Invalid public metadata field: ' + key)
+                result[key] = value
+        return result
+
+    result = strings(index, ('last_complete_refresh', 'last_complete_business_date'))
+    result['reports'] = []
+    for entry in index['reports']:
+        report = strings(entry, (
+            'ticker', 'report_id', 'quality', 'as_of', 'generated_at', 'imported_at',
+            'market_as_of', 'news_as_of', 'legacy_source_sha256', 'md', 'json', 'pdf'))
+        report['sha256'] = strings(entry['sha256'], ('md', 'json', 'pdf'))
+        result['reports'].append(report)
+    if 'last_attempt' in index:
+        source = index['last_attempt']
+        attempt = strings(source, ('at', 'business_date', 'status', 'finished_at', 'last_progress_at'))
+        for key in ('expected_tickers', 'successful_tickers', 'degraded_tickers',
+                    'failed_tickers', 'pending_tickers', 'reused_tickers'):
+            if key in source:
+                if not isinstance(source[key], list) or not all(isinstance(t, str) for t in source[key]):
+                    raise ValueError('Invalid public ticker list: ' + key)
+                attempt[key] = list(source[key])
+        result['last_attempt'] = attempt
+    return result
 
 
 def report_summary(snapshot):
@@ -26,7 +62,7 @@ def build(store, output, template=None):
     index = read_json(store / 'index.json')
     if not isinstance(index, dict) or not isinstance(index.get('reports'), list):
         raise ValueError('A valid persisted archive index is required before building the site')
-    index = deepcopy(index)
+    index = public_index(index)
     version_file = Path(__file__).resolve().parents[1] / 'VERSION'
     index['publication'] = {'published_at': datetime.now(timezone.utc).isoformat(),
                             'schedule': 'Daily at 19:00 America/Toronto; execution can be delayed',
