@@ -1,0 +1,134 @@
+{
+  "ticker": "TMC",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped",
+    "warning: trailingPE unavailable (N/A)",
+    "warning: revenueGrowth unavailable (N/A)",
+    "warning: P/E (trailing) unavailable (N/A)",
+    "warning: Revenue growth (%) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/TMC/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/TMC/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 2.430000066757202,
+    "Return 1D (%)": -1.6194316352106997,
+    "Return 1W (%)": -5.813948115679956,
+    "Return 1M (%)": -40.221401413244436,
+    "Return YTD (%)": -60.61588271135323,
+    "Return 1Y (%)": -66.01398553362779,
+    "Annualized volatility (%)": 90.43611697469373,
+    "Max drawdown (%)": -74.25847272486283,
+    "Sharpe (rf=0)": -0.7505950202063649,
+    "Beta vs SPY": 3.3878861186403832,
+    "MA50": 3.8150000238418578,
+    "Close vs MA50 (%)": -36.30406155777439,
+    "MA200": 5.013724997043609,
+    "Close vs MA200 (%)": -51.53304044019018,
+    "RSI (14, Wilder)": 22.48649861629123,
+    "MACD (12,26)": -0.4036832974071505,
+    "MACD signal (9)": -0.3548616667711567,
+    "MACD histogram": -0.04882163063599376,
+    "P/E (trailing)": null,
+    "P/B": -38.57143,
+    "EV/EBITDA": -4.735,
+    "Revenue growth (%)": null
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 7.150000095367432,
+    "end_close": 2.430000066757202,
+    "manual_1Y_pct": -66.01398553362779,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T02:52:36.728390+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "TMC",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792803292.7818959
+    }
+  ],
+  "metric_notes": {
+    "P/E (trailing)": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    },
+    "Revenue growth (%)": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    }
+  },
+  "history_count": {
+    "TMC": 267,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'TMC'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
