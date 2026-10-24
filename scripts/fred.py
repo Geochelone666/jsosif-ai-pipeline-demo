@@ -42,6 +42,10 @@ def main():
             print(f'{series_id} unavailable: HTTP {exc.code}')
         except URLError as exc:
             print(f'{series_id} unavailable: network error ({type(exc.reason).__name__})')
+        except OSError:
+            # Includes connection failures raised directly by clients or test doubles.
+            # Do not stringify the exception; it may contain the keyed URL.
+            print(f'{series_id} unavailable: OSError')
         except (ValueError, KeyError, TypeError) as exc:
             print(f'{series_id} unavailable: invalid response ({type(exc).__name__})')
         indicators.append(row)
