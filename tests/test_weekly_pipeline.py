@@ -227,6 +227,38 @@ def test_stale_or_disabled_members_are_not_sent(config, store):
     assert weekly.deliver(config, store, now=later)['deferred'] == 1
 
 
+def test_health_counts_current_reports_instead_of_attempt_claims(store, tmp_path):
+    index = read_json(store / 'index.json')
+    index['last_attempt'] = {
+        'business_date': '2026-10-19', 'status': 'interrupted',
+        'at': '2026-10-19T10:00:00+00:00', 'finished_at': '2026-10-19T13:00:00+00:00',
+        'expected_tickers': ['CSCO', 'JPM', 'V'],
+        'successful_tickers': ['CSCO', 'JPM', 'V'], 'failed_tickers': ['V'],
+        'degraded_tickers': [], 'pending_tickers': [],
+    }
+    index['reports'][1]['as_of'] = '2026-10-18'
+    # Keep an intact archive, but make JPM an older-day report.
+    entry = index['reports'][1]
+    snapshot = read_json(store / entry['json'])
+    snapshot['identity'].update(as_of='2026-10-18', report_stamp='20261018')
+    for kind in ('md', 'json', 'pdf'):
+        old = store / entry[kind]
+        new = old.with_name(old.name.replace('20261019', '20261018'))
+        old.rename(new)
+        entry[kind] = new.relative_to(store).as_posix()
+    write_json(store / entry['json'], snapshot)
+    entry['sha256'] = {k: digest(store / entry[k]) for k in ('md', 'json', 'pdf')}
+    write_json(store / 'index.json', index)
+    output = tmp_path.parent / (tmp_path.name + '-site')
+    build(store, output)
+    health = read_json(output / 'health.json')
+    assert {k: health[k] for k in ('expected', 'updated', 'ready', 'degraded', 'failed', 'missing', 'pending')} == {
+        'expected': 3, 'updated': 1, 'ready': 1, 'degraded': 0, 'failed': 1, 'missing': 2, 'pending': 2}
+    assert health['last_attempt_at'] == index['last_attempt']['at']
+    assert health['finished_at'] == index['last_attempt']['finished_at']
+    assert health['status'] == 'interrupted'
+
+
 def test_site_has_all_versions_but_no_private_state(store, tmp_path):
     write_json(store / 'state/deliveries.json', {'private': 'sensitive'})
     output = tmp_path.parent / (tmp_path.name + '-site')
@@ -558,35 +590,3 @@ def test_schedule_aware_site_check_accepts_a_newer_manual_publication_but_not_st
         check(base, business_date='2026-10-20', allow_newer=True, latest_date='2026-10-20')
     with pytest.raises(SiteError, match='stale or future'):
         check(base, business_date='2026-10-18', allow_newer=True, latest_date='2026-10-18')
-
-
-def test_health_counts_current_reports_instead_of_attempt_claims(store, tmp_path):
-    index = read_json(store / 'index.json')
-    index['last_attempt'] = {
-        'business_date': '2026-10-19', 'status': 'interrupted',
-        'at': '2026-10-19T10:00:00+00:00', 'finished_at': '2026-10-19T13:00:00+00:00',
-        'expected_tickers': ['CSCO', 'JPM', 'V'],
-        'successful_tickers': ['CSCO', 'JPM', 'V'], 'failed_tickers': ['V'],
-        'degraded_tickers': [], 'pending_tickers': [],
-    }
-    index['reports'][1]['as_of'] = '2026-10-18'
-    # Keep an intact archive, but make JPM an older-day report.
-    entry = index['reports'][1]
-    snapshot = read_json(store / entry['json'])
-    snapshot['identity'].update(as_of='2026-10-18', report_stamp='20261018')
-    for kind in ('md', 'json', 'pdf'):
-        old = store / entry[kind]
-        new = old.with_name(old.name.replace('20261019', '20261018'))
-        old.rename(new)
-        entry[kind] = new.relative_to(store).as_posix()
-    write_json(store / entry['json'], snapshot)
-    entry['sha256'] = {k: digest(store / entry[k]) for k in ('md', 'json', 'pdf')}
-    write_json(store / 'index.json', index)
-    output = tmp_path.parent / (tmp_path.name + '-site')
-    build(store, output)
-    health = read_json(output / 'health.json')
-    assert {k: health[k] for k in ('expected', 'updated', 'ready', 'degraded', 'failed', 'missing', 'pending')} == {
-        'expected': 3, 'updated': 1, 'ready': 1, 'degraded': 0, 'failed': 1, 'missing': 2, 'pending': 2}
-    assert health['last_attempt_at'] == index['last_attempt']['at']
-    assert health['finished_at'] == index['last_attempt']['finished_at']
-    assert health['status'] == 'interrupted'
