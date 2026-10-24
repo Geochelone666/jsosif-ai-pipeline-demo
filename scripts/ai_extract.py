@@ -535,14 +535,17 @@ def call_gemini(items, ticker):
         prompt += ' Output JSON schema: ' + json.dumps(classification_schema(ticker))
     path = DATA / ticker_file(ticker, 'ai-prompt.txt')
     path.write_text(prompt, encoding='utf-8')
-    last_call = DATA / '.last-ai-call'
-    try:
-        delay = max(0, 20 - (time.time() - float(last_call.read_text())))
-    except (OSError, ValueError):
-        delay = 0
-    if delay:
-        time.sleep(delay)
-    last_call.write_text(str(time.time()))
+    # Groq has its own persisted rolling RPM/TPM pacing in groq_provider.
+    # Do not add the legacy 20-second Gemini throttle on top of it.
+    if provider() != 'groq':
+        last_call = DATA / '.last-ai-call'
+        try:
+            delay = max(0, 20 - (time.time() - float(last_call.read_text())))
+        except (OSError, ValueError):
+            delay = 0
+        if delay:
+            time.sleep(delay)
+        last_call.write_text(str(time.time()))
     from ai_provider import provider
     cli = os.environ.get('GEMINI_CLI') if provider() == 'gemini' else None
     if not cli:
