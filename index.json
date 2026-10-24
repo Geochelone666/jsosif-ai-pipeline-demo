@@ -4282,6 +4282,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/MCK/MCK-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/MCK/MCK-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/MCK/MCK-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/MCO",
+      "ticker": "MCO",
+      "generated_at": "2026-10-24T02:08:33.219293+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "94319d095e70b5e324c5d23c588efca2dfa9151f13732b9b9effc06f893959e8",
+        "json": "7a4d7bf18166eaf44e6071b5e55f44040848eae1d990b98466ae79011dbcafd0",
+        "pdf": "25658002772e4903ba91ac5770505d38cf63a9322f4171c5bdb6f15ad958e065"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/MCO/MCO-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/MCO/MCO-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/MCO/MCO-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4422,7 +4439,8 @@
       "JPM",
       "JWEL.TO",
       "MC.PA",
-      "MCK"
+      "MCK",
+      "MCO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -4713,6 +4731,15 @@
         "ai_extract": 53.755,
         "comparables": 2.07,
         "earnings": 1.118,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
+      },
+      "MCO": {
+        "quant": 1.217,
+        "ai_extract": 288.401,
+        "comparables": 1.919,
+        "earnings": 1.167,
         "edgar": 2.069,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
