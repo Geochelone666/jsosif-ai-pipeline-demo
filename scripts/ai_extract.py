@@ -136,7 +136,7 @@ EVENTS = {
     'analyst': r'analysts?|price target|upgrad(?:e[sd]?|ing)|downgrad(?:e[sd]?|ing)|conviction list|tactical ideas|top .*pick|fair value|valued|fair value boost',
     'workforce': r'layoffs?|job cuts',
     'earnings': r'(?:beats?|miss(?:es)?|tops?|exceeds?) .{0,25}estimates?|earnings|revenue|profits?|quarterly results|deliver(?:ies|ed)|delivery numbers|registrations',
-    'ownership': r'(?:stock|shares) (?:sold|purchased|bought) by|(?:sells?|buys?) \$[\d,]+ in|insider (?:sale|purchase)',
+    'ownership': r'(?:stock|shares) (?:sold|purchased|bought) by|(?:sells?|buys?) \$[\d,]+ in|insider (?:sale|purchase)|(?:lowers?|rais(?:es?|ed)|cuts?|reduces?|increases?|adds? to) (?:its? )?(?:holdings?|stake|position)\b',
     'calendar': r'mark your calendars?|scheduled (?:for|on)',
     'risk': r'flags? .*risk|approval risks?|accounts receivable|memory chip crunch',
     'market_move': r'stock|shares|premarket|market cap',
@@ -211,6 +211,10 @@ def classify_rule(item, ticker):
                 sentiment = 'positive' if raised else 'negative'
         if sentiment == 'unknown' and not pos and not neg and event in ('dividend', 'acquisition', 'partnership', 'product', 'buyback', 'stock_split', 'earnings', 'ownership', 'calendar', 'analyst'):
             sentiment = 'neutral'
+    # Institutional portfolio ownership changes are not, by themselves,
+    # evidence of a change in the issuer's operating performance.
+    if not ambiguous and event == 'ownership':
+        sentiment = 'neutral'
     if not ambiguous and not (pos and neg) and event == 'risk':
         sentiment = 'negative'
     if not ambiguous and event == 'market_move' and text.startswith('stocks making the biggest moves'):

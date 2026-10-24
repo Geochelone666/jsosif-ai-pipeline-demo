@@ -58,6 +58,36 @@ class ExtractionTests(unittest.TestCase):
         self.assertEqual(data['extraction_stats']['rule'], 0)
         self.assertEqual(data['unclassified'][1]['companies'], [])
 
+
+    def test_institutional_ownership_change_is_not_a_negative_operating_signal(self):
+        # Real 2026-10-23 JPM headline previously appeared under HEADWINDS.
+        headline = 'JPMorgan Chase & Co. $JPM Stock: Birch Hill Investment Advisors LLC Lowers Holdings'
+        result = extract([news(headline)], 'JPM')
+        self.assertEqual(len(result['catalysts']), 1)
+        self.assertEqual(result['headwinds'], [])
+        self.assertEqual(result['catalysts'][0]['event_type'], 'ownership')
+        self.assertEqual(result['catalysts'][0]['sentiment'], 'neutral')
+        self.assertEqual(result['catalysts'][0]['extraction_method'], 'rule')
+
+    def test_explicit_share_sale_stays_neutral_ownership(self):
+        headline = 'Visa Inc. $V Stock Sold by Axxcess Wealth Management LLC'
+        result = extract([news(headline)], 'V')
+        self.assertEqual(len(result['catalysts']), 1)
+        self.assertEqual(result['catalysts'][0]['event_type'], 'ownership')
+        self.assertEqual(result['catalysts'][0]['sentiment'], 'neutral')
+
+    def test_question_about_ownership_is_still_ai_candidate(self):
+        headline = 'Will JPMorgan Chase & Co. stock fall if funds reduce holdings?'
+        result = extract([news(headline)], 'JPM')
+        self.assertEqual(result['extraction_stats']['rule'], 0)
+        self.assertEqual(result['extraction_stats']['unknown'], 1)
+
+    def test_other_company_ownership_does_not_become_target_news(self):
+        headline = 'Mastercard lowers holdings after Visa shares jump'
+        result = extract([news(headline)], 'V')
+        self.assertEqual(result['extraction_stats']['rule'], 0)
+        self.assertEqual(result['extraction_stats']['unknown'], 1)
+
     # --- Lenient Gemini payload handling (regressions for 2026-10-08 failures) ---
 
     def test_list_wrapped_payload_unwrapped(self):
