@@ -76,6 +76,7 @@ jobs:
           AI_PROVIDER: groq
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
           GROQ_MODEL: ${{ vars.GROQ_MODEL || 'openai/gpt-oss-20b' }}
+          GROQ_FALLBACK_MODEL: ${{ vars.GROQ_FALLBACK_MODEL }}
           GROQ_RPD: ${{ vars.GROQ_RPD }}
           GROQ_RPM: ${{ vars.GROQ_RPM }}
           GROQ_TPD: ${{ vars.GROQ_TPD }}
