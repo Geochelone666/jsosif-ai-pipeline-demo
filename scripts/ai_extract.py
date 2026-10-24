@@ -388,6 +388,11 @@ def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True):
     if pending and call_ai:
         try:
             extracted = call_ai(pending, ticker)
+            record = extracted[0] if isinstance(extracted, list) and len(extracted) == 1 else extracted
+            if isinstance(record, dict) and isinstance(record.get('models_used'), list):
+                used = [name for name in record['models_used'] if isinstance(name, str) and name.strip()]
+                if used:
+                    data['models_used'] = list(dict.fromkeys(used))
             payload, notes = _normalize_ai_payload(extracted, ticker)
             by_headline = {it['headline']: it for it in pending}
             index = _build_headline_index(pending)
@@ -472,6 +477,8 @@ def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True):
         unresolved = {item['headline'] for item in retried['unclassified']}
         data['ai_coverage_retry'] = {'requested': len(pending), 'unresolved': len(unresolved)}
         pending = [item for item in pending if item['headline'] in unresolved]
+        for name in retried.get('models_used', []):
+            data['models_used'] = list(dict.fromkeys(data.get('models_used', []) + [name]))
         for key in ('error', 'failure'):
             if key in retried:
                 data[key] = retried[key]
@@ -509,10 +516,17 @@ def call_gemini(items, ticker):
 
     def smaller_batches(size):
         combined = {'ticker': ticker, **{name: [] for name in (*KEYS, 'irrelevant')}}
+        models_used = []
         for offset in range(0, len(items), size):
-            result, _ = _normalize_ai_payload(call_gemini(items[offset:offset + size], ticker), ticker)
+            raw = call_gemini(items[offset:offset + size], ticker)
+            shaped = raw[0] if isinstance(raw, list) and len(raw) == 1 else raw
+            if isinstance(shaped, dict):
+                models_used.extend(shaped.get('models_used', []))
+            result, _ = _normalize_ai_payload(raw, ticker)
             for name in (*KEYS, 'irrelevant'):
                 combined[name].extend(result.get(name, []))
+        if models_used:
+            combined['models_used'] = list(dict.fromkeys(models_used))
         return combined
 
     if provider() == 'groq' and len(items) > 5:
@@ -566,7 +580,13 @@ def call_gemini(items, ticker):
                 return smaller_batches((len(items) + 1) // 2)
             raise
         save(ticker_file(ticker, 'ai-envelope.json'), envelope)
-        return _parse_gemini_json(envelope['text'])
+        parsed = _parse_gemini_json(envelope['text'])
+        # The provider adapter, not the AI response, supplies model identity.
+        if isinstance(parsed, list) and len(parsed) == 1 and isinstance(parsed[0], dict):
+            parsed[0]['models_used'] = [envelope['model']]
+        elif isinstance(parsed, dict):
+            parsed['models_used'] = [envelope['model']]
+        return parsed
     res = subprocess.run(
         [cli, '--model', os.environ.get('GEMINI_MODEL', MODEL),
          '--json-output', '--prompt', '@' + str(path)],
