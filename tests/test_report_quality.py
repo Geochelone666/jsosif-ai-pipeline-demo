@@ -71,3 +71,42 @@ def test_empty_news_without_successful_fetch_evidence_is_not_ready(report):
     path, quant, ai = report
     ai['extraction_stats'] = {'unique_headlines': 0, 'rule': 0, 'ai': 0, 'unknown': 0}
     assert freeze(path, quant, ai)['quality'] == 'degraded'
+
+
+def test_partial_ai_classification_cannot_pass_strict_news_gate(report):
+    path, quant, ai = report
+    ai['extraction_stats'] = {
+        'unique_headlines': 3, 'rule': 1, 'ai': 1, 'unknown': 1,
+    }
+    payload = freeze(path, quant, ai)
+    assert payload['quality'] == 'degraded'
+    assert payload['source_status']['news'] == 'degraded'
+    assert payload['source_evidence']['news']['coverage_pct'] == pytest.approx(66.67)
+    assert payload['source_evidence']['news']['count_reconciled']
+
+
+def test_reconciled_irrelevant_news_counts_as_reviewed(report):
+    path, quant, ai = report
+    ai['extraction_stats'] = {
+        'unique_headlines': 3, 'rule': 1, 'ai': 1, 'irrelevant': 1, 'unknown': 0,
+    }
+    payload = freeze(path, quant, ai)
+    assert payload['quality'] == 'ready'
+    assert payload['source_evidence']['news']['coverage_pct'] == 100
+    assert payload['source_evidence']['news']['resolved_headlines'] == 3
+
+
+@pytest.mark.parametrize('stats', [
+    {'unique_headlines': 2, 'rule': 1, 'ai': 0, 'unknown': 0},
+    {'unique_headlines': 1, 'rule': 1, 'ai': 0, 'unknown': 0, 'irrelevant': 1},
+    {'unique_headlines': 1, 'rule': True, 'ai': 0, 'unknown': 0},
+    {'unique_headlines': 1, 'rule': -1, 'ai': 1, 'unknown': 1},
+    {},
+    None,
+])
+def test_malformed_or_unreconciled_evidence_stays_degraded(report, stats):
+    path, quant, ai = report
+    ai['extraction_stats'] = stats
+    payload = freeze(path, quant, ai)
+    assert payload['quality'] == 'degraded'
+    assert not payload['source_evidence']['news']['count_reconciled']
