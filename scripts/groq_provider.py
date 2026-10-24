@@ -55,7 +55,7 @@ def error_code(response):
 
 
 def settings():
-    defaults = {'RPD': 200, 'RPM': 10, 'TPD': 200000, 'TPM': 5000}
+    defaults = {'RPD': 1000, 'RPM': 30, 'TPD': 200000, 'TPM': 8000}
     try:
         caps = {name: int(os.environ.get('GROQ_' + name) or value)
                 for name, value in defaults.items()}
@@ -110,16 +110,20 @@ def _reserve(model, tokens, sleep):
         raise GroqError('Groq retry deferred by server or application pacing')
     next_day = datetime.fromtimestamp(now + delay, timezone.utc).date().isoformat()
     pending = ledger.get('groq:' + model + ':' + next_day, {})
-    if pending.get('requests', 0) >= caps['RPD'] or pending.get('tokens', 0) + tokens > caps['TPD']:
-        raise GroqError('Groq application daily budget exhausted')
+    if pending.get('requests', 0) >= caps['RPD']:
+        raise GroqError('Groq application daily request budget exhausted')
+    if pending.get('tokens', 0) + tokens > caps['TPD']:
+        raise GroqError('Groq application daily token budget exhausted')
     if delay:
         sleep(delay)
     at = max(at, time.time())
     day = datetime.fromtimestamp(at, timezone.utc).date().isoformat()
     key = 'groq:' + model + ':' + day
     state = ledger.setdefault(key, {'requests': 0, 'tokens': 0})
-    if state['requests'] >= caps['RPD'] or state['tokens'] + tokens > caps['TPD']:
-        raise GroqError('Groq application daily budget exhausted')
+    if state['requests'] >= caps['RPD']:
+        raise GroqError('Groq application daily request budget exhausted')
+    if state['tokens'] + tokens > caps['TPD']:
+        raise GroqError('Groq application daily token budget exhausted')
     state['requests'] += 1
     state['tokens'] += tokens
     event = {'at': at, 'tokens': tokens}
