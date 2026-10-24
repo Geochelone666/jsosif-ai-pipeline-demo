@@ -108,14 +108,16 @@ def main():
     parser.add_argument('--business-date', default=datetime.now(ZoneInfo('America/Toronto')).date().isoformat())
     parser.add_argument('--require-ready', action='store_true')
     args = parser.parse_args()
+    last_error = None
     for attempt in range(3):
         try:
             result = check(args.url, business_date=args.business_date, require_ready=args.require_ready)
             print(json.dumps(result))
             return
-        except (OSError, ValueError, KeyError, TypeError, SiteError):
+        except (OSError, ValueError, KeyError, TypeError, SiteError) as exc:
+            last_error = exc
             if attempt == 2:
-                raise SystemExit('Deployed site verification failed: inspect publication date, coverage and archive integrity') from None
+                raise SystemExit('Deployed site verification failed: ' + type(last_error).__name__ + ': ' + str(last_error)) from None
             time.sleep(10)
 
 

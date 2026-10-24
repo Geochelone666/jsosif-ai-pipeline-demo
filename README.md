@@ -233,6 +233,46 @@ report-data branch are public in a public repository. Private group reports requ
 a separate authenticated hosting/storage design. Confirm data redistribution rights
 for team/public use before publishing provider data.
 
+## Daily production troubleshooting (October 2026)
+
+The production research workflow targets **19:00 America/Toronto**. GitHub Actions
+scheduled starts are best effort and can be late or missed. The actual business
+date and run outcome should be checked in Actions logs and the archive index;
+a green workflow is not proof that every source returned data.
+
+The FRED collector reads the `FRED_API_KEY` repository secret. Its summary reports
+how many series returned numeric observations (for example, `FRED: 4 rows; 3/4
+values`). A missing NAPM observation does **not** mean the API key failed; inspect
+its per-series HTTP error separately. FRED is considered available only if at
+least one series has a numeric value. Do not log API keys or full request URLs.
+
+The daily archive can be `degraded` even when all expected ticker reports were
+created. The strict release gate deliberately requires complete source evidence:
+`check_release.py --require-ready` must remain enabled. For example, run
+[#40047255413](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/40047255413)
+created 50/50 current ticker reports but flagged V, VRTX and XYL as degraded;
+SEC requests also returned HTTP errors. That run did **not** pass strict release
+acceptance. A successful Pages deploy alone does not establish report readiness.
+
+To investigate a failed daily run:
+
+1. Inspect the `Generate and archive reports` logs, particularly the FRED count,
+   SEC errors, `last_attempt.status`, and `degraded_tickers` in the archive index.
+2. Diagnose the specific missing evidence before retrying. Avoid treating SEC
+   HTTP errors as valid financial observations or disabling strict checks.
+3. For an interrupted or degraded same-day run, use the workflow's explicit
+   `resume=true` option **after reviewing its downstream effects**. Resume reuses
+   only intact ready reports and can recompute degraded tickers. It is not a
+   read-only operation: it can update the archive and website and may trigger
+   subsequent delivery checks. Do not enable `force` for a targeted recovery.
+4. Recheck strict release acceptance and deployed-site verification separately.
+   The verifier now prints the underlying final error after retries, without
+   exposing request credentials. Do not send member emails as a troubleshooting
+   step.
+
+Member stock selections, delivery weekday/time, and consent are managed by the
+private subscription configuration, not by this troubleshooting procedure.
+
 ## Tests and legacy commands
 
 ```bash

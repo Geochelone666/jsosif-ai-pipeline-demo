@@ -40,7 +40,7 @@ def main():
             # Never print the request URL containing the API key.
             print(f'{series_id} unavailable: {type(exc).__name__}')
         indicators.append(row)
-    save('fred.json', {'available': True, 'as_of': as_of_date().isoformat(), 'indicators': indicators})
+    save('fred.json', {'available': any(row['value'] is not None for row in indicators), 'as_of': as_of_date().isoformat(), 'indicators': indicators})
     print(f'FRED: {len(indicators)} rows; {sum(r["value"] is not None for r in indicators)}/4 values')
 
 if __name__ == '__main__':

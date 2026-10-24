@@ -77,3 +77,13 @@ def test_config_key_takes_precedence(workspace, monkeypatch):
     fred.main()
     assert seen and all('api_key=team-key&' in url for url in seen)
     assert all(row['value'] is None for row in output(workspace)['indicators'])
+
+
+def test_no_numeric_observations_are_unavailable(workspace, monkeypatch):
+    monkeypatch.setenv('FRED_API_KEY', 'test-key')
+    monkeypatch.setattr(fred, 'urlopen', lambda *args, **kwargs: io.BytesIO(b'{"observations": []}'))
+    fred.main()
+    result = output(workspace)
+    assert result['available'] is False
+    assert len(result['indicators']) == 4
+    assert all(row['value'] is None for row in result['indicators'])
