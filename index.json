@@ -5523,6 +5523,23 @@
       "md": "archive/20261024T035643Z-0eef198f/VRTX/VRTX-intelligence-20261023.md",
       "json": "archive/20261024T035643Z-0eef198f/VRTX/VRTX-intelligence-20261023.json",
       "pdf": "archive/20261024T035643Z-0eef198f/VRTX/VRTX-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T035643Z-0eef198f/XYL",
+      "ticker": "XYL",
+      "generated_at": "2026-10-24T04:12:55.840883+00:00",
+      "as_of": "2026-10-23",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "8755856144ef14f15c68874c8f09b7413f4f81eac65408ba5b5ad6b23ab8df5f",
+        "json": "e0b910dccb60f68b06a7cdd97e0b8ec766746f79d627b6388470367f03b59610",
+        "pdf": "b3af68eb9dc34ad3be31635db8ec2333ad9e466c3d3578840158d888231dd9b0"
+      },
+      "md": "archive/20261024T035643Z-0eef198f/XYL/XYL-intelligence-20261023.md",
+      "json": "archive/20261024T035643Z-0eef198f/XYL/XYL-intelligence-20261023.json",
+      "pdf": "archive/20261024T035643Z-0eef198f/XYL/XYL-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -5686,7 +5703,8 @@
       "TMC",
       "TSM",
       "V",
-      "VRTX"
+      "VRTX",
+      "XYL"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40060330616",
@@ -5738,7 +5756,8 @@
       "TMC",
       "TSM",
       "V",
-      "VRTX"
+      "VRTX",
+      "XYL"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -6235,6 +6254,15 @@
         "earnings": 1.066,
         "edgar": 1.967,
         "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "XYL": {
+        "quant": 1.419,
+        "ai_extract": 11.133,
+        "comparables": 1.817,
+        "earnings": 1.168,
+        "edgar": 2.117,
+        "regenerate_report": 0.064,
         "report_pdf": 0.164
       }
     },
