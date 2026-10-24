@@ -5506,6 +5506,23 @@
       "md": "archive/20261024T035643Z-0eef198f/V/V-intelligence-20261023.md",
       "json": "archive/20261024T035643Z-0eef198f/V/V-intelligence-20261023.json",
       "pdf": "archive/20261024T035643Z-0eef198f/V/V-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T035643Z-0eef198f/VRTX",
+      "ticker": "VRTX",
+      "generated_at": "2026-10-24T04:12:35.641781+00:00",
+      "as_of": "2026-10-23",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "dfd5046ae59660d458c4650ed25c5699840291f0d7e89fab22bd0531d948b6d9",
+        "json": "807d912b73a297e776e41fda2b4e39270dcc437207504162fa4072df89c716f4",
+        "pdf": "fda1f8db19f91a997405b46ff05d902bb72be0c90ff6e320cb4881170016ecc6"
+      },
+      "md": "archive/20261024T035643Z-0eef198f/VRTX/VRTX-intelligence-20261023.md",
+      "json": "archive/20261024T035643Z-0eef198f/VRTX/VRTX-intelligence-20261023.json",
+      "pdf": "archive/20261024T035643Z-0eef198f/VRTX/VRTX-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -5668,7 +5685,8 @@
       "TD.TO",
       "TMC",
       "TSM",
-      "V"
+      "V",
+      "VRTX"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40060330616",
@@ -5719,7 +5737,8 @@
       "TD.TO",
       "TMC",
       "TSM",
-      "V"
+      "V",
+      "VRTX"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -6206,6 +6225,15 @@
         "comparables": 2.17,
         "earnings": 1.116,
         "edgar": 2.018,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "VRTX": {
+        "quant": 1.066,
+        "ai_extract": 10.786,
+        "comparables": 1.82,
+        "earnings": 1.066,
+        "edgar": 1.967,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
