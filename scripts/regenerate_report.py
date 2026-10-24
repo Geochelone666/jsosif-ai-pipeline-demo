@@ -169,7 +169,7 @@ def append_free_source_sections():
         out.append('| ' + ' | '.join(cells) + ' |')
     out += ['', f'Peers fetched as_of: {peers["as_of"]}; {TICKER} reuses existing data (market data as_of: {quant.get("as_of")}); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.', '', '## EARNINGS CALENDAR', '', f'- Last reported earnings: {earnings["last_earnings"] or "N/A"}', f'- Next expected earnings: {earnings["next_earnings"] or "N/A"} (yfinance; expected dates may change)', '', '## MACRO (FRED)', '']
     if not macro['available']:
-        out.append('N/A: no FRED API key configured; skipped')
+        out.append('N/A: FRED observations unavailable (API key missing, request failed, or no numeric observations); see collection logs')
     else:
         out += [f'Fetched as_of: {macro["as_of"]}', '', '| Metric | series_id | Latest value | Observation date |', '|---|---|---:|---|']
         out += [f'| {row["name"]} | {row["series_id"]} | {fmt(row["value"])} | {row["date"] or "N/A"} |' for row in macro['indicators']]
