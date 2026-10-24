@@ -57,7 +57,7 @@ def compute_extended_risk(prices: pd.Series, spy: pd.Series | None) -> dict:
                 result[key] = undefined('SPY ' + invalid_benchmark)
             return result
         joined = pd.concat([returns.rename('asset'), spy.pct_change().rename('benchmark')],
-                           axis=1).dropna()
+                           axis=1, sort=True).dropna()
         for key in RISK_KEYS[4:]:
             result[key] = insufficient(20, 'of date-aligned daily return pairs')
         if len(joined) >= 20:

@@ -9,8 +9,8 @@ jobs:
         python: ['3.12']
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
           cache: pip
@@ -20,7 +20,7 @@ jobs:
         run: |
           python scripts/import_history.py --reports reports --store "$RUNNER_TEMP/report-preview"
           python scripts/build_site.py --store "$RUNNER_TEMP/report-preview" --output site-preview
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: research-site-preview-${{ matrix.python }}
           path: site-preview
@@ -30,8 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: pip
@@ -67,7 +67,7 @@ jobs:
           python scripts/build_site.py --store "$RUNNER_TEMP/browser-store" --output site-browser
       - name: Exercise desktop and mobile member workflows
         run: python scripts/browser_smoke.py --site site-browser --artifacts review/browser
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: browser-acceptance
