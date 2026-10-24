@@ -583,9 +583,9 @@ def call_gemini(items, ticker):
         parsed = _parse_gemini_json(envelope['text'])
         # The provider adapter, not the AI response, supplies model identity.
         if isinstance(parsed, list) and len(parsed) == 1 and isinstance(parsed[0], dict):
-            parsed[0]['models_used'] = [envelope['model']]
+            parsed[0]['models_used'] = [envelope.get('model', model())]
         elif isinstance(parsed, dict):
-            parsed['models_used'] = [envelope['model']]
+            parsed['models_used'] = [envelope.get('model', model())]
         return parsed
     res = subprocess.run(
         [cli, '--model', os.environ.get('GEMINI_MODEL', MODEL),
