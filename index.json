@@ -3942,6 +3942,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/ASML/ASML-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/ASML/ASML-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/ASML/ASML-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/ATD.TO",
+      "ticker": "ATD.TO",
+      "generated_at": "2026-10-24T01:14:26.877423+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "c89cda8efeb459d09957f2f210a237d6e14f9ee928a634d188f2bdb882ee9009",
+        "json": "80404fa3b48af639433a9b7505f4f7ea09ef71749157352088d86d0f95a2c2c8",
+        "pdf": "d2348ec6cd4d89e4fb38ff07c7a67eb946b557871037004eb7a3d0b8b63a53a1"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/ATD.TO/ATD.TO-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/ATD.TO/ATD.TO-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/ATD.TO/ATD.TO-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4062,7 +4079,8 @@
       "AMD",
       "AMTM",
       "AMZN",
-      "ASML"
+      "ASML",
+      "ATD.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -4176,6 +4194,15 @@
         "edgar": 2.671,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "ATD.TO": {
+        "quant": 1.117,
+        "ai_extract": 2.17,
+        "comparables": 1.97,
+        "earnings": 1.066,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.215
       }
     },
     "current_ticker": "ATD.TO",
