@@ -4469,6 +4469,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/OTEX.TO/OTEX.TO-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/OTEX.TO/OTEX.TO-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/OTEX.TO/OTEX.TO-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/PEP",
+      "ticker": "PEP",
+      "generated_at": "2026-10-24T02:36:12.113968+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "88fba7b386e80dc514f58dde7731584501c94f9aca67904ea31740115529ca21",
+        "json": "623118210f831e14ce032f2e28fad954d1a872ac10d61499fd41a6ba0bb9b298",
+        "pdf": "37584117db35e7be8f9a868498d5986b60fdc2e43f02391970cd0ce99bb2cb5c"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/PEP/PEP-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/PEP/PEP-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/PEP/PEP-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4620,7 +4637,8 @@
       "NVAX",
       "NVDA",
       "NVO",
-      "OTEX.TO"
+      "OTEX.TO",
+      "PEP"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -5013,6 +5031,15 @@
         "edgar": 2.07,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
+      },
+      "PEP": {
+        "quant": 1.268,
+        "ai_extract": 124.192,
+        "comparables": 2.02,
+        "earnings": 1.218,
+        "edgar": 2.02,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
       }
     },
     "current_ticker": "PEP",
