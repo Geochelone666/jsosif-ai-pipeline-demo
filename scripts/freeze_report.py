@@ -18,9 +18,14 @@ def news_evidence(ai):
         return {'count_reconciled': False, 'coverage_pct': None}
     unique = counts['unique_headlines']
     resolved = counts['rule'] + counts['ai'] + counts['irrelevant']
+    rss = ai.get('rss_audit')
+    rss_reconciled = (rss is None or
+                      (isinstance(rss, dict) and type(rss.get('unique_headlines')) is int
+                       and rss['unique_headlines'] == unique))
     return {**counts, 'resolved_headlines': resolved,
             'coverage_pct': round(100 * resolved / unique, 2) if unique else 100.0,
-            'count_reconciled': resolved + counts['unknown'] == unique}
+            'rss_reconciled': rss_reconciled,
+            'count_reconciled': resolved + counts['unknown'] == unique and rss_reconciled}
 
 
 def freeze(path, quant, ai):
@@ -41,7 +46,7 @@ def freeze(path, quant, ai):
         market_date = None
     close = number(quant.get('metrics', {}).get('Close'))
     evidence = news_evidence(ai)
-    payload['source_evidence'] = {'news': evidence,
+    payload['source_evidence'] = {'news': {**evidence, 'rss_audit': ai.get('rss_audit', {})},
                                   'market': {'observed_as_of': quant.get('as_of'),
                                              'history_count': quant.get('history_count', {})}}
     payload['source_status'] = {

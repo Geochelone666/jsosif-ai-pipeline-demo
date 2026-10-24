@@ -126,6 +126,7 @@ report = f"""# {TICKER} Intelligence Report
 - AI status: **{ai_status}**
 - AI model (configured): **{ai.get('model', 'legacy snapshot / rules')}** (RSS headlines; rule and AI item counts: {ai.get('extraction_stats', {})})
 - AI model(s) actually used: **{', '.join(ai.get('models_used', [])) or 'N/A (no successful AI classification call)'}**
+- RSS source audit (metadata only, not article fact-checking): {ai.get('rss_audit', {}).get('unique_headlines', 'N/A')} unique headlines; {ai.get('rss_audit', {}).get('unique_publishers', 'N/A')} named publishers; {ai.get('rss_audit', {}).get('duplicates_excluded', 'N/A')} exact duplicates; {ai.get('rss_audit', {}).get('https_link_headlines', 'N/A')} HTTPS source links; largest publisher share {ai.get('rss_audit', {}).get('largest_publisher_share_pct', 'N/A')}%; oldest publication {ai.get('rss_audit', {}).get('oldest_publication_date', 'N/A')}
 
 {quant_table}
 Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
