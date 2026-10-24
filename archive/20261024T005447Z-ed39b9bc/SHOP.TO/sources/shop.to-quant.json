@@ -1,0 +1,121 @@
+{
+  "ticker": "SHOP.TO",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/SHOP.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/SHOP.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 236.24000549316406,
+    "Return 1D (%)": -0.07190819606275323,
+    "Return 1W (%)": -1.4475829642127236,
+    "Return 1M (%)": 17.84894621417856,
+    "Return YTD (%)": 6.895930087404545,
+    "Return 1Y (%)": 1.1691195454369252,
+    "Annualized volatility (%)": 57.51358710750469,
+    "Max drawdown (%)": -47.65527884365378,
+    "Sharpe (rf=0)": 0.3070464813987281,
+    "Beta vs SPY": 1.7621430228362769,
+    "MA50": 211.21499969482423,
+    "Close vs MA50 (%)": 11.848119610111695,
+    "MA200": 180.20414970397948,
+    "Close vs MA200 (%)": 31.095763266958286,
+    "RSI (14, Wilder)": 57.61834618246344,
+    "MACD (12,26)": 10.675098354590943,
+    "MACD signal (9)": 11.676882294417794,
+    "MACD histogram": -1.0017839398268507,
+    "P/E (trailing)": 115.23903,
+    "P/B": 17.097448,
+    "EV/EBITDA": 124.922,
+    "Revenue growth (%)": 33.7
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 233.50999450683594,
+    "end_close": 236.24000549316406,
+    "manual_1Y_pct": 1.1691195454369319,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T02:43:13.673773+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "SHOP.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792803292.7818959
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "SHOP.TO": 266,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'SHOP.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
