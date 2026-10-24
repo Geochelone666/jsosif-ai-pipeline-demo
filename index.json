@@ -4180,6 +4180,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/GOOGL/GOOGL-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/GOOGL/GOOGL-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/GOOGL/GOOGL-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/ISRG",
+      "ticker": "ISRG",
+      "generated_at": "2026-10-24T01:55:34.488425+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "0c8fb347a0152605e7eb0e17c3e51b9c7a98590c577103bd1772ab1b5a155653",
+        "json": "01f9b9bd5ebf91b3291b0fd2b7f547704d3b9a6c94deb1096a3f021981af9ca4",
+        "pdf": "e4b3382b29013e38f8d98910bb86b5f2d58e9cc76d4004eb7cd0a26b773f8343"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/ISRG/ISRG-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/ISRG/ISRG-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/ISRG/ISRG-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4314,7 +4331,8 @@
       "ENB",
       "EW",
       "GIS",
-      "GOOGL"
+      "GOOGL",
+      "ISRG"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -4554,6 +4572,15 @@
         "edgar": 1.918,
         "regenerate_report": 0.114,
         "report_pdf": 0.264
+      },
+      "ISRG": {
+        "quant": 1.016,
+        "ai_extract": 232.965,
+        "comparables": 1.869,
+        "earnings": 1.168,
+        "edgar": 2.771,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
       }
     },
     "current_ticker": "ISRG",
