@@ -110,3 +110,23 @@ def test_malformed_or_unreconciled_evidence_stays_degraded(report, stats):
     payload = freeze(path, quant, ai)
     assert payload['quality'] == 'degraded'
     assert not payload['source_evidence']['news']['count_reconciled']
+
+
+@pytest.mark.parametrize('audit', [
+    {'unique_headlines': 2}, {'unique_headlines': True},
+    {'unique_headlines': '1'}, [], {},
+])
+def test_rss_source_audit_must_reconcile_with_classification(report, audit):
+    path, quant, ai = report
+    ai['rss_audit'] = audit
+    payload = freeze(path, quant, ai)
+    assert payload['quality'] == 'degraded'
+    assert not payload['source_evidence']['news']['count_reconciled']
+
+
+def test_valid_rss_source_audit_preserves_readiness(report):
+    path, quant, ai = report
+    ai['rss_audit'] = {'unique_headlines': 1, 'unique_publishers': 1}
+    payload = freeze(path, quant, ai)
+    assert payload['quality'] == 'ready'
+    assert payload['source_evidence']['news']['rss_reconciled']
