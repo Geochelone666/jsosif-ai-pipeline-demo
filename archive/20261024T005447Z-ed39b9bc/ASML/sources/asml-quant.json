@@ -1,0 +1,122 @@
+{
+  "ticker": "ASML",
+  "errors": [
+    "warning: ASML invalid/missing prices skipped",
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/ASML/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/ASML/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 1560.5400390625,
+    "Return 1D (%)": -6.927333401089908,
+    "Return 1W (%)": -5.84635979398056,
+    "Return 1M (%)": -10.719147704936383,
+    "Return YTD (%)": 46.56467475489232,
+    "Return 1Y (%)": 55.28522640567361,
+    "Annualized volatility (%)": 46.6469874780781,
+    "Max drawdown (%)": -21.95313939004605,
+    "Sharpe (rf=0)": 1.1797267974859378,
+    "Beta vs SPY": 2.2533914479978505,
+    "MA50": 1728.2556030273438,
+    "Close vs MA50 (%)": -9.70432635491304,
+    "MA200": 1583.572744140625,
+    "Close vs MA200 (%)": -1.454477235943108,
+    "RSI (14, Wilder)": 33.60072905356812,
+    "MACD (12,26)": -31.674824319829668,
+    "MACD signal (9)": -11.05876584174348,
+    "MACD histogram": -20.616058478086188,
+    "P/E (trailing)": 38.67618,
+    "P/B": 1349.6245,
+    "EV/EBITDA": 2066.768,
+    "Revenue growth (%)": 55.2
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 1004.9507446289062,
+    "end_close": 1560.5400390625,
+    "manual_1Y_pct": 55.28522640567361,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T01:10:21.232953+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "ASML",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: ASML invalid/missing prices skipped"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792803292.7818959
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "ASML": 266,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'ASML'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
