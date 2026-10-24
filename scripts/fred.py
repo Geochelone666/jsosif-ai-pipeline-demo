@@ -4,6 +4,7 @@ import json
 import os
 from urllib.parse import urlencode
 from urllib.request import urlopen
+from urllib.error import HTTPError, URLError
 from data_utils import number, save, as_of_date
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'config', 'fred.json')
@@ -36,9 +37,17 @@ def main():
                 if value is not None:
                     row.update(value=value, date=obs['date'])
                     break
-        except Exception as exc:
-            # Never print the request URL containing the API key.
-            print(f'{series_id} unavailable: {type(exc).__name__}')
+        except HTTPError as exc:
+            # Do not print the URL or response body: the URL contains the API key.
+            print(f'{series_id} unavailable: HTTP {exc.code}')
+        except URLError as exc:
+            print(f'{series_id} unavailable: network error ({type(exc.reason).__name__})')
+        except OSError:
+            # Includes connection failures raised directly by clients or test doubles.
+            # Do not stringify the exception; it may contain the keyed URL.
+            print(f'{series_id} unavailable: OSError')
+        except (ValueError, KeyError, TypeError) as exc:
+            print(f'{series_id} unavailable: invalid response ({type(exc).__name__})')
         indicators.append(row)
     save('fred.json', {'available': any(row['value'] is not None for row in indicators), 'as_of': as_of_date().isoformat(), 'indicators': indicators})
     print(f'FRED: {len(indicators)} rows; {sum(r["value"] is not None for r in indicators)}/4 values')
