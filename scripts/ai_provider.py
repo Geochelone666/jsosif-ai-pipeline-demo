@@ -17,8 +17,22 @@ def model():
 
 
 def generate_json(prompt, **kwargs):
-    if provider() == 'groq':
-        from groq_provider import generate_json as generate
-    else:
+    selected = model()
+    requested_model = kwargs.pop('model', selected)
+    if provider() != 'groq':
         from gemini_provider import generate_json as generate
-    return generate(prompt, model=kwargs.pop('model', model()), **kwargs)
+        return generate(prompt, model=requested_model, **kwargs)
+
+    from groq_provider import generate_json as generate, GroqError
+    try:
+        return generate(prompt, model=requested_model, **kwargs)
+    except GroqError as exc:
+        # Never mask remote 429s, permission failures, transport or schema errors.
+        # A backup is optional and only used for a definite local daily budget cap.
+        backup = os.environ.get('GROQ_FALLBACK_MODEL', '').strip()
+        if exc.budget_kind not in ('requests', 'tokens') or not backup:
+            raise
+        supported = {'openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.8-27b'}
+        if backup not in supported or backup == requested_model:
+            raise GroqError('GROQ_FALLBACK_MODEL must name another supported strict-schema model') from None
+        return generate(prompt, model=backup, **kwargs)
