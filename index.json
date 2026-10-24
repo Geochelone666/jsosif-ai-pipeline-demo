@@ -5183,6 +5183,23 @@
       "md": "archive/20261024T035643Z-0eef198f/MG.TO/MG.TO-intelligence-20261023.md",
       "json": "archive/20261024T035643Z-0eef198f/MG.TO/MG.TO-intelligence-20261023.json",
       "pdf": "archive/20261024T035643Z-0eef198f/MG.TO/MG.TO-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T035643Z-0eef198f/MSFT",
+      "ticker": "MSFT",
+      "generated_at": "2026-10-24T04:06:15.491179+00:00",
+      "as_of": "2026-10-23",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "f8bfb9a628afc953bc60d569a7f1878a85ad8a630e849c989f829645dd4a026a",
+        "json": "a99ca794f79d38ba1d038469116b2d5a65c0f6ae24a19bc6c982c02e4dc4e3f6",
+        "pdf": "d158fb4cd5a00ea20a5c27822a5b5849bc3169ee0acbab30c571bb65523c68c4"
+      },
+      "md": "archive/20261024T035643Z-0eef198f/MSFT/MSFT-intelligence-20261023.md",
+      "json": "archive/20261024T035643Z-0eef198f/MSFT/MSFT-intelligence-20261023.json",
+      "pdf": "archive/20261024T035643Z-0eef198f/MSFT/MSFT-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -5326,7 +5343,8 @@
       "MCK",
       "MCO",
       "META",
-      "MG.TO"
+      "MG.TO",
+      "MSFT"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40060330616",
@@ -5358,7 +5376,8 @@
       "MCK",
       "MCO",
       "META",
-      "MG.TO"
+      "MG.TO",
+      "MSFT"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -5674,6 +5693,15 @@
         "comparables": 1.969,
         "earnings": 1.117,
         "edgar": 2.62,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "MSFT": {
+        "quant": 1.016,
+        "ai_extract": 9.89,
+        "comparables": 1.719,
+        "earnings": 1.118,
+        "edgar": 1.869,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
