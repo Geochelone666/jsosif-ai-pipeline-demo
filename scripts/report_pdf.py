@@ -188,6 +188,19 @@ story.append(p('Report rendering uses saved source snapshots with separate obser
                'Check source dates and availability.',
                'small'))
 story.append(Spacer(1, 6))
+stats = ai.get('extraction_stats') or {}
+fetched = stats.get('unique_headlines', 0)
+resolved = stats.get('rule', 0) + stats.get('ai', 0) + stats.get('irrelevant', 0)
+unknown = stats.get('unknown', 0)
+audit = ai.get('rss_audit') or {}
+story.append(p(
+    f'News (report-date window: previous 7 days plus report date): '
+    f'<b>{esc(fetched)}</b> unique headlines; '
+    f'<b>{esc(resolved)}</b> classified or explicitly excluded; '
+    f'<b>{esc(unknown)}</b> still unclassified. '
+    f'Named publishers: <b>{esc(audit.get("unique_publishers", "N/A"))}</b>. '
+    f'Latest RSS publication: <b>{esc(audit.get("newest_publication_date") or "N/A")}</b>.',
+    'small'))
 
 # ---------------------------------------------------------------- quantitative
 story.append(p('Quantitative', 'h1'))
@@ -202,10 +215,21 @@ quant_rows = [
     ('Beta vs SPY', fmt(q.get('Beta vs SPY'))),
     ('Max drawdown (%)', fmt(q.get('Max drawdown (%)'))),
     ('Sharpe (rf=0)', fmt(q.get('Sharpe (rf=0)'))),
+    ('Downside deviation (rf=0, %)', fmt(q.get('Downside deviation (rf=0, %)'))),
+    ('Sortino (rf=0)', fmt(q.get('Sortino (rf=0)'))),
+    ('Historical VaR 95% (1D, %)', fmt(q.get('Historical VaR 95% (1D, %)'))),
+    ('Historical ES 95% (1D, %)', fmt(q.get('Historical ES 95% (1D, %)'))),
+    ('Correlation vs SPY', fmt(q.get('Correlation vs SPY'))),
+    ('Tracking error vs SPY (%)', fmt(q.get('Tracking error vs SPY (%)'))),
     ('P/E (trailing)', fmt(q.get('P/E (trailing)'), 2)),
     ('P/B', fmt(q.get('P/B'), 2)),
     ('EV/EBITDA', fmt(q.get('EV/EBITDA'), 2)),
     ('Revenue growth (%)', fmt(q.get('Revenue growth (%)'), 2)),
+    ('Forward P/E (estimate)', fmt(q.get('Forward P/E (estimate)'), 2)),
+    ('Gross margin (%)', fmt(q.get('Gross margin (%)'), 2)),
+    ('Operating margin (%)', fmt(q.get('Operating margin (%)'), 2)),
+    ('Return on equity (%)', fmt(q.get('Return on equity (%)'), 2)),
+    ('Free cash flow yield (%)', fmt(q.get('Free cash flow yield (%)'), 2)),
     ('MA50', fmt(q.get('MA50'))),
     ('Close vs MA50 (%)', fmt(q.get('Close vs MA50 (%)'))),
     ('MA200', fmt(q.get('MA200'))),
@@ -220,7 +244,10 @@ story.append(styled_table(['Metric', 'Value'],
                           [W * 0.62, W * 0.38], right_cols=(1,)))
 story.append(p('Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq '
                'fallback if unavailable). 1Y return uses the last trading day on or '
-               'before the one-year boundary.',
+               'before the one-year boundary. Risk metrics use historical returns and are '
+               'not forecasts; asset and SPY returns are not FX-adjusted in cross-listing '
+               'comparisons. Free cash flow yield is unavailable unless vendor financial '
+               'and listing currencies match. See unavailable values as N/A.',
                'small'))
 
 # ---------------------------------------------------------------- how to read
@@ -260,9 +287,19 @@ for key, title in AI_SECTIONS:
     story.append(p(title, 'h1'))
     items = ai.get(key) or []
     if not items:
-        story.append(p(esc(('N/A: ' + ai['error']) if ai.get('error')
-                           else 'No items in this run'),
-                         'small'))
+        if ai.get('error'):
+            explanation = ('No verified items in this category; news processing '
+                           'was incomplete: ' + str(ai['error']))
+        elif unknown:
+            explanation = (f'No classified items in this category; {unknown} '
+                           'headlines remain unresolved and could contain relevant events.')
+        elif fetched == 0:
+            explanation = ('No eligible RSS headlines returned in the date window; '
+                           'this does not prove there was no company news.')
+        else:
+            explanation = ('No qualified events assigned to this category among '
+                           f'{fetched} sampled headlines; this does not prove no events occurred.')
+        story.append(p(esc(explanation), 'small'))
         continue
     for n, it in enumerate(items, 1):
         block = [p(f'<b>{n}. {esc(it.get("headline", "N/A"))}</b>', 'body')]
