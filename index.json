@@ -4503,6 +4503,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/PFE/PFE-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/PFE/PFE-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/PFE/PFE-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/SCHW",
+      "ticker": "SCHW",
+      "generated_at": "2026-10-24T02:43:10.137851+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "cf9c1aa64405cfb9708f17b921ea2cc94146fcb5654d8c90c8076785337bdd30",
+        "json": "7a9bc8a1bf1c207da0b546bfdfca29f6de20854ed99cf749f5b289bc64ae5406",
+        "pdf": "18b95d4963257e2cf96141bf9f658d64336a7d11a4c2bafbaf0af047f7a6cb7c"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/SCHW/SCHW-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/SCHW/SCHW-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/SCHW/SCHW-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4656,7 +4673,8 @@
       "NVO",
       "OTEX.TO",
       "PEP",
-      "PFE"
+      "PFE",
+      "SCHW"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -5067,6 +5085,15 @@
         "edgar": 1.969,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
+      },
+      "SCHW": {
+        "quant": 1.167,
+        "ai_extract": 290.471,
+        "comparables": 1.969,
+        "earnings": 1.117,
+        "edgar": 1.969,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
       }
     },
     "current_ticker": "SCHW",
