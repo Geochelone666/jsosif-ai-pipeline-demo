@@ -35,7 +35,7 @@ source files, PR descriptions, issue comments or chat.
 | `EMAIL_DELIVERY_ENABLED` | Variable | Leave false until the roster and email previews are reviewed |
 | `FRED_API_KEY` | Optional secret | FRED macro source; otherwise explicitly unavailable |
 
-Without a roster, collection covers the 25 configured holdings. A roster controls
+Without a roster, collection covers the 50 supported holdings. A roster controls
 the research universe, but opting out of email does not stop website research.
 Without a real SEC identity, no placeholder requests are made; SEC fields are
 explicitly unavailable. Configure it before claiming the filing integration works.
@@ -250,7 +250,8 @@ on later scans, and never submit another message until explicitly reconciled.
 Report age uses Toronto calendar dates; member scheduling still uses each member's
 own IANA timezone.
 
-The v1 research universe contains the 25 configured holdings in `scripts/universe.py`.
+The current research universe contains 50 supported holdings in `scripts/universe.py`,
+including the original 25 holdings and 25 pilot additions.
 Unsupported symbols are rejected on import; supporting new companies requires an
 explicit universe/data-source update before roster activation. FRED is optional;
 missing macro data is labelled unavailable. Streaming quotes, online self-service
