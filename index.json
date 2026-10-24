@@ -5285,6 +5285,23 @@
       "md": "archive/20261024T035643Z-0eef198f/NVDA/NVDA-intelligence-20261023.md",
       "json": "archive/20261024T035643Z-0eef198f/NVDA/NVDA-intelligence-20261023.json",
       "pdf": "archive/20261024T035643Z-0eef198f/NVDA/NVDA-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T035643Z-0eef198f/NVO",
+      "ticker": "NVO",
+      "generated_at": "2026-10-24T04:08:16.675446+00:00",
+      "as_of": "2026-10-23",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "c40917f9a588ea799be3a0f24812122afa3f788baaeb7df21cfb913e9e7ada52",
+        "json": "80f99633e781cde368e33560f1d3b274c10b1b63f798eecb701ea2d1894f9cf6",
+        "pdf": "d8e70e117ef35a081c56a44dadbbcbd230eab64ba33dc8db573d0314dbe65d96"
+      },
+      "md": "archive/20261024T035643Z-0eef198f/NVO/NVO-intelligence-20261023.md",
+      "json": "archive/20261024T035643Z-0eef198f/NVO/NVO-intelligence-20261023.json",
+      "pdf": "archive/20261024T035643Z-0eef198f/NVO/NVO-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -5434,7 +5451,8 @@
       "NFLX",
       "NTR.TO",
       "NVAX",
-      "NVDA"
+      "NVDA",
+      "NVO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40060330616",
@@ -5472,7 +5490,8 @@
       "NFLX",
       "NTR.TO",
       "NVAX",
-      "NVDA"
+      "NVDA",
+      "NVO"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -5842,6 +5861,15 @@
         "comparables": 1.671,
         "earnings": 1.069,
         "edgar": 1.969,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "NVO": {
+        "quant": 1.167,
+        "ai_extract": 11.394,
+        "comparables": 2.271,
+        "earnings": 1.067,
+        "edgar": 2.52,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
