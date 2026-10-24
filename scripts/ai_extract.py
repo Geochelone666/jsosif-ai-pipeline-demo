@@ -512,7 +512,7 @@ def classification_schema(ticker):
 
 
 def call_gemini(items, ticker):
-    from ai_provider import provider
+    from ai_provider import provider, model
 
     def smaller_batches(size):
         combined = {'ticker': ticker, **{name: [] for name in (*KEYS, 'irrelevant')}}
