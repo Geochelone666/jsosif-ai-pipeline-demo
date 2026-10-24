@@ -245,7 +245,7 @@ story.append(styled_table(['Metric', 'Value'],
 story.append(p('Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq '
                'fallback if unavailable). 1Y return uses the last trading day on or '
                'before the one-year boundary. Risk metrics use historical returns and are '
-               'not forecasts; currency-conversion assumptions apply to cross-listing '
+               'not forecasts; asset and SPY returns are not FX-adjusted in cross-listing '
                'comparisons. Free cash flow yield is unavailable unless vendor financial '
                'and listing currencies match. See unavailable values as N/A.',
                'small'))
