@@ -638,6 +638,8 @@ def main():
         data = extract(items, ticker, call_gemini if enabled else None, as_of=as_of)
         if not enabled and items:
             data['error'] = os.environ.get('JSOSIF_AI_UNAVAILABLE_REASON', 'AI analysis is disabled for this run')
+    from news_source_audit import audit_rss
+    data['rss_audit'] = audit_rss(items, as_of)
     data['fetched_at'] = datetime.now(timezone.utc).isoformat()
     from ai_provider import model
     data['model'] = (model()
