@@ -1,0 +1,128 @@
+{
+  "ticker": "NVAX",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped",
+    "warning: trailingPE unavailable (N/A)",
+    "warning: P/E (trailing) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/NVAX/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/NVAX/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 9.699999809265137,
+    "Return 1D (%)": -2.9029025875599967,
+    "Return 1W (%)": -13.85435513238541,
+    "Return 1M (%)": -8.056875508080152,
+    "Return YTD (%)": 44.34523976359377,
+    "Return 1Y (%)": 16.028710617441398,
+    "Annualized volatility (%)": 70.5527020441631,
+    "Max drawdown (%)": -34.58444641504948,
+    "Sharpe (rf=0)": 0.5511703265816258,
+    "Beta vs SPY": 1.989861779535549,
+    "MA50": 10.279000005722047,
+    "Close vs MA50 (%)": -5.632845569944511,
+    "MA200": 9.239299969673157,
+    "Close vs MA200 (%)": 4.986306766791526,
+    "RSI (14, Wilder)": 40.33305740581954,
+    "MACD (12,26)": 0.09676951335276307,
+    "MACD signal (9)": 0.4210529713515916,
+    "MACD histogram": -0.3242834579988285,
+    "P/E (trailing)": null,
+    "P/B": -8.383751,
+    "EV/EBITDA": -11.6,
+    "Revenue growth (%)": -76.3
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 8.359999656677246,
+    "end_close": 9.699999809265137,
+    "manual_1Y_pct": 16.0287106174414,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T02:26:48.357214+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "NVAX",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792803292.7818959
+    }
+  ],
+  "metric_notes": {
+    "P/E (trailing)": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    }
+  },
+  "history_count": {
+    "NVAX": 267,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'NVAX'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}

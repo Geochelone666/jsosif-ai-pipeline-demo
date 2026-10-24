@@ -1,0 +1,268 @@
+{
+  "contract_version": "1.0",
+  "identity": {
+    "ticker": "NVAX",
+    "as_of": "2026-10-23",
+    "report_stamp": "20261023"
+  },
+  "quant": [
+    {
+      "metric": "Close",
+      "value": "9.7000",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1D (%)",
+      "value": "-2.9029",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1W (%)",
+      "value": "-13.8544",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1M (%)",
+      "value": "-8.0569",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return YTD (%)",
+      "value": "44.3452",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1Y (%)",
+      "value": "16.0287",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Annualized volatility (%)",
+      "value": "70.5527",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Beta vs SPY",
+      "value": "1.9899",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Max drawdown (%)",
+      "value": "-34.5844",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Sharpe (rf=0)",
+      "value": "0.5512",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/E (trailing)",
+      "value": null,
+      "availability": "missing",
+      "reason": "N/A: source data unavailable"
+    },
+    {
+      "metric": "P/B",
+      "value": "-8.38",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "EV/EBITDA",
+      "value": "-11.60",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Revenue growth (%)",
+      "value": "-76.30",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA50",
+      "value": "10.2790",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA50 (%)",
+      "value": "-5.6328",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA200",
+      "value": "9.2393",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA200 (%)",
+      "value": "4.9863",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "RSI (14, Wilder)",
+      "value": "40.3331",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD (12,26)",
+      "value": "0.0968",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD signal (9)",
+      "value": "0.4211",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD histogram",
+      "value": "-0.3243",
+      "availability": "ok",
+      "reason": null
+    }
+  ],
+  "ai_summary": {
+    "status": "Available",
+    "sections": {
+      "TAILWINDS": "No items in this run",
+      "HEADWINDS": "### Novavax Plunges 12% as Selloff Hits Vaccine Makers; Moderna Tumbles 10%, Pfizer Holds Steady\n- Summary: NVAX shares fell 12% amid a selloff in vaccine makers, reflecting market volatility.\n- Date: 2026-10-16 | Impact: high | Horizon: short | Confidence: 0.9\n- Sources: <https://news.google.com/rss/articles/CBMilwFBVV95cUxQejZ6ajZSdll5NkRSTXhYUkc4U1ZaUUVGYXJOQTBSQ1Z6QWFLcWc0dEItMnN4eFJrZzd1S2dIVDdkenZ6dVo1STJXNFFFVlRGOC1VdFhacmlMWW9uQm9URmN1V280c2M4c1F3Q09wWHJ4a2Z0SWlieUdWUE1jdERsUFIzbjNhYlR3SE1yOUkwRUpHckFpVjBZ?oc=5>",
+      "CATALYSTS": "No items in this run",
+      "RISKS": "No items in this run"
+    }
+  },
+  "freshness": {
+    "report_as_of": "2026-10-23",
+    "market_data_as_of": "2026-10-23",
+    "market_data_fetched_at": "2026-10-24T02:26:48.357214+00:00",
+    "ai_snapshot_as_of": "2026-10-23",
+    "snapshot_note": "report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.",
+    "assumptions_version": "1",
+    "assumptions_checked": {
+      "prices-adjusted-close": {
+        "status": "uncheckable",
+        "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+      },
+      "prices-lookback-start": {
+        "status": "ok",
+        "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+      },
+      "stooq-us-only": {
+        "status": "ok",
+        "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+      },
+      "prices-normalized-index": {
+        "status": "ok",
+        "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+      },
+      "prices-trading-calendar": {
+        "status": "uncheckable",
+        "detail": "Observation counts do not establish continuous trading-day coverage."
+      },
+      "prices-currency-usd": {
+        "status": "uncheckable",
+        "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+      },
+      "prices-minimum-history": {
+        "status": "ok",
+        "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+      },
+      "phase1-artifacts-exist": {
+        "status": "uncheckable",
+        "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+      },
+      "fred-shared-freshness": {
+        "status": "uncheckable",
+        "detail": "A report date does not imply current macro observations."
+      },
+      "supported-ticker": {
+        "status": "ok",
+        "detail": "Observed 'NVAX'. Unsupported symbols have no configured pipeline universe entry."
+      },
+      "report-as-of-date": {
+        "status": "ok",
+        "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+      }
+    },
+    "no_refresh_note": "Report date is not a guarantee of data freshness. No data is refreshed by email generation."
+  },
+  "disclaimer": "Not investment advice. For analyst research preparation only; verify source data and AI claims.",
+  "ticker": "NVAX",
+  "as_of": "2026-10-23",
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'NVAX'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  },
+  "source_status": {
+    "market": "ok",
+    "news": "ok"
+  },
+  "extraction_stats": {
+    "unique_headlines": 12,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 11
+  },
+  "quality": "ready"
+}
