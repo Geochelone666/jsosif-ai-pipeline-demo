@@ -4537,6 +4537,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/SHOP.TO/SHOP.TO-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/SHOP.TO/SHOP.TO-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/SHOP.TO/SHOP.TO-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/SPGI",
+      "ticker": "SPGI",
+      "generated_at": "2026-10-24T02:46:21.595452+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "bb63fd52d26a915f5daa8df80a5174804e51c81519401b06d3463f2428674b06",
+        "json": "75d35e22eaafb14bc6ff748cc33b85a3cc28ce3f7ff8a11cf3670ec70c9e59de",
+        "pdf": "93ec858790e0368ed70998a607f665a44a14ba33e6371a9051961eb40d158e73"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/SPGI/SPGI-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/SPGI/SPGI-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/SPGI/SPGI-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4692,7 +4709,8 @@
       "PEP",
       "PFE",
       "SCHW",
-      "SHOP.TO"
+      "SHOP.TO",
+      "SPGI"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -5119,6 +5137,15 @@
         "comparables": 1.87,
         "earnings": 1.318,
         "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
+      },
+      "SPGI": {
+        "quant": 1.117,
+        "ai_extract": 124.059,
+        "comparables": 1.819,
+        "earnings": 1.27,
+        "edgar": 2.069,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
       }
