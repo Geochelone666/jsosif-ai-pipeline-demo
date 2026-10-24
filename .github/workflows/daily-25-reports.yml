@@ -155,6 +155,14 @@ jobs:
               print('Interrupted:', attempt['interruption_reason'])
           if attempt.get('pending_tickers'):
               print('Recovery: dispatch this workflow with resume=true to retry only outstanding reports.')
+          plan = read_json('../report-store/index.json', {}).get('refresh_plan', {})
+          if plan.get('provider') == 'groq':
+              print('Groq model:', plan['model'])
+              print('Groq UTC budget day:', plan['quota_day_utc'])
+              print('Groq local requests at preflight:', str(plan['used_requests']) + '/' + str(plan['request_cap']))
+              print('Groq local tokens at preflight:', str(plan['used_tokens']) + '/' + str(plan['token_cap']))
+              print('Groq token headroom at preflight:', plan['remaining_tokens'])
+              print('Note: local preflight is not a live provider quota guarantee.')
           PY
       - name: Remove private configuration
         if: always()
