@@ -41,7 +41,7 @@ def freeze(path, quant, ai):
         market_date = None
     close = number(quant.get('metrics', {}).get('Close'))
     evidence = news_evidence(ai)
-    payload['source_evidence'] = {'news': evidence,
+    payload['source_evidence'] = {'news': {**evidence, 'rss_audit': ai.get('rss_audit', {})},
                                   'market': {'observed_as_of': quant.get('as_of'),
                                              'history_count': quant.get('history_count', {})}}
     payload['source_status'] = {
