@@ -4741,6 +4741,23 @@
       "md": "archive/20261024T035643Z-0eef198f/AMD/AMD-intelligence-20261023.md",
       "json": "archive/20261024T035643Z-0eef198f/AMD/AMD-intelligence-20261023.json",
       "pdf": "archive/20261024T035643Z-0eef198f/AMD/AMD-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T035643Z-0eef198f/AMTM",
+      "ticker": "AMTM",
+      "generated_at": "2026-10-24T03:57:56.345924+00:00",
+      "as_of": "2026-10-23",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "b0e761659f9eadb2b07923adc98975596f4e8e4496bf474cde7d3cafe5836234",
+        "json": "934ad837058cb38ad3d5d81eee0b601dd1c20a19006b7f32781856242fd6123e",
+        "pdf": "2a8d6cf86315397db51debb1bf049f74da9bdf5fdbc7e5ed5a94861a66081181"
+      },
+      "md": "archive/20261024T035643Z-0eef198f/AMTM/AMTM-intelligence-20261023.md",
+      "json": "archive/20261024T035643Z-0eef198f/AMTM/AMTM-intelligence-20261023.json",
+      "pdf": "archive/20261024T035643Z-0eef198f/AMTM/AMTM-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4858,14 +4875,16 @@
     "successful_tickers": [
       "AAPL",
       "ACN",
-      "AMD"
+      "AMD",
+      "AMTM"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40060330616",
     "degraded_tickers": [
       "AAPL",
       "ACN",
-      "AMD"
+      "AMD",
+      "AMTM"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -4947,6 +4966,15 @@
         "comparables": 1.868,
         "earnings": 1.116,
         "edgar": 1.968,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "AMTM": {
+        "quant": 0.966,
+        "ai_extract": 11.385,
+        "comparables": 1.918,
+        "earnings": 0.966,
+        "edgar": 2.669,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
