@@ -4945,6 +4945,23 @@
       "md": "archive/20261024T035643Z-0eef198f/CSU.TO/CSU.TO-intelligence-20261023.md",
       "json": "archive/20261024T035643Z-0eef198f/CSU.TO/CSU.TO-intelligence-20261023.json",
       "pdf": "archive/20261024T035643Z-0eef198f/CSU.TO/CSU.TO-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T035643Z-0eef198f/DIS",
+      "ticker": "DIS",
+      "generated_at": "2026-10-24T04:01:56.278563+00:00",
+      "as_of": "2026-10-23",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "95af12a61dfe791b95f4022acd3451e84ce729947c9237ff4f555af35241e0e0",
+        "json": "2fc6bdac727943a7d83618652ba33d2aebf6759c409126c861fb16f3f591ee68",
+        "pdf": "cf2a229697cd19672a534ed68fe349a9ec3322d13041921b044285c90f5266e4"
+      },
+      "md": "archive/20261024T035643Z-0eef198f/DIS/DIS-intelligence-20261023.md",
+      "json": "archive/20261024T035643Z-0eef198f/DIS/DIS-intelligence-20261023.json",
+      "pdf": "archive/20261024T035643Z-0eef198f/DIS/DIS-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -5074,7 +5091,8 @@
       "COST",
       "CP.TO",
       "CSCO",
-      "CSU.TO"
+      "CSU.TO",
+      "DIS"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40060330616",
@@ -5093,7 +5111,8 @@
       "COST",
       "CP.TO",
       "CSCO",
-      "CSU.TO"
+      "CSU.TO",
+      "DIS"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -5283,6 +5302,15 @@
         "comparables": 1.969,
         "earnings": 1.267,
         "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
+      },
+      "DIS": {
+        "quant": 1.069,
+        "ai_extract": 12.796,
+        "comparables": 2.021,
+        "earnings": 1.318,
+        "edgar": 2.119,
         "regenerate_report": 0.114,
         "report_pdf": 0.164
       }
