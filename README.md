@@ -270,3 +270,8 @@ version's quantitative table, research sections and freshness evidence inline.
 The browser checks for a new publication every minute by default; readers can
 choose five minutes or manual refresh. Polling does not initiate API calls or
 convert daily research snapshots into streaming quotes.
+
+For failure diagnosis, strict coverage checks and safe recovery, see the
+[recovery runbook](docs/RECOVERY_RUNBOOK.md). Public health counts distinguish
+ready, degraded, missing and pending current-date evidence; deployment, backups
+and delivery still require their own direct verification.
