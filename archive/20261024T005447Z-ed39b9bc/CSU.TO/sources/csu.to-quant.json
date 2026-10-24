@@ -1,0 +1,121 @@
+{
+  "ticker": "CSU.TO",
+  "errors": [
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/CSU.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/CSU.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 3395.0,
+    "Return 1D (%)": -0.398116162708273,
+    "Return 1W (%)": 6.566637829289634,
+    "Return 1M (%)": 21.88904386847512,
+    "Return YTD (%)": 2.998735136258568,
+    "Return 1Y (%)": -8.747542646299744,
+    "Annualized volatility (%)": 45.13041358581714,
+    "Max drawdown (%)": -41.233438922222064,
+    "Sharpe (rf=0)": 0.02077584490844241,
+    "Beta vs SPY": 0.14157173653294408,
+    "MA50": 3008.03087890625,
+    "Close vs MA50 (%)": 12.864532867909118,
+    "MA200": 2765.563836669922,
+    "Close vs MA200 (%)": 22.75977704741745,
+    "RSI (14, Wilder)": 70.70639937698087,
+    "MACD (12,26)": 108.41736085566345,
+    "MACD signal (9)": 67.28077275294692,
+    "MACD histogram": 41.13658810271653,
+    "P/E (trailing)": 54.181297,
+    "P/B": 12.401566,
+    "EV/EBITDA": 32.625,
+    "Revenue growth (%)": 17.299999999999997
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 3720.44775390625,
+    "end_close": 3395.0,
+    "manual_1Y_pct": -8.74754264629974,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T01:36:34.060630+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "CSU.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792803292.7818959
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "CSU.TO": 266,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'CSU.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
