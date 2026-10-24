@@ -1,0 +1,268 @@
+{
+  "contract_version": "1.0",
+  "identity": {
+    "ticker": "J",
+    "as_of": "2026-10-23",
+    "report_stamp": "20261023"
+  },
+  "quant": [
+    {
+      "metric": "Close",
+      "value": "145.0600",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1D (%)",
+      "value": "-0.8205",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1W (%)",
+      "value": "2.8211",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1M (%)",
+      "value": "2.7920",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return YTD (%)",
+      "value": "10.4124",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Return 1Y (%)",
+      "value": "-8.8104",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Annualized volatility (%)",
+      "value": "32.6217",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Beta vs SPY",
+      "value": "0.7524",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Max drawdown (%)",
+      "value": "-33.0387",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Sharpe (rf=0)",
+      "value": "-0.1195",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/E (trailing)",
+      "value": "48.19",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "P/B",
+      "value": "5.20",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "EV/EBITDA",
+      "value": "18.78",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Revenue growth (%)",
+      "value": "34.50",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA50",
+      "value": "143.1238",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA50 (%)",
+      "value": "1.3528",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MA200",
+      "value": "133.0413",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "Close vs MA200 (%)",
+      "value": "9.0338",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "RSI (14, Wilder)",
+      "value": "58.4617",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD (12,26)",
+      "value": "0.5556",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD signal (9)",
+      "value": "-0.2437",
+      "availability": "ok",
+      "reason": null
+    },
+    {
+      "metric": "MACD histogram",
+      "value": "0.7993",
+      "availability": "ok",
+      "reason": null
+    }
+  ],
+  "ai_summary": {
+    "status": "Available",
+    "sections": {
+      "TAILWINDS": "No items in this run",
+      "HEADWINDS": "No items in this run",
+      "CATALYSTS": "### Jacobs Solutions (NYSE:J) Given New $188.00 Price Target at Citigroup\n- Summary: Jacobs Solutions (NYSE:J) Given New $188.00 Price Target at Citigroup\n- Date: 2026-10-23 | Impact: medium | Horizon: short | Confidence: 0.8\n- Sources: <https://news.google.com/rss/articles/CBMixgFBVV95cUxNVWt3SXc0OUxPa0gwSUhvTC1yamtETGZZVkxLczZHRUxYbjA1UFdyNHdzbGZvM2VvTy1jaU5jeldfZ2xuT3Q0Mk1IRWJUUTZHUGZXLXZLOS1EeTNsOEt4dWhrYkpHRkhiY1FQbDBNdXZENjJuQzBZcUpnRGQ0WGlINHpvS2tYWkdoUzdtQktNakswQ2JaZTVwSVBEdUdUTFMydWFhemxLaTMtVFdjU0xaWU5iWDU2RlZmb3FlaVJvcm9hOVQwX3c?oc=5>",
+      "RISKS": "No items in this run"
+    }
+  },
+  "freshness": {
+    "report_as_of": "2026-10-23",
+    "market_data_as_of": "2026-10-23",
+    "market_data_fetched_at": "2026-10-24T01:55:37.852556+00:00",
+    "ai_snapshot_as_of": "2026-10-23",
+    "snapshot_note": "report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.",
+    "assumptions_version": "1",
+    "assumptions_checked": {
+      "prices-adjusted-close": {
+        "status": "uncheckable",
+        "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+      },
+      "prices-lookback-start": {
+        "status": "ok",
+        "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+      },
+      "stooq-us-only": {
+        "status": "ok",
+        "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+      },
+      "prices-normalized-index": {
+        "status": "ok",
+        "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+      },
+      "prices-trading-calendar": {
+        "status": "uncheckable",
+        "detail": "Observation counts do not establish continuous trading-day coverage."
+      },
+      "prices-currency-usd": {
+        "status": "uncheckable",
+        "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+      },
+      "prices-minimum-history": {
+        "status": "ok",
+        "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+      },
+      "phase1-artifacts-exist": {
+        "status": "uncheckable",
+        "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+      },
+      "fred-shared-freshness": {
+        "status": "uncheckable",
+        "detail": "A report date does not imply current macro observations."
+      },
+      "supported-ticker": {
+        "status": "ok",
+        "detail": "Observed 'J'. Unsupported symbols have no configured pipeline universe entry."
+      },
+      "report-as-of-date": {
+        "status": "ok",
+        "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+      }
+    },
+    "no_refresh_note": "Report date is not a guarantee of data freshness. No data is refreshed by email generation."
+  },
+  "disclaimer": "Not investment advice. For analyst research preparation only; verify source data and AI claims.",
+  "ticker": "J",
+  "as_of": "2026-10-23",
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'J'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  },
+  "source_status": {
+    "market": "ok",
+    "news": "ok"
+  },
+  "extraction_stats": {
+    "unique_headlines": 5,
+    "rule": 1,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 4
+  },
+  "quality": "ready"
+}
