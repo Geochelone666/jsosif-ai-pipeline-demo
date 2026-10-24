@@ -126,6 +126,7 @@ report = f"""# {TICKER} Intelligence Report
 - AI status: **{ai_status}**
 - AI model (configured): **{ai.get('model', 'legacy snapshot / rules')}** (RSS headlines; rule and AI item counts: {ai.get('extraction_stats', {})})
 - AI model(s) actually used: **{', '.join(ai.get('models_used', [])) or 'N/A (no successful AI classification call)'}**
+- RSS source audit (observed headline metadata, not article fact-checking): {ai.get('rss_audit', {})}
 
 {quant_table}
 Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
