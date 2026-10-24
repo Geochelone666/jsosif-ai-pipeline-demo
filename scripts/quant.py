@@ -7,6 +7,7 @@ from price_fetch import fetch_symbol_prices, stooq_url
 from assumptions import VERSION, PRICE_START, AssumptionViolation, check_all, checked_mapping
 from boundaries import evaluate_metrics, available, undefined
 from risk_extensions import compute_extended_risk
+from fundamental_context import compute_fundamental_context
 
 
 def compute_metrics(prices: pd.Series, spy: pd.Series | None) -> dict:
@@ -83,6 +84,18 @@ def main():
         m[label] = item.value
         if item.status != 'ok':
             result['metric_notes'][label] = {'status': item.status, 'reason': item.reason}
+    for label, item in compute_fundamental_context(info).items():
+        m[label] = item.value
+        if item.status != 'ok':
+            result['metric_notes'][label] = {'status': item.status, 'reason': item.reason}
+    result['fundamental_methodology'] = {
+        'source': 'yfinance company info snapshot; vendor fundamental dates may differ from market close',
+        'margin_and_roe': 'provider fractional ratios multiplied by 100',
+        'forward_pe': 'provider estimate, not realized earnings',
+        'fcf_yield': 'freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match',
+        'listing_currency': info.get('currency'),
+        'financial_currency': info.get('financialCurrency'),
+    }
     for key in ['marketCap', 'trailingPE', 'priceToBook', 'enterpriseToEbitda', 'revenueGrowth']:
         if number(info.get(key)) is None:
             errors.append(f'warning: {key} unavailable (N/A)')
