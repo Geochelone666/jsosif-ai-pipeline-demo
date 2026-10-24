@@ -5166,6 +5166,23 @@
       "md": "archive/20261024T035643Z-0eef198f/META/META-intelligence-20261023.md",
       "json": "archive/20261024T035643Z-0eef198f/META/META-intelligence-20261023.json",
       "pdf": "archive/20261024T035643Z-0eef198f/META/META-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T035643Z-0eef198f/MG.TO",
+      "ticker": "MG.TO",
+      "generated_at": "2026-10-24T04:05:56.481459+00:00",
+      "as_of": "2026-10-23",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "ff8fb0c068c3bbff15ed2f712d30795020275091619e3d113ac48f07ec2fa78f",
+        "json": "ce67c970a71bc8028deb621d2314c88f7a20ea9696733a77ebab6e419466bfdd",
+        "pdf": "7edf0d2cf6a8c96b1378d57c945dfcb05ac6c8db125ebbed904490cc0dec84c3"
+      },
+      "md": "archive/20261024T035643Z-0eef198f/MG.TO/MG.TO-intelligence-20261023.md",
+      "json": "archive/20261024T035643Z-0eef198f/MG.TO/MG.TO-intelligence-20261023.json",
+      "pdf": "archive/20261024T035643Z-0eef198f/MG.TO/MG.TO-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -5308,7 +5325,8 @@
       "MC.PA",
       "MCK",
       "MCO",
-      "META"
+      "META",
+      "MG.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40060330616",
@@ -5339,7 +5357,8 @@
       "MC.PA",
       "MCK",
       "MCO",
-      "META"
+      "META",
+      "MG.TO"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -5648,6 +5667,15 @@
         "edgar": 1.869,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
+      },
+      "MG.TO": {
+        "quant": 1.016,
+        "ai_extract": 11.341,
+        "comparables": 1.969,
+        "earnings": 1.117,
+        "edgar": 2.62,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.164
       }
     },
     "current_ticker": "MG.TO",

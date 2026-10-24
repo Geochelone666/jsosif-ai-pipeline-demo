@@ -1,0 +1,119 @@
+{
+  "ticker": "MG.TO",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/MG.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/MG.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 89.48999786376953,
+    "Return 1D (%)": -1.1706296546256212,
+    "Return 1W (%)": -3.970387896451788,
+    "Return 1M (%)": -0.5777183203194536,
+    "Return YTD (%)": 25.108585490661795,
+    "Return 1Y (%)": 43.397850529775674,
+    "Annualized volatility (%)": 37.132623350702296,
+    "Max drawdown (%)": -22.790427642691103,
+    "Sharpe (rf=0)": 1.1545874282743371,
+    "Beta vs SPY": 1.1624568907873665,
+    "MA50": 92.17141998291015,
+    "Close vs MA50 (%)": -2.909168720236477,
+    "MA200": 85.93247501373291,
+    "Close vs MA200 (%)": 4.139905023645696,
+    "RSI (14, Wilder)": 43.93747820319751,
+    "MACD (12,26)": -0.19516120503277534,
+    "MACD signal (9)": 0.03563498545362252,
+    "MACD histogram": -0.23079619048639788,
+    "P/E (trailing)": 23.800531,
+    "P/B": 1.4488662,
+    "EV/EBITDA": 6.771,
+    "Revenue growth (%)": 3.3000000000000003
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 62.40679168701172,
+    "end_close": 89.48999786376953,
+    "manual_1Y_pct": 43.39785052977567,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T04:05:39.026151+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "MG.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1792814209.393851
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "MG.TO": 266,
+    "SPY": 267
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'MG.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
