@@ -1,0 +1,122 @@
+{
+  "ticker": "ACN",
+  "errors": [
+    "warning: ACN invalid/missing prices skipped",
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/ACN/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/ACN/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 258.739990234375,
+    "Return 1D (%)": 7.691665757951749,
+    "Return 1W (%)": 15.036454001758571,
+    "Return 1M (%)": 41.96365945232825,
+    "Return YTD (%)": -0.7863703298729874,
+    "Return 1Y (%)": 6.843596926655859,
+    "Annualized volatility (%)": 49.219892373018794,
+    "Max drawdown (%)": -56.506794425181894,
+    "Sharpe (rf=0)": 0.38211016437393286,
+    "Beta vs SPY": 0.06230513477816276,
+    "MA50": 193.1512420654297,
+    "Close vs MA50 (%)": 33.9571972033849,
+    "MA200": 188.87639373779297,
+    "Close vs MA200 (%)": 36.98905676564852,
+    "RSI (14, Wilder)": 82.25839517480443,
+    "MACD (12,26)": 16.140264592530713,
+    "MACD signal (9)": 11.498700546519755,
+    "MACD histogram": 4.6415640460109575,
+    "P/E (trailing)": 18.390118,
+    "P/B": 4.704473,
+    "EV/EBITDA": 11.145,
+    "Revenue growth (%)": 6.2
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 242.16705322265625,
+    "end_close": 258.739990234375,
+    "manual_1Y_pct": 6.843596926655854,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T00:58:04.796138+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "ACN",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: ACN invalid/missing prices skipped"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped",
+      "cache_hit": true,
+      "observed_at": 1792803292.7818959
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "ACN": 266,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'ACN'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
