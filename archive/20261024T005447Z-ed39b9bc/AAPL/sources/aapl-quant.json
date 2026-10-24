@@ -1,0 +1,120 @@
+{
+  "ticker": "AAPL",
+  "errors": [
+    "warning: AAPL invalid/missing prices skipped",
+    "warning: SPY invalid/missing prices skipped"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/AAPL/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/AAPL/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 348.2200012207031,
+    "Return 1D (%)": 1.2296901382060632,
+    "Return 1W (%)": 1.818713807223138,
+    "Return 1M (%)": 2.493009925151757,
+    "Return YTD (%)": 28.43664081306365,
+    "Return 1Y (%)": 35.23167745986417,
+    "Annualized volatility (%)": 24.063576244430177,
+    "Max drawdown (%)": -13.798523953754415,
+    "Sharpe (rf=0)": 1.3804516923093082,
+    "Beta vs SPY": 0.5782373307793608,
+    "MA50": 328.6173999023438,
+    "Close vs MA50 (%)": 5.965174492946734,
+    "MA200": 293.667477722168,
+    "Close vs MA200 (%)": 18.576290409027195,
+    "RSI (14, Wilder)": 64.76079227779653,
+    "MACD (12,26)": 4.196411218031869,
+    "MACD signal (9)": 3.9817651648465566,
+    "MACD histogram": 0.2146460531853127,
+    "P/E (trailing)": 39.87672,
+    "P/B": 47.245243,
+    "EV/EBITDA": 30.345,
+    "Revenue growth (%)": 16.400000000000002
+  },
+  "as_of": "2026-10-22",
+  "verification": {
+    "base_date": "2025-10-22",
+    "base_close": 257.49884033203125,
+    "end_close": 348.2200012207031,
+    "manual_1Y_pct": 35.231677459864166,
+    "passed": true
+  },
+  "fetched_at": "2026-10-24T00:54:53.081908+00:00",
+  "requested_as_of": "2026-10-23",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "AAPL",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: AAPL invalid/missing prices skipped"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully; warning: SPY invalid/missing prices skipped"
+    }
+  ],
+  "metric_notes": {},
+  "history_count": {
+    "AAPL": 266,
+    "SPY": 266
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 266 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 266. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'AAPL'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-23'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}

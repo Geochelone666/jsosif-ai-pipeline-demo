@@ -3840,6 +3840,23 @@
       "md": "archive/20261023T010737Z-6309c248/XYL/XYL-intelligence-20261022.md",
       "json": "archive/20261023T010737Z-6309c248/XYL/XYL-intelligence-20261022.json",
       "pdf": "archive/20261023T010737Z-6309c248/XYL/XYL-intelligence-20261022.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/AAPL",
+      "ticker": "AAPL",
+      "generated_at": "2026-10-24T00:58:01.286420+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-22",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "c3b783e272214b1ee3020934c2c9f997c9daeeffa202e2d86422e2743f2ddc1f",
+        "json": "3ad2da1552b83105f378acda7e382133890964f1ace9c2c8d8a6f15e48804abf",
+        "pdf": "0248315336b22a9a35fd435b4e1ad6192fdc315be4b1280a52ff8b1c9791682f"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/AAPL/AAPL-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/AAPL/AAPL-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/AAPL/AAPL-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -3954,7 +3971,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "AAPL"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
     "degraded_tickers": [],
@@ -4013,7 +4032,17 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "AAPL": {
+        "quant": 2.069,
+        "ai_extract": 182.687,
+        "comparables": 2.019,
+        "earnings": 1.117,
+        "edgar": 1.869,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
+      }
+    },
     "current_ticker": "AAPL",
     "last_progress_at": "2026-10-24T00:54:49.908199+00:00"
   },
