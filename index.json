@@ -4027,6 +4027,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/CNQ.TO/CNQ.TO-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/CNQ.TO/CNQ.TO-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/CNQ.TO/CNQ.TO-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/COST",
+      "ticker": "COST",
+      "generated_at": "2026-10-24T01:30:16.967336+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "843e9e2e546ab627a469f63a0f24234ee1fa2c14cf88ecb34b2fbb18465b3d1b",
+        "json": "79a3b4dc8d03379fc956ae34f7c5233c7a6bf33fd34e51648071010a76c9ad5d",
+        "pdf": "14d004f987099c16c1e1ec3729fc7d0d3b94f3c8ddefcfa4b7ceb5c0205dd905"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/COST/COST-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/COST/COST-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/COST/COST-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4152,7 +4169,8 @@
       "BMO.TO",
       "BRK-B",
       "CAT",
-      "CNQ.TO"
+      "CNQ.TO",
+      "COST"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -4309,6 +4327,15 @@
         "comparables": 1.97,
         "earnings": 1.117,
         "edgar": 2.67,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
+      },
+      "COST": {
+        "quant": 1.167,
+        "ai_extract": 229.555,
+        "comparables": 1.87,
+        "earnings": 1.268,
+        "edgar": 2.22,
         "regenerate_report": 0.114,
         "report_pdf": 0.214
       }
