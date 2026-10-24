@@ -87,6 +87,11 @@ quant_table = f"""## QUANTITATIVE
 | P/B | {fmt(q.get('P/B'), 2)} |
 | EV/EBITDA | {fmt(q.get('EV/EBITDA'), 2)} |
 | Revenue growth (%) | {fmt(q.get('Revenue growth (%)'), 2)} |
+| Forward P/E (estimate) | {fmt(q.get('Forward P/E (estimate)'), 2)} |
+| Gross margin (%) | {fmt(q.get('Gross margin (%)'), 2)} |
+| Operating margin (%) | {fmt(q.get('Operating margin (%)'), 2)} |
+| Return on equity (%) | {fmt(q.get('Return on equity (%)'), 2)} |
+| Free cash flow yield (%) | {fmt(q.get('Free cash flow yield (%)'), 2)} |
 | MA50 | {fmt(q.get('MA50'))} |
 | Close vs MA50 (%) | {fmt(q.get('Close vs MA50 (%)'))} |
 | MA200 | {fmt(q.get('MA200'))} |
@@ -124,6 +129,7 @@ report = f"""# {TICKER} Intelligence Report
 {quant_table}
 Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
 Market data sample: {quant.get('history_count', {})}.
+Fundamental context (yfinance company info snapshot): forward P/E is an estimate; gross/operating margins and return on equity are provider-reported fractional ratios converted to percentages. Free cash flow yield is computed only when financial and listing currencies are explicitly equal. Vendor fundamentals can be stale and may use different fiscal periods.
 Additional risk measures use a trailing calendar year of observed daily adjusted closes: downside deviation and Sortino use a zero target and sqrt(252) scaling (minimum 20 daily returns); historical one-day 95% VaR/ES use the empirical 5th percentile and tail average (minimum 100 daily returns); correlation and tracking error align asset/SPY return end dates (minimum 20 pairs). Values are historical, not forecasts. SPY comparisons are in each listing's native currency, without FX conversion.
 
 {build_interpretation_section(q)}{section('TAILWINDS', ai['tailwinds'])}

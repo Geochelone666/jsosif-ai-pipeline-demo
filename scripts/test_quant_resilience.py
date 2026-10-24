@@ -15,7 +15,10 @@ import data_utils
 
 SCRIPT = Path(__file__).with_name('quant.py')
 INFO = {'marketCap': 1000000, 'trailingPE': 20, 'priceToBook': 3,
-        'enterpriseToEbitda': 10, 'revenueGrowth': 0.1}
+        'enterpriseToEbitda': 10, 'revenueGrowth': 0.1,
+        'forwardPE': 18, 'grossMargins': .4, 'operatingMargins': .3,
+        'returnOnEquity': .2, 'freeCashflow': 10000,
+        'currency': 'USD', 'financialCurrency': 'USD'}
 RISK_METRICS = ['Annualized volatility (%)', 'Sharpe (rf=0)', 'Max drawdown (%)']
 
 
