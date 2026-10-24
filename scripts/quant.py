@@ -6,6 +6,7 @@ from data_utils import DATA, ticker_arg, ticker_file, number, as_of_date
 from price_fetch import fetch_symbol_prices, stooq_url
 from assumptions import VERSION, PRICE_START, AssumptionViolation, check_all, checked_mapping
 from boundaries import evaluate_metrics, available, undefined
+from risk_extensions import compute_extended_risk
 
 
 def compute_metrics(prices: pd.Series, spy: pd.Series | None) -> dict:
@@ -50,6 +51,17 @@ def main():
     result['price_status'] = price_status
     c = series.get(TICKER, pd.Series(dtype=float))
     boundaries = compute_metrics(c, series.get('SPY'))
+    boundaries.update(compute_extended_risk(c, series.get('SPY')))
+    result['risk_methodology'] = {
+        'window': 'trailing calendar year through latest observed close',
+        'annualization_days': 252,
+        'daily_return_observations': max(0, len(c.loc[c.index >= c.index[-1] - pd.DateOffset(years=1)]) - 1) if len(c) else 0,
+        'tail_method': 'historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile',
+        'tail_minimum_daily_returns': 100,
+        'benchmark': 'SPY; intersect independently computed daily returns by end date; listing currencies are not converted',
+        'benchmark_minimum_aligned_returns': 20,
+        'risk_free_rate': 0,
+    }
     m = result['metrics'] = {label: item.value for label, item in boundaries.items()}
     result['metric_notes'] = {label: {'status': item.status, 'reason': item.reason}
                               for label, item in boundaries.items()
