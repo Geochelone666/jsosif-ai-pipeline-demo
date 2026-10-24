@@ -12,10 +12,12 @@ from urllib.parse import urlsplit
 def audit_rss(items, as_of):
     cutoff = date.fromisoformat(as_of)
     distinct = {}
+    valid_items = 0
     for item in items:
         if isinstance(item, dict):
             headline = item.get('headline')
             if isinstance(headline, str) and headline.strip():
+                valid_items += 1
                 distinct.setdefault(headline, item)
     publishers = Counter()
     dates = []
@@ -54,7 +56,8 @@ def audit_rss(items, as_of):
     return {
         'raw_items': len(items),
         'unique_headlines': n,
-        'duplicates_excluded': len(items) - n,
+        'duplicates_excluded': valid_items - n,
+        'invalid_headline_items': len(items) - valid_items,
         'unique_publishers': len(publishers),
         'unknown_publisher_headlines': unknown_publishers,
         'largest_publisher_share_pct': round(dominant / known * 100, 2) if known else None,
