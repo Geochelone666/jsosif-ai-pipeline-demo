@@ -53,6 +53,39 @@ def report_summary(snapshot):
             'ai_status': snapshot['ai_summary']['status']}
 
 
+def health_summary(index):
+    """Count verified current versions, rather than trusting progress counters.
+
+    Failed is a run outcome and can overlap missing. Pending includes missing or
+    degraded evidence, even when an interrupted writer omitted its recovery list.
+    Publication is a local build timestamp, not proof of a successful deployment.
+    """
+    attempt = index.get('last_attempt', {})
+    expected = set(attempt.get('expected_tickers', []))
+    current = {}
+    for entry in index['reports']:
+        ticker = entry['ticker']
+        if (ticker in expected and entry['as_of'] == attempt.get('business_date')
+                and entry['quality'] != 'historical'):
+            if ticker not in current or entry['generated_at'] > current[ticker]['generated_at']:
+                current[ticker] = entry
+    degraded = {ticker for ticker, entry in current.items()
+                if entry['quality'] != 'ready' or entry.get('advisory')}
+    missing = expected - current.keys()
+    failed = expected & set(attempt.get('failed_tickers', []))
+    pending = missing | degraded | failed | (expected & set(attempt.get('pending_tickers', [])))
+    return {
+        'version': index['publication']['version'],
+        'published_at': index['publication']['published_at'],
+        'business_date': attempt.get('business_date'),
+        'status': attempt.get('status', 'historical_only'),
+        'last_attempt_at': attempt.get('at'), 'finished_at': attempt.get('finished_at'),
+        'expected': len(expected), 'updated': len(current),
+        'ready': len(current) - len(degraded), 'degraded': len(degraded),
+        'failed': len(failed), 'missing': len(missing), 'pending': len(pending),
+    }
+
+
 def build(store, output, template=None):
     if Path(output).is_symlink():
         raise ValueError('Site output must not be a symlink')
@@ -97,17 +130,7 @@ def build(store, output, template=None):
                 shutil.copy2(source, target)
         # Delivery/quota state, member config and credentials never enter the site.
         write_json(stage / 'index.json', index)
-        attempt = index.get('last_attempt', {})
-        write_json(stage / 'health.json', {
-            'version': index['publication']['version'],
-            'published_at': index['publication']['published_at'],
-            'business_date': attempt.get('business_date'),
-            'status': attempt.get('status', 'historical_only'),
-            'expected': len(attempt.get('expected_tickers', [])),
-            'updated': len(attempt.get('successful_tickers', [])),
-            'degraded': len(attempt.get('degraded_tickers', [])),
-            'failed': len(attempt.get('failed_tickers', [])),
-        })
+        write_json(stage / 'health.json', health_summary(index))
         (stage / '.nojekyll').touch()
         (stage / '.jsosif-site-build').touch()
         backup = Path(temporary) / 'previous'

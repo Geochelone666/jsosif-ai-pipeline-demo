@@ -54,6 +54,8 @@ def test_correction_preserves_history_and_blocks_wrong_issuer_delivery(tmp_path,
     output = tmp_path / 'site'
     build(store, output)
     assert read_json(output / 'index.json')['reports'][0]['advisory']
+    health = read_json(output / 'health.json')
+    assert (health['ready'], health['degraded'], health['pending']) == (0, 1, 1)
     assert 'advisory' not in read_json(store / 'index.json')['reports'][0]
     monkeypatch.setattr(check_site, '_fetch', lambda base, relative: (output / relative).read_bytes())
     with pytest.raises(check_site.SiteError, match='incomplete source evidence'):
@@ -67,6 +69,8 @@ def test_correction_preserves_history_and_blocks_wrong_issuer_delivery(tmp_path,
     assert deliver(config, store, now=now)['prepared'] == 1
     build(store, output)
     published = read_json(output / 'index.json')['reports']
+    health = read_json(output / 'health.json')
+    assert (health['updated'], health['ready'], health['degraded'], health['pending']) == (1, 1, 0, 0)
     assert published[0]['advisory'] and 'advisory' not in published[1]
     assert check_site.check('https://example.com', business_date='2026-10-19', require_ready=True)['status'] == 'verified'
     assert digest(store / old['pdf']) == old['sha256']['pdf']
