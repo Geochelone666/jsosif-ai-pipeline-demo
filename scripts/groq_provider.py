@@ -111,9 +111,9 @@ def _reserve(model, tokens, sleep):
     next_day = datetime.fromtimestamp(now + delay, timezone.utc).date().isoformat()
     pending = ledger.get('groq:' + model + ':' + next_day, {})
     if pending.get('requests', 0) >= caps['RPD']:
-        raise GroqError('Groq application daily request budget exhausted')
+        raise GroqError('Groq application daily budget exhausted (requests)')
     if pending.get('tokens', 0) + tokens > caps['TPD']:
-        raise GroqError('Groq application daily token budget exhausted')
+        raise GroqError('Groq application daily budget exhausted (tokens)')
     if delay:
         sleep(delay)
     at = max(at, time.time())
@@ -121,9 +121,9 @@ def _reserve(model, tokens, sleep):
     key = 'groq:' + model + ':' + day
     state = ledger.setdefault(key, {'requests': 0, 'tokens': 0})
     if state['requests'] >= caps['RPD']:
-        raise GroqError('Groq application daily request budget exhausted')
+        raise GroqError('Groq application daily budget exhausted (requests)')
     if state['tokens'] + tokens > caps['TPD']:
-        raise GroqError('Groq application daily token budget exhausted')
+        raise GroqError('Groq application daily budget exhausted (tokens)')
     state['requests'] += 1
     state['tokens'] += tokens
     event = {'at': at, 'tokens': tokens}
