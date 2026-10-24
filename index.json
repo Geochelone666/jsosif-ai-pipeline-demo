@@ -4384,6 +4384,23 @@
       "md": "archive/20261024T005447Z-ed39b9bc/NFLX/NFLX-intelligence-20261023.md",
       "json": "archive/20261024T005447Z-ed39b9bc/NFLX/NFLX-intelligence-20261023.json",
       "pdf": "archive/20261024T005447Z-ed39b9bc/NFLX/NFLX-intelligence-20261023.pdf"
+    },
+    {
+      "report_id": "20261024T005447Z-ed39b9bc/NTR.TO",
+      "ticker": "NTR.TO",
+      "generated_at": "2026-10-24T02:26:44.971271+00:00",
+      "as_of": "2026-10-23",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-23",
+      "sha256": {
+        "md": "691dd30439dfba2b1332fa8caaa0ca1894c1e6913803b0392bb2b21f95799f9b",
+        "json": "3a5f4349ce7b62cfaad592510abc0f98b98112bf3d2a266210c0ec7eac58abbf",
+        "pdf": "4749ad7744a5613f8153a9144d469648ef82308df47f17d58d7d3a7189caac46"
+      },
+      "md": "archive/20261024T005447Z-ed39b9bc/NTR.TO/NTR.TO-intelligence-20261023.md",
+      "json": "archive/20261024T005447Z-ed39b9bc/NTR.TO/NTR.TO-intelligence-20261023.json",
+      "pdf": "archive/20261024T005447Z-ed39b9bc/NTR.TO/NTR.TO-intelligence-20261023.pdf"
     }
   ],
   "refresh_plan": {
@@ -4530,7 +4547,8 @@
       "MG.TO",
       "MSFT",
       "MU",
-      "NFLX"
+      "NFLX",
+      "NTR.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40047255413",
@@ -4878,6 +4896,15 @@
         "edgar": 2.22,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "NTR.TO": {
+        "quant": 1.119,
+        "ai_extract": 48.65,
+        "comparables": 2.119,
+        "earnings": 1.117,
+        "edgar": 2.571,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.214
       }
     },
     "current_ticker": "NTR.TO",
