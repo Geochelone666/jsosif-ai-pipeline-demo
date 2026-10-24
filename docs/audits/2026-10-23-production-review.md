@@ -59,3 +59,36 @@ No production configuration, persistent branch, archived version or delivery
 record was modified. No email, deployment, paid service or recovery dispatch was
 initiated. This branch must be reviewed and merged before its code can affect
 production; rolling back source does not require changing either state branch.
+
+## Follow-up after read-only network access became available
+
+Issue [#16](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/issues/16)
+and PR #13–15 metadata were retrieved. The initial proxy restrictions above
+were transient; the following direct evidence supersedes those unknowns:
+
+- [Daily run 40047255413](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/40047255413)
+  generated/persisted reports, built the site and deployed Pages. Strict release
+  and deployed verification failed. The report-store and github-pages artifacts
+  are listed and unexpired. Artifact listing does not prove restoration.
+- [Later daily run 40057167429](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/40057167429)
+  is green but its refresh job was skipped. It does not repair the degraded run.
+- Live Pages health reports the same 2026-10-23 date, 50 updated and 3 degraded.
+  A fresh strict HTTP verification fails with `Deployed reports have incomplete
+  source evidence`; deployment success is therefore distinct from strict quality.
+- [Weekly run 40057176802](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/40057176802)
+  has a successful sender job and a listed, unexpired delivery-state backup.
+  Its aggregate annotation reports sent=0, skipped=16, deferred=0, unknown=0.
+  These counts do not prove that any member was due or that an inbox received mail.
+- The read-only delivery-state snapshot at
+  `1610039de91783ef61b1e1d162a96059dd26160e` passes `load_ledger` and
+  `assert_cutover` against the report snapshot. Three accepted reservations and
+  no sending/unknown reservations are present; no identifiers were printed.
+- [Live acceptance 40012163720](https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/40012163720)
+  is recorded successful on 2026-10-23. This historical result is not a new
+  authenticated integration test performed by this review.
+
+The privacy branch passes 842 tests and 57 subtests locally. Its initial GitHub
+Python and browser checks also passed. Source changes remain unmerged. Downloading
+Actions logs still returned proxy 403 from the results-receiver host; summaries,
+job-step metadata, artifact listings and stored state were used instead. Inbox
+placement, backup restoration and post-recovery strict quality remain pending.
