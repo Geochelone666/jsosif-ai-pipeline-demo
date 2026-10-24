@@ -15,7 +15,7 @@ from credential_http import urlopen
 
 DEFAULT_MODEL = 'openai/gpt-oss-20b'
 MODEL_CANDIDATES = (DEFAULT_MODEL, 'llama-3.1-8b-instant', 'llama-3.3-70b-versatile',
-                    'openai/gpt-oss-120b', 'qwen/qwen3-32b',
+                    'openai/gpt-oss-120b', 'qwen/qwen3.8-27b', 'qwen/qwen3-32b',
                     'meta-llama/llama-4-scout-17b-16e-instruct')
 
 
@@ -32,10 +32,11 @@ def available_models(*, opener=urlopen):
 
 
 class GroqError(RuntimeError):
-    def __init__(self, message, *, status=None, provider_code=None):
+    def __init__(self, message, *, status=None, provider_code=None, budget_kind=None):
         super().__init__(message)
         self.code = status
         self.provider_code = provider_code
+        self.budget_kind = budget_kind
 
 
 def error_code(response):
@@ -111,9 +112,9 @@ def _reserve(model, tokens, sleep):
     next_day = datetime.fromtimestamp(now + delay, timezone.utc).date().isoformat()
     pending = ledger.get('groq:' + model + ':' + next_day, {})
     if pending.get('requests', 0) >= caps['RPD']:
-        raise GroqError('Groq application daily budget exhausted (requests)')
+        raise GroqError('Groq application daily budget exhausted (requests)', budget_kind='requests')
     if pending.get('tokens', 0) + tokens > caps['TPD']:
-        raise GroqError('Groq application daily budget exhausted (tokens)')
+        raise GroqError('Groq application daily budget exhausted (tokens)', budget_kind='tokens')
     if delay:
         sleep(delay)
     at = max(at, time.time())
@@ -121,9 +122,9 @@ def _reserve(model, tokens, sleep):
     key = 'groq:' + model + ':' + day
     state = ledger.setdefault(key, {'requests': 0, 'tokens': 0})
     if state['requests'] >= caps['RPD']:
-        raise GroqError('Groq application daily budget exhausted (requests)')
+        raise GroqError('Groq application daily budget exhausted (requests)', budget_kind='requests')
     if state['tokens'] + tokens > caps['TPD']:
-        raise GroqError('Groq application daily budget exhausted (tokens)')
+        raise GroqError('Groq application daily budget exhausted (tokens)', budget_kind='tokens')
     state['requests'] += 1
     state['tokens'] += tokens
     event = {'at': at, 'tokens': tokens}
