@@ -77,6 +77,12 @@ quant_table = f"""## QUANTITATIVE
 | Beta vs SPY | {fmt(q.get('Beta vs SPY'))} |
 | Max drawdown (%) | {fmt(q.get('Max drawdown (%)'))} |
 | Sharpe (rf=0) | {fmt(q.get('Sharpe (rf=0)'))} |
+| Downside deviation (rf=0, %) | {fmt(q.get('Downside deviation (rf=0, %)'))} |
+| Sortino (rf=0) | {fmt(q.get('Sortino (rf=0)'))} |
+| Historical VaR 95% (1D, %) | {fmt(q.get('Historical VaR 95% (1D, %)'))} |
+| Historical ES 95% (1D, %) | {fmt(q.get('Historical ES 95% (1D, %)'))} |
+| Correlation vs SPY | {fmt(q.get('Correlation vs SPY'))} |
+| Tracking error vs SPY (%) | {fmt(q.get('Tracking error vs SPY (%)'))} |
 | P/E (trailing) | {fmt(q.get('P/E (trailing)'), 2)} |
 | P/B | {fmt(q.get('P/B'), 2)} |
 | EV/EBITDA | {fmt(q.get('EV/EBITDA'), 2)} |
@@ -118,6 +124,7 @@ report = f"""# {TICKER} Intelligence Report
 {quant_table}
 Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
 Market data sample: {quant.get('history_count', {})}.
+Additional risk measures use a trailing calendar year of observed daily adjusted closes: downside deviation and Sortino use a zero target and sqrt(252) scaling (minimum 20 daily returns); historical one-day 95% VaR/ES use the empirical 5th percentile and tail average (minimum 100 daily returns); correlation and tracking error align asset/SPY return end dates (minimum 20 pairs). Values are historical, not forecasts. SPY comparisons are in each listing's native currency, without FX conversion.
 
 {build_interpretation_section(q)}{section('TAILWINDS', ai['tailwinds'])}
 {section('HEADWINDS', ai['headwinds'])}
