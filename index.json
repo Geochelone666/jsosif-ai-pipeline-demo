@@ -4751,7 +4751,7 @@
     "run_id": "20261024T005447Z-ed39b9bc",
     "at": "2026-10-24T00:54:47.142452+00:00",
     "business_date": "2026-10-23",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -5370,9 +5370,14 @@
         "report_pdf": 0.214
       }
     },
-    "current_ticker": "XYL",
-    "last_progress_at": "2026-10-24T03:02:11.290267+00:00"
+    "last_progress_at": "2026-10-24T03:02:11.290267+00:00",
+    "pending_tickers": [
+      "V",
+      "VRTX",
+      "XYL"
+    ],
+    "finished_at": "2026-10-24T03:02:31.684761+00:00"
   },
-  "last_complete_refresh": "2026-10-23T01:07:37.674382+00:00",
-  "last_complete_business_date": "2026-10-22"
+  "last_complete_refresh": "2026-10-24T00:54:47.142452+00:00",
+  "last_complete_business_date": "2026-10-23"
 }
