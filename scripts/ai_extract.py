@@ -643,7 +643,9 @@ def main():
         if not enabled and items:
             data['error'] = os.environ.get('JSOSIF_AI_UNAVAILABLE_REASON', 'AI analysis is disabled for this run')
     from news_source_audit import audit_rss
+    from news_freshness import annotate_news_publication_age
     data['rss_audit'] = audit_rss(items, as_of)
+    annotate_news_publication_age(data, as_of)
     data['fetched_at'] = datetime.now(timezone.utc).isoformat()
     from ai_provider import model
     data['model'] = (model()
