@@ -5931,6 +5931,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/JPM/JPM-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/JPM/JPM-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/JPM/JPM-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/JWEL.TO",
+      "ticker": "JWEL.TO",
+      "generated_at": "2026-10-25T01:10:34.296839+00:00",
+      "as_of": "2026-10-24",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "891c9df30a28f615d96961a7502a40f527840fbd69e95c36aa9dd81e31fb89e3",
+        "json": "34caa107db0c2baaf74a6a962f0ecae87be669dae7cc3f38cc949fe1d6a663c8",
+        "pdf": "c0e61d213062a3c4452341a4873efe56eb6822a8d0463bccfe91a5caab85c5e9"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/JWEL.TO/JWEL.TO-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/JWEL.TO/JWEL.TO-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/JWEL.TO/JWEL.TO-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -6077,7 +6094,8 @@
       "GOOGL",
       "ISRG",
       "J",
-      "JPM"
+      "JPM",
+      "JWEL.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
@@ -6347,6 +6365,15 @@
         "edgar": 1.918,
         "regenerate_report": 0.114,
         "report_pdf": 0.315
+      },
+      "JWEL.TO": {
+        "quant": 1.116,
+        "ai_extract": 1.969,
+        "comparables": 1.568,
+        "earnings": 1.067,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.265
       }
     },
     "current_ticker": "JWEL.TO",
