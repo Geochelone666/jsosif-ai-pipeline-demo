@@ -6322,6 +6322,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/TMC/TMC-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/TMC/TMC-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/TMC/TMC-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/TSM",
+      "ticker": "TSM",
+      "generated_at": "2026-10-25T01:27:36.811926+00:00",
+      "as_of": "2026-10-24",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "b33a98f97337415a2841cd04bb7ff2d8578d092993acaa75e41d91f27ecc06c3",
+        "json": "16ec13d9c56bd869a18169c92934cf3d2906f48b446545ac6305f68fd89927c3",
+        "pdf": "6edaa23cfc08009c74ddac573ac90e96892a6bca0814ab02352528fd966a9c86"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/TSM/TSM-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/TSM/TSM-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/TSM/TSM-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -6491,7 +6508,8 @@
       "SYY",
       "T",
       "TD.TO",
-      "TMC"
+      "TMC",
+      "TSM"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
@@ -6504,7 +6522,8 @@
       "SYY",
       "T",
       "TD.TO",
-      "TMC"
+      "TMC",
+      "TSM"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -6973,6 +6992,15 @@
         "comparables": 1.468,
         "earnings": 1.117,
         "edgar": 2.12,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.315
+      },
+      "TSM": {
+        "quant": 1.369,
+        "ai_extract": 0.667,
+        "comparables": 1.672,
+        "earnings": 1.419,
+        "edgar": 2.723,
         "regenerate_report": 0.165,
         "report_pdf": 0.315
       }
