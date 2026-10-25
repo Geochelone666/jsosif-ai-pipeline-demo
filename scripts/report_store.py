@@ -86,6 +86,21 @@ def verified_report_files(root, entry):
         raise ValueError('Archive index and snapshot metadata disagree')
     if not paths['pdf'].read_bytes().startswith(b'%PDF-'):
         raise ValueError('Invalid archived PDF')
+    # New report archives include complete source-file checksums. Legacy archives
+    # without this optional field remain readable, but are ineligible for reuse.
+    if 'source_sha256' in entry:
+        expected = ('quant', 'info', 'ai-intel', 'rss-items',
+                    'comparables', 'earnings', 'edgar', 'fred')
+        saved = entry['source_sha256']
+        if not isinstance(saved, dict) or set(saved) != set(expected):
+            raise ValueError('Archived source checksums are incomplete')
+        source_dir = Path(entry['json']).parent / 'sources'
+        for kind in expected:
+            name = 'fred.json' if kind == 'fred' else entry['ticker'].lower() + '-' + kind + '.json'
+            file = resolve_file(root, (source_dir / name).as_posix())
+            if (not isinstance(saved[kind], str) or len(saved[kind]) != 64
+                    or digest(file) != saved[kind]):
+                raise ValueError('Archived source integrity check failed')
     return paths
 
 
