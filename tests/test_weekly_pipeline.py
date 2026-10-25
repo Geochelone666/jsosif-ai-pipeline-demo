@@ -313,6 +313,9 @@ def test_archive_versions_are_immutable(tmp_path, monkeypatch):
     reports = tmp_path / 'reports'; data = tmp_path / 'data'; root = tmp_path / 'store'
     reports.mkdir(); data.mkdir()
     monkeypatch.setattr(refresh, 'REPORTS', reports); monkeypatch.setattr(refresh, 'DATA', data)
+    # This unit test isolates immutable archive bytes, not PDF structure. A
+    # separate full-pipeline test exercises the real PDF structural preflight.
+    monkeypatch.setattr('pdf_quality.inspect_pdf', lambda *args, **kwargs: None)
     payload = emit_frozen_snapshot(ticker='CSCO', as_of='2026-10-19', quant_metrics={'Close': 100},
                                   ai={}, freshness={}, disclaimer='Not investment advice')
     payload['quality'] = 'ready'
