@@ -187,6 +187,16 @@ story.append(p('Report rendering uses saved source snapshots with separate obser
                'The daily price bar may be provisional before the listing market closes. '
                'Check source dates and availability.',
                'small'))
+freshness_counts = ((ai.get('publication_freshness_summary') or {})
+                    .get('classified_or_unresolved_counts') or {})
+if freshness_counts:
+    story.append(p(
+        'Publication-age audit (relative to report date): '
+        f'{esc(freshness_counts.get("current_window", 0))} in the current event window; '
+        f'{esc(freshness_counts.get("historical_context", 0))} presented as historical context; '
+        f'{esc(freshness_counts.get("unknown_publication_date", 0))} missing publication dates. '
+        'Recent publication does not verify the underlying claim.',
+        'small'))
 story.append(Spacer(1, 6))
 stats = ai.get('extraction_stats') or {}
 fetched = stats.get('unique_headlines', 0)
@@ -310,6 +320,20 @@ for key, title in AI_SECTIONS:
                 f"Horizon: <b>{esc(it.get('horizon', 'N/A'))}</b> &nbsp;|&nbsp; "
                 f"Confidence: <b>{esc(it.get('confidence', 'N/A'))}</b>")
         block.append(p(meta, 'small'))
+        freshness = it.get('publication_freshness') or {}
+        age = freshness.get('age_days')
+        label = freshness.get('label')
+        if isinstance(age, int):
+            if label == 'historical_context':
+                block.append(p(f'Publication age: {age} days before report date '
+                               '(historical context; not a new market-moving event).', 'small'))
+            elif label == 'current_window':
+                block.append(p(f'Publication age: {age} days before report date.', 'small'))
+            else:
+                block.append(p('Publication date outside the expected RSS window; '
+                               'review source dates.', 'small'))
+        elif label == 'unknown_publication_date':
+            block.append(p('Publication date could not be verified from RSS metadata.', 'small'))
         srcs = item_sources_text(it, n)
         if srcs:
             block.append(p(srcs, 'small'))
