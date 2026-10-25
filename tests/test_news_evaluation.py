@@ -49,8 +49,8 @@ def test_rule_predictions_abstain_on_conditional_headlines():
 
 def test_snapshot_scoring_tracks_unresolved_ai_candidates(tmp_path, capsys):
     gold = [row('V', 'Visa stock rises 2%', 'tailwinds'),
-            row('V', 'Will Visa acquire a competitor?', 'catalysts'),
-            row('V', 'Could Visa shares fall next quarter?', 'headwinds')]
+            row('V', 'Will Visa acquire a competitor?', 'insufficient_evidence'),
+            row('V', 'Could Visa shares fall next quarter?', 'insufficient_evidence')]
     gold_file = tmp_path / 'gold.json'
     gold_file.write_text(json.dumps(gold))
     saved = {
@@ -71,7 +71,9 @@ def test_snapshot_scoring_tracks_unresolved_ai_candidates(tmp_path, capsys):
     assert output['observed_pipeline']['sample_size'] == 3
     assert output['ai_candidate_subset']['sample_size'] == 2
     assert output['ai_candidate_subset']['abstained'] == 1
-    assert output['ai_candidate_subset']['selective_precision'] == 1
+    assert output['ai_candidate_subset']['selective_precision'] == 0
+    assert output['ai_candidate_subset']['false_decisions_on_insufficient_evidence'] == 1
+    assert output['ai_candidate_subset']['correct_abstentions_on_insufficient_evidence'] == 1
     assert 'not directly' in output['caution']
 
 
