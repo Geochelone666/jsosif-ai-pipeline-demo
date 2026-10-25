@@ -183,6 +183,11 @@ story.append(p('AI status: <b>%s</b> &nbsp;|&nbsp; Configured model: <b>%s</b> '
                % (esc(analysis_status(ai)),
                   esc(ai.get('model', 'legacy snapshot / rules')), esc(ai.get('as_of', 'N/A'))),
                'small'))
+review = ai.get('decision_audit') or {}
+if review.get('flag_count'):
+    story.append(p(f'Classification review flags: <b>{esc(review["flag_count"])}</b> '
+                   '(automated anomaly checks, not established errors; '
+                   'see flagged articles below).', 'small'))
 story.append(p('Report rendering uses saved source snapshots with separate observation dates. '
                'The daily price bar may be provisional before the listing market closes. '
                'Check source dates and availability.',
@@ -320,6 +325,13 @@ for key, title in AI_SECTIONS:
                 f"Horizon: <b>{esc(it.get('horizon', 'N/A'))}</b> &nbsp;|&nbsp; "
                 f"Confidence: <b>{esc(it.get('confidence', 'N/A'))}</b>")
         block.append(p(meta, 'small'))
+        flags = [
+            flag['reason'] for flag in review.get('flags', [])
+            if flag.get('headline') == it.get('headline') and flag.get('category') == key
+        ]
+        if flags:
+            block.append(p('Review suggested: ' + esc(', '.join(flags)) +
+                           ' (not a confirmed classification error).', 'small'))
         freshness = it.get('publication_freshness') or {}
         age = freshness.get('age_days')
         label = freshness.get('label')
