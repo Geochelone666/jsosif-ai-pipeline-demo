@@ -49,10 +49,11 @@ def esc_url(url):
 
 
 def link(url, text):
-    """Blue clickable hyperlink; never shows the raw URL."""
-    if not url:
+    """Emit only public HTTPS hyperlinks; treat untrusted RSS URLs as plain text."""
+    from pdf_quality import _safe_public_link
+    if not _safe_public_link(url):
         return esc(text)
-    return f'<a href="{esc_url(url)}" color="#1155CC"><u>{esc(text)}</u></a>'
+    return f'<a href="{html_lib.escape(url, quote=True)}" color="#1155CC"><u>{esc(text)}</u></a>'
 
 
 def domain_of(url):

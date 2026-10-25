@@ -59,8 +59,9 @@ def archive(root, ticker, stamp, run_id, generated_at):
     try:
         for kind in ('md', 'json', 'pdf'):
             source = REPORTS / f'{ticker}-intelligence-{stamp}.{kind}'
-            if kind == 'pdf' and not source.read_bytes().startswith(b'%PDF-'):
-                raise ValueError('Invalid PDF')
+            if kind == 'pdf':
+                from pdf_quality import inspect_pdf
+                inspect_pdf(source, ticker=ticker, as_of=snapshot['identity']['as_of'])
             target = destination / source.name
             shutil.copy2(source, target)
             entry[kind] = target.relative_to(root).as_posix()
