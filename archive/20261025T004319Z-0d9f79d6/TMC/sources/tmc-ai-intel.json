@@ -1,0 +1,84 @@
+{
+  "ticker": "TMC",
+  "as_of": "2026-10-24",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [],
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "TMC the metals company Inc. Estimates – NASDAQ:TMC",
+      "reason": "No specific event described"
+    }
+  ],
+  "ai_coverage_retry": {
+    "requested": 1,
+    "unresolved": 1
+  },
+  "error": "AI unavailable: Groq application daily budget exhausted (tokens)",
+  "failure": {
+    "type": "provider",
+    "status": null,
+    "code": null
+  },
+  "unclassified": [
+    {
+      "headline": "TMC stock hits 52-week low at 2.47 USD",
+      "summary": "TMC stock hits 52-week low at 2.47 USD",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.0,
+      "companies": [
+        "TMC"
+      ],
+      "event_type": "market_move",
+      "sentiment": "unknown",
+      "extraction_method": "unknown",
+      "date": "2026-10-22",
+      "source": "Investing.com",
+      "pubDate": "Thu, 22 Oct 2026 15:52:03 GMT",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQNkZTMU9GUHh3UlJuYXhyUGVTenRKYk9sVGphalg4ZGFDZE1ib21vMGROQXp5cF96VU1MT0hPUUJQeXl0RlFOUVU2LTNQTi1xbF91NDM2MjZaVjJZaEdVVnU1a1FILWt1NTJjRVZfOEVVWFNyZm5ZbzFScXlnODNQcWFfcGRJZ2F0d2xYTC1aSmRsVVZscVdnUA?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMimAFBVV95cUxQNkZTMU9GUHh3UlJuYXhyUGVTenRKYk9sVGphalg4ZGFDZE1ib21vMGROQXp5cF96VU1MT0hPUUJQeXl0RlFOUVU2LTNQTi1xbF91NDM2MjZaVjJZaEdVVnU1a1FILWt1NTJjRVZfOEVVWFNyZm5ZbzFScXlnODNQcWFfcGRJZ2F0d2xYTC1aSmRsVVZscVdnUA?oc=5"
+      ]
+    }
+  ],
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 0,
+    "ai": 0,
+    "unknown": 1,
+    "irrelevant": 1
+  },
+  "rss_audit": {
+    "raw_items": 2,
+    "unique_headlines": 2,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 50.0,
+    "publisher_hhi": 0.5,
+    "https_link_headlines": 2,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-22",
+    "newest_publication_date": "2026-10-23",
+    "oldest_headline_age_days": 2
+  },
+  "fetched_at": "2026-10-25T01:27:20.989809+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=TMC%20the%20metals%20company%20TMC%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 2
+  }
+}
