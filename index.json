@@ -5710,6 +5710,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/CAT/CAT-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/CAT/CAT-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/CAT/CAT-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/CNQ.TO",
+      "ticker": "CNQ.TO",
+      "generated_at": "2026-10-25T00:59:32.788780+00:00",
+      "as_of": "2026-10-24",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "3c0705f3d9c7e35e8a5e56ccaf1afae0e44a38b195516c0bc6f3ec4c402495e6",
+        "json": "21062c3cca2dd14cbe58b10171e7319f5e55908b9b47bffeb925277cf813cf2a",
+        "pdf": "30b25373d26ee7a1e6b08c6a320f1de3149bc79ed673b5ba905a2cb7b7d5377d"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/CNQ.TO/CNQ.TO-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/CNQ.TO/CNQ.TO-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/CNQ.TO/CNQ.TO-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -5843,7 +5860,8 @@
       "ATD.TO",
       "BMO.TO",
       "BRK-B",
-      "CAT"
+      "CAT",
+      "CNQ.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
@@ -5996,6 +6014,15 @@
         "edgar": 2.021,
         "regenerate_report": 0.165,
         "report_pdf": 0.365
+      },
+      "CNQ.TO": {
+        "quant": 1.168,
+        "ai_extract": 2.221,
+        "comparables": 1.821,
+        "earnings": 1.218,
+        "edgar": 2.422,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.265
       }
     },
     "current_ticker": "CNQ.TO",
