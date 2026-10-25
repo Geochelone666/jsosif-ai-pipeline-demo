@@ -101,3 +101,15 @@ def test_report_template_placement(metrics):
         assert 'This value: 57.0700 -> Neutral momentum reading.' in report
     else:
         assert header not in report
+
+
+def test_concise_print_glossary_preserves_full_default_and_avoids_empty_interpretations():
+    metrics = dict.fromkeys(METRICS, 1.5)
+    full = build_interpretation_section(metrics)
+    compact = build_interpretation_section(metrics, concise=True)
+    assert len([x for x in full.splitlines() if x.startswith('- ')]) == len(METRICS)
+    assert len([x for x in compact.splitlines() if x.startswith('- ')]) == 10
+    assert 'This value: 1.5000 ->' in full
+    assert 'No interpretation rule is available for this metric.' not in compact
+    assert '**Sortino (rf=0)**' not in compact
+    assert '**Historical VaR 95% (1D, %)**' in compact
