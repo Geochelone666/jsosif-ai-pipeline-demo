@@ -11,6 +11,8 @@ from pathlib import Path
 
 LABELS = ('tailwinds', 'headwinds', 'catalysts', 'risks', 'irrelevant')
 ABSTAIN = 'abstain'
+UNVERIFIABLE = 'insufficient_evidence'
+GOLD_LABELS = (*LABELS, UNVERIFIABLE)
 
 
 def load_gold(path):
@@ -19,7 +21,7 @@ def load_gold(path):
         raise ValueError('Gold labels must be a nonempty JSON list')
     used = set()
     for row in rows:
-        if not isinstance(row, dict) or row.get('label') not in LABELS:
+        if not isinstance(row, dict) or row.get('label') not in GOLD_LABELS:
             raise ValueError('Each gold item must have a human-selected valid label')
         if not all(isinstance(row.get(k), str) and row[k].strip()
                    for k in ('ticker', 'headline', 'pubDate')):
@@ -83,7 +85,7 @@ def score(rows, predictions):
     """Selective precision and coverage must be read together; no auto-100%."""
     counts = Counter()
     confusion = Counter()
-    per_label = {label: Counter() for label in LABELS}
+    per_label = {label: Counter() for label in GOLD_LABELS}
     for row in rows:
         key = (row['ticker'], row['headline'], row['pubDate'])
         actual = row['label']
@@ -96,6 +98,8 @@ def score(rows, predictions):
         if predicted == ABSTAIN:
             counts['abstained'] += 1
             per_label[actual]['abstained'] += 1
+            if actual == UNVERIFIABLE:
+                counts['correct_abstentions_on_insufficient_evidence'] += 1
         else:
             counts['covered'] += 1
             per_label[actual]['covered'] += 1
@@ -106,11 +110,15 @@ def score(rows, predictions):
                 counts['wrong'] += 1
                 if actual == 'irrelevant':
                     counts['false_company_event_on_irrelevant'] += 1
+                if actual == UNVERIFIABLE:
+                    counts['false_decisions_on_insufficient_evidence'] += 1
     return {
         'sample_size': counts['total'],
         'coverage': counts['covered'] / counts['total'] if counts['total'] else None,
         'selective_precision': counts['correct'] / counts['covered'] if counts['covered'] else None,
         'correct': counts['correct'], 'wrong': counts['wrong'],
+        'correct_abstentions_on_insufficient_evidence': counts['correct_abstentions_on_insufficient_evidence'],
+        'false_decisions_on_insufficient_evidence': counts['false_decisions_on_insufficient_evidence'],
         'abstained': counts['abstained'],
         'false_company_event_on_irrelevant': counts['false_company_event_on_irrelevant'],
         'by_human_label': {key: dict(value) for key, value in per_label.items()},
