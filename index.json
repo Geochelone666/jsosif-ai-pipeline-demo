@@ -6067,6 +6067,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/MU/MU-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/MU/MU-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/MU/MU-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/NFLX",
+      "ticker": "NFLX",
+      "generated_at": "2026-10-25T01:20:33.811544+00:00",
+      "as_of": "2026-10-24",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "ef3a38f6798187340afc6b78ce2f24c00fe635fc491d942e99cf45ebd4860ffd",
+        "json": "b8d05a99ad08194fbee9c582ba67f4d19db1eee4dadadfb62417bcf3e74c3949",
+        "pdf": "fb1c2eba39664d91283c6de2561b4502b4363e6a00340d94fa2c5f7fbc7cba02"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/NFLX/NFLX-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/NFLX/NFLX-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/NFLX/NFLX-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -6221,7 +6238,8 @@
       "META",
       "MG.TO",
       "MSFT",
-      "MU"
+      "MU",
+      "NFLX"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
@@ -6563,6 +6581,15 @@
         "edgar": 1.922,
         "regenerate_report": 0.165,
         "report_pdf": 0.366
+      },
+      "NFLX": {
+        "quant": 1.369,
+        "ai_extract": 4.331,
+        "comparables": 1.872,
+        "earnings": 1.422,
+        "edgar": 2.123,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.416
       }
     },
     "current_ticker": "NFLX",
