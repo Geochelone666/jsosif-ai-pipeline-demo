@@ -188,6 +188,14 @@ if review.get('flag_count'):
     story.append(p(f'Classification review flags: <b>{esc(review["flag_count"])}</b> '
                    '(automated anomaly checks, not established errors; '
                    'see flagged articles below).', 'small'))
+if ai.get('ai_reuse', {}).get('reused_headlines'):
+    reuse = ai['ai_reuse']
+    story.append(p(
+        f'Previously reviewed headlines reused from integrity-verified archive: '
+        f'<b>{esc(reuse["reused_headlines"])}</b>; archived source date '
+        f'<b>{esc(reuse.get("source_as_of", "N/A"))}</b>. '
+        'Reused classifications are not fresh model calls.',
+        'small'))
 story.append(p('Report rendering uses saved source snapshots with separate observation dates. '
                'The daily price bar may be provisional before the listing market closes. '
                'Check source dates and availability.',

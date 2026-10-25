@@ -495,3 +495,22 @@ def test_confirmed_groq_daily_exhaustion_suppresses_later_model_calls(pipeline, 
     attempt = read_json(root / 'index.json')['last_attempt']
     assert attempt['ai_budget_closed_after'] == 'CSCO'
     assert attempt['pending_tickers'] == ['CSCO', 'JPM']
+
+
+def test_source_checksums_prevent_silent_tampering_of_new_reports(pipeline, monkeypatch):
+    root, _, _ = pipeline
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_RPD', '10')
+    monkeypatch.setenv('GEMINI_RPM', '10')
+    refresh.refresh(root, now=NOW)
+    from report_store import verified_report_files
+    entry = read_json(root / 'index.json')['reports'][0]
+    assert set(entry['source_sha256']) == {
+        'quant', 'info', 'ai-intel', 'rss-items',
+        'comparables', 'earnings', 'edgar', 'fred'}
+    assert verified_report_files(root, entry)['pdf'].read_bytes().startswith(b'%PDF-')
+    source = root / Path(entry['json']).parent / 'sources' / (entry['ticker'].lower() + '-rss-items.json')
+    source.write_text('[] \n', encoding='utf-8')
+    with pytest.raises(ValueError, match='source integrity'):
+        verified_report_files(root, entry)
+    assert not check(root, require_ready=True)['ready']

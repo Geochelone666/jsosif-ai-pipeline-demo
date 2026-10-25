@@ -126,6 +126,7 @@ report = f"""# {TICKER} Intelligence Report
 - AI status: **{ai_status}**
 - AI model (configured): **{ai.get('model', 'legacy snapshot / rules')}** (RSS headlines; rule and AI item counts: {ai.get('extraction_stats', {})})
 - AI model(s) actually used: **{', '.join(ai.get('models_used', [])) or 'N/A (no successful AI classification call)'}**
+- Verified recent classification reuse: **{ai.get('ai_reuse', {}).get('reused_headlines', 0)}** exact headline/source/date matches; prior report **{ai.get('ai_reuse', {}).get('from_report', 'N/A')}** (reused decisions are not new model calls).
 - News classification review flags (heuristic, not confirmed errors): **{ai.get('decision_audit', {}).get('flag_count', 'not audited')}**; {ai.get('decision_audit', {}).get('by_reason', {})}
 - RSS source audit (metadata only, not article fact-checking): {ai.get('rss_audit', {}).get('unique_headlines', 'N/A')} unique headlines; {ai.get('rss_audit', {}).get('unique_publishers', 'N/A')} named publishers; {ai.get('rss_audit', {}).get('duplicates_excluded', 'N/A')} exact duplicates; {ai.get('rss_audit', {}).get('https_link_headlines', 'N/A')} HTTPS source links; largest publisher share {ai.get('rss_audit', {}).get('largest_publisher_share_pct', 'N/A')}%; oldest publication {ai.get('rss_audit', {}).get('oldest_publication_date', 'N/A')}
 

@@ -376,7 +376,7 @@ def analysis_status(data):
     return 'Available'
 
 
-def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True):
+def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True, cached_decisions=None):
     data = {'ticker': ticker, 'as_of': as_of or date.today().isoformat(), **{k: [] for k in KEYS}}
     pending = []
     seen = set()
@@ -389,6 +389,66 @@ def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True):
             data[category].append(result)
         else:
             pending.append(item)
+    if pending and isinstance(cached_decisions, dict) and cached_decisions.get('ticker') == ticker:
+        choices = {}
+        for entry in cached_decisions.get('items', []):
+            if not isinstance(entry, dict):
+                continue
+            key = tuple(entry.get(name) for name in ('headline', 'pubDate', 'link'))
+            if all(isinstance(v, str) and v for v in key) and key not in choices:
+                choices[key] = entry
+        residual = []
+        reused = 0
+        for item in pending:
+            key = (item.get('headline'), item.get('pubDate'), item.get('link'))
+            match = choices.get(key)
+            if not match:
+                residual.append(item)
+                continue
+            category, decision = match.get('category'), match.get('decision')
+            if not isinstance(decision, dict):
+                residual.append(item)
+                continue
+            if category == 'irrelevant':
+                reason = decision.get('reason')
+                if not isinstance(reason, str) or not reason.strip():
+                    residual.append(item)
+                    continue
+                data.setdefault('irrelevant', []).append(
+                    {'headline': item['headline'], 'reason': reason})
+            elif category in KEYS:
+                fields = ('summary', 'impact', 'horizon', 'confidence', 'event_type', 'sentiment')
+                if any(field not in decision for field in fields):
+                    residual.append(item)
+                    continue
+                conf = decision['confidence']
+                if (not isinstance(decision['summary'], str) or not decision['summary'].strip()
+                        or decision['impact'] not in ('low', 'medium', 'high')
+                        or decision['horizon'] not in ('short', 'medium', 'long')
+                        or decision['event_type'] not in (*EVENTS, 'unknown')
+                        or decision['sentiment'] not in _VALID_SENTIMENTS
+                        or type(conf) not in (int, float) or not 0 <= conf <= 1):
+                    residual.append(item)
+                    continue
+                base = classify_rule(item, ticker)[1]
+                base.update({field: decision[field] for field in fields})
+                base['extraction_method'] = 'ai'
+                base['reuse_origin'] = 'verified_prior_archive'
+                base['reuse_as_of'] = cached_decisions.get('source_as_of')
+                data[category].append(base)
+            else:
+                residual.append(item)
+                continue
+            reused += 1
+        pending = residual
+        if reused:
+            data['ai_reuse'] = {
+                'reused_headlines': reused,
+                'from_report': cached_decisions.get('source_report_id'),
+                'source_as_of': cached_decisions.get('source_as_of'),
+                'prior_models': cached_decisions.get('source_models', []),
+                'policy': 'exact ticker, headline, published date and source link',
+            }
     if pending and call_ai:
         try:
             extracted = call_ai(pending, ticker)
@@ -453,7 +513,7 @@ def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True):
                     irrelevant.append({'headline': matched, 'reason': reason.strip()})
                     used.add(matched)
             if irrelevant:
-                data['irrelevant'] = irrelevant
+                data.setdefault('irrelevant', []).extend(irrelevant)
             if notes:
                 data['ai_notes'] = notes
             if skipped:
@@ -639,8 +699,16 @@ def main():
         print(str(exc), file=sys.stderr)
     else:
         enabled = os.environ.get('JSOSIF_AI_ENABLED', '1') == '1'
-        data = extract(items, ticker, call_gemini if enabled else None, as_of=as_of)
-        if not enabled and items:
+        cached = None
+        cache_path = os.environ.get('JSOSIF_NEWS_REUSE_PATH')
+        if cache_path:
+            from pathlib import Path
+            from report_store import read_json
+            # The orchestration step verifies archived source checksums first.
+            cached = read_json(Path(cache_path), None)
+        data = extract(items, ticker, call_gemini if enabled else None,
+                       as_of=as_of, cached_decisions=cached)
+        if not enabled and items and data['extraction_stats']['unknown']:
             data['error'] = os.environ.get('JSOSIF_AI_UNAVAILABLE_REASON', 'AI analysis is disabled for this run')
     from news_source_audit import audit_rss
     from news_freshness import annotate_news_publication_age
