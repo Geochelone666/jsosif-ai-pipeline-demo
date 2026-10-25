@@ -132,11 +132,14 @@ def main(argv=None):
     if args.snapshots:
         eligible, predictions = snapshot_predictions(gold, args.snapshots)
         output['observed_pipeline'] = score(eligible, predictions)
-        model_rows, model_predictions = snapshot_predictions(gold, args.snapshots,
-                                                               only_model_items=True)
-        output['ai_decided_subset'] = score(model_rows, model_predictions)
-        output['caution'] = ('The AI subset is selected by rule abstention and successful AI '
-                             'decisions, not a randomized head-to-head with rules.')
+        rules_for_eligible = rule_predictions(eligible)
+        candidate_rows = [
+            row for row in eligible
+            if rules_for_eligible[(row['ticker'], row['headline'], row['pubDate'])] == ABSTAIN
+        ]
+        output['ai_candidate_subset'] = score(candidate_rows, predictions)
+        output['caution'] = ('AI candidates are selected by rule abstention; compare '
+                             'model performance within that subset, not directly to rule precision.')
     print(json.dumps(output, indent=2, allow_nan=False))
 
 
