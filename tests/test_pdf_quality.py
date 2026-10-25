@@ -4,9 +4,9 @@ from pathlib import Path
 import pytest
 from reportlab.lib.pagesizes import A4, letter
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import Paragraph, SimpleDocTemplate
+from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate
 
-from pdf_quality import PdfQualityError, _safe_public_link, inspect_pdf
+from pdf_quality import HEADINGS, PdfQualityError, _safe_public_link, inspect_pdf
 from fundamental_context import FUNDAMENTAL_KEYS
 from risk_extensions import RISK_KEYS
 
@@ -17,7 +17,7 @@ def fixture_pdf(path, *, pagesize=A4, include_required=True, include_link=True):
     if include_required:
         headings = [
             'AAPL Intelligence Report', 'Report as_of: 2026-10-24',
-            'Quantitative', 'Tailwinds', 'Headwinds', 'Catalysts',
+            'Quantitative', 'Close', 'Tailwinds', 'Headwinds', 'Catalysts',
             'Risks', 'Peer Comparables', 'Sources', 'Research notes and limitations',
             *RISK_KEYS, *FUNDAMENTAL_KEYS,
         ]
@@ -80,3 +80,21 @@ def test_unsafe_links_are_not_embedded(url):
 
 def test_regular_https_source_link_is_valid():
     assert _safe_public_link('https://www.sec.gov/Archives/edgar/data/1/file.html?a=1&b=2')
+
+
+def test_bad_first_page_layout_fails_archive_gate(tmp_path):
+    filename = tmp_path / 'blank-cover.pdf'
+    styles = getSampleStyleSheet()
+    story = [
+        Paragraph('AAPL Intelligence Report — business date 2026-10-24; '
+                  'intentionally blank report cover without quantitative material',
+                  styles['Normal']),
+        PageBreak(),
+    ]
+    for label in ('Quantitative', 'Close', *HEADINGS, *RISK_KEYS, *FUNDAMENTAL_KEYS):
+        story.append(Paragraph(label, styles['Normal']))
+    story.append(Paragraph('<link href="https://www.sec.gov/">Official source</link>',
+                           styles['Normal']))
+    SimpleDocTemplate(str(filename), pagesize=A4).build(story)
+    with pytest.raises(PdfQualityError, match='First page lacks the quantitative table'):
+        inspect_pdf(filename, ticker='AAPL', as_of='2026-10-24')
