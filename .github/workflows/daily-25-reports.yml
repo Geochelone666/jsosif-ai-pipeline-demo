@@ -75,6 +75,7 @@ jobs:
         env:
           AI_PROVIDER: groq
           JSOSIF_FAIR_RESEARCH_PRIORITY: '1'
+          JSOSIF_NEWS_REUSE_ENABLED: '1'
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
           GROQ_MODEL: ${{ vars.GROQ_MODEL || 'openai/gpt-oss-20b' }}
           GROQ_FALLBACK_MODEL: ${{ vars.GROQ_FALLBACK_MODEL }}
@@ -154,6 +155,8 @@ jobs:
           print('Priority policy:', read_json('../report-store/index.json', {}).get('refresh_plan', {}).get('priority_policy', 'configured_ticker_order'))
           if attempt.get('ai_budget_closed_after'):
               print('Groq budget closed after:', attempt['ai_budget_closed_after'])
+          print('Tickers with verified recent AI reuse candidates:', len(attempt.get('news_cache_candidates', {})))
+          print('Potential archived AI decisions reusable:', sum(attempt.get('news_cache_candidates', {}).values()))
           for key in ('successful_tickers', 'reused_tickers', 'pending_tickers', 'degraded_tickers', 'failed_tickers', 'ai_deferred_tickers'):
               print('- ' + key + ': ' + str(len(attempt.get(key, []))))
           if attempt.get('interruption_reason'):
