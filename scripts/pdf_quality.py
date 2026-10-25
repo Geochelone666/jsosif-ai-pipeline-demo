@@ -9,6 +9,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from pypdf import PdfReader
+from pypdf.errors import PdfReadError
 
 from fundamental_context import FUNDAMENTAL_KEYS
 from risk_extensions import RISK_KEYS
@@ -65,7 +66,7 @@ def inspect_pdf(path, *, ticker=None, as_of=None, max_pages=40):
                 links += 1
     except PdfQualityError:
         raise
-    except (OSError, ValueError, TypeError, KeyError, IndexError, AttributeError) as exc:
+    except (PdfReadError, OSError, ValueError, TypeError, KeyError, IndexError, AttributeError) as exc:
         raise PdfQualityError(f'Unreadable or damaged PDF: {type(exc).__name__}') from None
     text = ' '.join(' '.join(extracted).split())
     required = (*HEADINGS, *RISK_KEYS, *FUNDAMENTAL_KEYS)
