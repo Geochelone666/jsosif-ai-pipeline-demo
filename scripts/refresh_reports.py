@@ -16,6 +16,7 @@ from report_store import read_json, write_json, digest, persist, verified_report
 from snapshot_contract import validate_snapshot
 from subscriptions import load, research_tickers
 from gemini_provider import quota_day
+from ticker_priority import fair_order
 
 
 def quota_plan(tickers, index, rpd, *, attempts=3, used_requests=0):
@@ -204,7 +205,11 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
         return {'status': 'skipped', 'publish': False, 'failed': False}
     reused = reusable_reports(root, index, tickers, business_date) if resume else {}
     pending = [ticker for ticker in tickers if ticker not in reused]
+    policy = os.environ.get('JSOSIF_FAIR_RESEARCH_PRIORITY') == '1'
+    processing_order = fair_order(pending, index.get('reports', []), business_date) if policy else pending
     selected, plan = ai_budget(pending, index, root, now, ai_mode)
+    plan['processing_order'] = processing_order
+    plan['priority_policy'] = 'least_recently_ready_then_date_rotation' if policy else 'configured_ticker_order'
     index['refresh_plan'] = plan
     run_id = now.strftime('%Y%m%dT%H%M%SZ') + '-' + uuid.uuid4().hex[:8]
     attempt = {'run_id': run_id, 'at': now.isoformat(), 'business_date': business_date,
@@ -234,7 +239,8 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
             attempt.update(status='interrupted', interruption_reason='time_budget_exhausted')
         checkpoint()
         return {'status': attempt['status'], 'publish': True, 'failed': True}
-    for ticker in pending:
+    groq_budget_closed = False
+    for ticker in processing_order:
         if remaining() is not None and remaining() <= 0:
             break
         attempt['current_ticker'] = ticker
@@ -243,8 +249,11 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
         stage = 'preflight'
         timings = attempt['stage_seconds'][ticker] = {}
         try:
-            ticker_env = dict(env, JSOSIF_AI_ENABLED='1' if ticker in selected else '0',
-                              JSOSIF_AI_UNAVAILABLE_REASON=plan['reason'])
+            allow_ai = ticker in selected and not groq_budget_closed
+            ticker_env = dict(env, JSOSIF_AI_ENABLED='1' if allow_ai else '0',
+                              JSOSIF_AI_UNAVAILABLE_REASON=(
+                                  'Groq application daily budget exhausted earlier in this run'
+                                  if groq_budget_closed else plan['reason']))
             for stage in ('quant', 'ai_extract', 'comparables', 'earnings', 'edgar', 'regenerate_report', 'report_pdf'):
                 # Never use the demo SEC contact identity for a production request.
                 if stage == 'edgar' and not (os.environ.get('SEC_USER_AGENT') or os.environ.get('GMAIL_USER')):
@@ -259,6 +268,15 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                 finally:
                     timings[stage] = round(monotonic() - started, 3)
                     print(f'Research stage: {ticker} {stage} {timings[stage]}s', flush=True)
+                if (stage == 'ai_extract' and allow_ai and plan.get('provider') == 'groq'):
+                    ai_result = read_json(DATA / f'{ticker.lower()}-ai-intel.json', {})
+                    failure = ai_result.get('error', '') if isinstance(ai_result, dict) else ''
+                    if isinstance(failure, str) and 'Groq application daily budget exhausted' in failure:
+                        groq_budget_closed = True
+                        attempt['ai_budget_closed_after'] = ticker
+                        attempt['ai_budget_closed_reason'] = 'local_daily_budget_exhausted'
+                        print(f'{ticker}: local Groq daily budget exhausted; suppressing further AI calls '
+                              'while still collecting market/news snapshots', flush=True)
             stage = 'archive'
             entry = archive(root, ticker, report_date.strftime('%Y%m%d'), run_id,
                             datetime.now(timezone.utc).isoformat())

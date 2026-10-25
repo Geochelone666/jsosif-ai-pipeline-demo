@@ -450,3 +450,48 @@ def test_naive_and_unknown_schedule_inputs_rejected():
         decision('schedule', datetime(2026, 10, 20, 23, tzinfo=timezone.utc), '5 23 * * *')
     assert decision('workflow_dispatch', datetime(2026, 10, 20, 3, tzinfo=timezone.utc)) == {
         'run': True, 'business_date': '2026-10-19'}
+
+
+def test_daily_prioritization_can_be_enabled_without_changing_expected_coverage(pipeline, monkeypatch):
+    root, calls, _ = pipeline
+    monkeypatch.setenv('JSOSIF_FAIR_RESEARCH_PRIORITY', '1')
+    from ticker_priority import fair_order
+    expected = fair_order(['CSCO', 'JPM'], [], '2026-10-18')
+    result = refresh.refresh(root, now=NOW)
+    assert result['status'] == 'degraded'
+    assert [ticker for ticker, stage, _ in calls if stage == 'quant'] == expected
+    attempt = read_json(root / 'index.json')['last_attempt']
+    assert attempt['expected_tickers'] == ['CSCO', 'JPM']
+    plan = read_json(root / 'index.json')['refresh_plan']
+    assert plan['processing_order'] == expected
+    assert plan['priority_policy'] == 'least_recently_ready_then_date_rotation'
+
+
+def test_confirmed_groq_daily_exhaustion_suppresses_later_model_calls(pipeline, monkeypatch):
+    root, calls, _ = pipeline
+    monkeypatch.setenv('GROQ_API_KEY', 'synthetic-only')
+    monkeypatch.setenv('AI_PROVIDER', 'groq')
+    fake = refresh.subprocess.run
+    count = {'ai': 0}
+
+    def run(command, **kwargs):
+        result = fake(command, **kwargs)
+        stage = Path(command[1]).stem
+        if stage == 'ai_extract' and kwargs['env']['JSOSIF_AI_ENABLED'] == '1':
+            count['ai'] += 1
+            path = refresh.DATA / (command[-1].lower() + '-ai-intel.json')
+            saved = read_json(path)
+            saved['error'] = 'AI unavailable: Groq application daily budget exhausted (tokens)'
+            write_json(path, saved)
+        return result
+
+    monkeypatch.setattr(refresh.subprocess, 'run', run)
+    outcome = refresh.refresh(root, now=NOW)
+    assert outcome['status'] == 'degraded'
+    assert count['ai'] == 1
+    ai_calls = [enabled for _, stage, enabled in calls if stage == 'ai_extract']
+    assert ai_calls == ['1', '0']
+    assert sum(stage == 'quant' for _, stage, _ in calls) == 2
+    attempt = read_json(root / 'index.json')['last_attempt']
+    assert attempt['ai_budget_closed_after'] == 'CSCO'
+    assert attempt['pending_tickers'] == ['CSCO', 'JPM']
