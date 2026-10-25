@@ -74,6 +74,7 @@ jobs:
         timeout-minutes: 230
         env:
           AI_PROVIDER: groq
+          JSOSIF_FAIR_RESEARCH_PRIORITY: '1'
           GROQ_API_KEY: ${{ secrets.Grop_ai_API }}
           GROQ_MODEL: ${{ vars.GROQ_MODEL || 'openai/gpt-oss-20b' }}
           GROQ_FALLBACK_MODEL: ${{ vars.GROQ_FALLBACK_MODEL }}
@@ -150,6 +151,9 @@ jobs:
           print('# Daily research pipeline')
           print('Business date:', attempt.get('business_date', 'not collected'))
           print('Collection status:', attempt.get('status', 'not collected'))
+          print('Priority policy:', read_json('../report-store/index.json', {}).get('refresh_plan', {}).get('priority_policy', 'configured_ticker_order'))
+          if attempt.get('ai_budget_closed_after'):
+              print('Groq budget closed after:', attempt['ai_budget_closed_after'])
           for key in ('successful_tickers', 'reused_tickers', 'pending_tickers', 'degraded_tickers', 'failed_tickers', 'ai_deferred_tickers'):
               print('- ' + key + ': ' + str(len(attempt.get(key, []))))
           if attempt.get('interruption_reason'):
