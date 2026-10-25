@@ -132,14 +132,32 @@ def _display(value):
     return str(value)
 
 
-def build_interpretation_section(metrics: dict) -> str:
+PDF_PRIORITY = (
+    'Return 1D (%)', 'Return 1Y (%)', 'Annualized volatility (%)',
+    'Beta vs SPY', 'Max drawdown (%)', 'Sharpe (rf=0)',
+    'Historical VaR 95% (1D, %)', 'Historical ES 95% (1D, %)',
+    'RSI (14, Wilder)', 'P/E (trailing)',
+)
+
+
+def build_interpretation_section(metrics: dict, *, concise=False) -> str:
     """Render only known metrics with finite numeric values, in registry order."""
     bullets = []
     for key, entry in METRICS.items():
+        if concise and key not in PDF_PRIORITY:
+            continue
         value = metrics.get(key)
         if _finite(value):
-            bullets.append(f"- **{entry['label']}**: {entry['meaning']} "
-                           f"This value: {_display(value)} -> {interpret(key, value)}")
+            if concise:
+                interpretation = interpret(key, value)
+                addition = ('' if interpretation == 'No interpretation rule is available for this metric.'
+                            else ' ' + interpretation)
+                bullets.append(f"- **{entry['label']}**: {entry['meaning']} "
+                               f"Observed: {_display(value)}.{addition}")
+            else:
+                # The full Markdown contract is intentionally unchanged.
+                bullets.append(f"- **{entry['label']}**: {entry['meaning']} "
+                               f"This value: {_display(value)} -> {interpret(key, value)}")
     if not bullets:
         return ''
     return ('## HOW TO READ THE QUANTITATIVE SECTION\n\n'

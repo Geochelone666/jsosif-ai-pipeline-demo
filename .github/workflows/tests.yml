@@ -25,6 +25,13 @@ jobs:
           name: research-site-preview-${{ matrix.python }}
           path: site-preview
           retention-days: 14
+      - name: Package source for reproducible PDF visual review
+        run: tar -czf "$RUNNER_TEMP/research-source-review.tar.gz" scripts requirements.lock requirements.txt
+      - uses: actions/upload-artifact@v6
+        with:
+          name: research-source-review-${{ matrix.python }}
+          path: ${{ runner.temp }}/research-source-review.tar.gz
+          retention-days: 7
 
   browser:
     runs-on: ubuntu-latest

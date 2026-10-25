@@ -530,3 +530,18 @@ def test_actual_offline_pipeline_pdf_passes_structural_preflight(pipeline, monke
                                  as_of=entry['as_of'])
         assert inspection['pages'] >= 1
         assert inspection['https_links'] >= 1
+
+
+def test_pdf_quantitative_table_begins_on_first_page_instead_of_leaving_a_blank_cover(pipeline, monkeypatch):
+    from pypdf import PdfReader
+    root, _, _ = pipeline
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_RPD', '10')
+    monkeypatch.setenv('GEMINI_RPM', '10')
+    assert refresh.refresh(root, now=NOW)['status'] == 'complete'
+    first = read_json(root / 'index.json')['reports'][0]
+    reader = PdfReader(root / first['pdf'])
+    page_one = reader.pages[0].extract_text()
+    assert 'Quantitative' in page_one
+    assert 'Close' in page_one
+    assert len(page_one) > 900

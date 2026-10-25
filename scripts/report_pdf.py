@@ -10,6 +10,7 @@ Usage: python scripts/report_pdf.py --ticker ACN
 Output: reports/<TICKER>-intelligence-<YYYYMMDD>.pdf
 """
 import html as html_lib
+from datetime import datetime, timezone
 import json
 import re
 import sys
@@ -97,6 +98,16 @@ info = read_snapshot('info.json')
 link_by_headline = {it['headline']: it['link'] for it in rss if it.get('link')}
 
 
+def compact_utc(value):
+    try:
+        parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
+        if parsed.tzinfo is None:
+            return value
+        return parsed.astimezone(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+    except (TypeError, ValueError, AttributeError):
+        return value or 'N/A'
+
+
 def fmt(v, d=4):
     v = number(v)
     return 'N/A' if v is None else f'{v:.{d}f}'
@@ -111,6 +122,8 @@ styles['subtitle'] = ParagraphStyle('Subtitle2', fontName='Helvetica', fontSize=
 styles['h1'] = ParagraphStyle('H1', fontName='Helvetica-Bold', fontSize=13,
                               leading=16, textColor=NAVY, spaceBefore=16,
                               spaceAfter=8, keepWithNext=True)
+styles['h1_split_table'] = ParagraphStyle('H1SplitTable', parent=styles['h1'],
+                                          keepWithNext=False)
 styles['h2'] = ParagraphStyle('H2', fontName='Helvetica-Bold', fontSize=11,
                               leading=14, textColor=DARK, spaceBefore=10,
                               spaceAfter=6, keepWithNext=True)
@@ -173,7 +186,7 @@ W = A4[0] - 4 * cm  # usable width with 2cm margins
 story.append(p(f'{esc(TICKER)} Intelligence Report', 'title'))
 story.append(p(f'Report as_of: <b>{esc(AS_OF)}</b> &nbsp;|&nbsp; '
                f'Market data as_of: <b>{esc(quant.get("as_of") or "N/A")}</b> &nbsp;|&nbsp; '
-               f'Market data fetched (UTC): <b>{esc(quant.get("fetched_at", "N/A"))}</b>',
+               f'Market fetched: <b>{esc(compact_utc(quant.get("fetched_at")))}</b>',
                'subtitle'))
 company = esc(info.get('longName') or TICKER)
 story.append(p(f'{company} &nbsp;|&nbsp; {esc(info.get("sector") or "N/A")} '
@@ -227,7 +240,7 @@ story.append(p(
     'small'))
 
 # ---------------------------------------------------------------- quantitative
-story.append(p('Quantitative', 'h1'))
+story.append(p('Quantitative', 'h1_split_table'))
 quant_rows = [
     ('Close', fmt(q.get('Close'))),
     ('Return 1D (%)', fmt(q.get('Return 1D (%)'))),
@@ -275,11 +288,14 @@ story.append(p('Methodology: adjusted daily closes (yfinance auto_adjust=True; S
                'small'))
 
 # ---------------------------------------------------------------- how to read
-interp = build_interpretation_section(q)
+interp = build_interpretation_section(q, concise=True)
 m = re.search(r'## (.+)\n\n(.+?)\n\n((?:- .+\n?)+)', interp, re.S)
 if m:
     story.append(p(esc(m.group(1)), 'h1'))
     story.append(p(esc(m.group(2).strip()), 'small'))
+    story.append(p('The table above contains the complete metric set. This compact guide highlights '
+                   'ten research-context measures; definitions and full interpretation are retained in the '
+                   'accompanying Markdown and data snapshots.', 'small'))
     for line in m.group(3).strip().splitlines():
         bm = re.match(r'- \*\*(.+?)\*\*:\s*(.*)$', line)
         if bm:
