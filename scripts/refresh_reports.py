@@ -258,6 +258,7 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                               JSOSIF_AI_UNAVAILABLE_REASON=(
                                   'Groq application daily budget exhausted earlier in this run'
                                   if groq_budget_closed else plan['reason']))
+            ticker_env.pop('JSOSIF_NEWS_REUSE_PATH', None)
             if (os.environ.get('JSOSIF_NEWS_REUSE_ENABLED') == '1' and
                     ai_mode != 'off' and ticker in selected):
                 from news_reuse import prior_decisions
