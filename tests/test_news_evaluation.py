@@ -4,7 +4,7 @@ import json
 import pytest
 
 from eval_news_classification import (
-    ABSTAIN, load_gold, rule_predictions, score, snapshot_predictions, main,
+    ABSTAIN, identity, load_gold, rule_predictions, score, snapshot_predictions, main,
 )
 
 
@@ -18,7 +18,7 @@ def row(ticker, headline, label, day='2026-10-24'):
 
 
 def key(item):
-    return (item['ticker'], item['headline'], item['pubDate'])
+    return identity(item)
 
 
 def test_precision_does_not_count_abstention_as_correct():
