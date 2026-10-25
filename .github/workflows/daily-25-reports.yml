@@ -172,6 +172,19 @@ jobs:
               print('Groq token headroom at preflight:', plan['remaining_tokens'])
               print('Note: local preflight is not a live provider quota guarantee.')
           PY
+      - name: Audit archived source and classification evidence
+        if: ${{ always() && steps.persist.outcome == 'success' }}
+        run: |
+          python scripts/production_health.py --store ../report-store \
+            --json-out "$RUNNER_TEMP/research-production-health.json" \
+            --append-summary "$GITHUB_STEP_SUMMARY"
+      - name: Upload evidence-based daily health report
+        if: ${{ always() && steps.persist.outcome == 'success' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-production-health-${{ github.run_id }}
+          path: ${{ runner.temp }}/research-production-health.json
+          retention-days: 30
       - name: Remove private configuration
         if: always()
         run: rm -f "$RUNNER_TEMP/subscriptions.json"
