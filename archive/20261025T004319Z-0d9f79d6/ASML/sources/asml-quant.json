@@ -1,0 +1,155 @@
+{
+  "ticker": "ASML",
+  "errors": [
+    "warning: Free cash flow yield (%) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/ASML/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/ASML/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 1571.800048828125,
+    "Return 1D (%)": 0.7215457139048809,
+    "Return 1W (%)": -4.247281170718475,
+    "Return 1M (%)": -9.905362113848836,
+    "Return YTD (%)": 47.62220588368486,
+    "Return 1Y (%)": 52.65705511769576,
+    "Annualized volatility (%)": 46.5954878809813,
+    "Max drawdown (%)": -21.95313939004605,
+    "Sharpe (rf=0)": 1.1436676645054156,
+    "Beta vs SPY": 2.2434079665768967,
+    "MA50": 1722.733603515625,
+    "Close vs MA50 (%)": -8.761282323598152,
+    "MA200": 1585.3187634277344,
+    "Close vs MA200 (%)": -0.8527442500194438,
+    "RSI (14, Wilder)": 35.2220142363189,
+    "MACD (12,26)": -37.59516486411303,
+    "MACD signal (9)": -16.366045646244782,
+    "MACD histogram": -21.22911921786825,
+    "Downside deviation (rf=0, %)": 30.780328146515075,
+    "Sortino (rf=0)": 1.7312925498283136,
+    "Historical VaR 95% (1D, %)": 4.5084670622010155,
+    "Historical ES 95% (1D, %)": 5.985718587164097,
+    "Correlation vs SPY": 0.6137171320279908,
+    "Tracking error vs SPY (%)": 40.05735225754552,
+    "P/E (trailing)": 38.67618,
+    "P/B": 1349.6245,
+    "EV/EBITDA": 2066.768,
+    "Revenue growth (%)": 55.2,
+    "Forward P/E (estimate)": 25.015871,
+    "Gross margin (%)": 54.337,
+    "Operating margin (%)": 44.356,
+    "Return on equity (%)": 65.636003,
+    "Free cash flow yield (%)": null
+  },
+  "as_of": "2026-10-23",
+  "verification": {
+    "base_date": "2025-10-23",
+    "base_close": 1029.628173828125,
+    "end_close": 1571.800048828125,
+    "manual_1Y_pct": 52.65705511769575,
+    "passed": true
+  },
+  "fetched_at": "2026-10-25T00:50:23.953549+00:00",
+  "requested_as_of": "2026-10-24",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "ASML",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1792889004.416806
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {
+    "Free cash flow yield (%)": {
+      "status": "undefined",
+      "reason": "undefined: free cash flow and market capitalization currency match is unverified"
+    }
+  },
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "EUR"
+  },
+  "history_count": {
+    "ASML": 267,
+    "SPY": 267
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 267 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 267. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'ASML'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-24'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
