@@ -69,6 +69,9 @@ def inspect_pdf(path, *, ticker=None, as_of=None, max_pages=40):
     except (PdfReadError, OSError, ValueError, TypeError, KeyError, IndexError, AttributeError) as exc:
         raise PdfQualityError(f'Unreadable or damaged PDF: {type(exc).__name__}') from None
     text = ' '.join(' '.join(extracted).split())
+    first_page = ' '.join(extracted[0].split())
+    if ticker and ('Quantitative' not in first_page or 'Close' not in first_page):
+        raise PdfQualityError('First page lacks the quantitative table; possible blank-cover regression')
     required = (*HEADINGS, *RISK_KEYS, *FUNDAMENTAL_KEYS)
     if ticker:
         required += (ticker + ' Intelligence Report',)
