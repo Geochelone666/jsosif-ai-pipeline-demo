@@ -646,6 +646,8 @@ def main():
     from news_freshness import annotate_news_publication_age
     data['rss_audit'] = audit_rss(items, as_of)
     annotate_news_publication_age(data, as_of)
+    from news_decision_audit import audit_decisions
+    data['decision_audit'] = audit_decisions(data)
     data['fetched_at'] = datetime.now(timezone.utc).isoformat()
     from ai_provider import model
     data['model'] = (model()
