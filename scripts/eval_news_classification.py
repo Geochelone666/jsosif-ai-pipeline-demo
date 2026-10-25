@@ -15,6 +15,11 @@ UNVERIFIABLE = 'insufficient_evidence'
 GOLD_LABELS = (*LABELS, UNVERIFIABLE)
 
 
+def identity(row):
+    """Include the business date: one headline can recur in multiple daily reports."""
+    return (row['ticker'], row.get('as_of', ''), row['headline'], row['pubDate'])
+
+
 def load_gold(path):
     rows = json.loads(Path(path).read_text(encoding='utf-8'))
     if not isinstance(rows, list) or not rows:
@@ -26,7 +31,7 @@ def load_gold(path):
         if not all(isinstance(row.get(k), str) and row[k].strip()
                    for k in ('ticker', 'headline', 'pubDate')):
             raise ValueError('Gold items require ticker, headline and publication date')
-        key = (row['ticker'], row['headline'], row['pubDate'])
+        key = identity(row)
         if key in used:
             raise ValueError('Duplicate gold headline identity: ' + repr(key))
         used.add(key)
@@ -38,7 +43,7 @@ def rule_predictions(rows):
     output = {}
     for row in rows:
         category, record = classify_rule(row, row['ticker'])
-        output[(row['ticker'], row['headline'], row['pubDate'])] = (
+        output[identity(row)] = (
             category if record['extraction_method'] == 'rule' else ABSTAIN)
     return output
 
@@ -73,7 +78,7 @@ def snapshot_predictions(rows, snapshots, *, only_model_items=False):
         lookup = loaded.get((row['ticker'], anchor))
         if lookup is None:
             continue
-        key = (row['ticker'], row['headline'], row['pubDate'])
+        key = identity(row)
         if only_model_items and row['headline'] not in lookup:
             continue
         eligible.append(row)
@@ -87,7 +92,7 @@ def score(rows, predictions):
     confusion = Counter()
     per_label = {label: Counter() for label in GOLD_LABELS}
     for row in rows:
-        key = (row['ticker'], row['headline'], row['pubDate'])
+        key = identity(row)
         actual = row['label']
         predicted = predictions.get(key, ABSTAIN)
         if predicted not in (*LABELS, ABSTAIN):
@@ -149,7 +154,7 @@ def main(argv=None):
         rules_for_eligible = rule_predictions(eligible)
         candidate_rows = [
             row for row in eligible
-            if rules_for_eligible[(row['ticker'], row['headline'], row['pubDate'])] == ABSTAIN
+            if rules_for_eligible[identity(row)] == ABSTAIN
         ]
         output['ai_candidate_subset'] = score(candidate_rows, predictions)
         output['caution'] = ('AI candidates are selected by rule abstention; compare '
