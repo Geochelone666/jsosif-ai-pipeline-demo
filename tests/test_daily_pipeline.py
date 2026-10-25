@@ -514,3 +514,19 @@ def test_source_checksums_prevent_silent_tampering_of_new_reports(pipeline, monk
     with pytest.raises(ValueError, match='source integrity'):
         verified_report_files(root, entry)
     assert not check(root, require_ready=True)['ready']
+
+
+def test_actual_offline_pipeline_pdf_passes_structural_preflight(pipeline, monkeypatch):
+    from pdf_quality import inspect_pdf
+    root, _, _ = pipeline
+    monkeypatch.setenv('GEMINI_API_KEY', 'synthetic')
+    monkeypatch.setenv('GEMINI_RPD', '10')
+    monkeypatch.setenv('GEMINI_RPM', '10')
+    assert refresh.refresh(root, now=NOW)['status'] == 'complete'
+    reports = read_json(root / 'index.json')['reports']
+    assert len(reports) == 2
+    for entry in reports:
+        inspection = inspect_pdf(root / entry['pdf'], ticker=entry['ticker'],
+                                 as_of=entry['as_of'])
+        assert inspection['pages'] >= 1
+        assert inspection['https_links'] >= 1
