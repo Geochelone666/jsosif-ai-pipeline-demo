@@ -68,9 +68,13 @@ def archive(root, ticker, stamp, run_id, generated_at):
         # Only explicit public data inputs, never credentials, prompts or raw stderr.
         sources = destination / 'sources'
         sources.mkdir()
+        entry['source_sha256'] = {}
         for name in ('quant', 'info', 'ai-intel', 'rss-items', 'comparables', 'earnings', 'edgar'):
-            shutil.copy2(DATA / f'{ticker.lower()}-{name}.json', sources)
+            target = sources / f'{ticker.lower()}-{name}.json'
+            shutil.copy2(DATA / target.name, target)
+            entry['source_sha256'][name] = digest(target)
         shutil.copy2(DATA / 'fred.json', sources)
+        entry['source_sha256']['fred'] = digest(sources / 'fred.json')
     except Exception:
         shutil.rmtree(destination)
         raise
@@ -254,6 +258,15 @@ def refresh(root, *, config=None, now=None, business_date=None, force=False,
                               JSOSIF_AI_UNAVAILABLE_REASON=(
                                   'Groq application daily budget exhausted earlier in this run'
                                   if groq_budget_closed else plan['reason']))
+            if (os.environ.get('JSOSIF_NEWS_REUSE_ENABLED') == '1' and
+                    ai_mode != 'off' and ticker in selected):
+                from news_reuse import prior_decisions
+                cached = prior_decisions(root, index.get('reports', []), ticker, business_date)
+                if cached:
+                    cache_path = DATA / f'{ticker.lower()}-news-reuse.json'
+                    write_json(cache_path, cached)
+                    ticker_env['JSOSIF_NEWS_REUSE_PATH'] = str(cache_path)
+                    attempt.setdefault('news_cache_candidates', {})[ticker] = len(cached['items'])
             for stage in ('quant', 'ai_extract', 'comparables', 'earnings', 'edgar', 'regenerate_report', 'report_pdf'):
                 # Never use the demo SEC contact identity for a production request.
                 if stage == 'edgar' and not (os.environ.get('SEC_USER_AGENT') or os.environ.get('GMAIL_USER')):
