@@ -5557,6 +5557,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/AAPL/AAPL-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/AAPL/AAPL-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/AAPL/AAPL-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/ACN",
+      "ticker": "ACN",
+      "generated_at": "2026-10-25T00:46:43.780750+00:00",
+      "as_of": "2026-10-24",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "189357254a426a3e979434798ac3be53d2ed94155022cbeed37a0b93d4d13749",
+        "json": "8ef9b2c158df313bc98230ade92698002e2d8bb37bc38a270831d4c45f5edd5b",
+        "pdf": "29c243183a76ebbda397684b708a39b4e6fb94a857d1ff9340c7c6c6b21457c7"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/ACN/ACN-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/ACN/ACN-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/ACN/ACN-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -5681,11 +5698,14 @@
       "XYL"
     ],
     "successful_tickers": [
-      "AAPL"
+      "AAPL",
+      "ACN"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
-    "degraded_tickers": [],
+    "degraded_tickers": [
+      "ACN"
+    ],
     "failed_tickers": [],
     "failures": [],
     "ai_selected_tickers": [
@@ -5750,6 +5770,15 @@
         "edgar": 1.919,
         "regenerate_report": 0.164,
         "report_pdf": 0.365
+      },
+      "ACN": {
+        "quant": 1.118,
+        "ai_extract": 62.164,
+        "comparables": 1.77,
+        "earnings": 1.268,
+        "edgar": 2.02,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.315
       }
     },
     "current_ticker": "ACN",
