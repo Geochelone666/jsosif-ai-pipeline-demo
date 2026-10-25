@@ -6016,6 +6016,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/META/META-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/META/META-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/META/META-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/MG.TO",
+      "ticker": "MG.TO",
+      "generated_at": "2026-10-25T01:15:50.505043+00:00",
+      "as_of": "2026-10-24",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "2c07fab9f5c90001c0f445f919342db9c9864b9ed6a32363ceb382a8b1812c01",
+        "json": "da5af382bda1243c4dd7e558f4218b24d186094a8c9db0b74d4b9ead5266a7b0",
+        "pdf": "214dab4997a993d4889fe45b16ed13875e68ba35e23cd3f5e16103d163764bbe"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/MG.TO/MG.TO-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/MG.TO/MG.TO-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/MG.TO/MG.TO-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -6167,7 +6184,8 @@
       "MC.PA",
       "MCK",
       "MCO",
-      "META"
+      "META",
+      "MG.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
@@ -6482,6 +6500,15 @@
         "edgar": 2.071,
         "regenerate_report": 0.165,
         "report_pdf": 0.365
+      },
+      "MG.TO": {
+        "quant": 1.218,
+        "ai_extract": 2.021,
+        "comparables": 1.719,
+        "earnings": 1.169,
+        "edgar": 3.175,
+        "regenerate_report": 0.115,
+        "report_pdf": 0.265
       }
     },
     "current_ticker": "MG.TO",
