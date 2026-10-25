@@ -102,5 +102,7 @@ def prior_decisions(root, reports, ticker, business_date, max_age_days=2):
                                 'category': category, 'decision': compact})
         if choices:
             return {'ticker': ticker, 'source_report_id': entry['report_id'],
-                    'source_as_of': entry['as_of'], 'items': choices}
+                    'source_as_of': entry['as_of'],
+                    'source_models': ai.get('models_used', []),
+                    'items': choices}
     return None
