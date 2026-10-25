@@ -6203,6 +6203,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/PFE/PFE-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/PFE/PFE-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/PFE/PFE-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/SCHW",
+      "ticker": "SCHW",
+      "generated_at": "2026-10-25T01:26:32.569532+00:00",
+      "as_of": "2026-10-24",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "610dfa04b65a3090898812194233b7e4a17db420bb8056ad8027a0956947e77c",
+        "json": "3dc26715c4ae1030231e0f58b0ef2327a28ec7ac8b50a4e56ce7323a34da6da1",
+        "pdf": "cb800152745e9d6755d206699b4ed848e3466e13e00ea18cee976afc3fa1db54"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/SCHW/SCHW-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/SCHW/SCHW-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/SCHW/SCHW-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -6365,13 +6382,15 @@
       "NVO",
       "OTEX.TO",
       "PEP",
-      "PFE"
+      "PFE",
+      "SCHW"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
     "degraded_tickers": [
       "ACN",
-      "AMZN"
+      "AMZN",
+      "SCHW"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -6779,6 +6798,15 @@
         "edgar": 2.07,
         "regenerate_report": 0.115,
         "report_pdf": 0.315
+      },
+      "SCHW": {
+        "quant": 1.118,
+        "ai_extract": 0.566,
+        "comparables": 1.77,
+        "earnings": 1.218,
+        "edgar": 2.775,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.265
       }
     },
     "current_ticker": "SCHW",
