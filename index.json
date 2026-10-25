@@ -5965,6 +5965,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/MC.PA/MC.PA-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/MC.PA/MC.PA-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/MC.PA/MC.PA-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/MCK",
+      "ticker": "MCK",
+      "generated_at": "2026-10-25T01:11:37.495966+00:00",
+      "as_of": "2026-10-24",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "8a173486b85662a6dba43f141d8b9be1bbaa52ddd2a8df19d1d1ea2ad03fd543",
+        "json": "3349eac19222d9ef138c7ce03a0e23ebdf3d8b3e74ae79a8b409dd1ea81d24a5",
+        "pdf": "17cef007f40bc53cec6ddcc3256477025da088f9a244f97c814ec8ccdbaab8c0"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/MCK/MCK-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/MCK/MCK-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/MCK/MCK-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -6113,7 +6130,8 @@
       "J",
       "JPM",
       "JWEL.TO",
-      "MC.PA"
+      "MC.PA",
+      "MCK"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
@@ -6401,6 +6419,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "MCK": {
+        "quant": 1.118,
+        "ai_extract": 8.084,
+        "comparables": 1.669,
+        "earnings": 1.268,
+        "edgar": 2.32,
+        "regenerate_report": 0.115,
+        "report_pdf": 0.315
       }
     },
     "current_ticker": "MCK",
