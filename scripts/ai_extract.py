@@ -141,8 +141,8 @@ EVENTS = {
     'risk': r'flags? .*risk|approval risks?|accounts receivable|memory chip crunch',
     'market_move': r'stock|shares|premarket|market cap',
 }
-POSITIVE = r'jump(?:s|ed|ing)?|gain(?:s|ed|ing)?|climb(?:s|ed|ing)?|pop(?:s|ped)?|higher|surge(?:s|d)?|rall(?:y|ies|ied)|ris(?:e[sn]?|ing)|up|record highs?|all.time highs?|upgrad(?:e[sd]?|ing)|wins?|green light|bullish|better.than.expected|conviction list|top .*pick|optimism|best quarter'
-NEGATIVE = r'fall(?:s|ing)?|fell|slip(?:s|ped)?|drop(?:s|ped)?|tumbl(?:ing|es?)|sink(?:s|ing)?|sank|slide[sd]?|down|lower(?:s|ed)?|downgrad(?:e[sd]?|ing)|worst|pressure|threat|warnings?|doubts|lawsuit|antitrust|layoffs?|post.ipo low|selloff|retreats?'
+POSITIVE = r'jump(?:s|ed|ing)?|gain(?:s|ed|ing)?|climb(?:s|ed|ing)?|pop(?:s|ped)?|higher|surge(?:s|d)?|rall(?:y|ies|ied)|ris(?:e[sn]?|ing)|(?:stock|shares|price|premarket|trading)\s+(?:are\s+|is\s+)?up|record highs?|all.time highs?|upgrad(?:e[sd]?|ing)|wins?|green light|bullish|better.than.expected|conviction list|top .*pick|optimism|best quarter'
+NEGATIVE = r'fall(?:s|ing)?|fell|slip(?:s|ped)?|drop(?:s|ped)?|tumbl(?:ing|es?)|sink(?:s|ing)?|sank|slide[sd]?|(?:stock|shares|price|premarket|trading)\s+(?:are\s+|is\s+)?down|lower(?:s|ed)?|downgrad(?:e[sd]?|ing)|worst|pressure|threat|warnings?|doubts|lawsuit|antitrust|layoffs?|post.ipo low|selloff|retreats?'
 
 
 def metadata(item):
