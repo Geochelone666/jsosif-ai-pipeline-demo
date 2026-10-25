@@ -5608,6 +5608,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/AMTM/AMTM-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/AMTM/AMTM-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/AMTM/AMTM-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/AMZN",
+      "ticker": "AMZN",
+      "generated_at": "2026-10-25T00:50:20.846913+00:00",
+      "as_of": "2026-10-24",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "8bbab34a75f123a1969477172acf3f54c58fde46139889148edc76140e9ca7db",
+        "json": "e8071b039de01f4308b1f5b5b498fed0eef0db6d8e45c169b13f12f7b1d33c73",
+        "pdf": "058a19dc67986f53e9cfa3e202cf2b711674744c21178033d36b68688f79ea39"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/AMZN/AMZN-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/AMZN/AMZN-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/AMZN/AMZN-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -5735,12 +5752,14 @@
       "AAPL",
       "ACN",
       "AMD",
-      "AMTM"
+      "AMTM",
+      "AMZN"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
     "degraded_tickers": [
-      "ACN"
+      "ACN",
+      "AMZN"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -5833,6 +5852,15 @@
         "edgar": 2.673,
         "regenerate_report": 0.115,
         "report_pdf": 0.265
+      },
+      "AMZN": {
+        "quant": 1.469,
+        "ai_extract": 62.015,
+        "comparables": 1.719,
+        "earnings": 1.217,
+        "edgar": 2.773,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.315
       }
     },
     "current_ticker": "AMZN",
