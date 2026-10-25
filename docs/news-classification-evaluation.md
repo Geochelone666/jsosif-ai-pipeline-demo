@@ -24,6 +24,37 @@ nor the fraction of headlines processed proves classification accuracy.
    definitions *before* tuning regexes or model prompts. Avoid measuring on
    the same manually constructed regression cases that were used to fix rules.
 
+## Build a blinded review set from an archived report run
+
+In a **local clone of the report-data branch**, the archived source files
+appear under `archive/<run-id>/<ticker>/sources/*-ai-intel.json` and
+`*-rss-items.json`. They must not be regenerated or classified again.
+
+```bash
+python scripts/build_news_review_queue.py sample \
+    --root /path/to/report-data/archive/<run-id> \
+    --count 300 --seed 20261025 \
+    --out /private/news-review.csv
+```
+
+The sampled queue is stratified across tickers and observed rule/AI/unknown/
+irrelevant decisions, but the CSV **does not reveal the predictions**. Open
+and label the `label` column independently using the accepted values above,
+after checking the article. The exporter neutralizes spreadsheet formula
+prefixes and restores original headline text during conversion.
+
+```bash
+python scripts/build_news_review_queue.py finalize \
+    --review-csv /private/news-review.csv \
+    --gold-json /private/news-gold.json
+python scripts/eval_news_classification.py --gold /private/news-gold.json
+```
+
+Unlabeled rows remain pending; the converter includes only manually labeled
+cases. Use fresh blind review and a chronological holdout to estimate actual
+accuracy, rather than treating the curated CI regression fixtures as a valid
+random sample. Keep review CSV and gold JSON in **private storage**.
+
 ## Run
 
 ```bash
