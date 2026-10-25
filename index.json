@@ -5914,6 +5914,23 @@
       "md": "archive/20261025T004319Z-0d9f79d6/J/J-intelligence-20261024.md",
       "json": "archive/20261025T004319Z-0d9f79d6/J/J-intelligence-20261024.json",
       "pdf": "archive/20261025T004319Z-0d9f79d6/J/J-intelligence-20261024.pdf"
+    },
+    {
+      "report_id": "20261025T004319Z-0d9f79d6/JPM",
+      "ticker": "JPM",
+      "generated_at": "2026-10-25T01:10:26.076402+00:00",
+      "as_of": "2026-10-24",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-24",
+      "sha256": {
+        "md": "db224f8112dfdbe928e86e1133cbae2708c8628540073d46c7acb802a2597859",
+        "json": "ed07a12aa120ea86862cb35f3f7b780e1ebee24155cbf19cc117ecbe7bb807ce",
+        "pdf": "8ec9861e0e03066c1725d91e6b41d40ed2aa4a6629ab095422d3d0764af113b0"
+      },
+      "md": "archive/20261025T004319Z-0d9f79d6/JPM/JPM-intelligence-20261024.md",
+      "json": "archive/20261025T004319Z-0d9f79d6/JPM/JPM-intelligence-20261024.json",
+      "pdf": "archive/20261025T004319Z-0d9f79d6/JPM/JPM-intelligence-20261024.pdf"
     }
   ],
   "refresh_plan": {
@@ -6059,7 +6076,8 @@
       "GIS",
       "GOOGL",
       "ISRG",
-      "J"
+      "J",
+      "JPM"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40147761837",
@@ -6320,6 +6338,15 @@
         "edgar": 2.069,
         "regenerate_report": 0.114,
         "report_pdf": 0.265
+      },
+      "JPM": {
+        "quant": 1.117,
+        "ai_extract": 102.976,
+        "comparables": 1.769,
+        "earnings": 1.218,
+        "edgar": 1.918,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.315
       }
     },
     "current_ticker": "JPM",
