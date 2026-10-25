@@ -93,6 +93,8 @@ def score(rows, predictions):
         if predicted not in (*LABELS, ABSTAIN):
             raise ValueError('Invalid prediction: ' + repr(predicted))
         counts['total'] += 1
+        if actual != UNVERIFIABLE:
+            counts['labelable'] += 1
         confusion[(actual, predicted)] += 1
         per_label[actual]['total'] += 1
         if predicted == ABSTAIN:
@@ -102,6 +104,8 @@ def score(rows, predictions):
                 counts['correct_abstentions_on_insufficient_evidence'] += 1
         else:
             counts['covered'] += 1
+            if actual != UNVERIFIABLE:
+                counts['covered_labelable'] += 1
             per_label[actual]['covered'] += 1
             if predicted == actual:
                 counts['correct'] += 1
@@ -114,6 +118,8 @@ def score(rows, predictions):
                     counts['false_decisions_on_insufficient_evidence'] += 1
     return {
         'sample_size': counts['total'],
+        'labelable_sample_size': counts['labelable'],
+        'coverage_on_labelable': counts['covered_labelable'] / counts['labelable'] if counts['labelable'] else None,
         'coverage': counts['covered'] / counts['total'] if counts['total'] else None,
         'selective_precision': counts['correct'] / counts['covered'] if counts['covered'] else None,
         'correct': counts['correct'], 'wrong': counts['wrong'],
