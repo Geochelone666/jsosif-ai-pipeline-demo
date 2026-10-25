@@ -11,7 +11,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from eval_news_classification import GOLD_LABELS, load_gold
+from eval_news_classification import GOLD_LABELS, identity
 
 COLUMNS = ('ticker', 'headline', 'pubDate', 'source', 'link', 'as_of', 'label')
 
@@ -136,7 +136,7 @@ def load_gold_from_rows(rows):
         if not all(row.get(key) and isinstance(row[key], str)
                    for key in ('ticker', 'headline', 'pubDate')):
             raise ValueError('Incomplete headline identity')
-        ident = (row['ticker'], row['headline'], row['pubDate'])
+        ident = identity(row)
         if ident in used:
             raise ValueError('Duplicate reviewed headline identity')
         used.add(ident)
