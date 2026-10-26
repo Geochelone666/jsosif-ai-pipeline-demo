@@ -1,0 +1,111 @@
+{
+  "ticker": "MCK",
+  "as_of": "2026-10-25",
+  "tailwinds": [
+    {
+      "headline": "McKesson (MCK) Stock Dips While Market Gains: Key Facts",
+      "summary": "McKesson (MCK) Stock Dips While Market Gains: Key Facts",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.8,
+      "companies": [
+        "MCK"
+      ],
+      "event_type": "market_move",
+      "sentiment": "positive",
+      "extraction_method": "rule",
+      "date": "2026-10-21",
+      "source": "Yahoo Finance",
+      "pubDate": "Wed, 21 Oct 2026 20:50:03 GMT",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNc1VSQkdGQXhLT0piYTVfRXhNbWI3ODlZci1nMnRXMW9CT0xBc1RBemxrOGdkXzRwZHoyQ0FlSGYyQy1OWUw3cWJwZ29KQWpmUTRDV2tjeTlxaTNObUhuNm5mLWZXZ1Jnb2JYak1MTnAzTGsweV9ZeUo5dkFvUGQzZDk2WVcyTS0xWTJDUENjYnpMMmtTWDNFMEp3?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMimgFBVV95cUxNc1VSQkdGQXhLT0piYTVfRXhNbWI3ODlZci1nMnRXMW9CT0xBc1RBemxrOGdkXzRwZHoyQ0FlSGYyQy1OWUw3cWJwZ29KQWpmUTRDV2tjeTlxaTNObUhuNm5mLWZXZ1Jnb2JYak1MTnAzTGsweV9ZeUo5dkFvUGQzZDk2WVcyTS0xWTJDUENjYnpMMmtTWDNFMEp3?oc=5"
+      ],
+      "publication_freshness": {
+        "age_days": 4,
+        "label": "historical_context",
+        "presentation_window_days": 2
+      }
+    }
+  ],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [],
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "McKesson",
+      "reason": "No event information provided."
+    },
+    {
+      "headline": "Is Trending Stock McKesson Corporation (MCK) a Buy Now?",
+      "reason": "Opinion piece, no factual event."
+    },
+    {
+      "headline": "Would You Have Held McKesson Stock All The Way Up?",
+      "reason": "Speculative question, no event."
+    },
+    {
+      "headline": "McKesson (MCK) Outperforms Broader Market: What You Need to Know",
+      "reason": "Performance summary, not a specific event."
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 5,
+    "rule": 1,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 4
+  },
+  "rss_audit": {
+    "raw_items": 5,
+    "unique_headlines": 5,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 80.0,
+    "publisher_hhi": 0.68,
+    "https_link_headlines": 5,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-20",
+    "newest_publication_date": "2026-10-22",
+    "oldest_headline_age_days": 5
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-10-25",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 0,
+      "historical_context": 1,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-10-26T01:32:51.643170+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=McKesson%20MCK%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 5
+  }
+}
