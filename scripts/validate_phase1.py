@@ -6,6 +6,43 @@ import re
 import os
 from datetime import date
 from data_utils import DATA, REPORTS, ROOT, save, SUPPORTED, as_of_date
+
+
+def build_health(results):
+    """Machine-readable summary of validation results.
+
+    Pure function: derives pass/fail/skip per item from the results dict
+    without changing any original validation judgment. A ticker passes only
+    when its sections and quant checks passed and neither market nor AI
+    errors are recorded; an item marked skipped (or None) counts as skip.
+    """
+    items = {}
+    for key, item in results.items():
+        if key == '_health':
+            continue
+        if item is None or (isinstance(item, dict) and item.get('skipped')):
+            items[key] = 'skip'
+        elif key.startswith('independent_'):
+            items[key] = 'pass' if isinstance(item, dict) and item.get('passed') is True else 'fail'
+        elif (isinstance(item, dict) and item.get('sections_passed')
+              and item.get('quant_matches_json')
+              and not item.get('ai_error') and not item.get('market_errors')):
+            items[key] = 'pass'
+        else:
+            items[key] = 'fail'
+    passed = sum(1 for v in items.values() if v == 'pass')
+    failed = sum(1 for v in items.values() if v == 'fail')
+    skipped = sum(1 for v in items.values() if v == 'skip')
+    if failed:
+        status = 'fail'
+    elif items:
+        status = 'pass'
+    else:
+        status = 'skip'
+    return {'status': status, 'total': len(items), 'passed': passed,
+            'failed': failed, 'skipped': skipped, 'items': items}
+
+
 AS_OF = as_of_date().isoformat()
 STAMP = AS_OF.replace("-", "")
 
@@ -46,5 +83,6 @@ for ticker in SUPPORTED:
     assert abs(computed - Decimal(str(quant['metrics']['Return 1Y (%)']))) < Decimal('1e-10')
     results[f'independent_{ticker}_1Y'] = {'passed': True, 'return_pct': str(computed)}
 (ROOT / 'INDEX.md').write_text('\n'.join(index) + '\n')
+results['_health'] = build_health(results)
 save('phase1-validation.json', results)
 print(json.dumps(results, indent=2))
