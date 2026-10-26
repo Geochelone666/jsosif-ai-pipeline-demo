@@ -7863,7 +7863,7 @@
     "run_id": "20261026T005504Z-6368ad31",
     "at": "2026-10-26T00:55:04.475973+00:00",
     "business_date": "2026-10-25",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -8486,11 +8486,20 @@
         "report_pdf": 0.465
       }
     },
-    "current_ticker": "PEP",
     "last_progress_at": "2026-10-26T01:39:32.468791+00:00",
     "ai_budget_closed_after": "MU",
-    "ai_budget_closed_reason": "local_daily_budget_exhausted"
+    "ai_budget_closed_reason": "local_daily_budget_exhausted",
+    "pending_tickers": [
+      "MU",
+      "NFLX",
+      "NVAX",
+      "NVDA",
+      "NVO",
+      "OTEX.TO",
+      "PEP"
+    ],
+    "finished_at": "2026-10-26T01:39:43.373589+00:00"
   },
-  "last_complete_refresh": "2026-10-25T00:43:19.010399+00:00",
-  "last_complete_business_date": "2026-10-24"
+  "last_complete_refresh": "2026-10-26T00:55:04.475973+00:00",
+  "last_complete_business_date": "2026-10-25"
 }
