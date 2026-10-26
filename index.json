@@ -6444,6 +6444,33 @@
         "edgar": "e731f31ceea59acab24204678571d13f9c1735943f6d21b20940c063d20d0f12",
         "fred": "d6ab3c0c74b7ed41f7550bb97ea71af86f615307cc6e7feb08503be6687d0ee1"
       }
+    },
+    {
+      "report_id": "20261026T005504Z-6368ad31/XYL",
+      "ticker": "XYL",
+      "generated_at": "2026-10-26T00:57:35.621802+00:00",
+      "as_of": "2026-10-25",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-25",
+      "sha256": {
+        "md": "6d7fac397fe0a8ec8aba3efafd998c863b82d6407851832661ed5b17b962d6e5",
+        "json": "ce447dced63167405d75af7a3b660c1c1359271b30fc7781e00fdead39867ffe",
+        "pdf": "4d22f7464757618d0b341c407bb2318207daa13670ef682bd4894de52990383a"
+      },
+      "md": "archive/20261026T005504Z-6368ad31/XYL/XYL-intelligence-20261025.md",
+      "json": "archive/20261026T005504Z-6368ad31/XYL/XYL-intelligence-20261025.json",
+      "pdf": "archive/20261026T005504Z-6368ad31/XYL/XYL-intelligence-20261025.pdf",
+      "source_sha256": {
+        "quant": "079b48554d83d9a7c76b6337b1c0b202b491db5c9d6c3506e20a4d308da3b59e",
+        "info": "a0f41c3415e9a1552d0955c9edecf39c137f78d5fff90c5639662aec7fd04371",
+        "ai-intel": "fc8ec1dcb4080dde4e428cbb844e2dab9b1cc652531dcaeb1f24ee7d5a364e04",
+        "rss-items": "c43c7e759489d65a578989050583faad8dcf2a212991eb55665ec29bbc0daccb",
+        "comparables": "746ff80e2898c91b8b87e7edb4ea5c35d7ea1c759ffbca7487c4884a98e8f4f4",
+        "earnings": "8d8f8a9f680c6aa68caeb02e41c953f3016b4230a3fee82c9a279e10fb34ed5f",
+        "edgar": "64a7d84da18cd41d41c8c6722833f8247711ea083ac7d53f5b35794e538cc645",
+        "fred": "d6ab3c0c74b7ed41f7550bb97ea71af86f615307cc6e7feb08503be6687d0ee1"
+      }
     }
   ],
   "refresh_plan": {
@@ -6622,7 +6649,8 @@
     ],
     "successful_tickers": [
       "V",
-      "VRTX"
+      "VRTX",
+      "XYL"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40251607321",
@@ -6698,6 +6726,15 @@
         "comparables": 1.819,
         "earnings": 1.317,
         "edgar": 2.17,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.465
+      },
+      "XYL": {
+        "quant": 1.268,
+        "ai_extract": 5.025,
+        "comparables": 2.369,
+        "earnings": 1.217,
+        "edgar": 2.118,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
       }
