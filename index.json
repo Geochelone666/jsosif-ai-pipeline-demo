@@ -6633,6 +6633,33 @@
         "edgar": "fdbad70495d3a20d04a817374040f426c7cc410d49f9120b667b4fa6d7d01276",
         "fred": "d6ab3c0c74b7ed41f7550bb97ea71af86f615307cc6e7feb08503be6687d0ee1"
       }
+    },
+    {
+      "report_id": "20261026T005504Z-6368ad31/TMC",
+      "ticker": "TMC",
+      "generated_at": "2026-10-26T01:02:03.244696+00:00",
+      "as_of": "2026-10-25",
+      "quality": "ready",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-25",
+      "sha256": {
+        "md": "d96231bec287ffd0334c5d306032cf52e94459d279f589beafd95a863fac0e1e",
+        "json": "7226865757d90278381459536a78ee1285130071570f32f07a75dcdf285b1a99",
+        "pdf": "c162cc0335476bdeed1c5d98e042aea1c9305b48ee4834f2bc8956b0ffe327b8"
+      },
+      "md": "archive/20261026T005504Z-6368ad31/TMC/TMC-intelligence-20261025.md",
+      "json": "archive/20261026T005504Z-6368ad31/TMC/TMC-intelligence-20261025.json",
+      "pdf": "archive/20261026T005504Z-6368ad31/TMC/TMC-intelligence-20261025.pdf",
+      "source_sha256": {
+        "quant": "ce2ee7d54c7c9cc1bf7cb635c51a06b13d2c6502276e5a4543cb1b20743855fd",
+        "info": "75f4643c1e183656d475f76de50771717ae403c08e4c249f640c77b245f59dab",
+        "ai-intel": "add08f8cf1d7de381d29590fadf8afa37a237238f2cfb25b02214a262918c266",
+        "rss-items": "7ff0f403e12956f68f1d5706fc224ec500c61d380e28afb8d19d46ea7be7311e",
+        "comparables": "094661a7cbfac41a0643b3dda0d9b6e7903f823b30683b90e5562e5091cd3b87",
+        "earnings": "37a213b5dc36868a7c8874f002fc94d2d99f13280a51b5d6b6218370c0709c08",
+        "edgar": "af56c7055fe167a519499e22a97c27c307f54af4423544f8a3498a55358f0876",
+        "fred": "d6ab3c0c74b7ed41f7550bb97ea71af86f615307cc6e7feb08503be6687d0ee1"
+      }
     }
   ],
   "refresh_plan": {
@@ -6818,7 +6845,8 @@
       "SPGI",
       "SYY",
       "T",
-      "TD.TO"
+      "TD.TO",
+      "TMC"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40251607321",
@@ -6957,6 +6985,15 @@
         "comparables": 2.471,
         "earnings": 1.217,
         "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.465
+      },
+      "TMC": {
+        "quant": 1.367,
+        "ai_extract": 0.515,
+        "comparables": 2.371,
+        "earnings": 1.218,
+        "edgar": 2.069,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
       }
