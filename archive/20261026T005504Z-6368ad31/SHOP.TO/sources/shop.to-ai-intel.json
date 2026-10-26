@@ -1,0 +1,99 @@
+{
+  "ticker": "SHOP.TO",
+  "as_of": "2026-10-25",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [
+    {
+      "headline": "Shopify is still kicking butt, this analyst says",
+      "summary": "Shopify is still kicking butt, this analyst says",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.8,
+      "companies": [
+        "SHOP.TO"
+      ],
+      "event_type": "analyst",
+      "sentiment": "neutral",
+      "extraction_method": "rule",
+      "date": "2026-10-19",
+      "source": "Cantech Letter",
+      "pubDate": "Mon, 19 Oct 2026 16:09:00 GMT",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxQVzNuUXFoT1FvZnFGb2VPb0swZ19MNVZNRTY5WGZqS004cGRXLUdTVllyT3BfSVVYb2RDdkI4UEoza2V1ZDd5VnR0OHcyb1F2ZmJVcE80c3YwV1pUeUNzN1lPcXJrYV9PR19FMDR5TDRhM2kwcGJTLVl1Z1daR2liR1pkUG5QRDdKS0p2bXlpONIBlAFBVV95cUxNVVVjdl9qNEFGbHl6SDBWUTBfalVCZjVRWk1JTlJGMU8yc0RDXzNTQXVfYURxUVBCdnJjYmhvb3NHNFIwMG9zZDFxTEtYb2RYMnZUVTdVMlRIRnI0UTdiLVpYeU9yc1k4REhmLUNjbWNsQjRMbGowWl9BVExyWXNyQVRtcGZFU0E0NHZJRGRiVV94RUZW?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMijwFBVV95cUxQVzNuUXFoT1FvZnFGb2VPb0swZ19MNVZNRTY5WGZqS004cGRXLUdTVllyT3BfSVVYb2RDdkI4UEoza2V1ZDd5VnR0OHcyb1F2ZmJVcE80c3YwV1pUeUNzN1lPcXJrYV9PR19FMDR5TDRhM2kwcGJTLVl1Z1daR2liR1pkUG5QRDdKS0p2bXlpONIBlAFBVV95cUxNVVVjdl9qNEFGbHl6SDBWUTBfalVCZjVRWk1JTlJGMU8yc0RDXzNTQXVfYURxUVBCdnJjYmhvb3NHNFIwMG9zZDFxTEtYb2RYMnZUVTdVMlRIRnI0UTdiLVpYeU9yc1k4REhmLUNjbWNsQjRMbGowWl9BVExyWXNyQVRtcGZFU0E0NHZJRGRiVV94RUZW?oc=5"
+      ],
+      "publication_freshness": {
+        "age_days": 6,
+        "label": "current_window",
+        "presentation_window_days": 7
+      }
+    }
+  ],
+  "risks": [],
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "Shopify (SHOP) Stock Price, News & Analysis $SHOP",
+      "reason": "No event information provided"
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 1,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 1
+  },
+  "rss_audit": {
+    "raw_items": 2,
+    "unique_headlines": 2,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 50.0,
+    "publisher_hhi": 0.5,
+    "https_link_headlines": 2,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-19",
+    "newest_publication_date": "2026-10-22",
+    "oldest_headline_age_days": 6
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-10-25",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-10-26T00:58:42.180260+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Shopify%20SHOP.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 2
+  }
+}
