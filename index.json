@@ -7632,6 +7632,33 @@
         "edgar": "ebd1a3c557989d6fa8d44bdef1b82f3d429523f03e2b2229a0bc8ca90fdbe2e4",
         "fred": "d6ab3c0c74b7ed41f7550bb97ea71af86f615307cc6e7feb08503be6687d0ee1"
       }
+    },
+    {
+      "report_id": "20261026T005504Z-6368ad31/NVDA",
+      "ticker": "NVDA",
+      "generated_at": "2026-10-26T01:39:09.567266+00:00",
+      "as_of": "2026-10-25",
+      "quality": "degraded",
+      "market_as_of": "2026-10-23",
+      "news_as_of": "2026-10-25",
+      "sha256": {
+        "md": "4823c61e364a68cb2f16b340ba608f5c383b220622d9999d1263e306abc3bc2f",
+        "json": "82b0e25d422a09ab99eaa30284b251300249d8cd2125a393703cfc53a38402ab",
+        "pdf": "c1d7255eb8823e2eec1707148a013eb1f4664be4e8a6e0b532e4e3c5c003aecf"
+      },
+      "md": "archive/20261026T005504Z-6368ad31/NVDA/NVDA-intelligence-20261025.md",
+      "json": "archive/20261026T005504Z-6368ad31/NVDA/NVDA-intelligence-20261025.json",
+      "pdf": "archive/20261026T005504Z-6368ad31/NVDA/NVDA-intelligence-20261025.pdf",
+      "source_sha256": {
+        "quant": "54443fd0fb9f12a98150deb06fdfeb41b2faf643f74d7c19f143ae334ed2667d",
+        "info": "a55edbab59a0c637a0fc2b709f3e780184c1c24757129c0a8fae73087211c5b0",
+        "ai-intel": "b6651d08517e28fd90dd796fee982d2cc83143c70542cd8a15f0fe9c8113475d",
+        "rss-items": "9a40fbe3e88c399c319dfb3d5f7233b27049c4feab7d61df441409509c5e0a97",
+        "comparables": "1cbeef577f0b49e8f171fdbf7fa88037d606dd3a3f6e8a01793581c898090897",
+        "earnings": "f361955ea623ba5fa4cad9737a0db37e082a62e7d599aa1dc7c4758485af18bc",
+        "edgar": "eeb58dcf97a8fa920479b78db115af031ba21b1e6c6bf12a59a9e4047aa53dd6",
+        "fred": "d6ab3c0c74b7ed41f7550bb97ea71af86f615307cc6e7feb08503be6687d0ee1"
+      }
     }
   ],
   "refresh_plan": {
@@ -7854,14 +7881,16 @@
       "MU",
       "NFLX",
       "NTR.TO",
-      "NVAX"
+      "NVAX",
+      "NVDA"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40251607321",
     "degraded_tickers": [
       "MU",
       "NFLX",
-      "NVAX"
+      "NVAX",
+      "NVDA"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -8330,6 +8359,15 @@
         "comparables": 2.319,
         "earnings": 1.168,
         "edgar": 2.169,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.415
+      },
+      "NVDA": {
+        "quant": 1.166,
+        "ai_extract": 0.865,
+        "comparables": 2.018,
+        "earnings": 1.166,
+        "edgar": 2.067,
         "regenerate_report": 0.114,
         "report_pdf": 0.415
       }
