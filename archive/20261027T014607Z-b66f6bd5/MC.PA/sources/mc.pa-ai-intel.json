@@ -1,0 +1,111 @@
+{
+  "ticker": "MC.PA",
+  "as_of": "2026-10-26",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [
+    {
+      "headline": "LVMH (ENXTPA:MC) Faces Fresh France Riot Risk To Tourism And Luxury Demand",
+      "summary": "LVMH warns of potential impact on tourism and luxury demand due to recent France riots.",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.9,
+      "companies": [
+        "MC.PA"
+      ],
+      "event_type": "risk",
+      "sentiment": "negative",
+      "extraction_method": "ai",
+      "date": "2026-10-24",
+      "source": "Yahoo Finance",
+      "pubDate": "Sat, 24 Oct 2026 11:12:40 GMT",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPRUlEaDV3N3NNeWdFUDJQdEJ1NU50OGNEVmtzbEJuLWlFYU9JXzNOVUhvSkQtdmRlejFNR2Z5ajlkc2pZdnk5dEZqcDZxa0xzZkR3cTh0UHpTZl9XaXBrdEp5WnkwRXczeDJiak9TaUkxR0Rkd0RFbDhWUHNxdDBGeGZ5QTc4bW1XQnVEZjZKVEdpLXcxSnc?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMilgFBVV95cUxPRUlEaDV3N3NNeWdFUDJQdEJ1NU50OGNEVmtzbEJuLWlFYU9JXzNOVUhvSkQtdmRlejFNR2Z5ajlkc2pZdnk5dEZqcDZxa0xzZkR3cTh0UHpTZl9XaXBrdEp5WnkwRXczeDJiak9TaUkxR0Rkd0RFbDhWUHNxdDBGeGZ5QTc4bW1XQnVEZjZKVEdpLXcxSnc?oc=5"
+      ],
+      "reuse_origin": "verified_prior_archive",
+      "reuse_as_of": "2026-10-25",
+      "publication_freshness": {
+        "age_days": 2,
+        "label": "current_window",
+        "presentation_window_days": 7
+      }
+    }
+  ],
+  "irrelevant": [
+    {
+      "headline": "LVMH Moët Hennessy - Louis Vuitton, Société Européenne (MC.PA) latest stock news and headlines",
+      "reason": "Generic stock news headline, no specific event."
+    },
+    {
+      "headline": "LVMH: Share transactions disclosure",
+      "reason": "No specific event details provided; only a disclosure notice."
+    }
+  ],
+  "ai_reuse": {
+    "reused_headlines": 3,
+    "from_report": "20261026T005504Z-6368ad31/MC.PA",
+    "source_as_of": "2026-10-25",
+    "prior_models": [
+      "openai/gpt-oss-20b"
+    ],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 3,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 2
+  },
+  "rss_audit": {
+    "raw_items": 3,
+    "unique_headlines": 3,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 66.67,
+    "publisher_hhi": 0.5556,
+    "https_link_headlines": 3,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-20",
+    "newest_publication_date": "2026-10-24",
+    "oldest_headline_age_days": 6
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-10-26",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-10-27T02:06:33.093897+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=LVMH%20MC.PA%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 3
+  }
+}
