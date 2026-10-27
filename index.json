@@ -8118,6 +8118,33 @@
         "edgar": "2d0b6cd1e0832410b14d4b0233c386298d2632654c85346e39d17596691debc1",
         "fred": "226e05158e6fa1697b4cc988a86c4aa8d74c36d08a61d6751de9db31764ac1e8"
       }
+    },
+    {
+      "report_id": "20261027T014607Z-b66f6bd5/CP.TO",
+      "ticker": "CP.TO",
+      "generated_at": "2026-10-27T02:00:58.630177+00:00",
+      "as_of": "2026-10-26",
+      "quality": "ready",
+      "market_as_of": "2026-10-26",
+      "news_as_of": "2026-10-26",
+      "sha256": {
+        "md": "0629614adb64b0b8c5a622e84850527a71881dac2b8ae4399eed001975f47dd7",
+        "json": "9ad568c158de0fd57fe82301299d282dc62c2d0dd5bf0b272658cd3e950c9da1",
+        "pdf": "471d79f6c9091b3e0e9d4a522847210fd72d7bb5b6b9db270c49217b933f2937"
+      },
+      "md": "archive/20261027T014607Z-b66f6bd5/CP.TO/CP.TO-intelligence-20261026.md",
+      "json": "archive/20261027T014607Z-b66f6bd5/CP.TO/CP.TO-intelligence-20261026.json",
+      "pdf": "archive/20261027T014607Z-b66f6bd5/CP.TO/CP.TO-intelligence-20261026.pdf",
+      "source_sha256": {
+        "quant": "e8940c591aba852229be983a3cc8cdaee3e48efdd585d1a6d288596c93a0ca72",
+        "info": "075bc28db9631df160d1c0ff0fcfa5f24dac1a061014c314a91a9473d045d00d",
+        "ai-intel": "09b334457b83fb2050bf90bdf90dc247c421a4bbc51e4156f48a2e404395f67e",
+        "rss-items": "2aa2657027e13bc71207cce8f547cc03d09ea2e4bab76fea8b496742634ea858",
+        "comparables": "51a5bf3c1e072de51a86785d42487b4cbfb7c4371aef7552296cac72a7d52aca",
+        "earnings": "0d991621ad8cfbdb0b01aafbd91281f9c3551316ef73bdb69a7740846c01abba",
+        "edgar": "c4e915e6d567539ec8c78c7f2fc77f723746780db4e87223965737522a71533f",
+        "fred": "226e05158e6fa1697b4cc988a86c4aa8d74c36d08a61d6751de9db31764ac1e8"
+      }
     }
   ],
   "refresh_plan": {
@@ -8308,7 +8335,8 @@
       "BRK-B",
       "CAT",
       "CNQ.TO",
-      "COST"
+      "COST",
+      "CP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40434462817",
@@ -8494,6 +8522,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.616
+      },
+      "CP.TO": {
+        "quant": 1.419,
+        "ai_extract": 0.666,
+        "comparables": 2.67,
+        "earnings": 1.517,
+        "edgar": 2.871,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.566
       }
     },
     "current_ticker": "CP.TO",
@@ -8505,7 +8542,8 @@
       "BRK-B": 17,
       "CAT": 15,
       "CNQ.TO": 4,
-      "COST": 17
+      "COST": 17,
+      "CP.TO": 8
     }
   },
   "last_complete_refresh": "2026-10-26T00:55:04.475973+00:00",
