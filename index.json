@@ -9213,7 +9213,7 @@
     "run_id": "20261027T014607Z-b66f6bd5",
     "at": "2026-10-27T01:46:07.839618+00:00",
     "business_date": "2026-10-26",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -9831,7 +9831,6 @@
         "report_pdf": 0.615
       }
     },
-    "current_ticker": "AMZN",
     "last_progress_at": "2026-10-27T02:15:18.988637+00:00",
     "news_cache_candidates": {
       "ASML": 16,
@@ -9875,8 +9874,13 @@
       "AMD": 16,
       "AMTM": 5,
       "AMZN": 16
-    }
+    },
+    "pending_tickers": [
+      "AMD",
+      "ISRG"
+    ],
+    "finished_at": "2026-10-27T02:16:09.771245+00:00"
   },
-  "last_complete_refresh": "2026-10-26T00:55:04.475973+00:00",
-  "last_complete_business_date": "2026-10-25"
+  "last_complete_refresh": "2026-10-27T01:46:07.839618+00:00",
+  "last_complete_business_date": "2026-10-26"
 }
