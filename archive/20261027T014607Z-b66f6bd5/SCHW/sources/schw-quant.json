@@ -1,0 +1,161 @@
+{
+  "ticker": "SCHW",
+  "errors": [
+    "warning: enterpriseToEbitda unavailable (N/A)",
+    "warning: EV/EBITDA unavailable (N/A)",
+    "warning: Free cash flow yield (%) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/SCHW/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/SCHW/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 89.7300033569336,
+    "Return 1D (%)": -0.9383952935952289,
+    "Return 1W (%)": 0.16744979103908708,
+    "Return 1M (%)": -9.391089101283045,
+    "Return YTD (%)": -9.29881609688702,
+    "Return 1Y (%)": -3.752517976191594,
+    "Annualized volatility (%)": 25.512114336374836,
+    "Max drawdown (%)": -21.179057960103332,
+    "Sharpe (rf=0)": -0.04009171905949395,
+    "Beta vs SPY": 0.4228763534081922,
+    "MA50": 102.24080032348633,
+    "Close vs MA50 (%)": -12.236599211830313,
+    "MA200": 97.41945167541503,
+    "Close vs MA200 (%)": -7.8931344677460995,
+    "RSI (14, Wilder)": 28.894657365961322,
+    "MACD (12,26)": -3.2424174787874165,
+    "MACD signal (9)": -3.0346177117794433,
+    "MACD histogram": -0.2077997670079732,
+    "Downside deviation (rf=0, %)": 19.70455329496592,
+    "Sortino (rf=0)": -0.051908028833565954,
+    "Historical VaR 95% (1D, %)": 2.5535775047976306,
+    "Historical ES 95% (1D, %)": 3.9505278089211995,
+    "Correlation vs SPY": 0.21077631677446657,
+    "Tracking error vs SPY (%)": 25.99634105673913,
+    "P/E (trailing)": 15.338463,
+    "P/B": 3.0166414,
+    "EV/EBITDA": null,
+    "Revenue growth (%)": 16.900000000000002,
+    "Forward P/E (estimate)": 11.49,
+    "Gross margin (%)": 97.506,
+    "Operating margin (%)": 52.669996,
+    "Return on equity (%)": 21.122,
+    "Free cash flow yield (%)": null
+  },
+  "as_of": "2026-10-26",
+  "verification": {
+    "base_date": "2025-10-24",
+    "base_close": 93.2284164428711,
+    "end_close": 89.7300033569336,
+    "manual_1Y_pct": -3.7525179761915965,
+    "passed": true
+  },
+  "fetched_at": "2026-10-27T02:09:20.781494+00:00",
+  "requested_as_of": "2026-10-26",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "SCHW",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1793065573.7987075
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 250,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {
+    "EV/EBITDA": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    },
+    "Free cash flow yield (%)": {
+      "status": "undefined",
+      "reason": "undefined: finite free cash flow and positive market capitalization are required"
+    }
+  },
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "SCHW": 268,
+    "SPY": 268
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 268 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 268. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'SCHW'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-26'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
