@@ -24,5 +24,6 @@
   (PYSEC-2026-1845).
 
 ### Added
+- `prepare_store.py` falls back to a portable orphan-worktree setup on Git older than 2.42; the full test suite now passes on Git 2.34. Added offline tests for `prepare_store` and `bundle_reports`.
 - Offline tests for the FRED and peer-comparables collectors.
 - README: environment variable reference; test command now matches CI.
