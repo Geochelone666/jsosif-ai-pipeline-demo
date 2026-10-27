@@ -7740,6 +7740,33 @@
         "edgar": "1687851d304b8a245f28adbb786d61707fd9a075930d8139f582a8b240886087",
         "fred": "d6ab3c0c74b7ed41f7550bb97ea71af86f615307cc6e7feb08503be6687d0ee1"
       }
+    },
+    {
+      "report_id": "20261027T014607Z-b66f6bd5/MU",
+      "ticker": "MU",
+      "generated_at": "2026-10-27T01:47:31.277107+00:00",
+      "as_of": "2026-10-26",
+      "quality": "ready",
+      "market_as_of": "2026-10-26",
+      "news_as_of": "2026-10-26",
+      "sha256": {
+        "md": "dc01009da714bb44a8b98d11352901745dfe5efc472b455f234ed7447df14f49",
+        "json": "d5ba5d30a41ef8522419fd75fa1294e9e3734b8069c2bc7cf344b4ee6711ee6f",
+        "pdf": "6c95dfeae36c1b8426809281e2b20b69e8e3136b97cdcc7c9a30d5148e52a11f"
+      },
+      "md": "archive/20261027T014607Z-b66f6bd5/MU/MU-intelligence-20261026.md",
+      "json": "archive/20261027T014607Z-b66f6bd5/MU/MU-intelligence-20261026.json",
+      "pdf": "archive/20261027T014607Z-b66f6bd5/MU/MU-intelligence-20261026.pdf",
+      "source_sha256": {
+        "quant": "30a7d1634f5e73f0243affe585ec0cb60e468ebcaf8a20eecd3fff9b2a96e791",
+        "info": "867119a07be3ca75e3b88dc6ea2a13ca2351f01fa8aa845dc2c75fbdae9c66bd",
+        "ai-intel": "890ca9493771b110d26aae67733977b5e0b06c93372767c2539f737fbe51f7d4",
+        "rss-items": "b4b58b561fb5f9959dd0e2094e0ef6b1998f2aa94f8b7b01c79c14b85e352755",
+        "comparables": "656a1f45b6b0ad94ee1593b514bb6a3625d49682f21ae6e611372adf2190c749",
+        "earnings": "2c8255826c7d2179498ff5be45f6aa67988807f32fbe53206005ad8108ba707a",
+        "edgar": "94de0f4ebfa187af9c1d3ee7d567757bf9d478c384b73fb88bda876b84cca691",
+        "fred": "226e05158e6fa1697b4cc988a86c4aa8d74c36d08a61d6751de9db31764ac1e8"
+      }
     }
   ],
   "refresh_plan": {
@@ -7916,7 +7943,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "MU"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "40434462817",
     "degraded_tickers": [],
@@ -7975,7 +8004,17 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "MU": {
+        "quant": 2.069,
+        "ai_extract": 65.891,
+        "comparables": 6.881,
+        "earnings": 1.418,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.718
+      }
+    },
     "current_ticker": "MU",
     "last_progress_at": "2026-10-27T01:46:10.895970+00:00"
   },
