@@ -7746,7 +7746,7 @@
     "reason": "Groq enforces durable per-model request/token application budgets",
     "provider": "groq",
     "model": "openai/gpt-oss-20b",
-    "quota_day_utc": "2026-10-26",
+    "quota_day_utc": "2026-10-27",
     "request_cap": 1000,
     "token_cap": 200000,
     "used_requests": 0,
@@ -7806,23 +7806,13 @@
       "XYL"
     ],
     "processing_order": [
-      "V",
-      "VRTX",
-      "XYL",
-      "SCHW",
-      "SHOP.TO",
-      "SPGI",
-      "SYY",
-      "T",
-      "TD.TO",
-      "TMC",
-      "TSM",
-      "ACN",
-      "AMZN",
-      "PFE",
-      "AAPL",
-      "AMD",
-      "AMTM",
+      "MU",
+      "NFLX",
+      "NVAX",
+      "NVDA",
+      "NVO",
+      "OTEX.TO",
+      "PEP",
       "ASML",
       "ATD.TO",
       "BMO.TO",
@@ -7848,22 +7838,32 @@
       "META",
       "MG.TO",
       "MSFT",
-      "MU",
-      "NFLX",
       "NTR.TO",
-      "NVAX",
-      "NVDA",
-      "NVO",
-      "OTEX.TO",
-      "PEP"
+      "PFE",
+      "SCHW",
+      "SHOP.TO",
+      "SPGI",
+      "SYY",
+      "T",
+      "TD.TO",
+      "TMC",
+      "TSM",
+      "V",
+      "VRTX",
+      "XYL",
+      "AAPL",
+      "ACN",
+      "AMD",
+      "AMTM",
+      "AMZN"
     ],
     "priority_policy": "least_recently_ready_then_date_rotation"
   },
   "last_attempt": {
-    "run_id": "20261026T005504Z-6368ad31",
-    "at": "2026-10-26T00:55:04.475973+00:00",
-    "business_date": "2026-10-25",
-    "status": "degraded",
+    "run_id": "20261027T014607Z-b66f6bd5",
+    "at": "2026-10-27T01:46:07.839618+00:00",
+    "business_date": "2026-10-26",
+    "status": "running",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -7916,69 +7916,10 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [
-      "V",
-      "VRTX",
-      "XYL",
-      "SCHW",
-      "SHOP.TO",
-      "SPGI",
-      "SYY",
-      "T",
-      "TD.TO",
-      "TMC",
-      "TSM",
-      "ACN",
-      "AMZN",
-      "PFE",
-      "AAPL",
-      "AMD",
-      "AMTM",
-      "ASML",
-      "ATD.TO",
-      "BMO.TO",
-      "BRK-B",
-      "CAT",
-      "CNQ.TO",
-      "COST",
-      "CP.TO",
-      "CSCO",
-      "CSU.TO",
-      "DIS",
-      "ENB",
-      "EW",
-      "GIS",
-      "GOOGL",
-      "ISRG",
-      "J",
-      "JPM",
-      "JWEL.TO",
-      "MC.PA",
-      "MCK",
-      "MCO",
-      "META",
-      "MG.TO",
-      "MSFT",
-      "MU",
-      "NFLX",
-      "NTR.TO",
-      "NVAX",
-      "NVDA",
-      "NVO",
-      "OTEX.TO",
-      "PEP"
-    ],
+    "successful_tickers": [],
     "reused_tickers": [],
-    "workflow_run_id": "40251607321",
-    "degraded_tickers": [
-      "MU",
-      "NFLX",
-      "NVAX",
-      "NVDA",
-      "NVO",
-      "OTEX.TO",
-      "PEP"
-    ],
+    "workflow_run_id": "40434462817",
+    "degraded_tickers": [],
     "failed_tickers": [],
     "failures": [],
     "ai_selected_tickers": [
@@ -8034,471 +7975,7 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {
-      "V": {
-        "quant": 2.019,
-        "ai_extract": 64.479,
-        "comparables": 1.968,
-        "earnings": 1.117,
-        "edgar": 2.117,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.665
-      },
-      "VRTX": {
-        "quant": 0.966,
-        "ai_extract": 50.333,
-        "comparables": 1.819,
-        "earnings": 1.317,
-        "edgar": 2.17,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "XYL": {
-        "quant": 1.268,
-        "ai_extract": 5.025,
-        "comparables": 2.369,
-        "earnings": 1.217,
-        "edgar": 2.118,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "SCHW": {
-        "quant": 1.368,
-        "ai_extract": 50.871,
-        "comparables": 2.118,
-        "earnings": 1.366,
-        "edgar": 2.268,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "SHOP.TO": {
-        "quant": 1.067,
-        "ai_extract": 2.269,
-        "comparables": 2.069,
-        "earnings": 3.372,
-        "edgar": 0.064,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.466
-      },
-      "SPGI": {
-        "quant": 1.117,
-        "ai_extract": 50.205,
-        "comparables": 2.218,
-        "earnings": 1.317,
-        "edgar": 2.217,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "SYY": {
-        "quant": 1.217,
-        "ai_extract": 22.855,
-        "comparables": 2.372,
-        "earnings": 1.216,
-        "edgar": 2.819,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "T": {
-        "quant": 1.216,
-        "ai_extract": 70.428,
-        "comparables": 2.321,
-        "earnings": 1.369,
-        "edgar": 2.32,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.566
-      },
-      "TD.TO": {
-        "quant": 1.167,
-        "ai_extract": 2.37,
-        "comparables": 2.471,
-        "earnings": 1.217,
-        "edgar": 0.064,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "TMC": {
-        "quant": 1.367,
-        "ai_extract": 0.515,
-        "comparables": 2.371,
-        "earnings": 1.218,
-        "edgar": 2.069,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "TSM": {
-        "quant": 1.267,
-        "ai_extract": 145.386,
-        "comparables": 2.118,
-        "earnings": 1.217,
-        "edgar": 2.719,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.414
-      },
-      "ACN": {
-        "quant": 1.216,
-        "ai_extract": 111.8,
-        "comparables": 2.268,
-        "earnings": 1.166,
-        "edgar": 2.318,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.416
-      },
-      "AMZN": {
-        "quant": 0.816,
-        "ai_extract": 63.37,
-        "comparables": 2.219,
-        "earnings": 1.318,
-        "edgar": 2.921,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "PFE": {
-        "quant": 1.218,
-        "ai_extract": 38.155,
-        "comparables": 2.572,
-        "earnings": 1.167,
-        "edgar": 2.169,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "AAPL": {
-        "quant": 1.219,
-        "ai_extract": 62.375,
-        "comparables": 1.818,
-        "earnings": 1.168,
-        "edgar": 2.119,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "AMD": {
-        "quant": 1.118,
-        "ai_extract": 130.572,
-        "comparables": 1.769,
-        "earnings": 1.066,
-        "edgar": 2.017,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.417
-      },
-      "AMTM": {
-        "quant": 0.915,
-        "ai_extract": 2.368,
-        "comparables": 1.718,
-        "earnings": 1.066,
-        "edgar": 2.718,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.364
-      },
-      "ASML": {
-        "quant": 1.015,
-        "ai_extract": 93.87,
-        "comparables": 2.068,
-        "earnings": 1.116,
-        "edgar": 2.669,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.466
-      },
-      "ATD.TO": {
-        "quant": 1.016,
-        "ai_extract": 2.318,
-        "comparables": 1.617,
-        "earnings": 1.367,
-        "edgar": 0.064,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.416
-      },
-      "BMO.TO": {
-        "quant": 1.066,
-        "ai_extract": 2.518,
-        "comparables": 2.018,
-        "earnings": 1.217,
-        "edgar": 3.019,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "BRK-B": {
-        "quant": 1.166,
-        "ai_extract": 65.536,
-        "comparables": 1.869,
-        "earnings": 1.117,
-        "edgar": 2.169,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "CAT": {
-        "quant": 1.116,
-        "ai_extract": 73.478,
-        "comparables": 2.671,
-        "earnings": 1.268,
-        "edgar": 2.27,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.516
-      },
-      "CNQ.TO": {
-        "quant": 1.368,
-        "ai_extract": 4.777,
-        "comparables": 2.47,
-        "earnings": 1.468,
-        "edgar": 2.772,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.515
-      },
-      "COST": {
-        "quant": 1.168,
-        "ai_extract": 67.351,
-        "comparables": 1.97,
-        "earnings": 1.319,
-        "edgar": 2.17,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.517
-      },
-      "CP.TO": {
-        "quant": 1.12,
-        "ai_extract": 78.328,
-        "comparables": 2.12,
-        "earnings": 1.117,
-        "edgar": 3.072,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "CSCO": {
-        "quant": 1.066,
-        "ai_extract": 176.859,
-        "comparables": 2.218,
-        "earnings": 1.166,
-        "edgar": 2.167,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.416
-      },
-      "CSU.TO": {
-        "quant": 1.016,
-        "ai_extract": 2.418,
-        "comparables": 2.118,
-        "earnings": 0.916,
-        "edgar": 0.064,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.37
-      },
-      "DIS": {
-        "quant": 1.015,
-        "ai_extract": 41.732,
-        "comparables": 2.019,
-        "earnings": 0.966,
-        "edgar": 2.117,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.417
-      },
-      "ENB": {
-        "quant": 1.016,
-        "ai_extract": 48.42,
-        "comparables": 1.918,
-        "earnings": 1.066,
-        "edgar": 3.17,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.466
-      },
-      "EW": {
-        "quant": 1.116,
-        "ai_extract": 46.001,
-        "comparables": 2.017,
-        "earnings": 1.217,
-        "edgar": 2.818,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "GIS": {
-        "quant": 1.066,
-        "ai_extract": 8.377,
-        "comparables": 1.867,
-        "earnings": 1.167,
-        "edgar": 2.819,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "GOOGL": {
-        "quant": 0.866,
-        "ai_extract": 94.981,
-        "comparables": 1.818,
-        "earnings": 1.116,
-        "edgar": 2.119,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "ISRG": {
-        "quant": 1.016,
-        "ai_extract": 113.045,
-        "comparables": 2.271,
-        "earnings": 1.217,
-        "edgar": 2.919,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.414
-      },
-      "J": {
-        "quant": 0.965,
-        "ai_extract": 44.49,
-        "comparables": 1.818,
-        "earnings": 1.116,
-        "edgar": 2.318,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.417
-      },
-      "JPM": {
-        "quant": 1.166,
-        "ai_extract": 62.518,
-        "comparables": 2.418,
-        "earnings": 1.366,
-        "edgar": 2.167,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.416
-      },
-      "JWEL.TO": {
-        "quant": 1.167,
-        "ai_extract": 2.168,
-        "comparables": 2.167,
-        "earnings": 1.116,
-        "edgar": 0.064,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.418
-      },
-      "MC.PA": {
-        "quant": 1.168,
-        "ai_extract": 2.117,
-        "comparables": 2.068,
-        "earnings": 1.167,
-        "edgar": 0.064,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "MCK": {
-        "quant": 1.068,
-        "ai_extract": 1.817,
-        "comparables": 2.018,
-        "earnings": 1.167,
-        "edgar": 2.118,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.416
-      },
-      "MCO": {
-        "quant": 0.966,
-        "ai_extract": 51.619,
-        "comparables": 2.219,
-        "earnings": 1.117,
-        "edgar": 2.318,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.466
-      },
-      "META": {
-        "quant": 1.119,
-        "ai_extract": 71.719,
-        "comparables": 1.869,
-        "earnings": 1.167,
-        "edgar": 2.169,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      },
-      "MG.TO": {
-        "quant": 1.067,
-        "ai_extract": 2.921,
-        "comparables": 1.82,
-        "earnings": 1.318,
-        "edgar": 2.721,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.516
-      },
-      "MSFT": {
-        "quant": 0.919,
-        "ai_extract": 92.678,
-        "comparables": 1.967,
-        "earnings": 1.37,
-        "edgar": 2.118,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "MU": {
-        "quant": 1.267,
-        "ai_extract": 62.281,
-        "comparables": 2.22,
-        "earnings": 1.367,
-        "edgar": 2.219,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.516
-      },
-      "NFLX": {
-        "quant": 1.119,
-        "ai_extract": 0.615,
-        "comparables": 2.119,
-        "earnings": 1.218,
-        "edgar": 2.219,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.466
-      },
-      "NTR.TO": {
-        "quant": 1.167,
-        "ai_extract": 0.465,
-        "comparables": 2.42,
-        "earnings": 1.267,
-        "edgar": 2.67,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "NVAX": {
-        "quant": 1.166,
-        "ai_extract": 1.117,
-        "comparables": 2.319,
-        "earnings": 1.168,
-        "edgar": 2.169,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "NVDA": {
-        "quant": 1.166,
-        "ai_extract": 0.865,
-        "comparables": 2.018,
-        "earnings": 1.166,
-        "edgar": 2.067,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "NVO": {
-        "quant": 1.216,
-        "ai_extract": 0.665,
-        "comparables": 2.468,
-        "earnings": 1.317,
-        "edgar": 2.718,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "OTEX.TO": {
-        "quant": 1.066,
-        "ai_extract": 0.465,
-        "comparables": 1.97,
-        "earnings": 1.267,
-        "edgar": 2.368,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.415
-      },
-      "PEP": {
-        "quant": 1.366,
-        "ai_extract": 0.615,
-        "comparables": 2.218,
-        "earnings": 1.317,
-        "edgar": 2.168,
-        "regenerate_report": 0.114,
-        "report_pdf": 0.465
-      }
-    },
-    "last_progress_at": "2026-10-26T01:39:32.468791+00:00",
-    "ai_budget_closed_after": "MU",
-    "ai_budget_closed_reason": "local_daily_budget_exhausted",
-    "pending_tickers": [
-      "MU",
-      "NFLX",
-      "NVAX",
-      "NVDA",
-      "NVO",
-      "OTEX.TO",
-      "PEP"
-    ],
-    "finished_at": "2026-10-26T01:39:43.373589+00:00"
+    "stage_seconds": {}
   },
   "last_complete_refresh": "2026-10-26T00:55:04.475973+00:00",
   "last_complete_business_date": "2026-10-25"
