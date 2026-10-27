@@ -28,6 +28,9 @@ def record(status):
     return {'status': status, 'period': '2026-10-19', 'reports': ['old/CSCO'], 'updated_at': NOW.isoformat()}
 
 
+from prepare_store import _add_orphan_worktree  # noqa: E402
+
+
 @pytest.fixture
 def stores(tmp_path, monkeypatch):
     remote, source, reports, ledger = [tmp_path / name for name in ('remote.git', 'source', 'reports', 'ledger')]
@@ -38,7 +41,7 @@ def stores(tmp_path, monkeypatch):
     git('add', '.', cwd=source)
     git('-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'commit', '-m', 'Initialize', cwd=source)
     monkeypatch.chdir(source)
-    git('worktree', 'add', '--orphan', '-b', 'report-data', str(reports))
+    _add_orphan_worktree(reports, 'report-data')
     entry = {'ticker': 'CSCO', 'report_id': 'current/CSCO', 'quality': 'ready',
              'generated_at': NOW.isoformat(), 'as_of': '2026-10-23', 'sha256': {}}
     snapshot = emit_frozen_snapshot(ticker='CSCO', as_of='2026-10-23', quant_metrics={'Close': 100},

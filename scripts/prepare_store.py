@@ -4,6 +4,32 @@ from pathlib import Path
 import subprocess
 
 
+def _add_orphan_worktree(path, branch):
+    """Create an empty orphan worktree on `branch` without changing source HEAD.
+
+    Git >= 2.42 has `worktree add --orphan`. Older Git (for example 2.34 on
+    Ubuntu 22.04) rejects it, so fall back to a detached worktree whose index
+    and files are emptied after `checkout --orphan`.
+    """
+    modern = subprocess.run(['git', 'worktree', 'add', '--orphan', '-b', branch, str(path)],
+                            capture_output=True)
+    if modern.returncode == 0:
+        return
+    if path.exists() and any(path.iterdir()):
+        raise RuntimeError('Cannot create orphan worktree: ' + modern.stderr.decode(errors='replace').strip())
+    subprocess.run(['git', 'worktree', 'prune'], check=True, capture_output=True)
+    subprocess.run(['git', 'worktree', 'add', '--detach', str(path), 'HEAD'],
+                   check=True, capture_output=True)
+    try:
+        subprocess.run(['git', '-C', str(path), 'checkout', '--orphan', branch],
+                       check=True, capture_output=True)
+        subprocess.run(['git', '-C', str(path), 'rm', '-rfq', '--ignore-unmatch', '.'],
+                       check=True, capture_output=True)
+    except Exception:
+        subprocess.run(['git', 'worktree', 'remove', '--force', str(path)], capture_output=True)
+        raise
+
+
 def open_store(path, *, branch='report-data', initialize=True):
     if branch not in ('report-data', 'delivery-state'):
         raise ValueError('Unknown persistent store branch')
@@ -22,8 +48,7 @@ def open_store(path, *, branch='report-data', initialize=True):
     else:
         if not initialize:
             raise ValueError('Persistent delivery state is not initialized; run the guarded migration first')
-        # Git >= 2.42 supports a clean orphan worktree, without changing source HEAD.
-        subprocess.run(['git', 'worktree', 'add', '--orphan', '-b', branch, str(path)], check=True)
+        _add_orphan_worktree(path, branch)
         (path / '.gitignore').write_text('.delivery.lock\n*.tmp\n', encoding='utf-8')
     return remote.returncode == 2
 
