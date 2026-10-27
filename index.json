@@ -8685,6 +8685,33 @@
         "edgar": "c88929f2a842bb68d569e63e725ea748720d6446c44f85168b4991b254825313",
         "fred": "226e05158e6fa1697b4cc988a86c4aa8d74c36d08a61d6751de9db31764ac1e8"
       }
+    },
+    {
+      "report_id": "20261027T014607Z-b66f6bd5/SHOP.TO",
+      "ticker": "SHOP.TO",
+      "generated_at": "2026-10-27T02:09:39.183177+00:00",
+      "as_of": "2026-10-26",
+      "quality": "ready",
+      "market_as_of": "2026-10-26",
+      "news_as_of": "2026-10-26",
+      "sha256": {
+        "md": "14ad3b58d5502b4fc971c9f3cb7d3bc0e88704d2e9103c522ee3288951239bf0",
+        "json": "bd192102f7a3f0e0b32b5c529be3916c676881d4a1aa71273d419755314b567b",
+        "pdf": "37c2fd8cb8edd57a7085ab626d1f338948e6bdfb6a0b7306d475f9f7c7f20155"
+      },
+      "md": "archive/20261027T014607Z-b66f6bd5/SHOP.TO/SHOP.TO-intelligence-20261026.md",
+      "json": "archive/20261027T014607Z-b66f6bd5/SHOP.TO/SHOP.TO-intelligence-20261026.json",
+      "pdf": "archive/20261027T014607Z-b66f6bd5/SHOP.TO/SHOP.TO-intelligence-20261026.pdf",
+      "source_sha256": {
+        "quant": "8efd3047630962ec59cee08435b7895a705c28f8ce1ff7400b136dbb7f2ec2ec",
+        "info": "b5311b1b4dff3f2b88b7d33fb312f943872686aa73416407b1c8f370fdf57f70",
+        "ai-intel": "7aaaca4fa530f68e50bc7d43c5def8c82c9ed6b56bf5a52d92268a5fb4085246",
+        "rss-items": "60c1d6e5b657abd7ecd917a32ce5e0e797b844a8ffe69b6d9f432f053a984245",
+        "comparables": "14b6b4be27e81580e09364505eedf993e127dc26a9260699fa2f0902bcafaa29",
+        "earnings": "92b5eb47ec0c338281407437fcccd5083749d41fad0a8d80925e3a39d8badee9",
+        "edgar": "faba50584504083cb9308f36f772d9435b0503602fc066ab502c60842855fd41",
+        "fred": "226e05158e6fa1697b4cc988a86c4aa8d74c36d08a61d6751de9db31764ac1e8"
+      }
     }
   ],
   "refresh_plan": {
@@ -8896,7 +8923,8 @@
       "MSFT",
       "NTR.TO",
       "PFE",
-      "SCHW"
+      "SCHW",
+      "SHOP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40434462817",
@@ -9273,6 +9301,15 @@
         "edgar": 2.12,
         "regenerate_report": 0.114,
         "report_pdf": 0.566
+      },
+      "SHOP.TO": {
+        "quant": 1.117,
+        "ai_extract": 2.27,
+        "comparables": 1.768,
+        "earnings": 1.267,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.566
       }
     },
     "current_ticker": "SHOP.TO",
@@ -9304,7 +9341,8 @@
       "MG.TO": 2,
       "MSFT": 23,
       "PFE": 12,
-      "SCHW": 20
+      "SCHW": 20,
+      "SHOP.TO": 1
     }
   },
   "last_complete_refresh": "2026-10-26T00:55:04.475973+00:00",
