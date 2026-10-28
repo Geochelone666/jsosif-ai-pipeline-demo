@@ -9603,6 +9603,33 @@
         "edgar": "a8461646f87a90ab29bdfdb054285baa4933efdcd6bce55750eefe0d5313bc3e",
         "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
       }
+    },
+    {
+      "report_id": "20261028T015717Z-533e470c/SCHW",
+      "ticker": "SCHW",
+      "generated_at": "2026-10-28T02:09:42.488425+00:00",
+      "as_of": "2026-10-27",
+      "quality": "ready",
+      "market_as_of": "2026-10-27",
+      "news_as_of": "2026-10-27",
+      "sha256": {
+        "md": "f9126a431302e9b8391b8f5649323b871a581da5ca28312eedec4ed363b75cbe",
+        "json": "a365b80e07d2a6aa2a10e34b1d08dd0e35cdb525de6622fe77d8b4883024ffdd",
+        "pdf": "976264e4d72f9d7149b4395eb37ae1287d8594ba3c1449a963eff75693ddd158"
+      },
+      "md": "archive/20261028T015717Z-533e470c/SCHW/SCHW-intelligence-20261027.md",
+      "json": "archive/20261028T015717Z-533e470c/SCHW/SCHW-intelligence-20261027.json",
+      "pdf": "archive/20261028T015717Z-533e470c/SCHW/SCHW-intelligence-20261027.pdf",
+      "source_sha256": {
+        "quant": "28d4c81b6eeed345541de5b228f9934e139ffd4cb5f86d7ccc5df8385972f347",
+        "info": "07329c11dda6a36bde4c58f2d4fc8824d9bd583ccd7701cc00f689ce98fb1268",
+        "ai-intel": "4b10b846e9719290c84dc0d049f5a827c57d0dec7741e0488c214bad16943f94",
+        "rss-items": "e0510f3d875aedd89d731fe51feda86646b4bc8bc82d3633d05b113ecf1522eb",
+        "comparables": "686d723235942bddedec758b33bc841701b7e489690dfc4f5b0899071cad985f",
+        "earnings": "87a8cdad58dcaccafb9d54a655a7662c55d426741961513013f40423982bddc7",
+        "edgar": "c88929f2a842bb68d569e63e725ea748720d6446c44f85168b4991b254825313",
+        "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
+      }
     }
   ],
   "refresh_plan": {
@@ -9798,7 +9825,8 @@
       "NVO",
       "OTEX.TO",
       "PEP",
-      "PFE"
+      "PFE",
+      "SCHW"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40618014395",
@@ -10029,6 +10057,15 @@
         "edgar": 1.868,
         "regenerate_report": 0.114,
         "report_pdf": 0.565
+      },
+      "SCHW": {
+        "quant": 1.066,
+        "ai_extract": 39.904,
+        "comparables": 1.617,
+        "earnings": 1.217,
+        "edgar": 1.918,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "SCHW",
@@ -10051,7 +10088,8 @@
       "NVO": 6,
       "OTEX.TO": 1,
       "PEP": 11,
-      "PFE": 13
+      "PFE": 13,
+      "SCHW": 6
     }
   },
   "last_complete_refresh": "2026-10-27T01:46:07.839618+00:00",
