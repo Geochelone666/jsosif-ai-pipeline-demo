@@ -1,0 +1,77 @@
+{
+  "ticker": "MG.TO",
+  "as_of": "2026-10-27",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [],
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "Magna International Inc. (MG.TO) stock price, news, quote and history",
+      "reason": "Generic stock information page, no specific event"
+    },
+    {
+      "headline": "Magna International (TSX:MG) - Stock Analysis",
+      "reason": "Generic analysis page, no specific event"
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 0,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 2
+  },
+  "rss_audit": {
+    "raw_items": 2,
+    "unique_headlines": 2,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 50.0,
+    "publisher_hhi": 0.5,
+    "https_link_headlines": 2,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-25",
+    "newest_publication_date": "2026-10-27",
+    "oldest_headline_age_days": 2
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-10-27",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 0,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 0,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-10-28T02:02:34.818484+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Magna%20International%20MG.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 2
+  }
+}
