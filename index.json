@@ -9522,6 +9522,33 @@
         "edgar": "72fd96f964e902867098bec8c377fc503af5c10c5fc19fbc3d69d62f5352740f",
         "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
       }
+    },
+    {
+      "report_id": "20261028T015717Z-533e470c/OTEX.TO",
+      "ticker": "OTEX.TO",
+      "generated_at": "2026-10-28T02:08:08.281766+00:00",
+      "as_of": "2026-10-27",
+      "quality": "ready",
+      "market_as_of": "2026-10-27",
+      "news_as_of": "2026-10-27",
+      "sha256": {
+        "md": "090bfea301cc9c3c5928604fd8f6d166db432c1a983d31c9e85a923d574c1db4",
+        "json": "b7265e2b8cb8e64a1f89d69f0a400c033bdea621bca9edb0000587468cc2a5ed",
+        "pdf": "f51c161b0d9445a340afccdc58175fbbb4324b724deb9c09de33760011b389c9"
+      },
+      "md": "archive/20261028T015717Z-533e470c/OTEX.TO/OTEX.TO-intelligence-20261027.md",
+      "json": "archive/20261028T015717Z-533e470c/OTEX.TO/OTEX.TO-intelligence-20261027.json",
+      "pdf": "archive/20261028T015717Z-533e470c/OTEX.TO/OTEX.TO-intelligence-20261027.pdf",
+      "source_sha256": {
+        "quant": "3aa12646233773e21798e5199734f28d40856d77cde59906bd5827a7f2d121f0",
+        "info": "27ab24299afb84ac6c57f3ece85f22e6ced350c9928cf533d987f222d296d18f",
+        "ai-intel": "7339e738e8c348504b47fae2641f921b9a8cbb9c8053a7a441bf606ba62dc384",
+        "rss-items": "bcd14627a73b9a420747410e2f86fb1b87742bac7b763c2dc99ee9f5f46f5a4c",
+        "comparables": "a39f3325e4934976aca6d816d9556739273ba1ee386dd61a4777b15c5aa58f11",
+        "earnings": "0cfda6538e9598bab04fe9f239894282ec139c2cc0e63d3475ad44a8852b013c",
+        "edgar": "804418b39e5a7ef656447ea40a639ff8806f7995fe82d7e3c5dd8829b1454ed2",
+        "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
+      }
     }
   ],
   "refresh_plan": {
@@ -9714,7 +9741,8 @@
       "NTR.TO",
       "NVAX",
       "NVDA",
-      "NVO"
+      "NVO",
+      "OTEX.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40618014395",
@@ -9918,6 +9946,15 @@
         "edgar": 2.319,
         "regenerate_report": 0.114,
         "report_pdf": 0.569
+      },
+      "OTEX.TO": {
+        "quant": 1.018,
+        "ai_extract": 2.068,
+        "comparables": 1.517,
+        "earnings": 1.067,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "OTEX.TO",
@@ -9937,7 +9974,8 @@
       "NFLX": 13,
       "NVAX": 11,
       "NVDA": 22,
-      "NVO": 6
+      "NVO": 6,
+      "OTEX.TO": 1
     }
   },
   "last_complete_refresh": "2026-10-27T01:46:07.839618+00:00",
