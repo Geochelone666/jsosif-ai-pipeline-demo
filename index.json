@@ -9468,6 +9468,33 @@
         "edgar": "ebd1a3c557989d6fa8d44bdef1b82f3d429523f03e2b2229a0bc8ca90fdbe2e4",
         "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
       }
+    },
+    {
+      "report_id": "20261028T015717Z-533e470c/NVDA",
+      "ticker": "NVDA",
+      "generated_at": "2026-10-28T02:07:44.881577+00:00",
+      "as_of": "2026-10-27",
+      "quality": "ready",
+      "market_as_of": "2026-10-27",
+      "news_as_of": "2026-10-27",
+      "sha256": {
+        "md": "aa87b1aa0f9b0b5f4ae577e0de90c1263738260968df9cbd958efaf0010f3306",
+        "json": "f8b28880572b6157a337a20af8aab32142e0c79aff8b1b314a4d04627c10725b",
+        "pdf": "806a3ad3aa320a23f33e414088024495237af4b08fc0de8070c8238cfe9daa7d"
+      },
+      "md": "archive/20261028T015717Z-533e470c/NVDA/NVDA-intelligence-20261027.md",
+      "json": "archive/20261028T015717Z-533e470c/NVDA/NVDA-intelligence-20261027.json",
+      "pdf": "archive/20261028T015717Z-533e470c/NVDA/NVDA-intelligence-20261027.pdf",
+      "source_sha256": {
+        "quant": "341d97dba4c08450e2540e2efdb0be4e038b94dc07d53f2c39b821831ce7a3d2",
+        "info": "c963df53a69cd2ec2a8f4da6f2f37c2a459e419f01fdaae2f4b3f833007e1e44",
+        "ai-intel": "960ca413a88ed475d4dcebb700b813f966f12c3b46faeffd31a984d50e466817",
+        "rss-items": "d96b6219ecca47c81eff0a132a4cc85ba916f4c5b798cbb22a58180cec29ab62",
+        "comparables": "ecc09a4191ed1481fc379671a24ff03259d67dabdef40e715bd72d53c16af460",
+        "earnings": "f361955ea623ba5fa4cad9737a0db37e082a62e7d599aa1dc7c4758485af18bc",
+        "edgar": "eeb58dcf97a8fa920479b78db115af031ba21b1e6c6bf12a59a9e4047aa53dd6",
+        "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
+      }
     }
   ],
   "refresh_plan": {
@@ -9658,7 +9685,8 @@
       "MU",
       "NFLX",
       "NTR.TO",
-      "NVAX"
+      "NVAX",
+      "NVDA"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40618014395",
@@ -9844,6 +9872,15 @@
         "edgar": 1.968,
         "regenerate_report": 0.114,
         "report_pdf": 0.515
+      },
+      "NVDA": {
+        "quant": 0.865,
+        "ai_extract": 30.08,
+        "comparables": 1.367,
+        "earnings": 1.116,
+        "edgar": 1.868,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.565
       }
     },
     "current_ticker": "NVDA",
@@ -9861,7 +9898,8 @@
       "MSFT": 19,
       "MU": 21,
       "NFLX": 13,
-      "NVAX": 11
+      "NVAX": 11,
+      "NVDA": 22
     }
   },
   "last_complete_refresh": "2026-10-27T01:46:07.839618+00:00",
