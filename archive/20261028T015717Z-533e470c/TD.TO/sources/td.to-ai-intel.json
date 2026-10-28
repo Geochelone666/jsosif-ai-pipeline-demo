@@ -1,0 +1,136 @@
+{
+  "ticker": "TD.TO",
+  "as_of": "2026-10-27",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [
+    {
+      "headline": "Argus raises target for Toronto-Dominion Bank stock to USD 135.00",
+      "summary": "Argus lifts TD stock target to $135, signaling bullish outlook.",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.8,
+      "companies": [
+        "TD.TO"
+      ],
+      "event_type": "guidance",
+      "sentiment": "positive",
+      "extraction_method": "ai",
+      "date": "2026-10-27",
+      "source": "ad-hoc-news.de",
+      "pubDate": "Tue, 27 Oct 2026 16:19:32 GMT",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNdnNlRTBpLU44M0RpVWdlWWlfSGU0a2F1MmxvUGloQ1k0TUFrd3B1RGdMZVBpcWxpUVY2am10RnVlelU4b0s5aFY3V2tib0hzNGQ3NWkwQXZVY2VoYkpQcmJIekl0LU84QlVNejVwdDY0Z1FTb3dQQ1FXU0VWazg2cjNBS0JQem5aTnBEOWMydF9lbVVCU0ZhcXVaOWRTX3VjeFkxR2FGaEUzZUN5QkxuSnAwbk1iNHVfcEg2ako0dkw5Umh1cjRN?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMixwFBVV95cUxNdnNlRTBpLU44M0RpVWdlWWlfSGU0a2F1MmxvUGloQ1k0TUFrd3B1RGdMZVBpcWxpUVY2am10RnVlelU4b0s5aFY3V2tib0hzNGQ3NWkwQXZVY2VoYkpQcmJIekl0LU84QlVNejVwdDY0Z1FTb3dQQ1FXU0VWazg2cjNBS0JQem5aTnBEOWMydF9lbVVCU0ZhcXVaOWRTX3VjeFkxR2FGaEUzZUN5QkxuSnAwbk1iNHVfcEg2ako0dkw5Umh1cjRN?oc=5"
+      ],
+      "publication_freshness": {
+        "age_days": 0,
+        "label": "current_window",
+        "presentation_window_days": 7
+      }
+    }
+  ],
+  "risks": [],
+  "irrelevant": [
+    {
+      "headline": "The Toronto-Dominion Bank (TD.TO) | Stock Price & Latest News",
+      "reason": "Generic informational headline, no specific event or actionable news."
+    },
+    {
+      "headline": "The Toronto-Dominion Bank (TD.TO) Stock Price, News, Quote & History",
+      "reason": "Generic stock price page, no event"
+    },
+    {
+      "headline": "The Toronto-Dominion Bank (TD) Stock Price, News, Quote & History",
+      "reason": "Generic stock price page, no event"
+    },
+    {
+      "headline": "Royal Bank of Canada (RY.TO) stock price, news, quote and history",
+      "reason": "Competitor, not target company"
+    },
+    {
+      "headline": "Toronto Dominion Bank (The) (TD) Stock Forecasts",
+      "reason": "Generic forecast page, no event"
+    },
+    {
+      "headline": "Air Canada (AC.TO) Stock Price, News, Quote & History",
+      "reason": "Competitor, not target company"
+    },
+    {
+      "headline": "14 Large Cap Stocks Just Made New 52-Week Highs",
+      "reason": "Generic market headline, no specific TD event."
+    },
+    {
+      "headline": "Toronto Dominion Bank (The) $TD Shares Sold by Pinnacle Associates Ltd.",
+      "reason": "Shares sold by an investor, not a company action."
+    }
+  ],
+  "ai_reuse": {
+    "reused_headlines": 1,
+    "from_report": "20261027T014607Z-b66f6bd5/TD.TO",
+    "source_as_of": "2026-10-26",
+    "prior_models": [
+      "openai/gpt-oss-20b"
+    ],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 9,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 8
+  },
+  "rss_audit": {
+    "raw_items": 9,
+    "unique_headlines": 9,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 6,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 44.44,
+    "publisher_hhi": 0.2593,
+    "https_link_headlines": 9,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-22",
+    "newest_publication_date": "2026-10-27",
+    "oldest_headline_age_days": 5
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-10-27",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-10-28T02:11:55.902007+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Toronto-Dominion%20Bank%20TD.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 9
+  }
+}
