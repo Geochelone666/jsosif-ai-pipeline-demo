@@ -10170,6 +10170,33 @@
         "edgar": "07f143abec44c450fc88ab202c31516890299522e6f1b7b7e2bc867a5d295a7b",
         "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
       }
+    },
+    {
+      "report_id": "20261028T015717Z-533e470c/COST",
+      "ticker": "COST",
+      "generated_at": "2026-10-28T02:20:27.135573+00:00",
+      "as_of": "2026-10-27",
+      "quality": "ready",
+      "market_as_of": "2026-10-27",
+      "news_as_of": "2026-10-27",
+      "sha256": {
+        "md": "d1cb10a529ce2c17338bfbedfa85d764bc969a444909b18c5dc1c7a5f5137708",
+        "json": "568a68118b09da95ea5d9875146ac13fa432f1256ccedf970d9a414c18d2d147",
+        "pdf": "27eb1015ca8269a7e3b916db98fbff8cd3f3e8912faa4b0355c035b1093fd315"
+      },
+      "md": "archive/20261028T015717Z-533e470c/COST/COST-intelligence-20261027.md",
+      "json": "archive/20261028T015717Z-533e470c/COST/COST-intelligence-20261027.json",
+      "pdf": "archive/20261028T015717Z-533e470c/COST/COST-intelligence-20261027.pdf",
+      "source_sha256": {
+        "quant": "28224bd34b834e861ad55f0729f92b2ceb98b3b6f88d82d0adcb3cbd44985461",
+        "info": "13bbb07c8bd1606b68a015d167498ebd12b3ad8fc58d7346ca7bc907f2a53d15",
+        "ai-intel": "39fbe8eb6ffcab41c6f2d281bea404ea1794adc72a273a334b38a3ff6826424c",
+        "rss-items": "861c2485320e7ab683ef7b0e47dbbc56d3e799fe2b51a8e8c010305d7647b380",
+        "comparables": "d59fb6521c7ac14f13d34ad7dc28cd869a522bf18eae6a29bd041464dc5a753c",
+        "earnings": "f14669034e875b02406cc7f7f35b93c1d53c10e049e9f088ba909f5db99a6c97",
+        "edgar": "2d0b6cd1e0832410b14d4b0233c386298d2632654c85346e39d17596691debc1",
+        "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
+      }
     }
   ],
   "refresh_plan": {
@@ -10386,7 +10413,8 @@
       "BMO.TO",
       "BRK-B",
       "CAT",
-      "CNQ.TO"
+      "CNQ.TO",
+      "COST"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40618014395",
@@ -10806,6 +10834,15 @@
         "edgar": 2.52,
         "regenerate_report": 0.114,
         "report_pdf": 0.516
+      },
+      "COST": {
+        "quant": 0.966,
+        "ai_extract": 38.251,
+        "comparables": 1.617,
+        "earnings": 1.217,
+        "edgar": 1.918,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.566
       }
     },
     "current_ticker": "COST",
@@ -10849,7 +10886,8 @@
       "BMO.TO": 1,
       "BRK-B": 14,
       "CAT": 20,
-      "CNQ.TO": 4
+      "CNQ.TO": 4,
+      "COST": 17
     }
   },
   "last_complete_refresh": "2026-10-27T01:46:07.839618+00:00",
