@@ -1,0 +1,112 @@
+{
+  "ticker": "CNQ.TO",
+  "as_of": "2026-10-27",
+  "tailwinds": [
+    {
+      "headline": "I Keep Coming Back to Canadian Natural After 26 Straight Years of Dividend Increases",
+      "summary": "Canadian Natural has consistently increased dividends for 26 years, attracting investors seeking reliable income streams.",
+      "impact": "high",
+      "horizon": "short",
+      "confidence": 0.9,
+      "companies": [],
+      "event_type": "dividend",
+      "sentiment": "positive",
+      "extraction_method": "ai",
+      "date": "2026-10-20",
+      "source": "Yahoo! Finance Canada",
+      "pubDate": "Tue, 20 Oct 2026 14:00:00 GMT",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOLXNSNHp3S0JXMUVLdWRJcmxHdkttY2s4dTVaOHdZcDRaSU5rSjFoUDBmVVYyTW9TVHdiQk81S3ZpWC0yMy1HZDFicVNRaFp2eHVrNXNaVDBFOUxPWkJIbmFvS3QtSXBMMWZEcGotMC13dWxmZ09RVDVqemVTZ1ctcldMY2FreUFETFE?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMiigFBVV95cUxOLXNSNHp3S0JXMUVLdWRJcmxHdkttY2s4dTVaOHdZcDRaSU5rSjFoUDBmVVYyTW9TVHdiQk81S3ZpWC0yMy1HZDFicVNRaFp2eHVrNXNaVDBFOUxPWkJIbmFvS3QtSXBMMWZEcGotMC13dWxmZ09RVDVqemVTZ1ctcldMY2FreUFETFE?oc=5"
+      ],
+      "reuse_origin": "verified_prior_archive",
+      "reuse_as_of": "2026-10-26",
+      "publication_freshness": {
+        "age_days": 7,
+        "label": "current_window",
+        "presentation_window_days": 7
+      }
+    }
+  ],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [],
+  "ai_reuse": {
+    "reused_headlines": 1,
+    "from_report": "20261027T014607Z-b66f6bd5/CNQ.TO",
+    "source_as_of": "2026-10-26",
+    "prior_models": [
+      "openai/gpt-oss-20b"
+    ],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "This 3.2% Dividend Giant Is My Largest TFSA Position: Here’s Why",
+      "reason": "Mentions a dividend giant but does not identify Canadian Natural Resources as the company; no event related to CNQ."
+    },
+    {
+      "headline": "Precision Trading with Canadian Natural Resources Limited (CNQ) Risk Zones",
+      "reason": "Describes risk zones for trading; no specific event or action concerning CNQ itself."
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 3,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 2
+  },
+  "rss_audit": {
+    "raw_items": 3,
+    "unique_headlines": 3,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 66.67,
+    "publisher_hhi": 0.5556,
+    "https_link_headlines": 3,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-20",
+    "newest_publication_date": "2026-10-27",
+    "oldest_headline_age_days": 7
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-10-27",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-10-28T02:19:33.928807+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Canadian%20Natural%20Resources%20CNQ.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 3
+  }
+}
