@@ -1,0 +1,105 @@
+{
+  "ticker": "NVAX",
+  "as_of": "2026-10-27",
+  "tailwinds": [],
+  "headwinds": [
+    {
+      "headline": "Novavax (NVAX) Stock Falls Amid Market Uptick: What Investors Need to Know",
+      "summary": "Novavax (NVAX) Stock Falls Amid Market Uptick: What Investors Need to Know",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.8,
+      "companies": [
+        "NVAX"
+      ],
+      "event_type": "market_move",
+      "sentiment": "negative",
+      "extraction_method": "rule",
+      "date": "2026-10-26",
+      "source": "Yahoo Finance",
+      "pubDate": "Mon, 26 Oct 2026 20:45:02 GMT",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOX01Na1ozU085VFhKMlVzUndqOEVXdURuYTh0b2djRU9vc2VybXJfa1F6SGZjcUh1YnJMdkVHMmVXbDFtc09nN1FleTUtYWxpSHU0SERIOFpTUV91ZFlqNnBoaXNHWWg3ZUlrTHhNZjY1LVpBVVJfVExocVBLbDduY2I4aWozeDdMd2U5emxmMzRHcDZpcW1MZUpB?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMimgFBVV95cUxOX01Na1ozU085VFhKMlVzUndqOEVXdURuYTh0b2djRU9vc2VybXJfa1F6SGZjcUh1YnJMdkVHMmVXbDFtc09nN1FleTUtYWxpSHU0SERIOFpTUV91ZFlqNnBoaXNHWWg3ZUlrTHhNZjY1LVpBVVJfVExocVBLbDduY2I4aWozeDdMd2U5emxmMzRHcDZpcW1MZUpB?oc=5"
+      ],
+      "publication_freshness": {
+        "age_days": 1,
+        "label": "current_window",
+        "presentation_window_days": 2
+      }
+    }
+  ],
+  "catalysts": [],
+  "risks": [],
+  "irrelevant": [
+    {
+      "headline": "Investors Heavily Search Novavax, Inc. (NVAX): Here is What You Need to Know",
+      "reason": "Search trend analysis, not an event"
+    }
+  ],
+  "ai_reuse": {
+    "reused_headlines": 1,
+    "from_report": "20261027T014607Z-b66f6bd5/NVAX",
+    "source_as_of": "2026-10-26",
+    "prior_models": [
+      "openai/gpt-oss-20b"
+    ],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 1,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 1
+  },
+  "rss_audit": {
+    "raw_items": 2,
+    "unique_headlines": 2,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 1,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 100.0,
+    "publisher_hhi": 1.0,
+    "https_link_headlines": 2,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-21",
+    "newest_publication_date": "2026-10-26",
+    "oldest_headline_age_days": 6
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-10-27",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-10-28T02:07:01.199163+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Novavax%20NVAX%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 2
+  }
+}
