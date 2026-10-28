@@ -9090,6 +9090,33 @@
         "edgar": "b69da3e961398ca57ccc0416d8663658ac112e38791a6cf49696974c22d85a46",
         "fred": "226e05158e6fa1697b4cc988a86c4aa8d74c36d08a61d6751de9db31764ac1e8"
       }
+    },
+    {
+      "report_id": "20261028T015717Z-533e470c/AMD",
+      "ticker": "AMD",
+      "generated_at": "2026-10-28T01:58:30.279568+00:00",
+      "as_of": "2026-10-27",
+      "quality": "ready",
+      "market_as_of": "2026-10-27",
+      "news_as_of": "2026-10-27",
+      "sha256": {
+        "md": "a70397f17b1bb2dc8a13624c2f8749a50a0cd0825fad983fc167b4762f93f1ab",
+        "json": "f383601e7439763e3c08450124389c2b5f969187d96f06a5a64fcbe1102052f8",
+        "pdf": "a73924244bc76496cceb8875bab3c2773e8f12580204c6f4316abf4ebd075acb"
+      },
+      "md": "archive/20261028T015717Z-533e470c/AMD/AMD-intelligence-20261027.md",
+      "json": "archive/20261028T015717Z-533e470c/AMD/AMD-intelligence-20261027.json",
+      "pdf": "archive/20261028T015717Z-533e470c/AMD/AMD-intelligence-20261027.pdf",
+      "source_sha256": {
+        "quant": "cc3a314aacae5773b8c7134155857b710410b8f763b22ac4aa055fabab4b856c",
+        "info": "8a8d5f88e1f59d8b7ad62a7f97b74e6f7ac900d03a6c851aa155fc93e6fb1ee5",
+        "ai-intel": "68224295b2afb90537957c81d8c4a58126c896d3dada3f41916eb1361208e00d",
+        "rss-items": "8d294ef41d3559c7a919b4a6f24b507ef1848c365bb80ba8c9ef71fec5ea1acb",
+        "comparables": "79c5dbfa434e2ba3f6e219e0ece803c78871292b7e3ab801638ed9fbc6d40ed3",
+        "earnings": "9cf217b5763e7f214a78081c329dc9b228de5bf0f3c94091b2d0f11027eebbbc",
+        "edgar": "7b45eab79b4a80a359f3ca075c4274e1ad51d54f18847a0bcfe99d5251dc2824",
+        "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
+      }
     }
   ],
   "refresh_plan": {
@@ -9266,7 +9293,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "AMD"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "40618014395",
     "degraded_tickers": [],
@@ -9325,9 +9354,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "AMD": {
+        "quant": 1.367,
+        "ai_extract": 62.655,
+        "comparables": 1.718,
+        "earnings": 1.117,
+        "edgar": 1.768,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.666
+      }
+    },
     "current_ticker": "AMD",
-    "last_progress_at": "2026-10-28T01:57:19.720810+00:00"
+    "last_progress_at": "2026-10-28T01:57:19.720810+00:00",
+    "news_cache_candidates": {
+      "AMD": 16
+    }
   },
   "last_complete_refresh": "2026-10-27T01:46:07.839618+00:00",
   "last_complete_business_date": "2026-10-26"
