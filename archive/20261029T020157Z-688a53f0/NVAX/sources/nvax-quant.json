@@ -1,0 +1,166 @@
+{
+  "ticker": "NVAX",
+  "errors": [
+    "warning: trailingPE unavailable (N/A)",
+    "warning: P/E (trailing) unavailable (N/A)",
+    "warning: Forward P/E (estimate) unavailable (N/A)",
+    "warning: Return on equity (%) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/NVAX/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/NVAX/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 10.319999694824219,
+    "Return 1D (%)": 2.9940042251006327,
+    "Return 1W (%)": -6.267034693129093,
+    "Return 1M (%)": -4.444448957717883,
+    "Return YTD (%)": 53.57142882484969,
+    "Return 1Y (%)": 21.12675047359105,
+    "Annualized volatility (%)": 70.89578478377292,
+    "Max drawdown (%)": -34.58444641504948,
+    "Sharpe (rf=0)": 0.6127870396610723,
+    "Beta vs SPY": 2.003708721146459,
+    "MA50": 10.392800006866455,
+    "Close vs MA50 (%)": -0.7004879531419594,
+    "MA200": 9.276199967861176,
+    "Close vs MA200 (%)": 11.252449608454395,
+    "RSI (14, Wilder)": 46.581319047263364,
+    "MACD (12,26)": -0.12459634243874795,
+    "MACD signal (9)": 0.168663271742204,
+    "MACD histogram": -0.2932596141809519,
+    "Downside deviation (rf=0, %)": 41.64219263263399,
+    "Sortino (rf=0)": 1.0432692261274126,
+    "Historical VaR 95% (1D, %)": 5.934885341155876,
+    "Historical ES 95% (1D, %)": 7.705659656512171,
+    "Correlation vs SPY": 0.35900650760990815,
+    "Tracking error vs SPY (%)": 67.38662562051748,
+    "P/E (trailing)": null,
+    "P/B": -8.91962,
+    "EV/EBITDA": -12.607,
+    "Revenue growth (%)": -76.3,
+    "Forward P/E (estimate)": null,
+    "Gross margin (%)": -2.558,
+    "Operating margin (%)": -89.608,
+    "Return on equity (%)": null,
+    "Free cash flow yield (%)": 9.01132880995047
+  },
+  "as_of": "2026-10-28",
+  "verification": {
+    "base_date": "2025-10-28",
+    "base_close": 8.520000457763672,
+    "end_close": 10.319999694824219,
+    "manual_1Y_pct": 21.12675047359106,
+    "passed": true
+  },
+  "fetched_at": "2026-10-29T02:24:22.146364+00:00",
+  "requested_as_of": "2026-10-28",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "NVAX",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1793239324.7274404
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {
+    "P/E (trailing)": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    },
+    "Forward P/E (estimate)": {
+      "status": "undefined",
+      "reason": "undefined: non-positive projected earnings multiple"
+    },
+    "Return on equity (%)": {
+      "status": "undefined",
+      "reason": "undefined: provider did not supply a finite returnOnEquity"
+    }
+  },
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "NVAX": 270,
+    "SPY": 270
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 270 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 270. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'NVAX'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-10-28'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
