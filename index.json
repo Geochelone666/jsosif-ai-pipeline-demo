@@ -10440,6 +10440,33 @@
         "edgar": "6a14275b9a66a71e0a0be89c3da058019ce8f13db2739b9c0f05c7c9c7c8eb38",
         "fred": "81228411cc4306e9d73fb443faec67220bdd968837b79d5617e3c581d0e11eb7"
       }
+    },
+    {
+      "report_id": "20261029T020157Z-688a53f0/CSCO",
+      "ticker": "CSCO",
+      "generated_at": "2026-10-29T02:02:18.641235+00:00",
+      "as_of": "2026-10-28",
+      "quality": "ready",
+      "market_as_of": "2026-10-28",
+      "news_as_of": "2026-10-28",
+      "sha256": {
+        "md": "ce850fe2ac2ee0bb15de7252078306eeca551d24a93f0d0b20a87f15e871d32f",
+        "json": "bede4d1887337a276884f6554377e532c3bab8850fc87aa60709e051390b2f28",
+        "pdf": "15b43da6ddb2d61195f694f1eeff9b0ceef2e58c908153a94e1bda7675697ea9"
+      },
+      "md": "archive/20261029T020157Z-688a53f0/CSCO/CSCO-intelligence-20261028.md",
+      "json": "archive/20261029T020157Z-688a53f0/CSCO/CSCO-intelligence-20261028.json",
+      "pdf": "archive/20261029T020157Z-688a53f0/CSCO/CSCO-intelligence-20261028.pdf",
+      "source_sha256": {
+        "quant": "69216fa9c68050624f470fae378941700a856987518ba5173f5ef9962a39d1e1",
+        "info": "0c000d1ea85fe29df11934490183df3a28047dcc0a0f04b81f88033d5b872b16",
+        "ai-intel": "97f7bc61218e5f453b32540c37efda7e129ce75dee48c42b1e3344fc55567261",
+        "rss-items": "03d26046692851487935954165d4a61e7477b683c2b744e6f5459abcfffac5c4",
+        "comparables": "af9bf86fc06819433948f08fec37c39091ea962576a7dd9f730f60ab4adbdea7",
+        "earnings": "7ffe860d1a5c6ac9a3d64f34f2d7b59af7339c63fb8f1236cba743a79d4fd407",
+        "edgar": "60322eb2e0fe0c3f73444caa098bbf9bd95863d58a9540d67023497a9d1957dc",
+        "fred": "fd17eb43a74697c0262fd2160473bba85b745afebbab38e0fd74449004594286"
+      }
     }
   ],
   "refresh_plan": {
@@ -10616,7 +10643,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "CSCO"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "40803874415",
     "degraded_tickers": [],
@@ -10675,9 +10704,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "CSCO": {
+        "quant": 2.419,
+        "ai_extract": 6.88,
+        "comparables": 2.019,
+        "earnings": 1.167,
+        "edgar": 2.67,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.715
+      }
+    },
     "current_ticker": "CSCO",
-    "last_progress_at": "2026-10-29T02:02:01.321149+00:00"
+    "last_progress_at": "2026-10-29T02:02:01.321149+00:00",
+    "news_cache_candidates": {
+      "CSCO": 18
+    }
   },
   "last_complete_refresh": "2026-10-28T01:57:17.005571+00:00",
   "last_complete_business_date": "2026-10-27"
