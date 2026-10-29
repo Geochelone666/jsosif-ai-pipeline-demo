@@ -11913,7 +11913,7 @@
     "run_id": "20261029T020157Z-688a53f0",
     "at": "2026-10-29T02:01:57.405355+00:00",
     "business_date": "2026-10-28",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -12532,7 +12532,6 @@
         "report_pdf": 0.515
       }
     },
-    "current_ticker": "PFE",
     "last_progress_at": "2026-10-29T02:26:17.388917+00:00",
     "news_cache_candidates": {
       "CSCO": 18,
@@ -12583,8 +12582,14 @@
       "OTEX.TO": 2,
       "PEP": 7,
       "PFE": 12
-    }
+    },
+    "pending_tickers": [
+      "BRK-B",
+      "NFLX",
+      "T"
+    ],
+    "finished_at": "2026-10-29T02:26:32.476677+00:00"
   },
-  "last_complete_refresh": "2026-10-28T01:57:17.005571+00:00",
-  "last_complete_business_date": "2026-10-27"
+  "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
+  "last_complete_business_date": "2026-10-28"
 }
