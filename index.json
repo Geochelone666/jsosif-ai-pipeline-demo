@@ -11007,6 +11007,33 @@
         "edgar": "084c28fef44ff396922a5e17408306fbf8e481306010fe31f5587c0c6bde6d67",
         "fred": "fd17eb43a74697c0262fd2160473bba85b745afebbab38e0fd74449004594286"
       }
+    },
+    {
+      "report_id": "20261029T020157Z-688a53f0/CAT",
+      "ticker": "CAT",
+      "generated_at": "2026-10-29T02:14:03.714651+00:00",
+      "as_of": "2026-10-28",
+      "quality": "ready",
+      "market_as_of": "2026-10-28",
+      "news_as_of": "2026-10-28",
+      "sha256": {
+        "md": "11995cb659da437ab23d2c399204638659b6bf7580f96462e75a0ee24414f111",
+        "json": "802218aa461551083f5d2d28633ff9b4a72357b8a3961b732039612106c9c26d",
+        "pdf": "ae54155204b0abf843e0ef9a3439c6141bb285220e066d12e287f156b3c48bbb"
+      },
+      "md": "archive/20261029T020157Z-688a53f0/CAT/CAT-intelligence-20261028.md",
+      "json": "archive/20261029T020157Z-688a53f0/CAT/CAT-intelligence-20261028.json",
+      "pdf": "archive/20261029T020157Z-688a53f0/CAT/CAT-intelligence-20261028.pdf",
+      "source_sha256": {
+        "quant": "2e7605ca1e6ca49bd2dbf0c412e8967c05377666ab3cf8b4b9df8833a762a5d2",
+        "info": "3bdbdcc4167764e4aba394861a0ef0e9b68a94fae49f9d098e86a54bbd6a0597",
+        "ai-intel": "29b719528bec2f6c0c216eb3ce0a4ada4c0d2471e9434b8f18797e0abdb082ae",
+        "rss-items": "a1fe2bac757fe4b769b3fad8b780d954bf267f66ec05d7acbac9b69b71d4d5e6",
+        "comparables": "9a817e9ff6ad24579f7f038411470b6619c9d358cb10c6ac36b4ebd4734b8f35",
+        "earnings": "6b8b3d777fcc3deecf6fd1f9aefe424fdd7b3e9ca046a8422f562518e3961f90",
+        "edgar": "b4c99b1159e0e0e08cc2ec75fbe97ce684cbdcf426691498eda45185471331d8",
+        "fred": "fd17eb43a74697c0262fd2160473bba85b745afebbab38e0fd74449004594286"
+      }
     }
   ],
   "refresh_plan": {
@@ -11204,7 +11231,8 @@
       "ASML",
       "ATD.TO",
       "BMO.TO",
-      "BRK-B"
+      "BRK-B",
+      "CAT"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40803874415",
@@ -11456,6 +11484,15 @@
         "edgar": 2.17,
         "regenerate_report": 0.114,
         "report_pdf": 0.568
+      },
+      "CAT": {
+        "quant": 1.317,
+        "ai_extract": 12.799,
+        "comparables": 2.27,
+        "earnings": 1.368,
+        "edgar": 1.969,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "CAT",
@@ -11481,7 +11518,8 @@
       "ASML": 15,
       "ATD.TO": 2,
       "BMO.TO": 3,
-      "BRK-B": 12
+      "BRK-B": 12,
+      "CAT": 19
     }
   },
   "last_complete_refresh": "2026-10-28T01:57:17.005571+00:00",
