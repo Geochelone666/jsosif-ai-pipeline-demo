@@ -11844,6 +11844,33 @@
         "edgar": "bc2408d6ed634597e3e87d0ef853a5d6643a130f9a9c257a9855115bf0746f3e",
         "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
       }
+    },
+    {
+      "report_id": "20261030T021807Z-b9de7146/T",
+      "ticker": "T",
+      "generated_at": "2026-10-30T02:20:22.364638+00:00",
+      "as_of": "2026-10-29",
+      "quality": "ready",
+      "market_as_of": "2026-10-29",
+      "news_as_of": "2026-10-29",
+      "sha256": {
+        "md": "432e290e9470de7b61a8b537cf5d5dd129e7d28606fe747ea42c63f8804d962a",
+        "json": "e119eafde4257505ae08d26e0e7bd29758845b369a8c2e6b7a7f298fee4285f7",
+        "pdf": "5e27198e103f001be06d9bbb0574cfeaf30d97e4ffca5149e1a724ff1636f89f"
+      },
+      "md": "archive/20261030T021807Z-b9de7146/T/T-intelligence-20261029.md",
+      "json": "archive/20261030T021807Z-b9de7146/T/T-intelligence-20261029.json",
+      "pdf": "archive/20261030T021807Z-b9de7146/T/T-intelligence-20261029.pdf",
+      "source_sha256": {
+        "quant": "31b03ada8b77ee7845cd3f3ae89ed9ea372b2a9d83be299d0891cba1525d572c",
+        "info": "25e1b9055aca3a01241d4f2c503351a989840803c47ffd30066817734b25cae5",
+        "ai-intel": "5d120c2ddd557ec0b55993cbdfb019cb53b9ba94c8c809694866ecd6bc43e5f8",
+        "rss-items": "0fbb912d9e829631f16a7941c504c4aece7201949a0ec98ee5284d80b695f725",
+        "comparables": "5423e9107be0ea3e2c905af965ed0c084f6c733b681ae838f05f465a629f68aa",
+        "earnings": "f985f4c73042f6c84220f952fc0cc7a0f62f4d7d3fd2499db08235b9caf9f497",
+        "edgar": "689306436168e86e84392119b214df06db301e2421275806492282f9b449bacc",
+        "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
+      }
     }
   ],
   "refresh_plan": {
@@ -12022,7 +12049,8 @@
     ],
     "successful_tickers": [
       "BRK-B",
-      "NFLX"
+      "NFLX",
+      "T"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40990823954",
@@ -12100,13 +12128,23 @@
         "edgar": 2.069,
         "regenerate_report": 0.115,
         "report_pdf": 0.666
+      },
+      "T": {
+        "quant": 1.167,
+        "ai_extract": 46.081,
+        "comparables": 1.768,
+        "earnings": 1.268,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.666
       }
     },
     "current_ticker": "T",
     "last_progress_at": "2026-10-30T02:19:27.956323+00:00",
     "news_cache_candidates": {
       "BRK-B": 12,
-      "NFLX": 16
+      "NFLX": 16,
+      "T": 18
     }
   },
   "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
