@@ -11871,6 +11871,33 @@
         "edgar": "689306436168e86e84392119b214df06db301e2421275806492282f9b449bacc",
         "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
       }
+    },
+    {
+      "report_id": "20261030T021807Z-b9de7146/ATD.TO",
+      "ticker": "ATD.TO",
+      "generated_at": "2026-10-30T02:20:31.629503+00:00",
+      "as_of": "2026-10-29",
+      "quality": "ready",
+      "market_as_of": "2026-10-29",
+      "news_as_of": "2026-10-29",
+      "sha256": {
+        "md": "316996f33766d0e58738ed0c39b9b8fbbe357cc1d8c8bc5002299e0b7af24e2f",
+        "json": "7f52b77a8a9e95de7234a52d456f6c2242dcdd272d3ba14a9a4ec40a6c949218",
+        "pdf": "585645047344261d4d440bba45438ff4e205c924b8d6af2905360f59cdb7d848"
+      },
+      "md": "archive/20261030T021807Z-b9de7146/ATD.TO/ATD.TO-intelligence-20261029.md",
+      "json": "archive/20261030T021807Z-b9de7146/ATD.TO/ATD.TO-intelligence-20261029.json",
+      "pdf": "archive/20261030T021807Z-b9de7146/ATD.TO/ATD.TO-intelligence-20261029.pdf",
+      "source_sha256": {
+        "quant": "ca9eeab29f50fe65a0850042ba2a128fe16f589f3efd16b7ec8f6798f3f10299",
+        "info": "99531ab17653bb3d62e9288c061f3195c7c329e4d33f9ca249bcb9674876e8dd",
+        "ai-intel": "28ed5a223622c296e1c6da75efb4c527e1418d67d1352e73f3dc55ad87c770d5",
+        "rss-items": "b128026dc0016c07c8036bcf3d2c4db2b72b9cbce74d9ea03ec2358d93f3fc87",
+        "comparables": "372b5309a15da76d20cc1b663b821875677415e09890dfd66b1d661b8f816f0d",
+        "earnings": "7f81f635140b7ccdd767e3cd30c434115815b3ce8ec890ee019fecd88f813885",
+        "edgar": "4b862c74e0a8c8a2d3bb8372a327da1726e0e1e6d23d18f25b594ad5f28d6342",
+        "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
+      }
     }
   ],
   "refresh_plan": {
@@ -12050,7 +12077,8 @@
     "successful_tickers": [
       "BRK-B",
       "NFLX",
-      "T"
+      "T",
+      "ATD.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40990823954",
@@ -12137,6 +12165,15 @@
         "edgar": 2.119,
         "regenerate_report": 0.114,
         "report_pdf": 0.666
+      },
+      "ATD.TO": {
+        "quant": 1.167,
+        "ai_extract": 1.871,
+        "comparables": 1.718,
+        "earnings": 1.167,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "ATD.TO",
@@ -12144,7 +12181,8 @@
     "news_cache_candidates": {
       "BRK-B": 12,
       "NFLX": 16,
-      "T": 18
+      "T": 18,
+      "ATD.TO": 1
     }
   },
   "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
