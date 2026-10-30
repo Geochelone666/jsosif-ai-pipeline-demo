@@ -12816,6 +12816,33 @@
         "edgar": "391674ea59a095228d5eda1c6a36ba30ba8e5a65707f14dff93feef4b38812f3",
         "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
       }
+    },
+    {
+      "report_id": "20261030T021807Z-b9de7146/TD.TO",
+      "ticker": "TD.TO",
+      "generated_at": "2026-10-30T02:35:58.751483+00:00",
+      "as_of": "2026-10-29",
+      "quality": "ready",
+      "market_as_of": "2026-10-29",
+      "news_as_of": "2026-10-29",
+      "sha256": {
+        "md": "83d386519280676d944d2094a5e96e61fb1d0726016310fb11942f6c7a7f740b",
+        "json": "a47ed35acfa9fdbd8df59ff2a7b3bdbedaa2ba63cdc2bf20666b888d48d7b3a2",
+        "pdf": "8b39aec38d904a13eb0168108baa4e0a0acec6bf4d015a3c07b225813106d527"
+      },
+      "md": "archive/20261030T021807Z-b9de7146/TD.TO/TD.TO-intelligence-20261029.md",
+      "json": "archive/20261030T021807Z-b9de7146/TD.TO/TD.TO-intelligence-20261029.json",
+      "pdf": "archive/20261030T021807Z-b9de7146/TD.TO/TD.TO-intelligence-20261029.pdf",
+      "source_sha256": {
+        "quant": "c500108472564e8df7257973fb4510f8519fb5c695e2d33a6effd61f595d77bd",
+        "info": "3921846e15bbfa2d20e0cd2626ca87771d6ef10c79747a3513cac1176c6b1f17",
+        "ai-intel": "be1d07331ac189ffa9b546525b21e3b3a842c944e2e6c4d8e3c8683dfdb712fd",
+        "rss-items": "e25d3b24242668b37a40ae349bdb98c0bc41c693ab7d2a2685e2879cbd8f984a",
+        "comparables": "4b29e980f206a512182d92bc632174c9bbea6bb05bd3ca06b04f92cbe8a487b7",
+        "earnings": "5800826c1fc99993df8049806ba26a76743b1cb808d4fbdfc08292b88b16dbcc",
+        "edgar": "fdbad70495d3a20d04a817374040f426c7cc410d49f9120b667b4fa6d7d01276",
+        "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
+      }
     }
   ],
   "refresh_plan": {
@@ -13030,7 +13057,8 @@
       "SCHW",
       "SHOP.TO",
       "SPGI",
-      "SYY"
+      "SYY",
+      "TD.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40990823954",
@@ -13432,6 +13460,15 @@
         "edgar": 2.671,
         "regenerate_report": 0.115,
         "report_pdf": 0.617
+      },
+      "TD.TO": {
+        "quant": 1.016,
+        "ai_extract": 0.616,
+        "comparables": 1.568,
+        "earnings": 1.119,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.615
       }
     },
     "current_ticker": "TD.TO",
@@ -13473,7 +13510,8 @@
       "PFE": 10,
       "SCHW": 15,
       "SPGI": 15,
-      "SYY": 6
+      "SYY": 6,
+      "TD.TO": 5
     }
   },
   "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
