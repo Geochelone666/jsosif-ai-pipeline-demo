@@ -12141,6 +12141,33 @@
         "edgar": "75fb1718ed6ec02d05f8aefb15b193fbcd9038cb948c841d4e9c680fbd3cb4e7",
         "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
       }
+    },
+    {
+      "report_id": "20261030T021807Z-b9de7146/EW",
+      "ticker": "EW",
+      "generated_at": "2026-10-30T02:24:19.943417+00:00",
+      "as_of": "2026-10-29",
+      "quality": "ready",
+      "market_as_of": "2026-10-29",
+      "news_as_of": "2026-10-29",
+      "sha256": {
+        "md": "ccfd751b39c486fb00fb996f528fdca827af08af9d4056d1b3ffb24e95420f04",
+        "json": "dd7eda3bff6becdbbef1246037e028178e0e72a91c34bed54164cfb2074e745a",
+        "pdf": "604a3dc4a6c3c8d882c25b2e2565a3d6511dea9aab7781fbbc41bbf885274968"
+      },
+      "md": "archive/20261030T021807Z-b9de7146/EW/EW-intelligence-20261029.md",
+      "json": "archive/20261030T021807Z-b9de7146/EW/EW-intelligence-20261029.json",
+      "pdf": "archive/20261030T021807Z-b9de7146/EW/EW-intelligence-20261029.pdf",
+      "source_sha256": {
+        "quant": "dc7e832298c5b2fc7a30dc52d27aa1be965cf67040440bd0f8d122eccc1380ef",
+        "info": "8a15f5b50ad61520b4f0190b493cde39e5a5bfe9f1e68d26283083379130eed9",
+        "ai-intel": "d6bb93cbb63e5131197843458b61c606e5041589d36bcd791776a99600d2c3ca",
+        "rss-items": "851863ff3e340a0fdd6cf24100d0919dde0e6a5f2c697ff3eab7cdc5bcb884be",
+        "comparables": "dc46b423ac0387d258f261788a8fa6662e067e007cd212357ef28c47ee0a7c2f",
+        "earnings": "6c98b4568fcc4196f4190be2aab351fc73c4af6af981428789bc818552164849",
+        "edgar": "825e45083202bc265a3e3dc1bd86d73f6df606de0ee285cfff952406826f8a34",
+        "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
+      }
     }
   ],
   "refresh_plan": {
@@ -12330,7 +12357,8 @@
       "CSCO",
       "CSU.TO",
       "DIS",
-      "ENB"
+      "ENB",
+      "EW"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40990823954",
@@ -12507,6 +12535,15 @@
         "edgar": 2.621,
         "regenerate_report": 0.115,
         "report_pdf": 0.616
+      },
+      "EW": {
+        "quant": 1.066,
+        "ai_extract": 2.621,
+        "comparables": 1.768,
+        "earnings": 1.27,
+        "edgar": 2.57,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.615
       }
     },
     "current_ticker": "EW",
@@ -12524,7 +12561,8 @@
       "CSCO": 17,
       "CSU.TO": 1,
       "DIS": 15,
-      "ENB": 7
+      "ENB": 7,
+      "EW": 9
     }
   },
   "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
