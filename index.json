@@ -12357,6 +12357,33 @@
         "edgar": "c3adc003a1afa8354b44bd5c85d3fd7e6871888fe607729ec456f248ace5a5db",
         "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
       }
+    },
+    {
+      "report_id": "20261030T021807Z-b9de7146/MCK",
+      "ticker": "MCK",
+      "generated_at": "2026-10-30T02:28:18.845075+00:00",
+      "as_of": "2026-10-29",
+      "quality": "ready",
+      "market_as_of": "2026-10-29",
+      "news_as_of": "2026-10-29",
+      "sha256": {
+        "md": "f36ec388013ead2e5f2b8d93f961b8b34880bd153187fbec7a14207e3f982b58",
+        "json": "60305ce73a362c1698f415c0f8926c7ab23354ea2e53793e27b29bf41ce653a6",
+        "pdf": "6d6f363d5ad5489035c1c4295701e061982c3c016bc1fcd054750136707c5dd6"
+      },
+      "md": "archive/20261030T021807Z-b9de7146/MCK/MCK-intelligence-20261029.md",
+      "json": "archive/20261030T021807Z-b9de7146/MCK/MCK-intelligence-20261029.json",
+      "pdf": "archive/20261030T021807Z-b9de7146/MCK/MCK-intelligence-20261029.pdf",
+      "source_sha256": {
+        "quant": "504bdb23aecdd3b4362a39a3b53bd7b89adf475061d23d052587c06936d9e60e",
+        "info": "acc4e94d9bc86c1a42d7434332d6c460aa99bf107ba65810b03a00cf298a37a0",
+        "ai-intel": "48218fc2d39d6722f49e53e99e18724d82937bd00bd74a09af8a3e469d1124f8",
+        "rss-items": "cc81c677e1b2bf85eef5c9776ea00c0d4124f84e2fcb5ad16c03ae5bf5a8dcba",
+        "comparables": "faca0a07dbe9c2319f98bb2c99017c560eeaa6f209c6bea370351da80676d22e",
+        "earnings": "e5986d86086bd848d1ed7b20a6c4bea066eaf7c611326f0ac46126f53b77838a",
+        "edgar": "48e340f84ad25ed774b0704b83678102a0f9a70c7fdd96e389c292cd24298bf0",
+        "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
+      }
     }
   ],
   "refresh_plan": {
@@ -12554,7 +12581,8 @@
       "J",
       "JPM",
       "JWEL.TO",
-      "MC.PA"
+      "MC.PA",
+      "MCK"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40990823954",
@@ -12803,6 +12831,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.616
+      },
+      "MCK": {
+        "quant": 1.118,
+        "ai_extract": 19.618,
+        "comparables": 1.718,
+        "earnings": 1.168,
+        "edgar": 2.27,
+        "regenerate_report": 0.115,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "MCK",
@@ -12828,7 +12865,8 @@
       "J": 4,
       "JPM": 13,
       "JWEL.TO": 1,
-      "MC.PA": 5
+      "MC.PA": 5,
+      "MCK": 5
     }
   },
   "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
