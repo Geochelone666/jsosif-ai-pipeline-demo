@@ -11898,6 +11898,33 @@
         "edgar": "4b862c74e0a8c8a2d3bb8372a327da1726e0e1e6d23d18f25b594ad5f28d6342",
         "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
       }
+    },
+    {
+      "report_id": "20261030T021807Z-b9de7146/BMO.TO",
+      "ticker": "BMO.TO",
+      "generated_at": "2026-10-30T02:20:47.264285+00:00",
+      "as_of": "2026-10-29",
+      "quality": "ready",
+      "market_as_of": "2026-10-29",
+      "news_as_of": "2026-10-29",
+      "sha256": {
+        "md": "1ddb01394affc80bcea01a850d438d07114d21d3d2110b17388f4a3690a0effe",
+        "json": "98d9584513fdffc0c914865aa03ad380adf49c59d08727d1a558e49fc6e0ed44",
+        "pdf": "16f2f4529f43e6f481a14166dedf20325cec906c7e78c4a070f73800b49d559d"
+      },
+      "md": "archive/20261030T021807Z-b9de7146/BMO.TO/BMO.TO-intelligence-20261029.md",
+      "json": "archive/20261030T021807Z-b9de7146/BMO.TO/BMO.TO-intelligence-20261029.json",
+      "pdf": "archive/20261030T021807Z-b9de7146/BMO.TO/BMO.TO-intelligence-20261029.pdf",
+      "source_sha256": {
+        "quant": "dde68005ea330c3162a661f0eca0c081c07c9045c32c49beffbe99de10fb9f4d",
+        "info": "02061dc2edce8e63ef655619aa8aac7dbbf7c5018b871ac5577bc43e54b1e178",
+        "ai-intel": "74e52c997ac0d3241161e6756ee921b08cfae80b47bd7a9e9e8ba6cdaa5b84e9",
+        "rss-items": "fb16cf9ca0ba71462483590d432198c24ff980fb01f75de1c162fc149b0c3a22",
+        "comparables": "157c6505e450fc11a9217c6dddce99ec75b5cb4b672154789d62ccee61ae8639",
+        "earnings": "071249dcd14bd32f39483a2907f2d7e346d1a7f6d81430cacc2ab3b4de797c90",
+        "edgar": "d8ab10f077d207a698f5ecede5d36f0629ab079656152bd647ee9399ae453e99",
+        "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
+      }
     }
   ],
   "refresh_plan": {
@@ -12078,7 +12105,8 @@
       "BRK-B",
       "NFLX",
       "T",
-      "ATD.TO"
+      "ATD.TO",
+      "BMO.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40990823954",
@@ -12174,6 +12202,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.616
+      },
+      "BMO.TO": {
+        "quant": 1.069,
+        "ai_extract": 5.778,
+        "comparables": 1.668,
+        "earnings": 1.167,
+        "edgar": 2.871,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "BMO.TO",
@@ -12182,7 +12219,8 @@
       "BRK-B": 12,
       "NFLX": 16,
       "T": 18,
-      "ATD.TO": 1
+      "ATD.TO": 1,
+      "BMO.TO": 3
     }
   },
   "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
