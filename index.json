@@ -12168,6 +12168,33 @@
         "edgar": "825e45083202bc265a3e3dc1bd86d73f6df606de0ee285cfff952406826f8a34",
         "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
       }
+    },
+    {
+      "report_id": "20261030T021807Z-b9de7146/GIS",
+      "ticker": "GIS",
+      "generated_at": "2026-10-30T02:24:55.093588+00:00",
+      "as_of": "2026-10-29",
+      "quality": "ready",
+      "market_as_of": "2026-10-29",
+      "news_as_of": "2026-10-29",
+      "sha256": {
+        "md": "8ec6156ea7a45c4aa15563022651624ce4d0df78f51058b6157a35a5ccbb0c85",
+        "json": "2f60ea9137806ddbdbbcf0f61c7165a1973d71b5867ea02c82a5aad9eebf9d1d",
+        "pdf": "781249325e927b7aef1023656244dd17fd89d9e32d166658d25eaa9f13efb355"
+      },
+      "md": "archive/20261030T021807Z-b9de7146/GIS/GIS-intelligence-20261029.md",
+      "json": "archive/20261030T021807Z-b9de7146/GIS/GIS-intelligence-20261029.json",
+      "pdf": "archive/20261030T021807Z-b9de7146/GIS/GIS-intelligence-20261029.pdf",
+      "source_sha256": {
+        "quant": "afa5a62b981926beb830ec4a626f2d1e3f3947384ac9378c3ac6670167a76e54",
+        "info": "f48f861faff7d591020eb82bfb893a49a5de0ecc88a63d34d81f3c48c6bc3f4b",
+        "ai-intel": "476f2d9940561569afc29a27fcd3d338726cd4d497e6de24d4dbb8354b8edbad",
+        "rss-items": "748dc5a58e21911d573b2f74b34150dc36ef12e641ffef0cd995cc0da946111e",
+        "comparables": "24de49dfc5b9e40ee8c73f856b0696e63ac7c31d911b6603bc2db35514fb9472",
+        "earnings": "a635f0aa961998680f4a1b4dbf1b25c96e8313a7fbdc78ce9daf6dcd900cedff",
+        "edgar": "e5f4d0b7df9a8dd343df62f47d20120120caa48454185939b64db826c40ffebc",
+        "fred": "7b4d343a78ba4100119101c28cfeeaed33453371c5f7c4beb58977f53e0cfbbb"
+      }
     }
   ],
   "refresh_plan": {
@@ -12358,7 +12385,8 @@
       "CSU.TO",
       "DIS",
       "ENB",
-      "EW"
+      "EW",
+      "GIS"
     ],
     "reused_tickers": [],
     "workflow_run_id": "40990823954",
@@ -12544,6 +12572,15 @@
         "edgar": 2.57,
         "regenerate_report": 0.114,
         "report_pdf": 0.615
+      },
+      "GIS": {
+        "quant": 1.066,
+        "ai_extract": 25.278,
+        "comparables": 1.669,
+        "earnings": 1.267,
+        "edgar": 2.571,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.666
       }
     },
     "current_ticker": "GIS",
@@ -12562,7 +12599,8 @@
       "CSU.TO": 1,
       "DIS": 15,
       "ENB": 7,
-      "EW": 9
+      "EW": 9,
+      "GIS": 10
     }
   },
   "last_complete_refresh": "2026-10-29T02:01:57.405355+00:00",
