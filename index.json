@@ -13842,6 +13842,33 @@
         "edgar": "e731f31ceea59acab24204678571d13f9c1735943f6d21b20940c063d20d0f12",
         "fred": "a1733a18bee0f0896e9fea68db28fbef1799f9309509058422272f0c84f89c8a"
       }
+    },
+    {
+      "report_id": "20261031T015647Z-61924eec/XYL",
+      "ticker": "XYL",
+      "generated_at": "2026-10-31T02:07:16.098185+00:00",
+      "as_of": "2026-10-30",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-10-30",
+      "sha256": {
+        "md": "2d57b2a6913e4c67c50336f3e7bbef02c825526b41e3623f2c59b397a03795ed",
+        "json": "667cd7a34a7ca3f2e9a2836efceb322cc05add24d324fbc8ef18e5155f253e60",
+        "pdf": "e0fa5616955a056e7a6ed0ee7abc7fee8e34d9bbf780d74ad71a58db63e372de"
+      },
+      "md": "archive/20261031T015647Z-61924eec/XYL/XYL-intelligence-20261030.md",
+      "json": "archive/20261031T015647Z-61924eec/XYL/XYL-intelligence-20261030.json",
+      "pdf": "archive/20261031T015647Z-61924eec/XYL/XYL-intelligence-20261030.pdf",
+      "source_sha256": {
+        "quant": "2179fed9174899befaa8f10c6b134b9e9c638340976b3d0dbdfff49b1c7bd83b",
+        "info": "3f8754e48f2b332ad1a0257e0d7ab9ba25af0298f957a2fc4fb4c0920739ca8f",
+        "ai-intel": "49689eca0d8e097aa792ab6d694eda864342731bd0428cc1d38b46d7b7e0870e",
+        "rss-items": "c39fcb34e44bce93c25779910d9e2dbfacd0a9d33d3643777ffd9e2395843577",
+        "comparables": "2c57c0c20c596f897c6c8a26731d56f6316a350ec36e54953ccd9fc62414d4b0",
+        "earnings": "011bab96f93bd90e06cb0756137dd1692cb0064b5e30806de9d6a5331a694dac",
+        "edgar": "c9637f9dbafce73892ec4d88083651a365a5b64f8e13042f3fabd6ed1ad162d7",
+        "fred": "a1733a18bee0f0896e9fea68db28fbef1799f9309509058422272f0c84f89c8a"
+      }
     }
   ],
   "refresh_plan": {
@@ -14044,7 +14071,8 @@
       "TMC",
       "TSM",
       "V",
-      "VRTX"
+      "VRTX",
+      "XYL"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41157673227",
@@ -14338,6 +14366,15 @@
         "edgar": 1.919,
         "regenerate_report": 0.114,
         "report_pdf": 0.515
+      },
+      "XYL": {
+        "quant": 0.917,
+        "ai_extract": 26.083,
+        "comparables": 1.618,
+        "earnings": 0.966,
+        "edgar": 2.019,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "XYL",
@@ -14366,7 +14403,8 @@
       "TMC": 5,
       "TSM": 16,
       "V": 17,
-      "VRTX": 19
+      "VRTX": 19,
+      "XYL": 10
     }
   },
   "last_complete_refresh": "2026-10-30T02:18:07.804767+00:00",
