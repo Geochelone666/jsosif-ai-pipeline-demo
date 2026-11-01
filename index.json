@@ -15327,6 +15327,33 @@
         "edgar": "62c16e3841f3cf2ea0dd44572c876251f5676d7aebcd47cde9cc056458de3412",
         "fred": "85c05bb40be7f7837b41497e678beb6abf84f7e9b0e98e75eeeb63b45a378d4c"
       }
+    },
+    {
+      "report_id": "20261101T014405Z-e49d1192/J",
+      "ticker": "J",
+      "generated_at": "2026-11-01T01:56:23.894110+00:00",
+      "as_of": "2026-10-31",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-10-31",
+      "sha256": {
+        "md": "d409330ac62cec76fc62d97a197a06f1d6cdf3602593ebed3dd5c24190532a77",
+        "json": "28a27382c7beb67634f8ff7efb0effd672de237ab0849fca101b6619fc78d9e4",
+        "pdf": "49f2f5624446bff0aeac46ec9b4112600f8687b4f05491e718187f2c846d0f8e"
+      },
+      "md": "archive/20261101T014405Z-e49d1192/J/J-intelligence-20261031.md",
+      "json": "archive/20261101T014405Z-e49d1192/J/J-intelligence-20261031.json",
+      "pdf": "archive/20261101T014405Z-e49d1192/J/J-intelligence-20261031.pdf",
+      "source_sha256": {
+        "quant": "c072c8f05c8591112a98c9cb888873dd28fbfc8ded4e5bd41a353909863f6d64",
+        "info": "8f5f8935f991be84fce514cf9b350e33ea03d23bafbab3d3fcd7ef56ea5a263e",
+        "ai-intel": "9c5951b0ca61472e3f984b58162142ebbaf92224d1cdbe52e353ba5821860cec",
+        "rss-items": "7a910d1c05eea07706c4992d97d838af37ca6a00abe5f206388c515dcc6d5884",
+        "comparables": "45426b887c455effae0431a3fa9a485573552a2f2dbe35670796a35432e90932",
+        "earnings": "e35978085de05ec63565c445fc5ede964cd83203f23f4f28ab6de3b1e44f17a1",
+        "edgar": "6a14275b9a66a71e0a0be89c3da058019ce8f13db2739b9c0f05c7c9c7c8eb38",
+        "fred": "85c05bb40be7f7837b41497e678beb6abf84f7e9b0e98e75eeeb63b45a378d4c"
+      }
     }
   ],
   "refresh_plan": {
@@ -15534,7 +15561,8 @@
       "EW",
       "GIS",
       "GOOGL",
-      "ISRG"
+      "ISRG",
+      "J"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41262269937",
@@ -15873,6 +15901,15 @@
         "edgar": 2.972,
         "regenerate_report": 0.114,
         "report_pdf": 0.515
+      },
+      "J": {
+        "quant": 1.267,
+        "ai_extract": 0.515,
+        "comparables": 2.32,
+        "earnings": 1.368,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.518
       }
     },
     "current_ticker": "J",
@@ -15908,7 +15945,8 @@
       "EW": 10,
       "GIS": 9,
       "GOOGL": 15,
-      "ISRG": 15
+      "ISRG": 15,
+      "J": 6
     }
   },
   "last_complete_refresh": "2026-10-31T01:56:47.528203+00:00",
