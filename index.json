@@ -14490,6 +14490,33 @@
         "edgar": "f906a0732c58c7cd5c81797db11e6c33acc43feba1a1fe9f2b8ef41415822e82",
         "fred": "a1733a18bee0f0896e9fea68db28fbef1799f9309509058422272f0c84f89c8a"
       }
+    },
+    {
+      "report_id": "20261101T014405Z-e49d1192/SHOP.TO",
+      "ticker": "SHOP.TO",
+      "generated_at": "2026-11-01T01:44:16.519824+00:00",
+      "as_of": "2026-10-31",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-10-31",
+      "sha256": {
+        "md": "cd8df5e530c2213c07f1bef6eafc71c0479e293aee44350af1f112f18e9700ae",
+        "json": "6b499ecb3b2e80f8417de4a858fccfdda60367ce3b75b69175f38ef249896873",
+        "pdf": "fcac5844d6a9c7b4a40af02b83f053da80d8ce8765f2f4cea978041bd2aabcd9"
+      },
+      "md": "archive/20261101T014405Z-e49d1192/SHOP.TO/SHOP.TO-intelligence-20261031.md",
+      "json": "archive/20261101T014405Z-e49d1192/SHOP.TO/SHOP.TO-intelligence-20261031.json",
+      "pdf": "archive/20261101T014405Z-e49d1192/SHOP.TO/SHOP.TO-intelligence-20261031.pdf",
+      "source_sha256": {
+        "quant": "516a12ed03a5e86c5168b868b9cb1eabb48a5e89b30ebf6661cb1dc16cd60188",
+        "info": "7c324c40c20ffdf9e2a32fbd3aebb4c1ece2776068c6a9beacf7920dc7fc51a2",
+        "ai-intel": "3ca7949cfaf71ee4cd0582fd266f9c0e8b850e0c551c8775ffc14874b92645d7",
+        "rss-items": "d391e2ac558020182ca099b1902ecfa01a4aa95d9868c772718592e00b09e7f6",
+        "comparables": "5ddd8b4dba7148d60f57429561ff2a24e8acf8ba4fd263adebe3d0ee050ead31",
+        "earnings": "92b5eb47ec0c338281407437fcccd5083749d41fad0a8d80925e3a39d8badee9",
+        "edgar": "faba50584504083cb9308f36f772d9435b0503602fc066ab502c60842855fd41",
+        "fred": "85c05bb40be7f7837b41497e678beb6abf84f7e9b0e98e75eeeb63b45a378d4c"
+      }
     }
   ],
   "refresh_plan": {
@@ -14666,7 +14693,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "SHOP.TO"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "41262269937",
     "degraded_tickers": [],
@@ -14725,9 +14754,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "SHOP.TO": {
+        "quant": 1.719,
+        "ai_extract": 0.716,
+        "comparables": 1.969,
+        "earnings": 1.519,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.565
+      }
+    },
     "current_ticker": "SHOP.TO",
-    "last_progress_at": "2026-11-01T01:44:08.559372+00:00"
+    "last_progress_at": "2026-11-01T01:44:08.559372+00:00",
+    "news_cache_candidates": {
+      "SHOP.TO": 1
+    }
   },
   "last_complete_refresh": "2026-10-31T01:56:47.528203+00:00",
   "last_complete_business_date": "2026-10-30"
