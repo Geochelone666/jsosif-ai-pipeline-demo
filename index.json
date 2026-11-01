@@ -14976,6 +14976,33 @@
         "edgar": "d8ab10f077d207a698f5ecede5d36f0629ab079656152bd647ee9399ae453e99",
         "fred": "85c05bb40be7f7837b41497e678beb6abf84f7e9b0e98e75eeeb63b45a378d4c"
       }
+    },
+    {
+      "report_id": "20261101T014405Z-e49d1192/BRK-B",
+      "ticker": "BRK-B",
+      "generated_at": "2026-11-01T01:50:55.181135+00:00",
+      "as_of": "2026-10-31",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-10-31",
+      "sha256": {
+        "md": "16f93279442d4309bb9670bfa49c9f4209b0a66a3d999aacc6fb38e420dd26d9",
+        "json": "b1441577fa70b1f308557fafc9e60e2ed82499082c404c5e40e81362a4f89cbb",
+        "pdf": "04735c5335ee7120e924e5ece2e885f4b49523e1827436129d3b50ddc7be94b7"
+      },
+      "md": "archive/20261101T014405Z-e49d1192/BRK-B/BRK-B-intelligence-20261031.md",
+      "json": "archive/20261101T014405Z-e49d1192/BRK-B/BRK-B-intelligence-20261031.json",
+      "pdf": "archive/20261101T014405Z-e49d1192/BRK-B/BRK-B-intelligence-20261031.pdf",
+      "source_sha256": {
+        "quant": "088098a0939becb2a3efe2c5ccc29bf6897a9c7674f7ed07493154fe3acadbfa",
+        "info": "f25d3b39cb6bfd2c562c054c603b746c3e60a023e87e8136e7bc7d4504c5d13f",
+        "ai-intel": "8d297876e5e2129f5673b05af35400f4f003ce200ec291911e33ca0b4c881abb",
+        "rss-items": "441d0a3abffa7b7e6458ea81b93fc1ff2907a7a76a88a46fc74d51b98b8cc49c",
+        "comparables": "932a9e1940ab5ba39119b74a5b3bca3464a1133d947035143423d8fa54697410",
+        "earnings": "becf2373f6e9e773a0a54410124da01a3cb81e6ca90ac615af9d157c250d2b41",
+        "edgar": "084c28fef44ff396922a5e17408306fbf8e481306010fe31f5587c0c6bde6d67",
+        "fred": "85c05bb40be7f7837b41497e678beb6abf84f7e9b0e98e75eeeb63b45a378d4c"
+      }
     }
   ],
   "refresh_plan": {
@@ -15170,7 +15197,8 @@
       "AMZN",
       "ASML",
       "ATD.TO",
-      "BMO.TO"
+      "BMO.TO",
+      "BRK-B"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41262269937",
@@ -15392,6 +15420,15 @@
         "edgar": 2.822,
         "regenerate_report": 0.114,
         "report_pdf": 0.517
+      },
+      "BRK-B": {
+        "quant": 1.318,
+        "ai_extract": 39.28,
+        "comparables": 2.173,
+        "earnings": 1.217,
+        "edgar": 2.32,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.567
       }
     },
     "current_ticker": "BRK-B",
@@ -15414,7 +15451,8 @@
       "AMZN": 13,
       "ASML": 20,
       "ATD.TO": 1,
-      "BMO.TO": 15
+      "BMO.TO": 15,
+      "BRK-B": 15
     }
   },
   "last_complete_refresh": "2026-10-31T01:56:47.528203+00:00",
