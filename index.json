@@ -14868,6 +14868,33 @@
         "edgar": "60364c88673524ba830d1b998f8a14a2da665de28c3f49c13aae95c60ea109ca",
         "fred": "85c05bb40be7f7837b41497e678beb6abf84f7e9b0e98e75eeeb63b45a378d4c"
       }
+    },
+    {
+      "report_id": "20261101T014405Z-e49d1192/AMZN",
+      "ticker": "AMZN",
+      "generated_at": "2026-11-01T01:49:28.762537+00:00",
+      "as_of": "2026-10-31",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-10-31",
+      "sha256": {
+        "md": "defc5650252d1eaa53e2dd11e5449cdf2b1a913fc71f9ccbe153a5d079b7fbc3",
+        "json": "1369fc8958306d48d6ab27e85d7e78f08d0d36af855bdac6545a9d6d69bd8878",
+        "pdf": "6733922b382aaa16ff64ed50a46e16a846fb793f3989798b44d0b6b974a7b296"
+      },
+      "md": "archive/20261101T014405Z-e49d1192/AMZN/AMZN-intelligence-20261031.md",
+      "json": "archive/20261101T014405Z-e49d1192/AMZN/AMZN-intelligence-20261031.json",
+      "pdf": "archive/20261101T014405Z-e49d1192/AMZN/AMZN-intelligence-20261031.pdf",
+      "source_sha256": {
+        "quant": "fce073e7fcadabc7ace1c0390354974ac63869c80893a3594842f6a2a0aec46c",
+        "info": "fd70c17807d994d2c3850e554f52df51812167cd138bcd608b5d35c32fa916c2",
+        "ai-intel": "a4dcadb9ae412bfae30695095d2cf36b8860f1ec99e0bd9c2bbeef282631e98f",
+        "rss-items": "ea9110b2b1cad15fe56a93f9a2daa19a9631dd2965974338dc6813f4a59c28b2",
+        "comparables": "6fbb2ec81dc958af34ee153d09db50874a7da267942f65ffb278f06b2dcd32f0",
+        "earnings": "c5aa96e41b517ead8c2c39f52da2d85ac4f3d0c707e37767a85fe7f4ff4063b9",
+        "edgar": "ccd9fa4e14d6108bd90750f462b94f6b0d2ae75a8c4b3056e515863e444b5ea9",
+        "fred": "85c05bb40be7f7837b41497e678beb6abf84f7e9b0e98e75eeeb63b45a378d4c"
+      }
     }
   ],
   "refresh_plan": {
@@ -15058,7 +15085,8 @@
       "AAPL",
       "ACN",
       "AMD",
-      "AMTM"
+      "AMTM",
+      "AMZN"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41262269937",
@@ -15244,6 +15272,15 @@
         "edgar": 2.721,
         "regenerate_report": 0.114,
         "report_pdf": 0.516
+      },
+      "AMZN": {
+        "quant": 1.118,
+        "ai_extract": 36.671,
+        "comparables": 2.17,
+        "earnings": 1.468,
+        "edgar": 2.722,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.565
       }
     },
     "current_ticker": "AMZN",
@@ -15262,7 +15299,8 @@
       "AAPL": 17,
       "ACN": 16,
       "AMD": 16,
-      "AMTM": 4
+      "AMTM": 4,
+      "AMZN": 13
     }
   },
   "last_complete_refresh": "2026-10-31T01:56:47.528203+00:00",
