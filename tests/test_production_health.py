@@ -84,3 +84,57 @@ def test_reason_priority_does_not_misdiagnose_market_failure_as_token_limit():
                           {'fetch_status': {'status': 'failed'}}) == 'rss_fetch_failed'
     assert failure_reason({'source_status': {'market': 'ok', 'news': 'degraded'}},
                           {'extraction_stats': {'unknown': 2}}) == 'unresolved_news_classification'
+
+
+def _allow_all_archives(monkeypatch):
+    stub = lambda root, entry: {'json': root / entry['json']}
+    monkeypatch.setattr('production_health.verified_report_files', stub)
+    monkeypatch.setattr('check_release.verified_report_files', stub)
+
+
+def _single_ticker_index(reports, status='complete'):
+    return {'last_attempt': {'run_id': 'r1', 'business_date': '2026-10-24',
+                             'status': status, 'expected_tickers': ['AAPL']},
+            'reports': reports}
+
+
+def test_clean_complete_run_is_strict_eligible(tmp_path, monkeypatch):
+    report = fake_report(tmp_path, 'AAPL', 'ready', {'extraction_stats': {}})
+    write_json(tmp_path / 'index.json', _single_ticker_index([report]))
+    _allow_all_archives(monkeypatch)
+    h = build_health(tmp_path)
+    assert h['ready'] == 1
+    assert h['strict_release_eligible'] is True
+
+
+def test_advisory_report_is_not_strict_eligible(tmp_path, monkeypatch):
+    # The row itself is ready, but check_release rejects advisories under
+    # --require-ready; health eligibility must not overstate the gate.
+    report = fake_report(tmp_path, 'AAPL', 'ready', {'extraction_stats': {}})
+    report['advisory'] = 'SEC identity unverified in this archived version'
+    write_json(tmp_path / 'index.json', _single_ticker_index([report]))
+    _allow_all_archives(monkeypatch)
+    h = build_health(tmp_path)
+    assert h['ready'] == 1
+    assert h['strict_release_eligible'] is False
+
+
+def test_newer_prior_run_degradation_is_not_strict_eligible(tmp_path, monkeypatch):
+    # Health rows prefer the current run's ready report; the strict gate looks
+    # at the newest archived version per ticker and must win.
+    current = fake_report(tmp_path, 'AAPL', 'ready', {'extraction_stats': {}}, run='r1')
+    regenerated = fake_report(tmp_path, 'AAPL', 'degraded', {'extraction_stats': {}}, run='r0')
+    regenerated['generated_at'] = '2026-10-24T23:59:00Z'
+    write_json(tmp_path / 'index.json', _single_ticker_index([current, regenerated]))
+    _allow_all_archives(monkeypatch)
+    h = build_health(tmp_path)
+    assert h['ready'] == 1
+    assert h['strict_release_eligible'] is False
+
+
+def test_incomplete_run_is_not_strict_eligible_even_when_rows_ready(tmp_path, monkeypatch):
+    report = fake_report(tmp_path, 'AAPL', 'ready', {'extraction_stats': {}})
+    write_json(tmp_path / 'index.json', _single_ticker_index([report], status='partial'))
+    _allow_all_archives(monkeypatch)
+    h = build_health(tmp_path)
+    assert h['strict_release_eligible'] is False

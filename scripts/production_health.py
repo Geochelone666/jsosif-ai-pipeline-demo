@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 
+from check_release import check as strict_release_check
 from report_store import read_json, resolve_file, verified_report_files
 
 
@@ -37,6 +38,20 @@ def failure_reason(snapshot, ai):
     if statuses.get('news') != 'ok':
         return 'news_evidence_invalid'
     return 'other_degraded_evidence'
+
+
+def strict_release_eligible(root, business_date):
+    """Mirror scripts/check_release.py's strict release gate for the same store/date.
+
+    The gate also rejects advisories, historical-quality entries and stale
+    per-ticker recency that the row-level ready count above does not see;
+    delegating keeps the two from drifting apart again. Fail closed: any
+    evaluation error means not eligible.
+    """
+    try:
+        return bool(strict_release_check(root, business_date=business_date, require_ready=True)['ready'])
+    except Exception:
+        return False
 
 
 def build_health(store):
@@ -119,7 +134,7 @@ def build_health(store):
         'business_date': date, 'run_id': run_id,
         'status': attempt.get('status'), 'expected': total, 'ready': ready,
         'degraded_or_unverified': total - ready,
-        'strict_release_eligible': attempt.get('status') == 'complete' and ready == total and total > 0,
+        'strict_release_eligible': strict_release_eligible(root, date),
         'failure_reasons': dict(sorted(fail_reasons.items())),
         'integrity_errors': dict(sorted(errors.items())),
         'classification_totals': dict(classified),
