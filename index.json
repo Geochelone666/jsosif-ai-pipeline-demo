@@ -16515,6 +16515,33 @@
         "edgar": "bc2408d6ed634597e3e87d0ef853a5d6643a130f9a9c257a9855115bf0746f3e",
         "fred": "e6b9bd44ad69215891d708552afdc1d071176c18df4c62abdd71ca9989cadc7e"
       }
+    },
+    {
+      "report_id": "20261102T041627Z-c84a7052/NTR.TO",
+      "ticker": "NTR.TO",
+      "generated_at": "2026-11-02T04:26:58.093030+00:00",
+      "as_of": "2026-11-01",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-11-01",
+      "sha256": {
+        "md": "868b9978ca188511c1ddec68a402c644ff791e297b25a6e53412000bc61ed7b6",
+        "json": "859c7942caaa3f73a99bb262914c0c56198595d704ba3c3bf2e7a20359b886fd",
+        "pdf": "ae037d4a04a153efc8163a6300c41736ea107b5d82c9739cd7c8ce343c0eb462"
+      },
+      "md": "archive/20261102T041627Z-c84a7052/NTR.TO/NTR.TO-intelligence-20261101.md",
+      "json": "archive/20261102T041627Z-c84a7052/NTR.TO/NTR.TO-intelligence-20261101.json",
+      "pdf": "archive/20261102T041627Z-c84a7052/NTR.TO/NTR.TO-intelligence-20261101.pdf",
+      "source_sha256": {
+        "quant": "33493a9482737241ad889838aa172a34ad43b857950a03a1c96c6562006c402d",
+        "info": "7a427657c507c5e3c94504a3d787869ffaa18b3ee9805ff4c14c1530db2219be",
+        "ai-intel": "ce8139042d787145170defa61cee6be6d454e89e920e9243907e66770e240f9e",
+        "rss-items": "d0858c6d0cb07cbfefc8ae80d22ea03aba9e2f1658a72919626c165baed7c982",
+        "comparables": "c883ccd70e0519c95b53bcb99153257e6b55bfcf4d14b4941528ebadd07ac068",
+        "earnings": "f37ebbbd840e4ec5ee73df74cb5d232464bad431403fdd1f27207ba9d42d72c2",
+        "edgar": "66aed35731040ffb3231245a8c67cc63e002f9ec9f15fd0d3632d1831b0014d9",
+        "fred": "e6b9bd44ad69215891d708552afdc1d071176c18df4c62abdd71ca9989cadc7e"
+      }
     }
   ],
   "refresh_plan": {
@@ -16716,7 +16743,8 @@
       "MG.TO",
       "MSFT",
       "MU",
-      "NFLX"
+      "NFLX",
+      "NTR.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41387486142",
@@ -17003,6 +17031,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.468
+      },
+      "NTR.TO": {
+        "quant": 1.317,
+        "ai_extract": 2.269,
+        "comparables": 2.37,
+        "earnings": 1.268,
+        "edgar": 2.771,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.415
       }
     },
     "current_ticker": "NTR.TO",
@@ -17032,7 +17069,8 @@
       "MG.TO": 3,
       "MSFT": 19,
       "MU": 21,
-      "NFLX": 21
+      "NFLX": 21,
+      "NTR.TO": 2
     }
   },
   "last_complete_refresh": "2026-11-01T01:44:05.468823+00:00",
