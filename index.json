@@ -16650,6 +16650,33 @@
         "edgar": "804418b39e5a7ef656447ea40a639ff8806f7995fe82d7e3c5dd8829b1454ed2",
         "fred": "e6b9bd44ad69215891d708552afdc1d071176c18df4c62abdd71ca9989cadc7e"
       }
+    },
+    {
+      "report_id": "20261102T041627Z-c84a7052/PEP",
+      "ticker": "PEP",
+      "generated_at": "2026-11-02T04:29:01.955140+00:00",
+      "as_of": "2026-11-01",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-11-01",
+      "sha256": {
+        "md": "2b73a062ca1e1a37a8451b2d59dd5c00f164e68887e88ca9bf6c4b4c1c4e304c",
+        "json": "052026ba79d95536c661219fac374a9bd69ceae447afda5348f05858d4f2759e",
+        "pdf": "e9c4ed39135f64d5f7f36c1ff4980b8f650b5dd93d4949d618c1123ce781d8ce"
+      },
+      "md": "archive/20261102T041627Z-c84a7052/PEP/PEP-intelligence-20261101.md",
+      "json": "archive/20261102T041627Z-c84a7052/PEP/PEP-intelligence-20261101.json",
+      "pdf": "archive/20261102T041627Z-c84a7052/PEP/PEP-intelligence-20261101.pdf",
+      "source_sha256": {
+        "quant": "07fbbc6279618ab655fc9b87c13e14001150c9a989cd752519678e6c387a4b6e",
+        "info": "7ce7d8d25e256a8536edc41d070861cc0f40778dbe0a36874ae975c44d0ea1b0",
+        "ai-intel": "f37998e3be8da1cfd0c2906c5ea5ad5cdc5966b46fd5bb5e8319437100a144c2",
+        "rss-items": "0a921d0d25932450ec67bdf3fb077c11873276a721c3e08e8340dee46b3cf3cc",
+        "comparables": "60a74349654224fe3bacd2c5a967e378d1eb334600bcd8a27b545ddbe2cf5a9e",
+        "earnings": "08d7e88e51efee1e6cfd0cf7f7a0e196bf99c7afda1d45dcf89c894dc017d8b9",
+        "edgar": "1687851d304b8a245f28adbb786d61707fd9a075930d8139f582a8b240886087",
+        "fred": "e6b9bd44ad69215891d708552afdc1d071176c18df4c62abdd71ca9989cadc7e"
+      }
     }
   ],
   "refresh_plan": {
@@ -16856,7 +16883,8 @@
       "NVAX",
       "NVDA",
       "NVO",
-      "OTEX.TO"
+      "OTEX.TO",
+      "PEP"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41387486142",
@@ -17188,6 +17216,15 @@
         "edgar": 2.32,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "PEP": {
+        "quant": 1.27,
+        "ai_extract": 8.182,
+        "comparables": 2.269,
+        "earnings": 1.368,
+        "edgar": 2.219,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.467
       }
     },
     "current_ticker": "PEP",
@@ -17222,7 +17259,8 @@
       "NVAX": 9,
       "NVDA": 18,
       "NVO": 10,
-      "OTEX.TO": 1
+      "OTEX.TO": 1,
+      "PEP": 12
     }
   },
   "last_complete_refresh": "2026-11-01T01:44:05.468823+00:00",
