@@ -1,0 +1,108 @@
+{
+  "ticker": "SHOP.TO",
+  "as_of": "2026-11-01",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [
+    {
+      "headline": "Shopify Tokenized Stock (Robinhood) Price (SHOP/USD) Today | Live Price, Market Cap & Chart",
+      "summary": "Shopify’s tokenized stock is now listed on Robinhood, offering a new trading format for investors.",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.8,
+      "companies": [
+        "SHOP.TO"
+      ],
+      "event_type": "product",
+      "sentiment": "unknown",
+      "extraction_method": "ai",
+      "date": "2026-10-29",
+      "source": "Binance",
+      "pubDate": "Thu, 29 Oct 2026 13:37:00 GMT",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9JU3c2QTBJZkdUNVJUU05iNHlPa1ljN1pkOTB6WmJhM0M1alA2YkRnWmhjbDl1MXhpRXZxVHBzVFVjNXVRNWh6MkJrcUJlbHFNMDcwNTktaXNuc00tUC03Mk9SR190TEpLRl9Gc2p2RG82LTRX?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMidEFVX3lxTE9JU3c2QTBJZkdUNVJUU05iNHlPa1ljN1pkOTB6WmJhM0M1alA2YkRnWmhjbDl1MXhpRXZxVHBzVFVjNXVRNWh6MkJrcUJlbHFNMDcwNTktaXNuc00tUC03Mk9SR190TEpLRl9Gc2p2RG82LTRX?oc=5"
+      ],
+      "reuse_origin": "verified_prior_archive",
+      "reuse_as_of": "2026-10-31",
+      "publication_freshness": {
+        "age_days": 3,
+        "label": "current_window",
+        "presentation_window_days": 7
+      }
+    }
+  ],
+  "risks": [],
+  "ai_reuse": {
+    "reused_headlines": 1,
+    "from_report": "20261101T014405Z-e49d1192/SHOP.TO",
+    "source_as_of": "2026-10-31",
+    "prior_models": [],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "Shopify Stock Price Forecast. Should You Buy SHOP?",
+      "reason": "No factual event about Shopify; only a price forecast."
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 1
+  },
+  "rss_audit": {
+    "raw_items": 2,
+    "unique_headlines": 2,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 50.0,
+    "publisher_hhi": 0.5,
+    "https_link_headlines": 2,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-29",
+    "newest_publication_date": "2026-10-30",
+    "oldest_headline_age_days": 3
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-11-01",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-11-02T04:29:49.978178+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Shopify%20SHOP.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 2
+  }
+}
