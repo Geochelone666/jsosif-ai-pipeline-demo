@@ -16866,6 +16866,33 @@
         "edgar": "fdbad70495d3a20d04a817374040f426c7cc410d49f9120b667b4fa6d7d01276",
         "fred": "e6b9bd44ad69215891d708552afdc1d071176c18df4c62abdd71ca9989cadc7e"
       }
+    },
+    {
+      "report_id": "20261102T041627Z-c84a7052/TMC",
+      "ticker": "TMC",
+      "generated_at": "2026-11-02T04:30:53.795924+00:00",
+      "as_of": "2026-11-01",
+      "quality": "ready",
+      "market_as_of": "2026-10-30",
+      "news_as_of": "2026-11-01",
+      "sha256": {
+        "md": "62e8e828af6a44c2e56d6a222d8a7dfe942118968a527b166e9bbb21e8a822e5",
+        "json": "599a52ed162c0039cd58af25ddcef80a7810efffabdad55f2a2d7d0a1cbc5665",
+        "pdf": "dbacb3aff4acd8b88f2ea4a5d6885186f3131da04a928bf09e8d167c6da3686e"
+      },
+      "md": "archive/20261102T041627Z-c84a7052/TMC/TMC-intelligence-20261101.md",
+      "json": "archive/20261102T041627Z-c84a7052/TMC/TMC-intelligence-20261101.json",
+      "pdf": "archive/20261102T041627Z-c84a7052/TMC/TMC-intelligence-20261101.pdf",
+      "source_sha256": {
+        "quant": "4d78bcb4fb41f942eb6d47cfcdad6a71a25c93a440d3e975085e133305eea745",
+        "info": "ef885f9f78ebf50d253721e12ccddc2ab1114fc94014fedb7afdf4fb5403f94d",
+        "ai-intel": "b4bb38cf82fc2ac24d214b74d9970936a3b7cd76e8225701b95e2f602a03d62d",
+        "rss-items": "782bd7e4edb58b4d356022b23ecb408fe2f33ca256e5bc6b1653bdd84424bf3b",
+        "comparables": "9ed99ffa72db72b773ea67c72a4994dce7e269779fc451b9984521edfb802198",
+        "earnings": "37a213b5dc36868a7c8874f002fc94d2d99f13280a51b5d6b6218370c0709c08",
+        "edgar": "af56c7055fe167a519499e22a97c27c307f54af4423544f8a3498a55358f0876",
+        "fred": "e6b9bd44ad69215891d708552afdc1d071176c18df4c62abdd71ca9989cadc7e"
+      }
     }
   ],
   "refresh_plan": {
@@ -17080,7 +17107,8 @@
       "SPGI",
       "SYY",
       "T",
-      "TD.TO"
+      "TD.TO",
+      "TMC"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41387486142",
@@ -17484,6 +17512,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.365
+      },
+      "TMC": {
+        "quant": 1.015,
+        "ai_extract": 2.468,
+        "comparables": 1.917,
+        "earnings": 0.965,
+        "edgar": 2.217,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.365
       }
     },
     "current_ticker": "TMC",
@@ -17526,7 +17563,8 @@
       "SPGI": 15,
       "SYY": 5,
       "T": 20,
-      "TD.TO": 1
+      "TD.TO": 1,
+      "TMC": 1
     }
   },
   "last_complete_refresh": "2026-11-01T01:44:05.468823+00:00",
