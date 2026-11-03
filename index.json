@@ -18663,7 +18663,7 @@
     "run_id": "20261103T051441Z-8b1c85d8",
     "at": "2026-11-03T05:14:41.412481+00:00",
     "business_date": "2026-11-02",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -19281,7 +19281,6 @@
         "report_pdf": 0.565
       }
     },
-    "current_ticker": "JWEL.TO",
     "last_progress_at": "2026-11-03T05:43:02.326486+00:00",
     "news_cache_candidates": {
       "ISRG": 10,
@@ -19334,8 +19333,13 @@
       "J": 10,
       "JPM": 13,
       "JWEL.TO": 1
-    }
+    },
+    "pending_tickers": [
+      "SCHW",
+      "XYL"
+    ],
+    "finished_at": "2026-11-03T05:43:09.823378+00:00"
   },
-  "last_complete_refresh": "2026-11-02T04:16:27.377355+00:00",
-  "last_complete_business_date": "2026-11-01"
+  "last_complete_refresh": "2026-11-03T05:14:41.412481+00:00",
+  "last_complete_business_date": "2026-11-02"
 }
