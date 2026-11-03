@@ -18108,6 +18108,33 @@
         "edgar": "4b862c74e0a8c8a2d3bb8372a327da1726e0e1e6d23d18f25b594ad5f28d6342",
         "fred": "30168aec8263510240db5543ac040cda3eaf6fa8ef1d0789222d06ff17a59205"
       }
+    },
+    {
+      "report_id": "20261103T051441Z-8b1c85d8/BMO.TO",
+      "ticker": "BMO.TO",
+      "generated_at": "2026-11-03T05:34:17.978152+00:00",
+      "as_of": "2026-11-02",
+      "quality": "ready",
+      "market_as_of": "2026-11-02",
+      "news_as_of": "2026-11-02",
+      "sha256": {
+        "md": "295e1cc4df0334261636491ce267c2df8a9ceda8df8f93d42236f032eac9191b",
+        "json": "fd351d31467de25aac1ac13903b41b317fb1fd93d598c39f1ab6a408cc75c867",
+        "pdf": "1bb15c2a9b5cde0dcaa74bea0b32a6b1fd5146ad34005488d66aeb73d8871b54"
+      },
+      "md": "archive/20261103T051441Z-8b1c85d8/BMO.TO/BMO.TO-intelligence-20261102.md",
+      "json": "archive/20261103T051441Z-8b1c85d8/BMO.TO/BMO.TO-intelligence-20261102.json",
+      "pdf": "archive/20261103T051441Z-8b1c85d8/BMO.TO/BMO.TO-intelligence-20261102.pdf",
+      "source_sha256": {
+        "quant": "ccd10a154daf3821f6cbee40ff1a7bfcfd061217fe13c486a3c01de38855aa69",
+        "info": "f3f7c93422007a1681349ad5dcc2ac16f1a070a453054bc6ae14a9535b387305",
+        "ai-intel": "c09ec7ab868bd73e425ab55a8511562ae53c7904b1d415630fdb6431a83d4eaf",
+        "rss-items": "72a67fda8ce59b0cceb83e6773fc306bf046be48fc1a947b927a748edd1a3b91",
+        "comparables": "07b9fa65097d01560056808262d1c0c0f7cf344d8fc22bc506c216c808ff3da1",
+        "earnings": "071249dcd14bd32f39483a2907f2d7e346d1a7f6d81430cacc2ab3b4de797c90",
+        "edgar": "d8ab10f077d207a698f5ecede5d36f0629ab079656152bd647ee9399ae453e99",
+        "fred": "30168aec8263510240db5543ac040cda3eaf6fa8ef1d0789222d06ff17a59205"
+      }
     }
   ],
   "refresh_plan": {
@@ -18318,7 +18345,8 @@
       "AMTM",
       "AMZN",
       "ASML",
-      "ATD.TO"
+      "ATD.TO",
+      "BMO.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41582713804",
@@ -18687,6 +18715,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.566
+      },
+      "BMO.TO": {
+        "quant": 0.966,
+        "ai_extract": 14.599,
+        "comparables": 1.417,
+        "earnings": 1.217,
+        "edgar": 2.67,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "BMO.TO",
@@ -18725,7 +18762,8 @@
       "AMTM": 7,
       "AMZN": 14,
       "ASML": 17,
-      "ATD.TO": 2
+      "ATD.TO": 2,
+      "BMO.TO": 4
     }
   },
   "last_complete_refresh": "2026-11-02T04:16:27.377355+00:00",
