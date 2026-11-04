@@ -323,3 +323,8 @@ For failure diagnosis, strict coverage checks and safe recovery, see the
 [recovery runbook](docs/RECOVERY_RUNBOOK.md). Public health counts distinguish
 ready, degraded, missing and pending current-date evidence; deployment, backups
 and delivery still require their own direct verification.
+
+The 2.0 [team Supabase subscription foundation](docs/SUBSCRIPTION_BACKEND.md)
+adds a default-off authoritative snapshot path and versioned member preferences.
+The authenticated browser portal and production roster migration remain pending;
+the existing local member editor does not become an online account system.

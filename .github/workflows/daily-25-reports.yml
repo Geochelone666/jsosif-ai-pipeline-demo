@@ -60,6 +60,9 @@ jobs:
         run: python -m pip install -r requirements.lock
       - name: Load private subscriptions
         env:
+          SUBSCRIPTIONS_BACKEND: ${{ vars.SUBSCRIPTIONS_BACKEND || 'legacy' }}
+          SUBSCRIPTIONS_SUPABASE_URL: ${{ vars.SUBSCRIPTIONS_SUPABASE_URL }}
+          SUBSCRIPTIONS_SERVICE_KEY: ${{ secrets.SUBSCRIPTIONS_SERVICE_KEY }}
           SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}
           MEMBERS_CSV: ${{ secrets.MEMBERS_CSV }}
         run: python scripts/prepare_subscriptions.py "$RUNNER_TEMP/subscriptions.json"

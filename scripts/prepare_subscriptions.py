@@ -8,6 +8,13 @@ from subscriptions import import_members_csv, validate, write_private_config, lo
 
 
 def prepare(path, *, required=False):
+    backend = os.environ.get('SUBSCRIPTIONS_BACKEND', 'legacy')
+    if backend == 'supabase':
+        from subscription_authority import fetch_snapshot
+        write_private_config(path, fetch_snapshot())
+        return True
+    if backend != 'legacy':
+        raise ValueError('Unknown subscription backend')
     raw_json = os.environ.get('SUBSCRIPTIONS_JSON', '').strip()
     raw_csv = os.environ.get('MEMBERS_CSV', '').strip()
     if not raw_json and not raw_csv:

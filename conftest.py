@@ -14,3 +14,5 @@ def isolated_provider_environment(monkeypatch):
              'JSOSIF_API_USAGE_PATH', 'JSOSIF_PERSIST_API_USAGE')
     for name in names:
         monkeypatch.delenv(name, raising=False)
+    for name in ('SUBSCRIPTIONS_BACKEND', 'SUBSCRIPTIONS_SUPABASE_URL', 'SUBSCRIPTIONS_SERVICE_KEY'):
+        monkeypatch.delenv(name, raising=False)

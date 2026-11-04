@@ -1,0 +1,138 @@
+# Team Supabase subscription authority — Phase 1 foundation
+
+Status: implementation for review, disabled by default. The team will provision
+Supabase. No project, real user, auth email, roster migration or live sender switch
+has been created by this change. The existing members.html remains a local roster
+editor, not an authenticated self-service portal.
+
+## Implemented contract
+
+The candidate migration in `supabase/migrations` assumes Supabase-managed
+`auth.users`, `auth.uid()` and standard roles. Preferences live in the unexposed
+`subscription_private` schema. A member can read only their own row through RLS;
+there are no member INSERT/UPDATE/DELETE table grants. Writes go through
+`save_my_subscription(p_preferences, p_expected_version, p_request_id)` with the
+verified identity derived server-side. The client cannot choose a member ID,
+email or another user's ID. Email comes exclusively from verified Auth records.
+
+`get_my_subscription()` returns preferences, version and update time, or null for
+a new member. The save RPC returns the new version/update time. A new member uses
+expected version 0. Each save uses a fresh UUID request ID; a transport retry uses
+the same ID and identical payload/version. Reusing an ID with different input
+fails. A stale version fails, so clients must reload and review the current values
+before resubmitting rather than overwriting someone else's changes silently.
+
+Supported preferences: name, email participation, known groups/active securities,
+IANA timezone, weekday (Monday=0), HH:MM, optional start date and the boolean
+`sector_brief`, `macro_overview`, `news_catalysts` content preferences. Content
+preferences are stored for the next development stages; they do not imply that
+Sector/Macro reports are generated or attached yet. Unsupported symbols are
+rejected; the requested-security onboarding queue is still to be implemented.
+
+`subscription_snapshot()` is executable only by the server service role. One
+statement exports verified Auth emails, stable member IDs, preferences and policy
+from a consistent database view, with schema version, revision and generation time.
+It contains private data: never upload its output to Pages, artifacts or either
+public state branch. Server credentials must never enter browser configuration.
+
+## Python/Actions integration
+
+The default `SUBSCRIPTIONS_BACKEND=legacy` preserves existing JSON/CSV loading.
+Only an approved explicit switch to `supabase` selects the new authority:
+
+| Setting | Location | Purpose |
+| --- | --- | --- |
+| `SUBSCRIPTIONS_BACKEND` | Actions variable | `legacy` (default) or `supabase` |
+| `SUBSCRIPTIONS_SUPABASE_URL` | Actions variable | Exact HTTPS project URL ending in `.supabase.co` |
+| `SUBSCRIPTIONS_SERVICE_KEY` | Actions secret | Server-side Supabase service-role credential for the RPC |
+
+Both daily research and weekly delivery use `prepare_subscriptions.py`. In
+Supabase mode the loader ignores legacy secrets, validates the returned schema,
+member configuration and timestamp, and writes a mode-0600 local snapshot.
+Network, credential, schema or size errors stop the job; there is no fallback to
+an old Secret. HTTP redirects are rejected and TLS validation remains enabled.
+Custom Supabase domains/new non-JWT key routing are not enabled by this initial
+adapter; validate the standard project's service-role JWT route in staging.
+
+Immediately before each real delivery reservation, the sender rechecks authority
+revision and configuration digest. An opt-out, email change, edit or outage aborts
+before that reservation/SMTP call. Earlier accepted sends in the run retain their
+ledger entries. Restart with a fresh snapshot after resolving the cause; normal
+weekly deduplication still applies. Any member's edit conservatively invalidates
+the full frozen snapshot. This is bounded fail-closed behavior, not a distributed
+transaction with SMTP: a change after the final check cannot retract a submission
+already in flight. The UI must describe pause as stopping future submissions.
+
+Preview mode uses the frozen snapshot without SMTP or a send reservation. A
+preview is not evidence that a future send will use the same configuration.
+`report-data` and `delivery-state` remain independent; reservation formats and
+existing weekly member IDs are unchanged.
+
+## Team project preparation and cutover (not executed)
+
+1. Confirm team ownership, hosting region, data handling/access policy and backup
+   retention. Configure Supabase Auth email verification, allowed redirect URLs,
+   email change confirmation/security notifications and rate limits. Verify actual
+   JWT/session handling in staging; local SQL tests emulate identity claims only.
+2. Apply the migration once to the approved project and load the reviewed
+   `supabase/seed_securities.sql` catalogue. Expose only public RPCs to PostgREST;
+   do not add `subscription_private` to exposed schemas. Configure private policy
+   and known groups in the singleton settings row; increment its revision with
+   administrative policy changes. Python validates all exported policy/groups.
+3. Before opening registration, stage the private JSON/CSV migration. Match each
+   legacy member to a verified Auth identity using an administrator-reviewed map;
+   copy the existing member `id` into `member_id` exactly. Do not replace it with an
+   Auth UUID for migrated members: that would bypass old weekly reservations.
+   Import preferences/policies through a reviewed server-side migration and verify
+   counts, disabled states, start dates and IDs without printing member values.
+   An automated importer/admin portal is not included in this foundation.
+4. Build and test the authenticated settings page against staging: signup, login,
+   session expiration, cross-user denial, retries, version conflicts, email changes,
+   opt-out and settings read-back. Do not enable the existing portal announcement
+   until these flows actually work. The database RPCs alone are not the portal.
+5. Validate a service snapshot with `prepare_subscriptions.py` and run the actual
+   sender in preview mode against a restored archive/independent ledger. Verify
+   a pause/config edit blocks reservation and preserves all prior sends.
+6. Obtain explicit approval for the production source switch. Stop/drain any old
+   sender using a legacy snapshot before switching; update both workflows together.
+   Keep an encrypted/private recovery export. Legacy JSON/CSV is recovery-only,
+   not an actively maintained second authority. Never reset the delivery ledger.
+
+Rollback after member edits requires a reviewed fresh export back to legacy
+format, preserving member IDs and current opt-outs. Do not point the sender at
+stale pre-migration Secrets. Source rollback before activation simply leaves the
+legacy workflow in place. Preserve both persistent branches in either case.
+
+## Reproducible validation
+
+Python regressions (standard locked Python 3.12 environment):
+
+```bash
+PYTHONPATH=scripts python -m pytest --import-mode=importlib -q
+```
+
+Database regressions require a fresh disposable PostgreSQL 17 database and a
+privileged test connection configured through the normal PG* environment variables:
+
+```bash
+psql -X -v ON_ERROR_STOP=1 -f tests/sql/subscription_authority.sql
+python tests/sql/concurrent_subscriptions.py
+```
+
+The SQL fixture creates synthetic Auth users/roles and applies the real migration.
+It checks anonymous/unverified denial, RLS isolation, forbidden direct writes,
+server-controlled email, active-security validation, idempotency, version conflicts,
+pause/export agreement and stable migrated IDs. Two concurrent connections then
+prove one stale writer is rejected. Use a fresh database for each run; the fixture
+must never run against a real Supabase project. CI runs it in its own PostgreSQL
+service. Python tests exercise private files, authenticated requests, stale snapshots,
+no legacy fallback, email/opt-out changes and failure before ledger mutation/SMTP.
+
+## Remaining 2.0 stages
+
+Phase 1 still needs the authenticated browser experience, verified email changes,
+reviewed roster migration/admin correction, security acceptance on the actual
+Supabase project, unsupported-security requests and deployed release announcements.
+Phase 2 then establishes shared Sector/Macro/Peer data; sector briefs depend on
+those verified sources. Keep the existing report integrity, quota and email gates
+throughout. No live capability is announced by this foundation.

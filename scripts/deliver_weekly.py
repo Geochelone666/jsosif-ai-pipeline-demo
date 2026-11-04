@@ -156,6 +156,8 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                             temporary.unlink(missing_ok=True)
                 summary['prepared'] += 1
                 continue
+            from subscription_authority import assert_current
+            assert_current(config)
             ledger[key] = {'period': period, 'status': 'sending', 'updated_at': now.isoformat(),
                            'reports': [r['report_id'] for r in selected]}
             write_json(ledger_root / 'state/deliveries.json', ledger)

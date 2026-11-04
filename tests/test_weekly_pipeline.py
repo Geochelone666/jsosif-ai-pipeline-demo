@@ -649,3 +649,38 @@ def test_invalid_public_metadata_preserves_previous_site(store, tmp_path, locati
     with pytest.raises(ValueError, match='Invalid public'):
         build(store, output)
     assert {p.relative_to(output): p.read_bytes() for p in output.rglob('*') if p.is_file()} == before
+
+
+def test_authority_change_blocks_before_ledger_reservation_or_smtp(config, store, monkeypatch):
+    import subscription_authority
+    def changed(_):
+        raise ValueError('Subscriptions changed')
+    monkeypatch.setattr(subscription_authority, 'assert_current', changed)
+    submitted = []
+    with pytest.raises(ValueError, match='Subscriptions changed'):
+        weekly.deliver(config, store, now=NOW, really_send=True, backend=submitted.append)
+    assert submitted == []
+    assert not (store / 'state/deliveries.json').exists()
+
+
+def test_prepared_authority_snapshot_drives_real_sender_and_deduplication(config, store, monkeypatch, tmp_path):
+    import subscription_authority as authority
+    import prepare_subscriptions
+    from subscriptions import load
+    # Exercise the same prepare -> file -> sender path used by Actions.
+    snapshot = dict(config, _subscription_authority={
+        'revision': '1', 'sha256': authority.fingerprint(config), 'generated_at': NOW.isoformat()})
+    monkeypatch.setenv('SUBSCRIPTIONS_BACKEND', 'supabase')
+    monkeypatch.setattr(authority, 'fetch_snapshot', lambda: snapshot)
+    target = tmp_path / 'private-prepared.json'
+    assert prepare_subscriptions.prepare(target)
+    submitted = []
+    assert weekly.deliver(load(target), store, now=NOW, really_send=True, backend=submitted.append)['sent'] == 1
+    assert weekly.deliver(load(target), store, now=NOW, really_send=True, backend=submitted.append)['skipped'] == 1
+    assert len(submitted) == 1
+    config['members'][0]['enabled'] = False
+    snapshot = dict(config, _subscription_authority={
+        'revision': '2', 'sha256': authority.fingerprint(config), 'generated_at': NOW.isoformat()})
+    assert prepare_subscriptions.prepare(target)
+    assert weekly.deliver(load(target), store, now=NOW, really_send=True, backend=submitted.append)['skipped'] == 1
+    assert len(submitted) == 1
