@@ -76,7 +76,7 @@ def normalize_member(member, supported=None):
     accepted = [t for t in requested if t in supported]
     return ({
         'id': member['id'], 'name': member['name'], 'email': member['email'],
-        'groups': ['portal-self'], 'tickers': accepted,
+        'groups': [], 'tickers': accepted,
         'enabled': member['enabled'], 'timezone': member['timezone'],
         'send_weekday': member['send_weekday'], 'send_time': member['send_time'],
     }, len(requested) - len(accepted))
@@ -105,10 +105,12 @@ def merge(existing_config, portal_members, *, supported=None):
             raise ValueError('Duplicate email addresses in portal export')
         seen_email.add(key)
         unsupported += dropped
+        old = by_email.get(key)
         if not member['tickers']:
+            if old:
+                raise ValueError('An existing portal subscription has no supported ticker; review required')
             pending += 1
             continue
-        old = by_email.get(key)
         id_owner = by_id.get(member['id'])
         if old and (not old['id'].startswith('portal-') or old['id'] != member['id']):
             raise ValueError('Portal and privately managed member identities conflict')
@@ -122,9 +124,6 @@ def merge(existing_config, portal_members, *, supported=None):
         by_id[member['id']] = member
         accepted += 1
     base['members'] = members
-    base.setdefault('groups', {})['portal-self'] = {
-        'name': 'Website self-service subscribers', 'tickers': []
-    }
     return validate(base), {'accepted': accepted, 'pending': pending, 'unsupported_tickers': unsupported}
 
 
