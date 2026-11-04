@@ -107,7 +107,30 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
         '',
     ]
     plain += [f'- {ticker} — {day}' for ticker, day, *_ in snapshots]
-    plain += ['', 'Best,', 'Tech Team']
+    # Keep public report browsing distinct from the member-only subscription portal.
+    # The portal link is gated until its verified backend has been deployed.
+    official_site = 'https://www.jsosif.com/'
+    research_site = 'https://geochelone666.github.io/jsosif-ai-pipeline-demo/'
+    portal = os.environ.get('SUBSCRIPTION_PORTAL_URL', '').strip()
+    portal_live = os.environ.get('SUBSCRIPTION_PORTAL_ENABLED') == '1'
+    if portal_live and portal != 'https://www.jsosif.com/research-updates':
+        raise ValueError('The enabled subscription portal must use the reviewed official URL')
+    plain += [
+        '',
+        f'Official JSOSIF website: {official_site}',
+        f'Research reports and history: {research_site}',
+        'Browse holdings, archived report versions and source-freshness information online.',
+    ]
+    if portal_live:
+        plain += [
+            f'Manage your subscribed stocks, weekly delivery time and time zone: {portal}',
+        ]
+    plain += [
+        'Reports are research snapshots, not real-time market data.',
+        '',
+        'Best,',
+        'Tech Team',
+    ]
     html = [
         '<html><body>',
         f'<p>Hi {escape(name)},</p>',
@@ -115,7 +138,22 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
         '<ul>',
     ]
     html += [f'<li>{escape(ticker)} &mdash; {escape(day)}</li>' for ticker, day, *_ in snapshots]
-    html += ['</ul>', '<p>Best,<br>Tech Team</p>', '</body></html>']
+    html += [
+        '</ul>',
+        f'<p>Official JSOSIF website: <a href="{official_site}">jsosif.com</a></p>',
+        f'<p>Research reports and historical versions: <a href="{research_site}">Research workspace</a>. '
+        'Review each holding’s data freshness and report quality online.</p>',
+    ]
+    if portal_live:
+        html.append(
+            f'<p>Manage your stock subscriptions, weekly delivery time and time zone '
+            f'at <a href="{escape(portal, quote=True)}">your subscription profile</a>.</p>'
+        )
+    html += [
+        '<p>Reports are research snapshots, not real-time market data.</p>',
+        '<p>Best,<br>Tech Team</p>',
+        '</body></html>',
+    ]
     message = EmailMessage(policy=policy.SMTP)
     message['Subject'] = title
     message['To'] = ', '.join(recipients)
