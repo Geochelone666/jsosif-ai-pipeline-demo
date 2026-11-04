@@ -140,8 +140,8 @@ def test_table_personal_choices_and_opt_out_drive_the_digest(config, store):
     body = message.get_body(preferencelist=('plain',)).get_content().replace('\r\n', '\n')
     assert body.startswith('Hi Alice Example,\n\nHere are the latest JSOSIF intelligence reports:'
                            '\n\n- CSCO — 2026-10-19\n')
-    assert 'Official JSOSIF website: https://www.jsosif.com/' in body
-    assert 'Research reports and history: https://geochelone666.github.io/jsosif-ai-pipeline-demo/' in body
+    assert 'JSOSIF fund website: https://www.jsosif.com/' in body
+    assert 'JSOSIF AI Pipeline project website: https://geochelone666.github.io/jsosif-ai-pipeline-demo/' in body
     assert body.endswith('\nBest,\nTech Team\n')
     assert str(message['To']) == 'alice@example.com'
     assert [part.get_filename() for part in message.iter_attachments()] == ['CSCO-intelligence-20261019.pdf']
