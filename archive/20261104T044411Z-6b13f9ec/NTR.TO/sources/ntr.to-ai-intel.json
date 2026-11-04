@@ -1,0 +1,93 @@
+{
+  "ticker": "NTR.TO",
+  "as_of": "2026-11-03",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [],
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "Nutrien Ltd. (NTR.TO) Stock Price, News, Quote & History",
+      "reason": "Only provides price history, no event"
+    },
+    {
+      "headline": "Nutrien Stock Price Forecast. Should You Buy NTR.TO?",
+      "reason": "Opinion/forecast, no factual event"
+    },
+    {
+      "headline": "Nutrien Ltd. (NTR.TO) stock price, news, quote and history",
+      "reason": "Only price data, no event"
+    },
+    {
+      "headline": "Nutrien Ltd. (NTR) Stock Price, News, Quote & History",
+      "reason": "Price data, no event"
+    },
+    {
+      "headline": "Nutrien (NTR) Stock Forecast and Price Target 2026 $NTR",
+      "reason": "Forecast, no factual event"
+    },
+    {
+      "headline": "Nutrien (TSX:NTR) Stock Forecast & Analyst Predictions",
+      "reason": "No specific event reported; only a forecast/analysis piece."
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 6,
+    "rule": 0,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 6
+  },
+  "rss_audit": {
+    "raw_items": 7,
+    "unique_headlines": 6,
+    "duplicates_excluded": 1,
+    "invalid_headline_items": 0,
+    "unique_publishers": 5,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 33.33,
+    "publisher_hhi": 0.2222,
+    "https_link_headlines": 6,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-10-27",
+    "newest_publication_date": "2026-11-03",
+    "oldest_headline_age_days": 7
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-11-03",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 0,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 0,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-11-04T05:05:30.302223+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Nutrien%20NTR.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 7
+  }
+}
