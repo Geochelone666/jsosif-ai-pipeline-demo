@@ -138,8 +138,11 @@ def test_table_personal_choices_and_opt_out_drive_the_digest(config, store):
     assert len(files) == 1 and files[0].stat().st_mode & 0o777 == 0o600
     message = BytesParser(policy=policy.default).parsebytes(files[0].read_bytes())
     body = message.get_body(preferencelist=('plain',)).get_content().replace('\r\n', '\n')
-    assert body.strip() == ('Hi Alice Example,\n\nHere are the latest JSOSIF intelligence reports:'
-                            '\n\n- CSCO — 2026-10-19\n\nBest,\nTech Team')
+    assert body.startswith('Hi Alice Example,\\n\\nHere are the latest JSOSIF intelligence reports:'
+                           '\\n\\n- CSCO — 2026-10-19\\n')
+    assert 'Official JSOSIF website: https://www.jsosif.com/' in body
+    assert 'Research reports and history: https://geochelone666.github.io/jsosif-ai-pipeline-demo/' in body
+    assert body.endswith('\\nBest,\\nTech Team\\n')
     assert str(message['To']) == 'alice@example.com'
     assert [part.get_filename() for part in message.iter_attachments()] == ['CSCO-intelligence-20261019.pdf']
     assert not (store / 'state/deliveries.json').exists()
