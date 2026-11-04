@@ -540,6 +540,11 @@ def extract(items, ticker, call_ai=None, as_of=None, *, _retry_missing=True, cac
                 data.setdefault(key, []).extend(retried[key])
         unresolved = {item['headline'] for item in retried['unclassified']}
         data['ai_coverage_retry'] = {'requested': len(pending), 'unresolved': len(unresolved)}
+        # Keep retry diagnostics distinct from the initial response so an
+        # omitted headline can be distinguished from a rejected classification.
+        for key in ('ai_notes', 'ai_skipped'):
+            if retried.get(key):
+                data['ai_coverage_retry'][key] = retried[key]
         pending = [item for item in pending if item['headline'] in unresolved]
         for name in retried.get('models_used', []):
             data['models_used'] = list(dict.fromkeys(data.get('models_used', []) + [name]))

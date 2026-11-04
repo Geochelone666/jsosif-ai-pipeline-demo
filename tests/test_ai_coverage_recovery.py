@@ -80,3 +80,26 @@ def test_provider_error_does_not_trigger_coverage_retry():
 ])
 def test_analysis_status_distinguishes_incomplete_and_quiet_analysis(data, expected):
     assert analysis_status(data) == expected
+
+
+def test_coverage_retry_retains_item_validation_diagnostics():
+    calls = []
+
+    def ai(items, ticker):
+        calls.append([item['headline'] for item in items])
+        if len(calls) == 1:
+            return payload(ticker, [items[0]['headline']])
+        malformed = payload(ticker, [])
+        malformed['tailwinds'] = [{'headline': items[0]['headline'],
+                                  'unexpected_raw_field': 'synthetic-private-response'}]
+        return [malformed]
+
+    result = extract([{'headline': 'First unclear story'}, {'headline': 'Second unclear story'}], 'XYL', ai)
+    assert calls == [['First unclear story', 'Second unclear story'], ['Second unclear story']]
+    assert len(result['irrelevant']) == 1
+    assert result['extraction_stats']['unknown'] == 1
+    retry = result['ai_coverage_retry']
+    assert retry['ai_notes'] == ['unwrapped single-element list payload']
+    assert retry['ai_skipped'] == [{'headline': 'Second unclear story',
+                                    'reason': 'incomplete item', 'category': 'tailwinds'}]
+    assert 'synthetic-private-response' not in str(result)

@@ -65,6 +65,14 @@ before changing caps. Keep durable request/token reservations. Never clear
 unclassified; failed AI work must not be rewritten as irrelevant news. Existing
 bounded schema/coverage retries still consume the shared budget.
 
+For unresolved headlines, inspect the archived AI source's `ai_coverage_retry`.
+Its `requested` and `unresolved` counts describe the bounded retry;
+`ai_notes` and `ai_skipped`, when present, retain the retry's format corrections
+and item rejection reasons separately from the initial response. These fields
+contain application-selected diagnostics, not raw provider responses. Older
+archives may lack retry diagnostics; their absence does not prove the model
+omitted a headline rather than returning an invalid item.
+
 ## Cache failure
 
 Current SEC/price collectors refetch malformed caches and write atomically.
