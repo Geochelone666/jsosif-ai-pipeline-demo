@@ -109,17 +109,17 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
     plain += [f'- {ticker} — {day}' for ticker, day, *_ in snapshots]
     # Keep public report browsing distinct from the member-only subscription portal.
     # The portal link is gated until its verified backend has been deployed.
-    official_site = 'https://www.jsosif.com/'
-    research_site = 'https://geochelone666.github.io/jsosif-ai-pipeline-demo/'
+    project_site = 'https://geochelone666.github.io/jsosif-ai-pipeline-demo/'
+    fund_site = 'https://www.jsosif.com/'
     portal = os.environ.get('SUBSCRIPTION_PORTAL_URL', '').strip()
     portal_live = os.environ.get('SUBSCRIPTION_PORTAL_ENABLED') == '1'
-    if portal_live and portal != 'https://www.jsosif.com/research-updates':
-        raise ValueError('The enabled subscription portal must use the reviewed official URL')
+    if portal_live and portal != project_site + 'subscriptions.html':
+        raise ValueError('The enabled subscription portal must use the reviewed project URL')
     plain += [
         '',
-        f'Official JSOSIF website: {official_site}',
-        f'Research reports and history: {research_site}',
-        'Browse holdings, archived report versions and source-freshness information online.',
+        f'JSOSIF AI Pipeline project website: {project_site}',
+        'Browse research reports, archived versions and source-freshness information online.',
+        f'JSOSIF fund website: {fund_site}',
     ]
     if portal_live:
         plain += [
@@ -140,9 +140,9 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
     html += [f'<li>{escape(ticker)} &mdash; {escape(day)}</li>' for ticker, day, *_ in snapshots]
     html += [
         '</ul>',
-        f'<p>Official JSOSIF website: <a href="{official_site}">jsosif.com</a></p>',
-        f'<p>Research reports and historical versions: <a href="{research_site}">Research workspace</a>. '
-        'Review each holding’s data freshness and report quality online.</p>',
+        f'<p>JSOSIF AI Pipeline project website: <a href="{project_site}">Research workspace</a>. '
+        'Browse research reports, historical versions, and data freshness online.</p>',
+        f'<p>JSOSIF fund website: <a href="{fund_site}">jsosif.com</a></p>',
     ]
     if portal_live:
         html.append(
