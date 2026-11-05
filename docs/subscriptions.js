@@ -7,9 +7,12 @@ function clear(){clearTimeout(timer);token=null;pending=null;version=0;options=n
 async function request(path,body,method='POST'){
  const headers={'apikey':config.publishable_key,'Content-Type':'application/json'};
  if(token)headers.Authorization='Bearer '+token;
- const response=await fetch(config.url+path,{method,headers,body:JSON.stringify(body),redirect:'error',cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer'});
- if(!response.ok){const error=new Error('Request failed');error.status=response.status;throw error;}
- return response.status===204?null:response.json();
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
+ try{
+  const response=await fetch(config.url+path,{method,headers,body:JSON.stringify(body),redirect:'error',cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:controller.signal});
+  if(!response.ok){const error=new Error('Request failed');error.status=response.status;throw error;}
+  return response.status===204?null:await response.json();
+ }finally{clearTimeout(timeout);}
 }
 function failure(error){
  if(error.status===401){clear();status('Your session expired. Sign in again.');}
