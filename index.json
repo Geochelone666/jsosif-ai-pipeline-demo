@@ -19890,6 +19890,33 @@
         "edgar": "faba50584504083cb9308f36f772d9435b0503602fc066ab502c60842855fd41",
         "fred": "b1cd584da006ac898701227e470f1c16e9e0efebe6bd3ccf18dc17c2417a724d"
       }
+    },
+    {
+      "report_id": "20261105T045846Z-bde0a1fe/PEP",
+      "ticker": "PEP",
+      "generated_at": "2026-11-05T04:59:08.818549+00:00",
+      "as_of": "2026-11-04",
+      "quality": "ready",
+      "market_as_of": "2026-11-04",
+      "news_as_of": "2026-11-04",
+      "sha256": {
+        "md": "efdf0c38bde5751ff33bb8f49974ad4d98c5dfcf3f7c11d99d50b203fb932226",
+        "json": "7d8e33fc523cbb6e1de2e446b5fde1406b1b20651b293be4e279af272d85a269",
+        "pdf": "64860073171e33632b00ccd2a65c668e1991ed739e3d7cf106b3ad3408ae8d64"
+      },
+      "md": "archive/20261105T045846Z-bde0a1fe/PEP/PEP-intelligence-20261104.md",
+      "json": "archive/20261105T045846Z-bde0a1fe/PEP/PEP-intelligence-20261104.json",
+      "pdf": "archive/20261105T045846Z-bde0a1fe/PEP/PEP-intelligence-20261104.pdf",
+      "source_sha256": {
+        "quant": "35d9770ad09a5aada72338b2bfed30442ab91430af968c5d7f9c20477dc197e5",
+        "info": "df3689304732cba788f15d00f2aabf512819fd4d1cc55491ed3415091083700c",
+        "ai-intel": "7fc372fa4c85cec1e2a0f99c07a9325e68c80885d62134806b7f0d955aac5d24",
+        "rss-items": "82ace73e8bdd713878c61d0a6286a97b9b56c18e9381448134394a7d2a681f9c",
+        "comparables": "0b337af23dc3a1645a0165149e3e387bfc2ee7a6d041e8a4ffa092c8d1b16bd7",
+        "earnings": "08d7e88e51efee1e6cfd0cf7f7a0e196bf99c7afda1d45dcf89c894dc017d8b9",
+        "edgar": "1687851d304b8a245f28adbb786d61707fd9a075930d8139f582a8b240886087",
+        "fred": "8df7abfe2cf9f096a35cea07153059066fa26409bb9a400459fd249c14a536f3"
+      }
     }
   ],
   "refresh_plan": {
@@ -20066,7 +20093,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "PEP"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "41971033704",
     "degraded_tickers": [],
@@ -20125,9 +20154,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "PEP": {
+        "quant": 1.872,
+        "ai_extract": 8.736,
+        "comparables": 1.768,
+        "earnings": 1.217,
+        "edgar": 2.169,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.715
+      }
+    },
     "current_ticker": "PEP",
-    "last_progress_at": "2026-11-05T04:58:50.691610+00:00"
+    "last_progress_at": "2026-11-05T04:58:50.691610+00:00",
+    "news_cache_candidates": {
+      "PEP": 13
+    }
   },
   "last_complete_refresh": "2026-11-04T04:44:11.435464+00:00",
   "last_complete_business_date": "2026-11-03"
