@@ -60,6 +60,10 @@ access-control design for private research.
 
 Existing V1 report search/filters/history and local member editor remain available.
 New authenticated subscription and What's new candidates are implemented locally.
+An archive-backed Sectors/Compare/Macro workspace is now implemented locally,
+with source-linked stock metrics, provider peers, macro observation dates and
+explicit supplemental-source limitations. It is not a current-data dashboard.
+
 Pending: unified Overview/Stocks/Sectors/Macro/Compare/Research Library navigation,
 sector/macro time-series dashboards, adjustable peer comparisons, event calendar,
 news/catalyst filtering and history charts. Each needs desktop/mobile, keyboard,

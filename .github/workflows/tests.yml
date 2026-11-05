@@ -76,6 +76,8 @@ jobs:
         run: python scripts/browser_smoke.py --site site-browser --artifacts review/browser
       - name: Exercise subscription portal with isolated Auth and RPC fixtures
         run: python scripts/subscription_browser_smoke.py --site site-browser --artifacts review/subscription-browser
+      - name: Exercise shared research archive views
+        run: python scripts/research_browser_smoke.py --site site-browser --artifacts review/shared-research
       - uses: actions/upload-artifact@v6
         if: always()
         with:

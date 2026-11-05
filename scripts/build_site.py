@@ -145,6 +145,10 @@ def build(store, output, template=None, portal_config=None):
                 target = stage / entry[kind]
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, target)
+        from research_workspace import build_dataset
+        write_json(stage / 'research-data.json', build_dataset(store, index))
+        for name in ('research.html', 'research.js'):
+            shutil.copy2(Path(__file__).resolve().parents[1] / 'docs' / name, stage / name)
         # Delivery/quota state, member config and credentials never enter the site.
         write_json(stage / 'index.json', index)
         write_json(stage / 'health.json', health_summary(index))

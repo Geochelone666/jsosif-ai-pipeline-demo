@@ -340,3 +340,7 @@ five phases and distinguishes local implementation from production acceptance.
 The [shared research foundation](docs/SHARED_RESEARCH.md) defines configurable
 eight-team coverage defaults and deterministic comparison contracts. Proposed
 benchmarks and KPI topics are not yet live sector data or investment signals.
+
+Site builds also include an [archive-backed shared research view](docs/SHARED_RESEARCH.md)
+for eight sector groups, saved-metric comparisons, provider peers and available FRED
+observations. Source dates and missing evidence remain visible; it makes no new API calls.
