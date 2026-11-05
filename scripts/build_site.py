@@ -111,6 +111,8 @@ def build(store, output, template=None):
         stage = Path(temporary) / 'build'
         stage.mkdir()
         shutil.copy2(template, stage / 'index.html')
+        from release_announcements import load, page
+        (stage / 'whats-new.html').write_text(page(load()), encoding='utf-8')
         members_page = Path(template).with_name('members.html')
         if members_page.is_file():
             shutil.copy2(members_page, stage / 'members.html')

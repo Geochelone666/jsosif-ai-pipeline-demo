@@ -93,7 +93,7 @@ def _normalize_pdf_paths(pdf_path):
     return result
 
 
-def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
+def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None, announcements=()):
     """Short cover-note format: greeting, report list, sign-off.
 
     Details live in the PDF attachments; the body only introduces them.
@@ -107,6 +107,10 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
         '',
     ]
     plain += [f'- {ticker} — {day}' for ticker, day, *_ in snapshots]
+    if announcements:
+        plain += ['', "What's New — Platform Update"]
+        for announcement in announcements:
+            plain += [announcement['title'], *announcement['summary'], announcement['url']]
     # Keep public report browsing distinct from the member-only subscription portal.
     # The portal link is gated until its verified backend has been deployed.
     project_site = 'https://geochelone666.github.io/jsosif-ai-pipeline-demo/'
@@ -138,8 +142,14 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
         '<ul>',
     ]
     html += [f'<li>{escape(ticker)} &mdash; {escape(day)}</li>' for ticker, day, *_ in snapshots]
+    html.append('</ul>')
+    if announcements:
+        html.append("<h2>What's New — Platform Update</h2>")
+        for announcement in announcements:
+            html.append('<h3>' + escape(announcement['title']) + '</h3>')
+            html.extend('<p>' + escape(line) + '</p>' for line in announcement['summary'])
+            html.append('<p><a href="' + escape(announcement['url'], quote=True) + '">Learn more</a></p>')
     html += [
-        '</ul>',
         f'<p>JSOSIF AI Pipeline project website: <a href="{project_site}">Research workspace</a>. '
         'Browse research reports, historical versions, and data freshness online.</p>',
         f'<p>JSOSIF fund website: <a href="{fund_site}">jsosif.com</a></p>',
@@ -165,7 +175,7 @@ def _build_brief_email(snapshots, recipients, pdf_paths, display_name=None):
     return message
 
 
-def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=False, display_name=None):
+def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=False, display_name=None, announcements=()):
     # Empty recipients remain visibly pending in offline review artifacts.
     if not (review_only and recipients == []):
         recipients = validate_recipients(recipients)
@@ -180,7 +190,7 @@ def build_email(paths, recipients, *, review_only=False, pdf_path=None, brief=Fa
         raise ValueError('At least one snapshot is required')
     pdf_paths = _normalize_pdf_paths(pdf_path)
     if brief:
-        return _build_brief_email(snapshots, recipients, pdf_paths, display_name)
+        return _build_brief_email(snapshots, recipients, pdf_paths, display_name, announcements)
     title = 'JSOSIF snapshot | ' + '; '.join(f'{day} {ticker}' for ticker, day, *_ in snapshots)
     plain, html = [title], [f'<html><body><h1>{escape(title)}</h1>']
 
