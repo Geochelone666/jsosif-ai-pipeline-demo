@@ -281,6 +281,11 @@ To investigate a failed daily run:
 Member stock selections, delivery weekday/time, and consent are managed by the
 private subscription configuration, not by this troubleshooting procedure.
 
+
+[Release announcements](docs/RELEASE_ANNOUNCEMENTS.md) use reviewed deployment
+records for the website's What's new page and relevant updates in the next eligible
+weekly digest. Draft features are excluded; the initial announcement list is empty.
+
 ## Tests and legacy commands
 
 ```bash

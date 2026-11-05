@@ -262,6 +262,69 @@ def test_health_counts_current_reports_instead_of_attempt_claims(store, tmp_path
     assert health['status'] == 'interrupted'
 
 
+@pytest.fixture
+def release_catalog(tmp_path):
+    p = tmp_path / 'reviewed-releases.json'
+    write_json(p, {'schema_version': 1, 'releases': [{
+        'id': 'research-v2', 'version': '2.0', 'title': 'Reviewed research update',
+        'summary': ['A verified improvement is now available.'], 'kind': 'feature', 'status': 'published',
+        'audience': {'groups': [], 'tickers': []},
+        'url': 'https://geochelone666.github.io/jsosif-ai-pipeline-demo/whats-new.html',
+        'deployed_at': '2026-10-18T10:00:00Z', 'verified_at': '2026-10-18T11:00:00Z',
+        'evidence_url': 'https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/123'}]})
+    return p
+
+
+def test_announcements_preview_does_not_consume_slot_and_reserves_before_smtp(config, store, release_catalog):
+    kwargs = {'now': NOW, 'release_catalog': release_catalog}
+    preview = store.parent / (store.name + '-private-preview')
+    assert weekly.deliver(config, store, preview_dir=preview, **kwargs)['prepared'] == 1
+    assert not (store / 'state/deliveries.json').exists()
+    assert 'Reviewed research update' in next(preview.glob('*.eml')).read_text()
+    sent = []
+    def backend(message):
+        state = next(iter(read_json(store / 'state/deliveries.json').values()))
+        assert state['status'] == 'sending' and state['announcements'] == ['research-v2']
+        assert 'Reviewed research update' in message.get_body(('plain',)).get_content()
+        assert 'Reviewed research update' in message.get_body(('html',)).get_content()
+        assert len(list(message.iter_attachments())) == 2
+        sent.append(message)
+    assert weekly.deliver(config, store, really_send=True, backend=backend, **kwargs)['sent'] == 1
+    assert weekly.deliver(config, store, really_send=True, backend=backend, **kwargs)['skipped'] == 1
+    assert len(sent) == 1
+
+
+def test_announcements_wait_for_eligible_reports_and_never_create_standalone_mail(config, store, release_catalog):
+    from datetime import timedelta
+    sent = []
+    result = weekly.deliver(config, store, now=NOW+timedelta(days=7), really_send=True,
+                            backend=sent.append, release_catalog=release_catalog)
+    assert result['deferred'] == 1 and sent == []
+    assert not (store / 'state/deliveries.json').exists()
+
+
+def test_announcement_unknown_blocks_repetition_across_weeks(config, store, release_catalog):
+    from datetime import timedelta
+    def unknown(message): raise TimeoutError('Synthetic uncertain SMTP')
+    assert weekly.deliver(config, store, now=NOW, really_send=True, backend=unknown,
+                          release_catalog=release_catalog)['unknown'] == 1
+    # Previous-week ambiguity must also suppress this announcement in later valid digests.
+    import release_announcements
+    assert release_announcements.select(release_announcements.load(release_catalog), config['members'][0],
+            ['CSCO','JPM'], read_json(store / 'state/deliveries.json'), NOW+timedelta(days=7)) == []
+
+
+def test_bad_release_catalog_preserves_existing_site(store, tmp_path, monkeypatch):
+    import release_announcements
+    output=tmp_path.parent/(tmp_path.name+'-site')
+    build(store,output)
+    before=(output/'index.json').read_bytes()
+    bad=tmp_path/'bad-releases.json'; bad.write_text('{broken')
+    monkeypatch.setattr(release_announcements,'CATALOG',bad)
+    with pytest.raises(ValueError): build(store,output)
+    assert (output/'index.json').read_bytes()==before
+
+
 def test_site_has_all_versions_but_no_private_state(store, tmp_path):
     write_json(store / 'state/deliveries.json', {'private': 'sensitive'})
     output = tmp_path.parent / (tmp_path.name + '-site')

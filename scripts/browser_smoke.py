@@ -57,6 +57,9 @@ try:
       page.get_by_role('button',name='Close details').click()
       page.select_option('#quality','ready')
       assert page.locator('#history tr').count()==sum(report['quality']=='ready' and not report.get('advisory') for report in reports)
+    page.get_by_role('link',name="What's new",exact=True).click()
+    assert page.get_by_role('heading',name="What's new",exact=True).is_visible()
+    page.get_by_role('link',name='← Research workspace').click()
     page.goto(address+'/members.html')
     member_csv='id,name,email,groups,tickers,enabled,timezone,send_weekday,send_time,delivery_start_date\nmember-001,"Example, Analyst",analyst@example.com,research,AAPL;CSCO;JPM,yes,America/Toronto,2,09:00,2026-10-26\nmember-002,Second Analyst,second@example.com,research,COST,no,America/Toronto,4,17:00,\n'
     page.locator('#import').set_input_files({'name':'members.local.csv','mimeType':'text/csv','buffer':member_csv.encode()})
@@ -82,6 +85,10 @@ try:
     page.wait_for_function("expected => document.querySelector('#stat-versions').textContent===String(expected)", arg=expected)
     assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
     page.screenshot(path=str(root/'research-workspace-mobile.png'),full_page=True)
+    page.get_by_role('link',name="What's new",exact=True).click()
+    assert page.get_by_role('heading',name="What's new",exact=True).is_visible()
+    assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
+    page.screenshot(path=str(root/'whats-new-mobile.png'),full_page=True)
     assert not errors,errors
     browser.close()
     print('Browser smoke checks passed: historical inspection, filters, refresh, CSV import/export, invalid-import preservation, and mobile layout; no JavaScript errors')

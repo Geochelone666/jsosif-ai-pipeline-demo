@@ -60,7 +60,9 @@ def due_period(member, now):
 
 
 def deliver(config, root, *, now=None, really_send=False, git=False, backend=send,
-            preview_dir=None, preview_all=False, ledger_store=None):
+            preview_dir=None, preview_all=False, ledger_store=None, release_catalog=None):
+    import release_announcements
+    releases = release_announcements.load(release_catalog)
     if really_send and (preview_dir is not None or preview_all):
         raise ValueError('Preview options cannot be combined with real delivery')
     now = now or datetime.now(timezone.utc)
@@ -119,12 +121,14 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 deferred_reasons['missing_or_ineligible_report'] += 1
                 continue
             paths, pdfs = [], []
+            announcements = release_announcements.select(
+                releases, member, tickers_for(config, member), ledger, now)
             try:
                 for entry in selected:
                     files = verified_report_files(root, entry)
                     paths.append(files['md']); pdfs.append(files['pdf'])
                 message = build_email(paths, [member['email']], pdf_path=pdfs,
-                                      brief=True, display_name=member['name'])
+                                      brief=True, display_name=member['name'], announcements=announcements)
                 message['Date'] = format_datetime(now)
                 message['Message-ID'] = make_msgid()
                 if len(message.as_bytes()) > 20 * 1024 * 1024:
@@ -158,6 +162,9 @@ def deliver(config, root, *, now=None, really_send=False, git=False, backend=sen
                 continue
             ledger[key] = {'period': period, 'status': 'sending', 'updated_at': now.isoformat(),
                            'reports': [r['report_id'] for r in selected]}
+            if announcements:
+                ledger[key].update(announcements=[a['id'] for a in announcements],
+                                   announcement_recipient=release_announcements.recipient_key(member['id']))
             write_json(ledger_root / 'state/deliveries.json', ledger)
             checkpoint()  # Failure here prevents the SMTP call.
             try:
