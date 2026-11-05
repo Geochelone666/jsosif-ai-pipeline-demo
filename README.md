@@ -331,5 +331,8 @@ and delivery still require their own direct verification.
 
 The 2.0 [team Supabase subscription foundation](docs/SUBSCRIPTION_BACKEND.md)
 adds a default-off authoritative snapshot path and versioned member preferences.
-The authenticated browser portal and production roster migration remain pending;
+Live portal activation and production roster migration remain pending;
 the existing local member editor does not become an online account system.
+
+The full [Platform 2.0 delivery register](docs/PLATFORM_2_ROADMAP.md) tracks all
+five phases and distinguishes local implementation from production acceptance.

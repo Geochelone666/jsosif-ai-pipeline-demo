@@ -2,8 +2,9 @@
 
 Status: implementation for review, disabled by default. The team will provision
 Supabase. No project, real user, auth email, roster migration or live sender switch
-has been created by this change. The existing members.html remains a local roster
-editor, not an authenticated self-service portal.
+has been created by this change. The existing members.html remains a local roster editor. The new subscriptions.html
+implements the authenticated portal against the RPCs, but defaults to disabled
+and has only passed isolated browser tests so far.
 
 ## Implemented contract
 
@@ -143,7 +144,7 @@ no legacy fallback, email/opt-out changes and failure before ledger mutation/SMT
 
 ## Remaining 2.0 stages
 
-Phase 1 still needs the authenticated browser experience, verified email changes,
+Phase 1 still needs actual hosted authentication/email-change acceptance,
 reviewed roster migration/admin correction, security acceptance on the actual
 Supabase project, unsupported-security requests and deployed release announcements.
 Phase 2 then establishes shared Sector/Macro/Peer data; sector briefs depend on
@@ -160,3 +161,27 @@ configured separately; keep `SUBSCRIPTIONS_BACKEND=legacy` until approved cutove
 The current exact redirect targets the research homepage; add the precise verified
 portal callback only when its implementation is ready. An open Auth signup switch
 does not bypass the database's explicit team-approval requirement.
+
+## Browser portal candidate
+
+The build always includes subscriptions.html and subscriptions.js, with a disabled
+portal-config.json by default. The current deployment workflows do not enable it.
+For staging only, supply `--portal-config /private/path/portal-public.json` to the
+site builder, containing exactly `enabled: true`, the HTTPS Supabase `url`, and a
+`publishable_key` starting with sb_publishable_. No service/secret key is accepted.
+Apply the second subscription_options migration after the authority migration.
+It returns active tickers and group options only to approved authenticated members.
+
+The browser requests email codes, verifies them with Auth and calls own-member
+RPCs with the returned session. Tokens live only in memory and expire locally
+within one hour; there is no localStorage/sessionStorage persistence. Reloading
+the page requires sign-in again. Preferences use expected versions and retained
+request IDs for ambiguous retries. Version conflicts require an explicit reload.
+Email change requests go to Auth, not preference rows; real secure double-confirmation
+behavior must be verified on the team project. The exact callback must be added
+to the project's allowlist before live email-change acceptance.
+
+Do not advertise the portal as launched based on mock tests. Run
+`BROWSER_EXECUTABLE=/path/to/chromium python scripts/subscription_browser_smoke.py
+--site site-build` for isolated tests; every Auth/RPC request in this test is
+intercepted, and no real email or database mutation occurs.

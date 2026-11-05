@@ -1,5 +1,6 @@
 """Build a static latest/history site from the persisted archive, excluding private state."""
 import argparse
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 import shutil
@@ -86,7 +87,7 @@ def health_summary(index):
     }
 
 
-def build(store, output, template=None):
+def build(store, output, template=None, portal_config=None):
     if Path(output).is_symlink():
         raise ValueError('Site output must not be a symlink')
     store, output = Path(store).resolve(), Path(output).resolve()
@@ -113,6 +114,20 @@ def build(store, output, template=None):
         shutil.copy2(template, stage / 'index.html')
         from release_announcements import load, page
         (stage / 'whats-new.html').write_text(page(load()), encoding='utf-8')
+        public_portal = {'enabled': False}
+        if portal_config is not None:
+            public_portal = read_json(portal_config)
+            if (not isinstance(public_portal, dict) or
+                    set(public_portal) != {'enabled', 'url', 'publishable_key'} or
+                    public_portal['enabled'] is not True or
+                    not isinstance(public_portal['url'], str) or
+                    not re.fullmatch(r'https://[a-z0-9-]+\.supabase\.co', public_portal['url']) or
+                    not isinstance(public_portal['publishable_key'], str) or
+                    not re.fullmatch(r'sb_publishable_[A-Za-z0-9_-]+', public_portal['publishable_key'])):
+                raise ValueError('Portal configuration must contain only a project URL and public publishable key')
+        for name in ('subscriptions.html', 'subscriptions.js'):
+            shutil.copy2(Path(__file__).resolve().parents[1] / 'docs' / name, stage / name)
+        write_json(stage / 'portal-config.json', public_portal)
         members_page = Path(template).with_name('members.html')
         if members_page.is_file():
             shutil.copy2(members_page, stage / 'members.html')
@@ -151,8 +166,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--store', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--portal-config', type=Path, help='Reviewed public portal configuration; omitted keeps it disabled')
     args = parser.parse_args()
-    index = build(args.store, args.output)
+    index = build(args.store, args.output, portal_config=args.portal_config)
     print(f'Site built: {len(index["reports"])} report versions')
 
 

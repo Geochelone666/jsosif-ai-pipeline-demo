@@ -15,6 +15,7 @@ $$;
 grant usage on schema auth to authenticated;
 grant execute on function auth.uid() to authenticated;
 \ir ../../supabase/migrations/202611040001_subscription_authority.sql
+\ir ../../supabase/migrations/202611050001_subscription_options.sql
 \ir ../../supabase/seed_securities.sql
 insert into auth.users values
  ('00000000-0000-0000-0000-000000000001','one@example.com',now()),
@@ -29,6 +30,7 @@ declare
  first jsonb;
  r uuid := '10000000-0000-0000-0000-000000000001';
 begin
+ if jsonb_array_length(public.subscription_options()->'tickers') <> 50 then raise exception 'invalid active catalogue'; end if;
  first := public.save_my_subscription(p,0,r);
  if first->>'version' <> '1' then raise exception 'bad initial version'; end if;
  if public.save_my_subscription(p,0,r) <> first then raise exception 'retry was not idempotent'; end if;
@@ -72,6 +74,10 @@ select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002'
 do $$ begin
  if public.get_my_subscription() is not null or exists(select 1 from subscription_private.members) then
   raise exception 'cross-member read'; end if;
+ begin
+  perform public.subscription_options();
+  raise exception 'unapproved catalogue access';
+ exception when insufficient_privilege then null; end;
  begin
   perform public.save_my_subscription('{"name":"Unapproved","enabled":true,"timezone":"America/Toronto","send_weekday":1,"send_time":"09:00","groups":[],"tickers":["CSCO"]}',0,gen_random_uuid());
   raise exception 'unapproved verified account enrolled';

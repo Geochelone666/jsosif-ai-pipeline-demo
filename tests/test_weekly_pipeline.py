@@ -747,3 +747,20 @@ def test_prepared_authority_snapshot_drives_real_sender_and_deduplication(config
     assert prepare_subscriptions.prepare(target)
     assert weekly.deliver(load(target), store, now=NOW, really_send=True, backend=submitted.append)['skipped'] == 1
     assert len(submitted) == 1
+
+
+def test_portal_build_is_disabled_by_default_and_only_accepts_public_key(store,tmp_path):
+    output=tmp_path.parent/(tmp_path.name+'-portal-site')
+    build(store,output)
+    assert read_json(output/'portal-config.json')=={'enabled':False}
+    assert (output/'subscriptions.js').is_file()
+    public={'enabled':True,'url':'https://team-test.supabase.co','publishable_key':'sb_publishable_synthetic'}
+    path=tmp_path/'portal.json';write_json(path,public)
+    build(store,output,portal_config=path)
+    assert read_json(output/'portal-config.json')==public
+    before=(output/'portal-config.json').read_bytes()
+    write_json(path,dict(public,publishable_key='sb_secret_should_never_be_public'))
+    with pytest.raises(ValueError,match='public publishable'):build(store,output,portal_config=path)
+    assert (output/'portal-config.json').read_bytes()==before
+    write_json(path,dict(public,service_key='private'))
+    with pytest.raises(ValueError):build(store,output,portal_config=path)
