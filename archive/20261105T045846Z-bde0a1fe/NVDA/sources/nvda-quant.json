@@ -1,0 +1,148 @@
+{
+  "ticker": "NVDA",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/NVDA/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/NVDA/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 200.1300048828125,
+    "Return 1D (%)": -3.1738339934721416,
+    "Return 1W (%)": -7.080508707527178,
+    "Return 1M (%)": -14.456077156056491,
+    "Return YTD (%)": 7.559416857403645,
+    "Return 1Y (%)": 0.9660647936379219,
+    "Annualized volatility (%)": 37.32125015646987,
+    "Max drawdown (%)": -19.30455272999796,
+    "Sharpe (rf=0)": 0.2110873965163276,
+    "Beta vs SPY": 1.863882947086306,
+    "MA50": 221.15143951416016,
+    "Close vs MA50 (%)": -9.50544779519813,
+    "MA200": 204.38625503540038,
+    "Close vs MA200 (%)": -2.082454200186157,
+    "RSI (14, Wilder)": 34.54476102616523,
+    "MACD (12,26)": -5.295659237132952,
+    "MACD signal (9)": -3.480937937810151,
+    "MACD histogram": -1.8147212993228012,
+    "Downside deviation (rf=0, %)": 25.49872165231828,
+    "Sortino (rf=0)": 0.30895845045422343,
+    "Historical VaR 95% (1D, %)": 3.7735814570440676,
+    "Historical ES 95% (1D, %)": 4.580244652986528,
+    "Correlation vs SPY": 0.6412015229676696,
+    "Tracking error vs SPY (%)": 30.71203586153785,
+    "P/E (trailing)": 25.300886,
+    "P/B": 21.104082,
+    "EV/EBITDA": 23.847,
+    "Revenue growth (%)": 105.89999999999999,
+    "Forward P/E (estimate)": 12.575246,
+    "Gross margin (%)": 74.67400400000001,
+    "Operating margin (%)": 66.236997,
+    "Return on equity (%)": 117.211,
+    "Free cash flow yield (%)": 0.8651740498638599
+  },
+  "as_of": "2026-11-04",
+  "verification": {
+    "base_date": "2025-11-04",
+    "base_close": 198.21511840820312,
+    "end_close": 200.1300048828125,
+    "manual_1Y_pct": 0.9660647936379244,
+    "passed": true
+  },
+  "fetched_at": "2026-11-05T05:17:20.570814+00:00",
+  "requested_as_of": "2026-11-04",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "NVDA",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1793854733.8156419
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "NVDA": 275,
+    "SPY": 275
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 275 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 275. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'NVDA'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-04'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
