@@ -12,6 +12,11 @@ create table subscription_private.settings (
 );
 insert into subscription_private.settings default values;
 create table subscription_private.securities (ticker text primary key);
+-- Email confirmation establishes identity, not team membership.
+create table subscription_private.approved_members (
+  user_id uuid primary key references auth.users(id),
+  approved_at timestamptz not null default now()
+);
 create table subscription_private.members (
   user_id uuid primary key references auth.users(id),
   -- Preserve existing member IDs on migration: these identify weekly reservations.
@@ -31,8 +36,17 @@ alter table subscription_private.members enable row level security;
 alter table subscription_private.settings enable row level security;
 alter table subscription_private.securities enable row level security;
 alter table subscription_private.requests enable row level security;
+alter table subscription_private.approved_members enable row level security;
+create function subscription_private.is_approved_member() returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists(select 1 from subscription_private.approved_members a
+                join auth.users u on u.id=a.user_id
+                where a.user_id=auth.uid() and u.email_confirmed_at is not null)
+$$;
+revoke all on function subscription_private.is_approved_member() from public, anon;
+grant execute on function subscription_private.is_approved_member() to authenticated;
 create policy own_subscription on subscription_private.members
-  for select to authenticated using (user_id = auth.uid());
+  for select to authenticated using (user_id = auth.uid() and subscription_private.is_approved_member());
 -- Do not inherit potentially permissive project-wide default table grants.
 revoke all on all tables in schema subscription_private from public, anon, authenticated;
 grant select on subscription_private.members to authenticated;
@@ -56,8 +70,8 @@ declare
   result jsonb;
   item text;
 begin
-  if actor is null or not exists (select 1 from auth.users where id=actor and email_confirmed_at is not null) then
-    raise exception 'Verified authentication required' using errcode='42501';
+  if actor is null or not subscription_private.is_approved_member() then
+    raise exception 'Verified identity and team approval required' using errcode='42501';
   end if;
   if p_request_id is null or p_expected_version is null or p_expected_version < 0 then
     raise exception 'Version and request ID required' using errcode='22023';
@@ -145,6 +159,7 @@ language sql stable security definer set search_path = '' as $$
       select jsonb_agg(m.preferences || jsonb_build_object('id',m.member_id,'email',u.email)
                        order by m.member_id)
       from subscription_private.members m join auth.users u on u.id=m.user_id
+      join subscription_private.approved_members a on a.user_id=m.user_id
       where u.email_confirmed_at is not null and u.email is not null), '[]'::jsonb)))
   from subscription_private.settings s where singleton
 $$;

@@ -5,6 +5,8 @@ do $$ begin
  if not exists(select 1 from pg_roles where rolname='authenticated') then create role authenticated; end if;
  if not exists(select 1 from pg_roles where rolname='service_role') then create role service_role bypassrls; end if;
 end $$;
+create schema storage;
+create table storage.buckets(id text primary key, public boolean);
 create schema auth;
 create table auth.users(id uuid primary key, email text, email_confirmed_at timestamptz);
 create function auth.uid() returns uuid language sql stable as $$
@@ -18,6 +20,7 @@ insert into auth.users values
  ('00000000-0000-0000-0000-000000000001','one@example.com',now()),
  ('00000000-0000-0000-0000-000000000002','two@example.com',now()),
  ('00000000-0000-0000-0000-000000000003','unverified@example.com',null);
+insert into subscription_private.approved_members(user_id) values ('00000000-0000-0000-0000-000000000001');
 set role authenticated;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',false);
 do $$
@@ -69,6 +72,14 @@ select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002'
 do $$ begin
  if public.get_my_subscription() is not null or exists(select 1 from subscription_private.members) then
   raise exception 'cross-member read'; end if;
+ begin
+  perform public.save_my_subscription('{"name":"Unapproved","enabled":true,"timezone":"America/Toronto","send_weekday":1,"send_time":"09:00","groups":[],"tickers":["CSCO"]}',0,gen_random_uuid());
+  raise exception 'unapproved verified account enrolled';
+ exception when insufficient_privilege then null; end;
+ begin
+  insert into subscription_private.approved_members(user_id) values(auth.uid());
+  raise exception 'member self-approval accepted';
+ exception when insufficient_privilege then null; end;
 end $$;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000003',false);
 do $$ begin
@@ -103,3 +114,23 @@ do $$ begin
 end $$;
 reset role;
 select 'Subscription isolation, idempotency, stale-write, pause and snapshot checks passed' as result;
+
+-- Revocation blocks read-back, writes/replayed requests and sender snapshots.
+delete from subscription_private.approved_members;
+set role authenticated;
+select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',false);
+do $$ begin
+ if public.get_my_subscription() is not null then raise exception 'revoked read'; end if;
+ begin
+  perform public.save_my_subscription('{}',0,'10000000-0000-0000-0000-000000000001');
+  raise exception 'revoked request accepted';
+ exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+set role service_role;
+do $$ begin
+ if jsonb_array_length(public.subscription_snapshot()->'config'->'members') <> 0 then
+  raise exception 'revoked member exported'; end if;
+end $$;
+reset role;
+insert into subscription_private.approved_members(user_id) values ('00000000-0000-0000-0000-000000000001');

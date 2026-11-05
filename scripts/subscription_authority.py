@@ -23,9 +23,14 @@ def fetch_snapshot(*, opener=None, now=None):
     key = os.environ.get('SUBSCRIPTIONS_SERVICE_KEY', '')
     if not re.fullmatch(r'https://[a-z0-9-]+\.supabase\.co', base) or not key:
         raise ValueError('Configure the subscription authority URL and server credential')
+    if key.startswith('sb_publishable_'):
+        raise ValueError('Subscription authority requires a server credential, not a public key')
+    headers = {'apikey': key, 'Content-Type': 'application/json'}
+    # New opaque secret keys are API gateway credentials, not JWT bearer tokens.
+    if not key.startswith('sb_secret_'):
+        headers['Authorization'] = 'Bearer ' + key
     request = Request(base + '/rest/v1/rpc/subscription_snapshot', data=b'{}',
-                      headers={'apikey': key, 'Authorization': 'Bearer ' + key,
-                               'Content-Type': 'application/json'}, method='POST')
+                      headers=headers, method='POST')
     try:
         with (opener or urlopen)(request, timeout=20) as response:
             raw = response.read(MAX_BYTES + 1)

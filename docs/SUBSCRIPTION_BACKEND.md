@@ -7,12 +7,22 @@ editor, not an authenticated self-service portal.
 
 ## Implemented contract
 
+Before applying anything to the team project, run `supabase/preflight_readonly.sql`
+in its SQL Editor and review all returned metadata. It reads aggregate Auth/Storage
+counts without selecting member identities or credentials. A Dashboard reporting
+no public tables does not establish that all schemas are empty.
+
 The candidate migration in `supabase/migrations` assumes Supabase-managed
 `auth.users`, `auth.uid()` and standard roles. Preferences live in the unexposed
 `subscription_private` schema. A member can read only their own row through RLS;
 there are no member INSERT/UPDATE/DELETE table grants. Writes go through
 `save_my_subscription(p_preferences, p_expected_version, p_request_id)` with the
-verified identity derived server-side. The client cannot choose a member ID,
+verified identity derived server-side and an explicit team approval. Email
+confirmation alone does not grant access, even when Auth signup is enabled. An
+administrator must add the verified user UUID to the private `approved_members`
+table through a reviewed server-side operation. Members cannot approve themselves.
+Removing approval blocks preference reads/writes and excludes that member from
+subsequent sender snapshots; preserve their settings and sending history. The client cannot choose a member ID,
 email or another user's ID. Email comes exclusively from verified Auth records.
 
 `get_my_subscription()` returns preferences, version and update time, or null for
@@ -44,15 +54,17 @@ Only an approved explicit switch to `supabase` selects the new authority:
 | --- | --- | --- |
 | `SUBSCRIPTIONS_BACKEND` | Actions variable | `legacy` (default) or `supabase` |
 | `SUBSCRIPTIONS_SUPABASE_URL` | Actions variable | Exact HTTPS project URL ending in `.supabase.co` |
-| `SUBSCRIPTIONS_SERVICE_KEY` | Actions secret | Server-side Supabase service-role credential for the RPC |
+| `SUBSCRIPTIONS_SERVICE_KEY` | Actions secret | Server-side Supabase secret key or legacy service-role JWT for the RPC |
 
 Both daily research and weekly delivery use `prepare_subscriptions.py`. In
 Supabase mode the loader ignores legacy secrets, validates the returned schema,
 member configuration and timestamp, and writes a mode-0600 local snapshot.
 Network, credential, schema or size errors stop the job; there is no fallback to
 an old Secret. HTTP redirects are rejected and TLS validation remains enabled.
-Custom Supabase domains/new non-JWT key routing are not enabled by this initial
-adapter; validate the standard project's service-role JWT route in staging.
+Both legacy service-role JWTs and new `sb_secret_` server keys are supported by
+the adapter. Opaque secret keys are sent only in `apikey`, not as JWT Bearer tokens;
+new Publishable keys are rejected for private snapshots. Validate the actual key
+route on the team project before activation. Custom Supabase domains remain unsupported.
 
 Immediately before each real delivery reservation, the sender rechecks authority
 revision and configuration digest. An opt-out, email change, edit or outage aborts
@@ -81,7 +93,8 @@ existing weekly member IDs are unchanged.
    administrative policy changes. Python validates all exported policy/groups.
 3. Before opening registration, stage the private JSON/CSV migration. Match each
    legacy member to a verified Auth identity using an administrator-reviewed map;
-   copy the existing member `id` into `member_id` exactly. Do not replace it with an
+   copy the existing member `id` into `member_id` exactly and separately approve
+   the verified user UUID in `approved_members`. Do not replace it with an
    Auth UUID for migrated members: that would bypass old weekly reservations.
    Import preferences/policies through a reviewed server-side migration and verify
    counts, disabled states, start dates and IDs without printing member values.
@@ -136,3 +149,14 @@ Supabase project, unsupported-security requests and deployed release announcemen
 Phase 2 then establishes shared Sector/Macro/Peer data; sector briefs depend on
 those verified sources. Keep the existing report integrity, quota and email gates
 throughout. No live capability is announced by this foundation.
+
+## Configuration handoff follow-up
+
+The team's Dashboard handoff reports a Production project, no public tables and
+conflicting Auth counts. Do not classify it as empty or run migrations until the
+read-only inventory is reviewed. The supplied Publishable key is not a service
+credential. Development cloud variables and GitHub Actions settings must be
+configured separately; keep `SUBSCRIPTIONS_BACKEND=legacy` until approved cutover.
+The current exact redirect targets the research homepage; add the precise verified
+portal callback only when its implementation is ready. An open Auth signup switch
+does not bypass the database's explicit team-approval requirement.

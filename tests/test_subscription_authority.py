@@ -95,3 +95,20 @@ def test_server_errors_are_sanitized(envelope):
 def test_supabase_mode_refuses_unversioned_config(monkeypatch):
     monkeypatch.setenv('SUBSCRIPTIONS_BACKEND','supabase')
     with pytest.raises(ValueError,match='authoritative'): authority.assert_current({})
+
+
+def test_new_secret_key_uses_gateway_header_without_jwt_bearer(envelope, monkeypatch):
+    monkeypatch.setenv('SUBSCRIPTIONS_SERVICE_KEY','sb_secret_synthetic_only')
+    def opener(request,timeout):
+        assert request.get_header('Apikey') == 'sb_secret_synthetic_only'
+        assert request.get_header('Authorization') is None
+        return io.BytesIO(json.dumps(envelope).encode())
+    config=authority.fetch_snapshot(opener=opener,now=NOW)
+    assert config['members'][0]['id']=='legacy-member'
+
+
+def test_public_key_is_rejected_before_private_snapshot_request(envelope,monkeypatch):
+    monkeypatch.setenv('SUBSCRIPTIONS_SERVICE_KEY','sb_publishable_synthetic_only')
+    def opener(*args,**kwargs): pytest.fail('Public key must not request a private snapshot')
+    with pytest.raises(ValueError,match='server credential'):
+        authority.fetch_snapshot(opener=opener,now=NOW)
