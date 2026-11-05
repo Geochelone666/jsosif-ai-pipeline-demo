@@ -333,3 +333,7 @@ The 2.0 [team Supabase subscription foundation](docs/SUBSCRIPTION_BACKEND.md)
 adds a default-off authoritative snapshot path and versioned member preferences.
 The authenticated browser portal and production roster migration remain pending;
 the existing local member editor does not become an online account system.
+
+The [shared research foundation](docs/SHARED_RESEARCH.md) defines configurable
+eight-team coverage defaults and deterministic comparison contracts. Proposed
+benchmarks and KPI topics are not yet live sector data or investment signals.
