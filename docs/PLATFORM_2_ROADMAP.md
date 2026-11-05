@@ -41,8 +41,11 @@ archives. These are prerequisites, not completion of the new shared data layer.
 | Validated security onboarding | Identity/listing checks, quality/cost gates and Pending/Active transitions |
 | Shared cache and failure isolation | Cache keys bind source, instrument and date; corruption recovery preserves quotas/history |
 
-The eight research-team names and coverage definitions are awaiting team input.
-Models should remain configurable while that taxonomy is finalized.
+The team delegated the taxonomy choice. Eight configurable product defaults now
+cover all 50 instruments exactly once; benchmark candidates and KPI research
+topics are defined in config/research_teams.json. Shared price observations and
+relative-return contracts reject missing endpoints, inconsistent adjustment bases
+and unsupported currency comparisons. Real adapter/cache/KPI evidence remains pending.
 
 ## Phase 3 — sector intelligence and email assembly
 

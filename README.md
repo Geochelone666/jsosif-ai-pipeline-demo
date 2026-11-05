@@ -336,3 +336,7 @@ the existing local member editor does not become an online account system.
 
 The full [Platform 2.0 delivery register](docs/PLATFORM_2_ROADMAP.md) tracks all
 five phases and distinguishes local implementation from production acceptance.
+
+The [shared research foundation](docs/SHARED_RESEARCH.md) defines configurable
+eight-team coverage defaults and deterministic comparison contracts. Proposed
+benchmarks and KPI topics are not yet live sector data or investment signals.
