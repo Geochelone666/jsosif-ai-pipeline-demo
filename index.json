@@ -19944,6 +19944,33 @@
         "edgar": "af56c7055fe167a519499e22a97c27c307f54af4423544f8a3498a55358f0876",
         "fred": "8df7abfe2cf9f096a35cea07153059066fa26409bb9a400459fd249c14a536f3"
       }
+    },
+    {
+      "report_id": "20261105T045846Z-bde0a1fe/BRK-B",
+      "ticker": "BRK-B",
+      "generated_at": "2026-11-05T05:01:03.631503+00:00",
+      "as_of": "2026-11-04",
+      "quality": "ready",
+      "market_as_of": "2026-11-04",
+      "news_as_of": "2026-11-04",
+      "sha256": {
+        "md": "8b0c294c0360e5125ed1e6268191bf7642b9af548e74ba99f8b92d481bee72c8",
+        "json": "b0ea32af35d6606fac129c129ba986f5764f79f47395f65bc9abca915c607de7",
+        "pdf": "2fbfb8534e011ce1d1ca7b84b8ee95edbc880bdfeec0b62ebf6b03a830d5c557"
+      },
+      "md": "archive/20261105T045846Z-bde0a1fe/BRK-B/BRK-B-intelligence-20261104.md",
+      "json": "archive/20261105T045846Z-bde0a1fe/BRK-B/BRK-B-intelligence-20261104.json",
+      "pdf": "archive/20261105T045846Z-bde0a1fe/BRK-B/BRK-B-intelligence-20261104.pdf",
+      "source_sha256": {
+        "quant": "b725dffcb345cd5c95c159213cb02d1f5acd6f59ba9af04f15d03022ad0ca20d",
+        "info": "8b6d327f4fb71546189fbef4df60122efeba6d54c34f5d5c5d95c1e741bb8853",
+        "ai-intel": "ce2b9da2b9434d583986b7ade60f07d94b67d408b4983908676f1e3d9b45fcbc",
+        "rss-items": "47164e3e9b8351a51786efa2c93aea7bca79407fd0c34d1508d30731f7aadb4a",
+        "comparables": "4f2791a243b43e534e1ac38f775a5c25d52e2be888dee1f8784afcab04e0fd3b",
+        "earnings": "becf2373f6e9e773a0a54410124da01a3cb81e6ca90ac615af9d157c250d2b41",
+        "edgar": "084c28fef44ff396922a5e17408306fbf8e481306010fe31f5587c0c6bde6d67",
+        "fred": "8df7abfe2cf9f096a35cea07153059066fa26409bb9a400459fd249c14a536f3"
+      }
     }
   ],
   "refresh_plan": {
@@ -20122,7 +20149,8 @@
     ],
     "successful_tickers": [
       "PEP",
-      "TMC"
+      "TMC",
+      "BRK-B"
     ],
     "reused_tickers": [],
     "workflow_run_id": "41971033704",
@@ -20200,13 +20228,23 @@
         "edgar": 2.119,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "BRK-B": {
+        "quant": 1.367,
+        "ai_extract": 49.487,
+        "comparables": 2.119,
+        "earnings": 1.268,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.517
       }
     },
     "current_ticker": "BRK-B",
     "last_progress_at": "2026-11-05T05:00:04.841453+00:00",
     "news_cache_candidates": {
       "PEP": 13,
-      "TMC": 2
+      "TMC": 2,
+      "BRK-B": 20
     }
   },
   "last_complete_refresh": "2026-11-04T04:44:11.435464+00:00",
