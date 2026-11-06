@@ -21915,6 +21915,33 @@
         "edgar": "c9637f9dbafce73892ec4d88083651a365a5b64f8e13042f3fabd6ed1ad162d7",
         "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
       }
+    },
+    {
+      "report_id": "20261106T045829Z-1db1e5a7/AAPL",
+      "ticker": "AAPL",
+      "generated_at": "2026-11-06T05:12:21.655746+00:00",
+      "as_of": "2026-11-05",
+      "quality": "ready",
+      "market_as_of": "2026-11-05",
+      "news_as_of": "2026-11-05",
+      "sha256": {
+        "md": "a78bc36f61eab5d969924efe040f2dd22d67836ab5ba88d90cd81268d0a5c1aa",
+        "json": "0186c03255cbc0f90ddc542017ce97e964d0da3e5a978e8b763ea6e1727c90a1",
+        "pdf": "c27b03a067ae9ed14bdd0c0a0c7deee7ff8b6d50a149e7e4c8fee47a29f3da8c"
+      },
+      "md": "archive/20261106T045829Z-1db1e5a7/AAPL/AAPL-intelligence-20261105.md",
+      "json": "archive/20261106T045829Z-1db1e5a7/AAPL/AAPL-intelligence-20261105.json",
+      "pdf": "archive/20261106T045829Z-1db1e5a7/AAPL/AAPL-intelligence-20261105.pdf",
+      "source_sha256": {
+        "quant": "d9590227f614b33a8a5e4c3d4216844aec8f7db7633832b3f862fc0aa63ab723",
+        "info": "d9bdc4032af9e37f3763f5ff64f6bc5936aca6e8984de2a1cc94cee7c19950ec",
+        "ai-intel": "8db05916a24e35646e3d0c1457ab4ef20bae2921092bf2a5a2b06c6cf1f14a49",
+        "rss-items": "289fe308946119fe47c67943d2c9b913643e4ee9dff9d37a2bad27115eb2ccc0",
+        "comparables": "121fc08d9e0f502e3da474c94686c7a9e76b326ac8c86dcc96d39b2e5be765a5",
+        "earnings": "63c6e4ca891993c37393ccd137c7be6dad1c77d1cc9a2dc0c6ba0c03b60c8ef7",
+        "edgar": "c4caef2bbe3026d563d6747f452c8862d71ff1184b971ad6bcad4dbf34da9733",
+        "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
+      }
     }
   ],
   "refresh_plan": {
@@ -22116,7 +22143,8 @@
       "TSM",
       "V",
       "VRTX",
-      "XYL"
+      "XYL",
+      "AAPL"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42165560907",
@@ -22401,6 +22429,15 @@
         "edgar": 2.168,
         "regenerate_report": 0.114,
         "report_pdf": 0.415
+      },
+      "AAPL": {
+        "quant": 1.115,
+        "ai_extract": 25.706,
+        "comparables": 2.168,
+        "earnings": 1.166,
+        "edgar": 2.117,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.415
       }
     },
     "current_ticker": "AAPL",
@@ -22429,7 +22466,8 @@
       "TSM": 15,
       "V": 10,
       "VRTX": 17,
-      "XYL": 9
+      "XYL": 9,
+      "AAPL": 16
     }
   },
   "last_complete_refresh": "2026-11-05T04:58:46.678631+00:00",
