@@ -21321,6 +21321,33 @@
         "edgar": "76057c8b8f72a745fc1194dbb80bb705c0610eddb11c5321d03b066cc967e720",
         "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
       }
+    },
+    {
+      "report_id": "20261106T045829Z-1db1e5a7/META",
+      "ticker": "META",
+      "generated_at": "2026-11-06T05:02:14.640049+00:00",
+      "as_of": "2026-11-05",
+      "quality": "ready",
+      "market_as_of": "2026-11-05",
+      "news_as_of": "2026-11-05",
+      "sha256": {
+        "md": "6cf11e572cd0a38c5caac0347898954f74129526063be3e53de0d94795ba4b51",
+        "json": "41955d0a5b00779713e0b2f67b03091c3dc78fa285155b2c8f37616dedb55483",
+        "pdf": "5c66e2c646f2bf9dc52ffbf48c5c09ec52dc2a5765616736e75b11be8693859f"
+      },
+      "md": "archive/20261106T045829Z-1db1e5a7/META/META-intelligence-20261105.md",
+      "json": "archive/20261106T045829Z-1db1e5a7/META/META-intelligence-20261105.json",
+      "pdf": "archive/20261106T045829Z-1db1e5a7/META/META-intelligence-20261105.pdf",
+      "source_sha256": {
+        "quant": "e2092f37a479b37b2cac2a284adb1c21de70d89d11e3e3225959889c89453236",
+        "info": "c6637ab759a12e664467f11f72ad73ecddafaa0e316166de6677faa7afd9d42b",
+        "ai-intel": "84a1f11ffa4f2bbf94cd10a8fd6b4452d7bb86c7352ef67a47293a8642a294e8",
+        "rss-items": "523d9e8608611f652826d6a496f9fcc25ff2ad610aab5de94c564efa418270c3",
+        "comparables": "45541f465f1fefb26c932a84a133c9272fd9455a91541a3455612aeb080628a5",
+        "earnings": "4e3f3f5efc61f9add6142bf155cd9d4af888b74f92e1f70a252d43572235379f",
+        "edgar": "48aa2bdeb44504800639fbf7ceafbd893e23455714235f62c40b3ca49203201e",
+        "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
+      }
     }
   ],
   "refresh_plan": {
@@ -21500,7 +21527,8 @@
     "successful_tickers": [
       "NVDA",
       "MCK",
-      "MCO"
+      "MCO",
+      "META"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42165560907",
@@ -21587,6 +21615,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.417
+      },
+      "META": {
+        "quant": 0.966,
+        "ai_extract": 47.584,
+        "comparables": 2.119,
+        "earnings": 1.117,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.466
       }
     },
     "current_ticker": "META",
@@ -21594,7 +21631,8 @@
     "news_cache_candidates": {
       "NVDA": 24,
       "MCK": 12,
-      "MCO": 4
+      "MCO": 4,
+      "META": 17
     }
   },
   "last_complete_refresh": "2026-11-05T04:58:46.678631+00:00",
