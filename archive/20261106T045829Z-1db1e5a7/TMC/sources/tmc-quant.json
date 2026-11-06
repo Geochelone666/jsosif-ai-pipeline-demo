@@ -1,0 +1,167 @@
+{
+  "ticker": "TMC",
+  "errors": [
+    "warning: trailingPE unavailable (N/A)",
+    "warning: revenueGrowth unavailable (N/A)",
+    "warning: P/E (trailing) unavailable (N/A)",
+    "warning: Revenue growth (%) unavailable (N/A)",
+    "warning: Forward P/E (estimate) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/TMC/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/TMC/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 2.069999933242798,
+    "Return 1D (%)": -10.389611059814996,
+    "Return 1W (%)": -27.112676204137685,
+    "Return 1M (%)": -45.09283968924384,
+    "Return YTD (%)": -66.45056875775343,
+    "Return 1Y (%)": -65.50000111262004,
+    "Annualized volatility (%)": 92.43829497550473,
+    "Max drawdown (%)": -78.07203363076052,
+    "Sharpe (rf=0)": -0.6988391626914274,
+    "Beta vs SPY": 3.380049421789127,
+    "MA50": 3.4803000020980837,
+    "Close vs MA50 (%)": -40.52237071531456,
+    "MA200": 4.791524994373321,
+    "Close vs MA200 (%)": -56.79872408735016,
+    "RSI (14, Wilder)": 25.98196658922288,
+    "MACD (12,26)": -0.3319238713763011,
+    "MACD signal (9)": -0.3281240747760959,
+    "MACD histogram": -0.0037997966002051853,
+    "Downside deviation (rf=0, %)": 62.82554308323558,
+    "Sortino (rf=0)": -1.0282362474084636,
+    "Historical VaR 95% (1D, %)": 8.89086009470444,
+    "Historical ES 95% (1D, %)": 11.83436375719222,
+    "Correlation vs SPY": 0.4970523015515583,
+    "Tracking error vs SPY (%)": 86.48971174954528,
+    "P/E (trailing)": null,
+    "P/B": -32.85714,
+    "EV/EBITDA": -3.963,
+    "Revenue growth (%)": null,
+    "Forward P/E (estimate)": null,
+    "Gross margin (%)": 0.0,
+    "Operating margin (%)": 0.0,
+    "Return on equity (%)": -1123.1911,
+    "Free cash flow yield (%)": 2.2760460927356547
+  },
+  "as_of": "2026-11-05",
+  "verification": {
+    "base_date": "2025-11-05",
+    "base_close": 6.0,
+    "end_close": 2.069999933242798,
+    "manual_1Y_pct": -65.50000111262003,
+    "passed": true
+  },
+  "fetched_at": "2026-11-06T05:09:03.972144+00:00",
+  "requested_as_of": "2026-11-05",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "TMC",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1793941116.6379762
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {
+    "P/E (trailing)": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    },
+    "Revenue growth (%)": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    },
+    "Forward P/E (estimate)": {
+      "status": "undefined",
+      "reason": "undefined: non-positive projected earnings multiple"
+    }
+  },
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "TMC": 276,
+    "SPY": 276
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 276 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 276. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'TMC'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-05'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
