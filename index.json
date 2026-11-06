@@ -21240,6 +21240,33 @@
         "edgar": "d8ab10f077d207a698f5ecede5d36f0629ab079656152bd647ee9399ae453e99",
         "fred": "8df7abfe2cf9f096a35cea07153059066fa26409bb9a400459fd249c14a536f3"
       }
+    },
+    {
+      "report_id": "20261106T045829Z-1db1e5a7/NVDA",
+      "ticker": "NVDA",
+      "generated_at": "2026-11-06T04:59:46.015907+00:00",
+      "as_of": "2026-11-05",
+      "quality": "ready",
+      "market_as_of": "2026-11-05",
+      "news_as_of": "2026-11-05",
+      "sha256": {
+        "md": "facc8d3bf7afce246f6d5f34776d667f0ec9b61c4aec532db9be35fb55a8f8ee",
+        "json": "297908f2b55b54048cb7d67f950680cc40d7b93464bc9c60ca0be3c4f99beb7d",
+        "pdf": "9d24e14c4f13d3e32b9c4410111a8218cf622569ce2832453490281e51d0b82b"
+      },
+      "md": "archive/20261106T045829Z-1db1e5a7/NVDA/NVDA-intelligence-20261105.md",
+      "json": "archive/20261106T045829Z-1db1e5a7/NVDA/NVDA-intelligence-20261105.json",
+      "pdf": "archive/20261106T045829Z-1db1e5a7/NVDA/NVDA-intelligence-20261105.pdf",
+      "source_sha256": {
+        "quant": "da3b6d853578ef94d355c389aee7a0c1c6b7020ca7e29bfa51cd3b700b943a7d",
+        "info": "a9fac42f4684d26ed32a8f7a709a21b0cd18d3c880dfef63ce9b92eb60d98f8d",
+        "ai-intel": "210804f8418701a83d2e098215aab7a88e7d0e6a5fdf342a9f694484f5bec5cb",
+        "rss-items": "cd0dff24be4a2a6e251777131546920eda34d4bcebf069aebf26ff88f01a0307",
+        "comparables": "f4bbfae8371fc508d23f6be9fbad63eae0882a093a650418f63dc07c76011f4f",
+        "earnings": "f361955ea623ba5fa4cad9737a0db37e082a62e7d599aa1dc7c4758485af18bc",
+        "edgar": "eeb58dcf97a8fa920479b78db115af031ba21b1e6c6bf12a59a9e4047aa53dd6",
+        "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
+      }
     }
   ],
   "refresh_plan": {
@@ -21416,7 +21443,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "NVDA"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "42165560907",
     "degraded_tickers": [],
@@ -21475,9 +21504,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "NVDA": {
+        "quant": 2.319,
+        "ai_extract": 62.734,
+        "comparables": 2.119,
+        "earnings": 1.067,
+        "edgar": 2.369,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
+      }
+    },
     "current_ticker": "NVDA",
-    "last_progress_at": "2026-11-06T04:58:33.319663+00:00"
+    "last_progress_at": "2026-11-06T04:58:33.319663+00:00",
+    "news_cache_candidates": {
+      "NVDA": 24
+    }
   },
   "last_complete_refresh": "2026-11-05T04:58:46.678631+00:00",
   "last_complete_business_date": "2026-11-04"
