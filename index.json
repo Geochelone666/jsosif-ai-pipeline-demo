@@ -22428,6 +22428,33 @@
         "edgar": "e5f4d0b7df9a8dd343df62f47d20120120caa48454185939b64db826c40ffebc",
         "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
       }
+    },
+    {
+      "report_id": "20261106T045829Z-1db1e5a7/GOOGL",
+      "ticker": "GOOGL",
+      "generated_at": "2026-11-06T05:21:42.415939+00:00",
+      "as_of": "2026-11-05",
+      "quality": "ready",
+      "market_as_of": "2026-11-05",
+      "news_as_of": "2026-11-05",
+      "sha256": {
+        "md": "8389c95968287660b0c0bd75045a47423c899c375b31287111520924519b401a",
+        "json": "7bc2b881ea4b598746b5badffaa6c91730ef1d00ea408af15c6436377b4d3f12",
+        "pdf": "a81d1331e77aa9c78819f3e21c4e2bdbe142c3837ff264b3c41ee3c3a630a9a6"
+      },
+      "md": "archive/20261106T045829Z-1db1e5a7/GOOGL/GOOGL-intelligence-20261105.md",
+      "json": "archive/20261106T045829Z-1db1e5a7/GOOGL/GOOGL-intelligence-20261105.json",
+      "pdf": "archive/20261106T045829Z-1db1e5a7/GOOGL/GOOGL-intelligence-20261105.pdf",
+      "source_sha256": {
+        "quant": "b7bef3cf310d98f972cbe6a7ee89ca24aab23bde0751262c901e13768c974a45",
+        "info": "d04f688f675b7bc6209b95f5816d7ca5f9f7992adb9cfa8d8656963b5a313e89",
+        "ai-intel": "f4687a2ac3ccd05d3254055f7c9482e683fc088a54b8b142fa0cc316fc9dca6e",
+        "rss-items": "77bd2d9bc7812a2cd938d78c6bf6741553f8c512effa8cdaff3a4734e52e6633",
+        "comparables": "d52d11525629ccff7e269ab1dde00bb19eb50ebd5fbf0d7465c12abb41f437a7",
+        "earnings": "edf6b46bd03e14cceea2b6f20a2b369ed3cab16df3dedcdad11fc88528ee24b2",
+        "edgar": "d07a86b21e04a792b7e86f5ceb8024014c65bfb1e0d5a097eb427142ed4bed6e",
+        "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
+      }
     }
   ],
   "refresh_plan": {
@@ -22648,7 +22675,8 @@
       "DIS",
       "ENB",
       "EW",
-      "GIS"
+      "GIS",
+      "GOOGL"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42165560907",
@@ -23104,6 +23132,15 @@
         "edgar": 2.77,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "GOOGL": {
+        "quant": 0.966,
+        "ai_extract": 49.117,
+        "comparables": 1.618,
+        "earnings": 1.166,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.465
       }
     },
     "current_ticker": "GOOGL",
@@ -23150,7 +23187,8 @@
       "DIS": 17,
       "ENB": 7,
       "EW": 8,
-      "GIS": 8
+      "GIS": 8,
+      "GOOGL": 18
     }
   },
   "last_complete_refresh": "2026-11-05T04:58:46.678631+00:00",
