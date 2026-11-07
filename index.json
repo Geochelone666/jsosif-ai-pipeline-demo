@@ -23886,6 +23886,33 @@
         "edgar": "2d55aea193fe0c09fb0c73e963cb845514f608cb257bb0823ae552e84dc623b7",
         "fred": "ac0c1f475ccfeec21127efe7fcb449f2924ca22e9b24953087c1a36a9d3955c4"
       }
+    },
+    {
+      "report_id": "20261107T043155Z-acc5f41d/SHOP.TO",
+      "ticker": "SHOP.TO",
+      "generated_at": "2026-11-07T04:57:39.213843+00:00",
+      "as_of": "2026-11-06",
+      "quality": "ready",
+      "market_as_of": "2026-11-06",
+      "news_as_of": "2026-11-06",
+      "sha256": {
+        "md": "3c75cd460a98894ef7b245a0f85fe00ee4fdcbed91c36616e404fc4c15fc1ae5",
+        "json": "f17f85033a0983e464431bc9e725029bdcdd7940383b31d8d4948972a5fe3707",
+        "pdf": "da297b0f5806993f56b9d86c1b6631fdbec0c2fa7f0b61cb011b0c258cbbcc2f"
+      },
+      "md": "archive/20261107T043155Z-acc5f41d/SHOP.TO/SHOP.TO-intelligence-20261106.md",
+      "json": "archive/20261107T043155Z-acc5f41d/SHOP.TO/SHOP.TO-intelligence-20261106.json",
+      "pdf": "archive/20261107T043155Z-acc5f41d/SHOP.TO/SHOP.TO-intelligence-20261106.pdf",
+      "source_sha256": {
+        "quant": "973e9756882b938012a7d013408e7c66f1102f13530f973313986c61fa030fb2",
+        "info": "835eb7e0504b2b4007da3a01c03cb18fd81c0e04d60e3a7f6326b5bbb56e7a2e",
+        "ai-intel": "63de67201d2998cbb230c03d1d09d2ec8a9ca053e3bdcfe610904a325a71a25f",
+        "rss-items": "0a2e73b32ec5656f0041d8661fa5e8e8f81992449bde3f381b22d0cbf2de8f43",
+        "comparables": "d1a80459fcf5b67c0fc9a43dc5821f471ca23bb26ab5b83626363ab9261fb8d7",
+        "earnings": "85e781d29dbd7cd335f07316ff5fcc28df86d9cd8feec51b19c754b0879dc2a1",
+        "edgar": "faba50584504083cb9308f36f772d9435b0503602fc066ab502c60842855fd41",
+        "fred": "ac0c1f475ccfeec21127efe7fcb449f2924ca22e9b24953087c1a36a9d3955c4"
+      }
     }
   ],
   "refresh_plan": {
@@ -24110,7 +24137,8 @@
       "OTEX.TO",
       "PEP",
       "PFE",
-      "SCHW"
+      "SCHW",
+      "SHOP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42338816948",
@@ -24605,6 +24633,15 @@
         "edgar": 2.019,
         "regenerate_report": 0.114,
         "report_pdf": 0.616
+      },
+      "SHOP.TO": {
+        "quant": 0.969,
+        "ai_extract": 1.818,
+        "comparables": 1.418,
+        "earnings": 1.067,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "SHOP.TO",
@@ -24654,7 +24691,8 @@
       "OTEX.TO": 1,
       "PEP": 18,
       "PFE": 13,
-      "SCHW": 5
+      "SCHW": 5,
+      "SHOP.TO": 1
     }
   },
   "last_complete_refresh": "2026-11-06T04:58:29.219055+00:00",
