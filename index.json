@@ -22590,6 +22590,33 @@
         "edgar": "c3adc003a1afa8354b44bd5c85d3fd7e6871888fe607729ec456f248ace5a5db",
         "fred": "5081d21a5695b38f3dd4cfd0ec7d7cabdec3308a23572165824c1eda1c36486c"
       }
+    },
+    {
+      "report_id": "20261107T043155Z-acc5f41d/SYY",
+      "ticker": "SYY",
+      "generated_at": "2026-11-07T04:32:11.551267+00:00",
+      "as_of": "2026-11-06",
+      "quality": "ready",
+      "market_as_of": "2026-11-06",
+      "news_as_of": "2026-11-06",
+      "sha256": {
+        "md": "fc6079b94bb8fa8f536b8d361a26146cb9ec77eb4920e0d52693516cb455a643",
+        "json": "7382726792706117d10cf1d17ee5f1168425ef985b84ffaaf13f78e3b6b7fd69",
+        "pdf": "374a45ee2313bd9935bc6bc4bc371caeac8d4ec792f79a6846b9da36a7a01be3"
+      },
+      "md": "archive/20261107T043155Z-acc5f41d/SYY/SYY-intelligence-20261106.md",
+      "json": "archive/20261107T043155Z-acc5f41d/SYY/SYY-intelligence-20261106.json",
+      "pdf": "archive/20261107T043155Z-acc5f41d/SYY/SYY-intelligence-20261106.pdf",
+      "source_sha256": {
+        "quant": "8847cf67b28677d072a0714f23c7e37b1dd9f6504ba44e75cab2dfb5a337162a",
+        "info": "e4111ef49694c5c309e8182079d6b1fe9e8c9852cd7340a160b7866ecd56147f",
+        "ai-intel": "40b236ff6ffcd5a17b00349d098c652b27d99ab3f986cf8264a45246aabd0051",
+        "rss-items": "fb8bf9b4996a2b835ad5b41a571e53cb69e8c158fce8984d23850d58f76b3d5a",
+        "comparables": "255b64fb1a74d3da964dee85d0b79c9c099332b925b07ae6dc1bd91a1a5a03ba",
+        "earnings": "aa191a438fbfecc260599ec4993de0918fe32c9adf3d25c953213fc7b0d410db",
+        "edgar": "f7859c3eba08049a6d15d513d698bad7394e144d52f9ec4faad582b237139aa0",
+        "fred": "ac0c1f475ccfeec21127efe7fcb449f2924ca22e9b24953087c1a36a9d3955c4"
+      }
     }
   ],
   "refresh_plan": {
@@ -22766,7 +22793,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "SYY"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "42338816948",
     "degraded_tickers": [],
@@ -22825,9 +22854,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "SYY": {
+        "quant": 1.518,
+        "ai_extract": 2.271,
+        "comparables": 1.568,
+        "earnings": 1.419,
+        "edgar": 3.025,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.868
+      }
+    },
     "current_ticker": "SYY",
-    "last_progress_at": "2026-11-07T04:31:59.237753+00:00"
+    "last_progress_at": "2026-11-07T04:31:59.237753+00:00",
+    "news_cache_candidates": {
+      "SYY": 16
+    }
   },
   "last_complete_refresh": "2026-11-06T04:58:29.219055+00:00",
   "last_complete_business_date": "2026-11-05"
