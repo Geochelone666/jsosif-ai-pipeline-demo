@@ -23454,6 +23454,33 @@
         "edgar": "83a60fbd7fc7cbb0ebec5389d20330b894de84b4ec4fb7e1f098408af8b08518",
         "fred": "ac0c1f475ccfeec21127efe7fcb449f2924ca22e9b24953087c1a36a9d3955c4"
       }
+    },
+    {
+      "report_id": "20261107T043155Z-acc5f41d/MC.PA",
+      "ticker": "MC.PA",
+      "generated_at": "2026-11-07T04:50:17.007732+00:00",
+      "as_of": "2026-11-06",
+      "quality": "ready",
+      "market_as_of": "2026-11-05",
+      "news_as_of": "2026-11-06",
+      "sha256": {
+        "md": "622a13ba59b8aaba109f879eebc98b3b13f326174c4ac76a2d9a215021ef7598",
+        "json": "ee954db7af5c714e3abeeb96b3daeae88fb5271fefcd933c8c37a6e77a8e94ca",
+        "pdf": "3ff0167d194a56adbb3c63c91cf166808deca62f331b679ce63c155338f917d8"
+      },
+      "md": "archive/20261107T043155Z-acc5f41d/MC.PA/MC.PA-intelligence-20261106.md",
+      "json": "archive/20261107T043155Z-acc5f41d/MC.PA/MC.PA-intelligence-20261106.json",
+      "pdf": "archive/20261107T043155Z-acc5f41d/MC.PA/MC.PA-intelligence-20261106.pdf",
+      "source_sha256": {
+        "quant": "089d388393350e2a1c8ada5e23a47efd3f9cd29fd92c12514e275451a9ae327c",
+        "info": "887f38f72f9d17cb5173d91481d1e4d087cc59278723160866fb18eb6b1efdd8",
+        "ai-intel": "88b00d05c4a3ef186b3b03d3a677fb9da2a6be58ee528cd95509327f4141087c",
+        "rss-items": "060fb757b7e9955fda0b6f4f78c517600b34baed65f8b8bc944ed56db39eb5f1",
+        "comparables": "30cea28b310e026ff1461a2793aa25c852c850dc0ed6cfd49ce7fbfa932fbac3",
+        "earnings": "68ecd8122358bf8fb36e8b24abd7780171728f2738dbbdf237ee43450b0f09e6",
+        "edgar": "c3adc003a1afa8354b44bd5c85d3fd7e6871888fe607729ec456f248ace5a5db",
+        "fred": "ac0c1f475ccfeec21127efe7fcb449f2924ca22e9b24953087c1a36a9d3955c4"
+      }
     }
   ],
   "refresh_plan": {
@@ -23662,7 +23689,8 @@
       "ISRG",
       "J",
       "JPM",
-      "JWEL.TO"
+      "JWEL.TO",
+      "MC.PA"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42338816948",
@@ -24012,6 +24040,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.615
+      },
+      "MC.PA": {
+        "quant": 1.016,
+        "ai_extract": 1.769,
+        "comparables": 1.568,
+        "earnings": 1.067,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.567
       }
     },
     "current_ticker": "MC.PA",
@@ -24046,7 +24083,8 @@
       "ISRG": 10,
       "J": 3,
       "JPM": 18,
-      "JWEL.TO": 1
+      "JWEL.TO": 1,
+      "MC.PA": 4
     }
   },
   "last_complete_refresh": "2026-11-06T04:58:29.219055+00:00",
