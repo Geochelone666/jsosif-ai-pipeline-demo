@@ -1,0 +1,110 @@
+{
+  "ticker": "CSU.TO",
+  "as_of": "2026-11-07",
+  "tailwinds": [
+    {
+      "headline": "Earnings Flash (CSU.TO) Constellation Software Inc. Reports Q3 Revenue $3.51B",
+      "summary": "Constellation Software reports Q3 revenue of $3.51 billion, indicating strong financial performance for the quarter.",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.9,
+      "companies": [
+        "CSU.TO"
+      ],
+      "event_type": "earnings",
+      "sentiment": "neutral",
+      "extraction_method": "ai",
+      "date": "2026-11-06",
+      "source": "marketscreener.com",
+      "pubDate": "Fri, 06 Nov 2026 22:12:17 GMT",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNRm1Zd0U5R29mMTdkODhxT0lLN2lPUVVPSEZlanBnODR1eXo4WnJtaDlwYXljMG5OVjBocGxQY0pyZ3hNWmRMZVo3ak5DejRhc3FNTkl2MVoxMmNkMDJKNmY5elZjemZ1NUJpNklnNkZibnUyRFZEZ09sTEl2NzRvQWJZMkxGaFlHTDRDcDlHM29CNHZNUUtuUGROQTVrR1hsTjVJNGpuYTRQemhUa1F5TGFXSnMwNGpyTVBZMFAyNndOTkFk?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMixAFBVV95cUxNRm1Zd0U5R29mMTdkODhxT0lLN2lPUVVPSEZlanBnODR1eXo4WnJtaDlwYXljMG5OVjBocGxQY0pyZ3hNWmRMZVo3ak5DejRhc3FNTkl2MVoxMmNkMDJKNmY5elZjemZ1NUJpNklnNkZibnUyRFZEZ09sTEl2NzRvQWJZMkxGaFlHTDRDcDlHM29CNHZNUUtuUGROQTVrR1hsTjVJNGpuYTRQemhUa1F5TGFXSnMwNGpyTVBZMFAyNndOTkFk?oc=5"
+      ],
+      "reuse_origin": "verified_prior_archive",
+      "reuse_as_of": "2026-11-06",
+      "publication_freshness": {
+        "age_days": 1,
+        "label": "current_window",
+        "presentation_window_days": 7
+      }
+    }
+  ],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [],
+  "ai_reuse": {
+    "reused_headlines": 1,
+    "from_report": "20261107T043155Z-acc5f41d/CSU.TO",
+    "source_as_of": "2026-11-06",
+    "prior_models": [
+      "openai/gpt-oss-20b"
+    ],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "Constellation Software Inc. (CSU.TO) Stock Price, News, Quote & History",
+      "reason": "No event information provided"
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 1
+  },
+  "rss_audit": {
+    "raw_items": 2,
+    "unique_headlines": 2,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 50.0,
+    "publisher_hhi": 0.5,
+    "https_link_headlines": 2,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-11-05",
+    "newest_publication_date": "2026-11-06",
+    "oldest_headline_age_days": 2
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-11-07",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-11-08T04:21:58.714585+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Constellation%20Software%20CSU.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 2
+  }
+}
