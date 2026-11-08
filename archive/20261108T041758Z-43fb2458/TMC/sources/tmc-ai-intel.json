@@ -1,0 +1,110 @@
+{
+  "ticker": "TMC",
+  "as_of": "2026-11-07",
+  "tailwinds": [],
+  "headwinds": [],
+  "catalysts": [],
+  "risks": [],
+  "irrelevant": [
+    {
+      "headline": "4 Critical Minerals Stocks That Could Benefit as the U.S. Reduces Reliance on China",
+      "reason": "The headline references a general group of critical minerals stocks, not specifically TMC, so it is not a fact about TMC."
+    }
+  ],
+  "ai_reuse": {
+    "reused_headlines": 1,
+    "from_report": "20261107T043155Z-acc5f41d/TMC",
+    "source_as_of": "2026-11-06",
+    "prior_models": [],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "ai_coverage_retry": {
+    "requested": 1,
+    "unresolved": 1
+  },
+  "unclassified": [
+    {
+      "headline": "TMC stock hits 52-week low at 2.33 USD",
+      "summary": "TMC stock hits 52-week low at 2.33 USD",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.0,
+      "companies": [
+        "TMC"
+      ],
+      "event_type": "market_move",
+      "sentiment": "unknown",
+      "extraction_method": "unknown",
+      "date": "2026-11-02",
+      "source": "Investing.com",
+      "pubDate": "Mon, 02 Nov 2026 21:20:35 GMT",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNSlo3QWZYMzVTa25OT2kweXVSYzdYVjhUbmoxU3dfNFVUbktVV2lIOHA3TnhSZ0wycWlPOFhKaVZxOTFZMXBwaHFzLUVubnV6WlBveHZrZlJQSzFncElXci1rcktlQmNiNG01NUZZV2ZTMUEwM1R2NlFSUDk5TkhlTTRyR3JwaE9JUU5oMTZ2QU9YTDhRWVpjcQ?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMimAFBVV95cUxNSlo3QWZYMzVTa25OT2kweXVSYzdYVjhUbmoxU3dfNFVUbktVV2lIOHA3TnhSZ0wycWlPOFhKaVZxOTFZMXBwaHFzLUVubnV6WlBveHZrZlJQSzFncElXci1rcktlQmNiNG01NUZZV2ZTMUEwM1R2NlFSUDk5TkhlTTRyR3JwaE9JUU5oMTZ2QU9YTDhRWVpjcQ?oc=5"
+      ],
+      "publication_freshness": {
+        "age_days": 5,
+        "label": "historical_context",
+        "presentation_window_days": 2
+      }
+    }
+  ],
+  "extraction_stats": {
+    "unique_headlines": 2,
+    "rule": 0,
+    "ai": 0,
+    "unknown": 1,
+    "irrelevant": 1
+  },
+  "rss_audit": {
+    "raw_items": 2,
+    "unique_headlines": 2,
+    "duplicates_excluded": 0,
+    "invalid_headline_items": 0,
+    "unique_publishers": 2,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 50.0,
+    "publisher_hhi": 0.5,
+    "https_link_headlines": 2,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-11-01",
+    "newest_publication_date": "2026-11-02",
+    "oldest_headline_age_days": 6
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-11-07",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 0,
+      "historical_context": 1,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 0,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-11-08T04:31:08.238540+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=TMC%20the%20metals%20company%20TMC%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 2
+  }
+}
