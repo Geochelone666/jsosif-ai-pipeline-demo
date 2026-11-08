@@ -25413,7 +25413,7 @@
     "run_id": "20261108T041758Z-43fb2458",
     "at": "2026-11-08T04:17:58.580016+00:00",
     "business_date": "2026-11-07",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -26030,7 +26030,6 @@
         "report_pdf": 0.515
       }
     },
-    "current_ticker": "BRK-B",
     "last_progress_at": "2026-11-08T04:34:55.763659+00:00",
     "news_cache_candidates": {
       "JPM": 18,
@@ -26081,8 +26080,12 @@
       "ASML": 21,
       "BMO.TO": 4,
       "BRK-B": 16
-    }
+    },
+    "pending_tickers": [
+      "TMC"
+    ],
+    "finished_at": "2026-11-08T04:35:28.342193+00:00"
   },
-  "last_complete_refresh": "2026-11-07T04:31:55.827301+00:00",
-  "last_complete_business_date": "2026-11-06"
+  "last_complete_refresh": "2026-11-08T04:17:58.580016+00:00",
+  "last_complete_business_date": "2026-11-07"
 }
