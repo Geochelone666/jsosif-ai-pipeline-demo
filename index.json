@@ -26289,6 +26289,33 @@
         "edgar": "2819caba45ca7c4147706027e14cb6910abe3d1ac3bfc927c5a9c18dc47491d6",
         "fred": "579b6df4e5c91213528537d92d55b3a720a90b9135c6f6dbf4cc0069308577b4"
       }
+    },
+    {
+      "report_id": "20261109T043242Z-c8e908de/CSCO",
+      "ticker": "CSCO",
+      "generated_at": "2026-11-09T04:47:33.467137+00:00",
+      "as_of": "2026-11-08",
+      "quality": "ready",
+      "market_as_of": "2026-11-06",
+      "news_as_of": "2026-11-08",
+      "sha256": {
+        "md": "4bf0d908754e51dec5354e1b4e6c5b3fcd6a195f4cfcd78c7af18d64229e3714",
+        "json": "0fb7f58fdd2e94533612eaddfc1bf337c44a2c73204373f5baabad42a9073560",
+        "pdf": "ac2ee1e78b8065a73c6abe3b5ba29f945b14fb1cbf7db55ce72d49dc4ea8b0de"
+      },
+      "md": "archive/20261109T043242Z-c8e908de/CSCO/CSCO-intelligence-20261108.md",
+      "json": "archive/20261109T043242Z-c8e908de/CSCO/CSCO-intelligence-20261108.json",
+      "pdf": "archive/20261109T043242Z-c8e908de/CSCO/CSCO-intelligence-20261108.pdf",
+      "source_sha256": {
+        "quant": "997dc6f25a8e9e7e15abe66441cda913e15cc976959790e33c93f63fa357d704",
+        "info": "9d1db4f2deac2d6345835864678353e58e562aa3d5897016632b6053b9a3fa51",
+        "ai-intel": "30a82386e4365fadfa99f5d1c48ae8c843f5245334af5dce39224ef964347bde",
+        "rss-items": "c4564e3674bba8092ac05ef2a06238d132cc34be027b7d78d0f9d2bff7c58d72",
+        "comparables": "c46aa38a4253f7c2e55e3754cc799bbb4917588ca31b736021692ccef5b068b8",
+        "earnings": "7ffe860d1a5c6ac9a3d64f34f2d7b59af7339c63fb8f1236cba743a79d4fd407",
+        "edgar": "60322eb2e0fe0c3f73444caa098bbf9bd95863d58a9540d67023497a9d1957dc",
+        "fred": "579b6df4e5c91213528537d92d55b3a720a90b9135c6f6dbf4cc0069308577b4"
+      }
     }
   ],
   "refresh_plan": {
@@ -26502,7 +26529,8 @@
       "CAT",
       "CNQ.TO",
       "COST",
-      "CP.TO"
+      "CP.TO",
+      "CSCO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42562361560",
@@ -26895,6 +26923,15 @@
         "edgar": 2.921,
         "regenerate_report": 0.114,
         "report_pdf": 0.567
+      },
+      "CSCO": {
+        "quant": 1.417,
+        "ai_extract": 6.029,
+        "comparables": 1.869,
+        "earnings": 1.518,
+        "edgar": 2.169,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.666
       }
     },
     "current_ticker": "CSCO",
@@ -26934,7 +26971,8 @@
       "CAT": 21,
       "CNQ.TO": 11,
       "COST": 18,
-      "CP.TO": 1
+      "CP.TO": 1,
+      "CSCO": 18
     }
   },
   "last_complete_refresh": "2026-11-08T04:17:58.580016+00:00",
