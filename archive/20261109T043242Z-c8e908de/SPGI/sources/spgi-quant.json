@@ -1,0 +1,148 @@
+{
+  "ticker": "SPGI",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/SPGI/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/SPGI/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 467.79998779296875,
+    "Return 1D (%)": -0.9758506029516556,
+    "Return 1W (%)": 0.26792413089820055,
+    "Return 1M (%)": 18.09254083930312,
+    "Return YTD (%)": -4.72779507644433,
+    "Return 1Y (%)": 1.8085466372974146,
+    "Annualized volatility (%)": 30.97108905092082,
+    "Max drawdown (%)": -28.478068641752596,
+    "Sharpe (rf=0)": 0.21448644006440185,
+    "Beta vs SPY": 0.3480719772272624,
+    "MA50": 425.3547998046875,
+    "Close vs MA50 (%)": 9.97877254653552,
+    "MA200": 414.9615760803223,
+    "Close vs MA200 (%)": 12.733326350779706,
+    "RSI (14, Wilder)": 64.52765267501223,
+    "MACD (12,26)": 15.87189369756345,
+    "MACD signal (9)": 13.725409901993201,
+    "MACD histogram": 2.1464837955702496,
+    "Downside deviation (rf=0, %)": 23.078640586574135,
+    "Sortino (rf=0)": 0.2878366518396251,
+    "Historical VaR 95% (1D, %)": 2.874893902362458,
+    "Historical ES 95% (1D, %)": 4.634492293005749,
+    "Correlation vs SPY": 0.15228369317503815,
+    "Tracking error vs SPY (%)": 31.859025058561784,
+    "P/E (trailing)": 27.945042,
+    "P/B": 6.8805246,
+    "EV/EBITDA": 18.116,
+    "Revenue growth (%)": 6.800000000000001,
+    "Forward P/E (estimate)": 23.18632,
+    "Gross margin (%)": 70.994,
+    "Operating margin (%)": 48.206002,
+    "Return on equity (%)": 17.875999,
+    "Free cash flow yield (%)": 4.452948009833163
+  },
+  "as_of": "2026-11-06",
+  "verification": {
+    "base_date": "2025-11-06",
+    "base_close": 459.4898986816406,
+    "end_close": 467.79998779296875,
+    "manual_1Y_pct": 1.8085466372974182,
+    "passed": true
+  },
+  "fetched_at": "2026-11-09T04:38:58.061459+00:00",
+  "requested_as_of": "2026-11-08",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "SPGI",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1794198769.8275065
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "SPGI": 277,
+    "SPY": 277
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 277 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 277. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'SPGI'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-08'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
