@@ -27558,6 +27558,33 @@
         "edgar": "76057c8b8f72a745fc1194dbb80bb705c0610eddb11c5321d03b066cc967e720",
         "fred": "5171455f09d5724f83d6fe0ec1ba55b6563c57b3814cbefe5eb61fa5b9c86a2b"
       }
+    },
+    {
+      "report_id": "20261110T055129Z-abd33250/META",
+      "ticker": "META",
+      "generated_at": "2026-11-10T06:08:24.153259+00:00",
+      "as_of": "2026-11-09",
+      "quality": "ready",
+      "market_as_of": "2026-11-09",
+      "news_as_of": "2026-11-09",
+      "sha256": {
+        "md": "6c08765a49e59b908b0b876c6f92a453f7c6701fae4d91ad79178be8463cbfb5",
+        "json": "3a86c093b16493c95b49e7388a49f20abb12c40c84aa38bd156f1f84013061dd",
+        "pdf": "c767ec6e7488ed988d27e403d0c2c0844f1c8e60e2c14268536dce22106c61a7"
+      },
+      "md": "archive/20261110T055129Z-abd33250/META/META-intelligence-20261109.md",
+      "json": "archive/20261110T055129Z-abd33250/META/META-intelligence-20261109.json",
+      "pdf": "archive/20261110T055129Z-abd33250/META/META-intelligence-20261109.pdf",
+      "source_sha256": {
+        "quant": "f978ee2f393ada9dc486810a2aa32c99a835f768d35fe70d968b550c8c8cb9a1",
+        "info": "63993aebd29195ce998b0688b7d55bfc7b47c8180c22ea90f5d107e33b9a9962",
+        "ai-intel": "925da240e261a01948001e00caadd7f892cc29239cbc9aee428f6f728ede43f9",
+        "rss-items": "ca524ac465e3a1c83a3518f49ae952a47d417f426ea489d73fb5315dbc541911",
+        "comparables": "70848ed2f636d33a90fe0ea6558394136726ac05ac44096f322aad9ef838bc7d",
+        "earnings": "4e3f3f5efc61f9add6142bf155cd9d4af888b74f92e1f70a252d43572235379f",
+        "edgar": "48aa2bdeb44504800639fbf7ceafbd893e23455714235f62c40b3ca49203201e",
+        "fred": "5171455f09d5724f83d6fe0ec1ba55b6563c57b3814cbefe5eb61fa5b9c86a2b"
+      }
     }
   ],
   "refresh_plan": {
@@ -27768,7 +27795,8 @@
       "JWEL.TO",
       "MC.PA",
       "MCK",
-      "MCO"
+      "MCO",
+      "META"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42764674975",
@@ -28134,6 +28162,15 @@
         "edgar": 2.218,
         "regenerate_report": 0.114,
         "report_pdf": 0.416
+      },
+      "META": {
+        "quant": 1.016,
+        "ai_extract": 34.079,
+        "comparables": 1.718,
+        "earnings": 1.317,
+        "edgar": 1.918,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.465
       }
     },
     "current_ticker": "META",
@@ -28169,7 +28206,8 @@
       "JPM": 17,
       "MC.PA": 3,
       "MCK": 9,
-      "MCO": 11
+      "MCO": 11,
+      "META": 18
     }
   },
   "last_complete_refresh": "2026-11-09T04:32:42.399799+00:00",
