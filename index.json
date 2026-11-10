@@ -28113,7 +28113,7 @@
     "run_id": "20261110T055129Z-abd33250",
     "at": "2026-11-10T05:51:29.858782+00:00",
     "business_date": "2026-11-09",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -28730,7 +28730,6 @@
         "report_pdf": 0.416
       }
     },
-    "current_ticker": "SYY",
     "last_progress_at": "2026-11-10T06:15:21.254949+00:00",
     "news_cache_candidates": {
       "T": 17,
@@ -28780,8 +28779,12 @@
       "SHOP.TO": 3,
       "SPGI": 6,
       "SYY": 14
-    }
+    },
+    "pending_tickers": [
+      "NFLX"
+    ],
+    "finished_at": "2026-11-10T06:15:35.201615+00:00"
   },
-  "last_complete_refresh": "2026-11-09T04:32:42.399799+00:00",
-  "last_complete_business_date": "2026-11-08"
+  "last_complete_refresh": "2026-11-10T05:51:29.858782+00:00",
+  "last_complete_business_date": "2026-11-09"
 }
