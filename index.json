@@ -27207,6 +27207,33 @@
         "edgar": "60322eb2e0fe0c3f73444caa098bbf9bd95863d58a9540d67023497a9d1957dc",
         "fred": "5171455f09d5724f83d6fe0ec1ba55b6563c57b3814cbefe5eb61fa5b9c86a2b"
       }
+    },
+    {
+      "report_id": "20261110T055129Z-abd33250/CSU.TO",
+      "ticker": "CSU.TO",
+      "generated_at": "2026-11-10T06:03:46.469071+00:00",
+      "as_of": "2026-11-09",
+      "quality": "ready",
+      "market_as_of": "2026-11-09",
+      "news_as_of": "2026-11-09",
+      "sha256": {
+        "md": "925589055276e9b3c6bc8bd8b530ddaa58c13696d0a8a25f30a83e4266e5d165",
+        "json": "85373b0a1a390e7d4a3846f2f8717f1d9f7db1492a38c70ad1d1ae2f5dbd7077",
+        "pdf": "62a8b17b33ffca19efe0572252f714ee15f7ee2c5d46a6e2ab7d5a16a9ebcd85"
+      },
+      "md": "archive/20261110T055129Z-abd33250/CSU.TO/CSU.TO-intelligence-20261109.md",
+      "json": "archive/20261110T055129Z-abd33250/CSU.TO/CSU.TO-intelligence-20261109.json",
+      "pdf": "archive/20261110T055129Z-abd33250/CSU.TO/CSU.TO-intelligence-20261109.pdf",
+      "source_sha256": {
+        "quant": "a55a353be2865a3120668b45831d2261e23f275bce625ef01ce719f29372817d",
+        "info": "78201cba4d6209ec8cd6b0944100992b59ba96437721d773794371ea6a8a7da6",
+        "ai-intel": "fdafb4b0f0b863865be01d21ab2ddd3536e36ccb662dd537c00ef8b204f18f67",
+        "rss-items": "7e795f5e1702b9a5784d879795d721cc49595c0fec82ff3488419112d1858b50",
+        "comparables": "5d035aa92b0695bb16c54432a8fc09d0d4c6caaad7f18d57caac60ec225be30f",
+        "earnings": "51a61cdf4ec533b4baccb58d61be6115e44af840b2016cb09e8e0483809b0bae",
+        "edgar": "a2b6b5948ec9baa3f382a6b330e8395188b81b0ad4515d5d53a419352ffb4b08",
+        "fred": "5171455f09d5724f83d6fe0ec1ba55b6563c57b3814cbefe5eb61fa5b9c86a2b"
+      }
     }
   ],
   "refresh_plan": {
@@ -27404,7 +27431,8 @@
       "CNQ.TO",
       "COST",
       "CP.TO",
-      "CSCO"
+      "CSCO",
+      "CSU.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42764674975",
@@ -27653,6 +27681,15 @@
         "edgar": 2.167,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "CSU.TO": {
+        "quant": 1.016,
+        "ai_extract": 0.415,
+        "comparables": 1.517,
+        "earnings": 1.166,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.415
       }
     },
     "current_ticker": "CSU.TO",
@@ -27676,7 +27713,8 @@
       "CNQ.TO": 5,
       "COST": 16,
       "CP.TO": 1,
-      "CSCO": 18
+      "CSCO": 18,
+      "CSU.TO": 3
     }
   },
   "last_complete_refresh": "2026-11-09T04:32:42.399799+00:00",
