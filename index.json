@@ -27774,6 +27774,33 @@
         "edgar": "eeb58dcf97a8fa920479b78db115af031ba21b1e6c6bf12a59a9e4047aa53dd6",
         "fred": "5171455f09d5724f83d6fe0ec1ba55b6563c57b3814cbefe5eb61fa5b9c86a2b"
       }
+    },
+    {
+      "report_id": "20261110T055129Z-abd33250/NVO",
+      "ticker": "NVO",
+      "generated_at": "2026-11-10T06:13:45.353331+00:00",
+      "as_of": "2026-11-09",
+      "quality": "ready",
+      "market_as_of": "2026-11-09",
+      "news_as_of": "2026-11-09",
+      "sha256": {
+        "md": "3deb4fe0337d2c442f8f398dace8cbab3352fcb16ffb3aafe89756cc32531421",
+        "json": "f7b68adf67011f68bdb90f4fc62c09250d978394f86c1592b4b82f55ab922286",
+        "pdf": "306966133c999caae926681e0983484b0927962dcff1f92ae4b18750c60bccc2"
+      },
+      "md": "archive/20261110T055129Z-abd33250/NVO/NVO-intelligence-20261109.md",
+      "json": "archive/20261110T055129Z-abd33250/NVO/NVO-intelligence-20261109.json",
+      "pdf": "archive/20261110T055129Z-abd33250/NVO/NVO-intelligence-20261109.pdf",
+      "source_sha256": {
+        "quant": "215e9feb186b42b96f69c499bc9b6cfc5749b563479a569987de3f315fa5e725",
+        "info": "aaa5849225d708c9381d9bafe65afc595ebfcf187f9e77d78556dd6d3c7481af",
+        "ai-intel": "c0e18a12f9f2a12c28d9c76234e75ca65f5bae5c50fc07b3ae9b17e9b7830e4f",
+        "rss-items": "348d5ad6086f3dd149d16a1ce72dc0d551c4537a10a72099d1492ec3edf4bbf0",
+        "comparables": "14d4c84afb2bda1f06cb7705f79f4b3a4a17deb4fa1884b3fe5d4aa913de9b5f",
+        "earnings": "43f348ee050c060a7703e5b4a1c5a2b70f3f7ec60a29595c73abeba4938b9024",
+        "edgar": "72fd96f964e902867098bec8c377fc503af5c10c5fc19fbc3d69d62f5352740f",
+        "fred": "5171455f09d5724f83d6fe0ec1ba55b6563c57b3814cbefe5eb61fa5b9c86a2b"
+      }
     }
   ],
   "refresh_plan": {
@@ -27992,7 +28019,8 @@
       "NFLX",
       "NTR.TO",
       "NVAX",
-      "NVDA"
+      "NVDA",
+      "NVO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42764674975",
@@ -28432,6 +28460,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "NVO": {
+        "quant": 1.166,
+        "ai_extract": 42.933,
+        "comparables": 2.421,
+        "earnings": 1.419,
+        "edgar": 2.621,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.517
       }
     },
     "current_ticker": "NVO",
@@ -28475,7 +28512,8 @@
       "NFLX": 17,
       "NTR.TO": 2,
       "NVAX": 5,
-      "NVDA": 18
+      "NVDA": 18,
+      "NVO": 15
     }
   },
   "last_complete_refresh": "2026-11-09T04:32:42.399799+00:00",
