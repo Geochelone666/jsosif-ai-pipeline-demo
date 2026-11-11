@@ -98,3 +98,11 @@ explicit coverage/limitations before presentation as signals.
 The local integration branch combines the two backend/announcement candidates
 without merging them into main. New tests provide evidence for implementation;
 this register intentionally leaves unfinished PDF goals open.
+
+### Macro adapter progress
+
+A Bank of Canada Valet USD/CAD CLI and shared date-window cache are implemented
+with synthetic parser/failure/concurrency tests. Actual endpoint acceptance is
+blocked by development connectivity and remains unverified. It is not enabled in
+production or used for inferred FX conversion. Archive publication now retains
+expected source checksums for verification before creating the public projection.
