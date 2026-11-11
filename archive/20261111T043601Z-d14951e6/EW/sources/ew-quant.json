@@ -1,0 +1,148 @@
+{
+  "ticker": "EW",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/EW/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/EW/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 104.01000213623047,
+    "Return 1D (%)": -0.6685101273637528,
+    "Return 1W (%)": 9.265678609739858,
+    "Return 1M (%)": 22.063141947837007,
+    "Return YTD (%)": 22.005867608481488,
+    "Return 1Y (%)": 23.703615450939132,
+    "Annualized volatility (%)": 25.571712807034437,
+    "Max drawdown (%)": -13.185546345365328,
+    "Sharpe (rf=0)": 0.9625871399821254,
+    "Beta vs SPY": 0.5358840246347432,
+    "MA50": 89.47580001831055,
+    "Close vs MA50 (%)": 16.243724129815675,
+    "MA200": 85.97585006713867,
+    "Close vs MA200 (%)": 20.97583455704004,
+    "RSI (14, Wilder)": 76.9040461340411,
+    "MACD (12,26)": 4.030026131823988,
+    "MACD signal (9)": 2.6024327859315295,
+    "MACD histogram": 1.4275933458924581,
+    "Downside deviation (rf=0, %)": 16.882057879845586,
+    "Sortino (rf=0)": 1.4580569543452313,
+    "Historical VaR 95% (1D, %)": 2.5316829011403366,
+    "Historical ES 95% (1D, %)": 3.115471504753366,
+    "Correlation vs SPY": 0.286486201094769,
+    "Tracking error vs SPY (%)": 25.308097215092847,
+    "P/E (trailing)": 60.470932,
+    "P/B": 5.512216,
+    "EV/EBITDA": 26.718,
+    "Revenue growth (%)": 10.5,
+    "Forward P/E (estimate)": 30.732727,
+    "Gross margin (%)": 78.018,
+    "Operating margin (%)": 30.153999999999996,
+    "Return on equity (%)": 9.333,
+    "Free cash flow yield (%)": 1.9150959337547333
+  },
+  "as_of": "2026-11-10",
+  "verification": {
+    "base_date": "2025-11-10",
+    "base_close": 84.08000183105469,
+    "end_close": 104.01000213623047,
+    "manual_1Y_pct": 23.70361545093913,
+    "passed": true
+  },
+  "fetched_at": "2026-11-11T04:38:49.782160+00:00",
+  "requested_as_of": "2026-11-10",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "EW",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1794371769.4635053
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "EW": 279,
+    "SPY": 279
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 279 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 279. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'EW'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-10'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
