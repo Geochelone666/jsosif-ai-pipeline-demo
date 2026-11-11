@@ -28,11 +28,20 @@ def source(root,entry,kind):
         with path.open('rb') as stream:
             raw=stream.read(2*1024*1024+1)
         if len(raw)>2*1024*1024:raise ValueError('Source exceeds limit')
-        value=json.loads(raw)
-        if not isinstance(value,dict):raise ValueError('Invalid source object')
-        return value,{'sha256':hashlib.sha256(raw).hexdigest(),'integrity':'hash observed at build; no archived expected source hash'}
     except (ValueError,OSError,TypeError):
         return None,None
+    actual=hashlib.sha256(raw).hexdigest()
+    source_kind='fred' if kind=='fred.json' else kind.removeprefix(entry['ticker'].lower()+'-').removesuffix('.json')
+    expected=entry.get('source_sha256',{}).get(source_kind)
+    if expected is not None and actual!=expected:
+        raise ValueError('Archived source integrity check failed')
+    try:
+        value=json.loads(raw)
+        if not isinstance(value,dict):return None,None
+    except (ValueError,TypeError):
+        return None,None
+    return value,{'sha256':actual,'integrity':'verified against archived expected hash' if expected else
+                  'hash observed at build; no archived expected source hash'}
 
 
 def source_date(value,as_of):

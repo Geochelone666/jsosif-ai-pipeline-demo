@@ -41,9 +41,10 @@ report quality/advisories and source dates. The comparison page shows original
 saved metric values and provider peers, not normalized rankings. Macro observations
 retain series dates/units and public FRED attribution; unavailable sources stay missing.
 
-Supplemental source files are not covered by the original report-index expected
-hashes. Their provenance explicitly says the hash was observed at build, not
-verified against an original expectation. They never upgrade report readiness.
+Newer archive entries carry expected source checksums; the builder verifies the
+original entries before public projection and the dataset checks matching parsed
+source bytes. Legacy entries without expected hashes retain the explicit
+build-observed label. Optional source observations never upgrade report readiness.
 Reads are bounded and parsed/hashed from the same bytes. Macro projections are
 shared by source hash AND report-date context, so future observations for an older
 report cannot be made available by reuse. Corrupt optional sources are isolated;

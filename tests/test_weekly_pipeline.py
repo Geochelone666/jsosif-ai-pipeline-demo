@@ -825,3 +825,20 @@ def test_macro_future_observations_do_not_become_available_for_older_report_cont
     assert current['status']=='observed' and older['status']=='missing'
     assert older['observations'][0]['value'] is None
     assert current['provenance']['sha256']==older['provenance']['sha256']
+
+
+def test_site_cannot_drop_expected_source_checksums_before_validation(store,tmp_path):
+    index=read_json(store/'index.json');entry=index['reports'][0]
+    sources=(store/entry['json']).parent/'sources';expected={}
+    for kind in ('quant','info','ai-intel','rss-items','comparables','earnings','edgar','fred'):
+        name='fred.json' if kind=='fred' else entry['ticker'].lower()+'-'+kind+'.json'
+        write_json(sources/name,{})
+        expected[kind]=digest(sources/name)
+    entry['source_sha256']=expected
+    write_json(store/'index.json',index)
+    output=tmp_path.parent/(tmp_path.name+'-checksummed-site')
+    build(store,output);before=(output/'index.json').read_bytes()
+    write_json(sources/'fred.json',{'available':True,'indicators':[{'series_id':'UNRATE','value':99,'date':entry['as_of']}]})
+    with pytest.raises(ValueError,match='source integrity'):
+        build(store,output)
+    assert (output/'index.json').read_bytes()==before

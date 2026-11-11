@@ -96,7 +96,8 @@ def build(store, output, template=None, portal_config=None):
     index = read_json(store / 'index.json')
     if not isinstance(index, dict) or not isinstance(index.get('reports'), list):
         raise ValueError('A valid persisted archive index is required before building the site')
-    index = public_index(index)
+    archive_index = index
+    index = public_index(archive_index)
     version_file = Path(__file__).resolve().parents[1] / 'VERSION'
     index['publication'] = {'published_at': datetime.now(timezone.utc).isoformat(),
                             'schedule': 'Daily at 19:00 America/Toronto; execution can be delayed',
@@ -134,8 +135,8 @@ def build(store, output, template=None, portal_config=None):
         excel_template = Path(template).with_name('members.example.xlsx')
         if excel_template.is_file():
             shutil.copy2(excel_template, stage / 'members.example.xlsx')
-        for entry in index['reports']:
-            files = verified_report_files(store, entry)
+        for entry, archived_entry in zip(index['reports'], archive_index['reports'], strict=True):
+            files = verified_report_files(store, archived_entry)
             advisory = report_advisory(store, entry)
             if advisory:
                 entry['advisory'] = advisory
@@ -146,7 +147,7 @@ def build(store, output, template=None, portal_config=None):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, target)
         from research_workspace import build_dataset
-        write_json(stage / 'research-data.json', build_dataset(store, index))
+        write_json(stage / 'research-data.json', build_dataset(store, archive_index))
         for name in ('research.html', 'research.js'):
             shutil.copy2(Path(__file__).resolve().parents[1] / 'docs' / name, stage / name)
         # Delivery/quota state, member config and credentials never enter the site.
