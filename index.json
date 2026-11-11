@@ -28071,6 +28071,33 @@
         "edgar": "2d0b6cd1e0832410b14d4b0233c386298d2632654c85346e39d17596691debc1",
         "fred": "168ca55756e6478c6ccb38db35ce3e8b94272e47ac370ce2e83a77e92a019c43"
       }
+    },
+    {
+      "report_id": "20261111T043601Z-d14951e6/CP.TO",
+      "ticker": "CP.TO",
+      "generated_at": "2026-11-11T04:37:30.689626+00:00",
+      "as_of": "2026-11-10",
+      "quality": "ready",
+      "market_as_of": "2026-11-10",
+      "news_as_of": "2026-11-10",
+      "sha256": {
+        "md": "9b6a18a8aa2cd18c1535002990451f036d88659e9c339a9f5b247ff671f037cf",
+        "json": "06935b7621b608f31fbe55e2c3d97354f4429916c4cc0deaf7f9282aaec148e9",
+        "pdf": "31310654da6436373e0489b679ad4c7c8f105c3d0a0a4f224593665c955e20b1"
+      },
+      "md": "archive/20261111T043601Z-d14951e6/CP.TO/CP.TO-intelligence-20261110.md",
+      "json": "archive/20261111T043601Z-d14951e6/CP.TO/CP.TO-intelligence-20261110.json",
+      "pdf": "archive/20261111T043601Z-d14951e6/CP.TO/CP.TO-intelligence-20261110.pdf",
+      "source_sha256": {
+        "quant": "ad23a7e0c9198b364468ae50e3c3254fe4baed1f0e53c032efab92af0ff20e17",
+        "info": "35eae8731f107fdb17790c91fbc45147b41205f5ced0af1b43f60b0e1f204a83",
+        "ai-intel": "6a804946521cf788fa3cc544407c8eaa3be9200f986fc8f984a8449bb1a06a1a",
+        "rss-items": "11cf34f6c28876a64b686d0971a40a78256804bdc3233060b8174199bc0a18f3",
+        "comparables": "04d62791014407f8d5cecbfd84c9fc96d5b4a558d8953b90b17cac580431bae0",
+        "earnings": "0e50d48633650ed45b81fa13319dbd9aefd8f3786675b74d1071d426ee90f0ff",
+        "edgar": "2819caba45ca7c4147706027e14cb6910abe3d1ac3bfc927c5a9c18dc47491d6",
+        "fred": "168ca55756e6478c6ccb38db35ce3e8b94272e47ac370ce2e83a77e92a019c43"
+      }
     }
   ],
   "refresh_plan": {
@@ -28250,7 +28277,8 @@
     "successful_tickers": [
       "NFLX",
       "CNQ.TO",
-      "COST"
+      "COST",
+      "CP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "42960232717",
@@ -28339,6 +28367,15 @@
         "edgar": 2.067,
         "regenerate_report": 0.114,
         "report_pdf": 0.466
+      },
+      "CP.TO": {
+        "quant": 0.915,
+        "ai_extract": 2.168,
+        "comparables": 1.668,
+        "earnings": 1.167,
+        "edgar": 3.171,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.417
       }
     },
     "current_ticker": "CP.TO",
@@ -28346,7 +28383,8 @@
     "news_cache_candidates": {
       "NFLX": 17,
       "CNQ.TO": 5,
-      "COST": 19
+      "COST": 19,
+      "CP.TO": 3
     }
   },
   "last_complete_refresh": "2026-11-10T05:51:29.858782+00:00",
