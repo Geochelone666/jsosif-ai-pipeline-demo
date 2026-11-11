@@ -1,0 +1,148 @@
+{
+  "ticker": "AMD",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/AMD/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/AMD/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 515.2100219726562,
+    "Return 1D (%)": 1.3036367091587397,
+    "Return 1W (%)": 6.470350996298979,
+    "Return 1M (%)": -15.275441102226118,
+    "Return YTD (%)": 140.57247532808606,
+    "Return 1Y (%)": 111.16896097826366,
+    "Annualized volatility (%)": 73.02888476996236,
+    "Max drawdown (%)": -37.7290498385494,
+    "Sharpe (rf=0)": 1.3922407207934053,
+    "Beta vs SPY": 3.4143721469895363,
+    "MA50": 548.563598022461,
+    "Close vs MA50 (%)": -6.08016575836281,
+    "MA200": 418.5414999389648,
+    "Close vs MA200 (%)": 23.09652018922579,
+    "RSI (14, Wilder)": 48.59837814459446,
+    "MACD (12,26)": -23.55981874071051,
+    "MACD signal (9)": -20.19041699805119,
+    "MACD histogram": -3.3694017426593206,
+    "Downside deviation (rf=0, %)": 47.20301040553572,
+    "Sortino (rf=0)": 2.153968280780396,
+    "Historical VaR 95% (1D, %)": 6.31842783749878,
+    "Historical ES 95% (1D, %)": 9.474614333837843,
+    "Correlation vs SPY": 0.639158991581241,
+    "Tracking error vs SPY (%)": 65.14511165575959,
+    "P/E (trailing)": 110.087616,
+    "P/B": 12.35486,
+    "EV/EBITDA": 75.242,
+    "Revenue growth (%)": 44.7,
+    "Forward P/E (estimate)": 29.125237,
+    "Gross margin (%)": 56.00000000000001,
+    "Operating margin (%)": 21.170999,
+    "Return on equity (%)": 11.959999999999999,
+    "Free cash flow yield (%)": 0.8706766177609442
+  },
+  "as_of": "2026-11-10",
+  "verification": {
+    "base_date": "2025-11-10",
+    "base_close": 243.97999572753906,
+    "end_close": 515.2100219726562,
+    "manual_1Y_pct": 111.16896097826363,
+    "passed": true
+  },
+  "fetched_at": "2026-11-11T04:53:38.549535+00:00",
+  "requested_as_of": "2026-11-10",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "AMD",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1794371769.4635053
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "AMD": 279,
+    "SPY": 279
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 279 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 279. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'AMD'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-10'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
