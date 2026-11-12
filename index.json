@@ -30813,7 +30813,7 @@
     "run_id": "20261112T054014Z-6c47e7f9",
     "at": "2026-11-12T05:40:14.263911+00:00",
     "business_date": "2026-11-11",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -31431,7 +31431,6 @@
         "report_pdf": 0.467
       }
     },
-    "current_ticker": "MCO",
     "last_progress_at": "2026-11-12T06:03:22.994973+00:00",
     "news_cache_candidates": {
       "META": 17,
@@ -31483,8 +31482,13 @@
       "MC.PA": 1,
       "MCK": 8,
       "MCO": 6
-    }
+    },
+    "pending_tickers": [
+      "CAT",
+      "NVO"
+    ],
+    "finished_at": "2026-11-12T06:03:35.525615+00:00"
   },
-  "last_complete_refresh": "2026-11-11T04:36:01.400084+00:00",
-  "last_complete_business_date": "2026-11-10"
+  "last_complete_refresh": "2026-11-12T05:40:14.263911+00:00",
+  "last_complete_business_date": "2026-11-11"
 }
