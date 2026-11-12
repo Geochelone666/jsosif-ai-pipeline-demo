@@ -29880,6 +29880,33 @@
         "edgar": "6926ecf322b7d73e23f466fc41aeeaf0a9909607c7d690f772090f5197ed62b7",
         "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
       }
+    },
+    {
+      "report_id": "20261112T054014Z-6c47e7f9/V",
+      "ticker": "V",
+      "generated_at": "2026-11-12T05:51:31.603721+00:00",
+      "as_of": "2026-11-11",
+      "quality": "ready",
+      "market_as_of": "2026-11-11",
+      "news_as_of": "2026-11-11",
+      "sha256": {
+        "md": "1616bf1442261ba85553bbb1bed592c9534283f3e0dc50328386c15237406fa8",
+        "json": "5124155781515402230f768ad165797c4be91eb98903c8f361d43031de91ea25",
+        "pdf": "dfb93f5f05d311b959230e6871b245243ee0058ddc4bfe690d808d00ed256d9e"
+      },
+      "md": "archive/20261112T054014Z-6c47e7f9/V/V-intelligence-20261111.md",
+      "json": "archive/20261112T054014Z-6c47e7f9/V/V-intelligence-20261111.json",
+      "pdf": "archive/20261112T054014Z-6c47e7f9/V/V-intelligence-20261111.pdf",
+      "source_sha256": {
+        "quant": "aad54178515f6e72d5c2606d4e76e5c366d67a41c4e3ca6518319c5a5a0eab31",
+        "info": "387da271d9fed2a66ba3753734205d30ceefbf58531e0b00069ae40a95182147",
+        "ai-intel": "ff0fea2a0c151d3f4ba0204bba3fff7683edcbeac8e6d4d60d3f1daef6d816d1",
+        "rss-items": "8f275fd64755941a2fb30db4b5cd9f24d2b5e9496507b7cd6c8509ffcae5c6f1",
+        "comparables": "9e87b05fcaedb1d9aede525cdb7ec56390f076b4a380ff4c4d0570ed78612157",
+        "earnings": "43252efe87e43f335ea875153dd37c5c2f98a32ea0131a6ebde13072d882ee05",
+        "edgar": "5f1b698a9e9d88944a3cba50fb92f5b38450920a579e415b8a854fa1169562b4",
+        "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
+      }
     }
   ],
   "refresh_plan": {
@@ -30076,7 +30103,8 @@
       "T",
       "TD.TO",
       "TMC",
-      "TSM"
+      "TSM",
+      "V"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43162851575",
@@ -30318,6 +30346,15 @@
         "edgar": 2.52,
         "regenerate_report": 0.114,
         "report_pdf": 0.515
+      },
+      "V": {
+        "quant": 0.917,
+        "ai_extract": 26.979,
+        "comparables": 1.669,
+        "earnings": 1.016,
+        "edgar": 2.019,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "V",
@@ -30341,7 +30378,8 @@
       "T": 20,
       "TD.TO": 2,
       "TMC": 8,
-      "TSM": 22
+      "TSM": 22,
+      "V": 13
     }
   },
   "last_complete_refresh": "2026-11-11T04:36:01.400084+00:00",
