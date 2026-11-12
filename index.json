@@ -29988,6 +29988,33 @@
         "edgar": "c4caef2bbe3026d563d6747f452c8862d71ff1184b971ad6bcad4dbf34da9733",
         "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
       }
+    },
+    {
+      "report_id": "20261112T054014Z-6c47e7f9/ACN",
+      "ticker": "ACN",
+      "generated_at": "2026-11-12T05:52:43.525944+00:00",
+      "as_of": "2026-11-11",
+      "quality": "ready",
+      "market_as_of": "2026-11-11",
+      "news_as_of": "2026-11-11",
+      "sha256": {
+        "md": "1045b200619ce902843812143b9cad693c0143290cd6577d7b27f446aa435c21",
+        "json": "c33b1b2278082b24f8a699075a429617223edcb638a172ba638257259312e4fa",
+        "pdf": "600875a831647ef46920825c83d464637a22bb4d6159d9ee986da46ba8580811"
+      },
+      "md": "archive/20261112T054014Z-6c47e7f9/ACN/ACN-intelligence-20261111.md",
+      "json": "archive/20261112T054014Z-6c47e7f9/ACN/ACN-intelligence-20261111.json",
+      "pdf": "archive/20261112T054014Z-6c47e7f9/ACN/ACN-intelligence-20261111.pdf",
+      "source_sha256": {
+        "quant": "9f42163afbb155ac6c9ed12c3dffd068d82a0b67982e9d67c81fb38b9e54f23d",
+        "info": "1ca71d730d70bd6ce9cb58d7d6613dc3777dd20058666a76fd744c4bca75d842",
+        "ai-intel": "4cf55a47face2a766d3444c0053de5c517b92f510b41b5e0d04b3b90f6935122",
+        "rss-items": "779ab968a1d3dae9ebd199ac615ba9fce1b13ee572ee1b9e3a8d5480b4ed29a6",
+        "comparables": "27c7a589e0a5016fa9098b5928a846343bcb3799f2c0cd1d99ba78538cfe2033",
+        "earnings": "46d3d99561a7adadef049a9b5c7596c07bcf983fb42e4753e8608fb4cadbf06d",
+        "edgar": "0b5aae9e99fe90c380a8aaef35602bb4c9cc4460b34175556a0fa70120fa4191",
+        "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
+      }
     }
   ],
   "refresh_plan": {
@@ -30188,7 +30215,8 @@
       "V",
       "VRTX",
       "XYL",
-      "AAPL"
+      "AAPL",
+      "ACN"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43162851575",
@@ -30466,6 +30494,15 @@
         "edgar": 2.069,
         "regenerate_report": 0.114,
         "report_pdf": 0.566
+      },
+      "ACN": {
+        "quant": 0.916,
+        "ai_extract": 1.868,
+        "comparables": 1.568,
+        "earnings": 1.017,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.516
       }
     },
     "current_ticker": "ACN",
@@ -30493,7 +30530,8 @@
       "V": 13,
       "VRTX": 7,
       "XYL": 10,
-      "AAPL": 16
+      "AAPL": 16,
+      "ACN": 10
     }
   },
   "last_complete_refresh": "2026-11-11T04:36:01.400084+00:00",
