@@ -30123,6 +30123,33 @@
         "edgar": "1c379c91a6cfa737d5d731ce6fe954a101161a600ef6bbf75811386c15d4dfed",
         "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
       }
+    },
+    {
+      "report_id": "20261112T054014Z-6c47e7f9/ATD.TO",
+      "ticker": "ATD.TO",
+      "generated_at": "2026-11-12T05:55:03.409692+00:00",
+      "as_of": "2026-11-11",
+      "quality": "ready",
+      "market_as_of": "2026-11-11",
+      "news_as_of": "2026-11-11",
+      "sha256": {
+        "md": "5a4cebcfa7906ee7cc5f9463fc4350967fe6d3a61399156ec42f87874dd42e0e",
+        "json": "dfeefe14e57eeb8f7df912a0758469f22a0eed037402684f8f7287b1a2ea1dd2",
+        "pdf": "73e703efcbff9ccedce2946d1a3a79b8360d05cfe4d9c2be1ebd263968b54b71"
+      },
+      "md": "archive/20261112T054014Z-6c47e7f9/ATD.TO/ATD.TO-intelligence-20261111.md",
+      "json": "archive/20261112T054014Z-6c47e7f9/ATD.TO/ATD.TO-intelligence-20261111.json",
+      "pdf": "archive/20261112T054014Z-6c47e7f9/ATD.TO/ATD.TO-intelligence-20261111.pdf",
+      "source_sha256": {
+        "quant": "be96d663d862a15f85858b1a777178d4a2a3b1831f03c7f46446691e0a22c7b1",
+        "info": "a856b2dfdf5f6c5e499085d7f1e06b1aa31170a2164def71e9346085242c93b8",
+        "ai-intel": "1846b69b83c27c8a5c2397d8119b24b3d7ffa30bbe494f022475dc0c73635bc2",
+        "rss-items": "4f60bb2618a79b759bcffd76f76006868d4b1581cecc3284838d8c32cd6c5314",
+        "comparables": "6844ce884765450b10cdbb1fbf8975996dc899fb8ca9b2f5b8bbe45f5adaad2d",
+        "earnings": "7c97555ea0d2e053aabceaa84c60e10c7ad8c2515041e8bdabbfe02cabb74732",
+        "edgar": "4b862c74e0a8c8a2d3bb8372a327da1726e0e1e6d23d18f25b594ad5f28d6342",
+        "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
+      }
     }
   ],
   "refresh_plan": {
@@ -30328,7 +30355,8 @@
       "AMD",
       "AMTM",
       "AMZN",
-      "ASML"
+      "ASML",
+      "ATD.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43162851575",
@@ -30651,6 +30679,15 @@
         "edgar": 2.57,
         "regenerate_report": 0.114,
         "report_pdf": 0.515
+      },
+      "ATD.TO": {
+        "quant": 0.919,
+        "ai_extract": 0.415,
+        "comparables": 1.568,
+        "earnings": 1.017,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.466
       }
     },
     "current_ticker": "ATD.TO",
@@ -30683,7 +30720,8 @@
       "AMD": 19,
       "AMTM": 1,
       "AMZN": 19,
-      "ASML": 20
+      "ASML": 20,
+      "ATD.TO": 2
     }
   },
   "last_complete_refresh": "2026-11-11T04:36:01.400084+00:00",
