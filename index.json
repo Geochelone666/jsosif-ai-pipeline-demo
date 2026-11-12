@@ -30393,6 +30393,33 @@
         "edgar": "61cd91a36e027e2dc60157578045362a84dc274b99c185c9ac7033cb92d205de",
         "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
       }
+    },
+    {
+      "report_id": "20261112T054014Z-6c47e7f9/ENB",
+      "ticker": "ENB",
+      "generated_at": "2026-11-12T05:59:56.697747+00:00",
+      "as_of": "2026-11-11",
+      "quality": "ready",
+      "market_as_of": "2026-11-11",
+      "news_as_of": "2026-11-11",
+      "sha256": {
+        "md": "d6780befabda989940f72b752c5522aa41d09b8b726f42fae903d86fce0a133f",
+        "json": "58a6a0f683d22a9fc2bc13cc0c5317e85ee981d4a9a534b8368a4235050b4963",
+        "pdf": "d0bfb70471f88e5aaae07883ef13dead8835e046cf1854701e156bc6edda8f36"
+      },
+      "md": "archive/20261112T054014Z-6c47e7f9/ENB/ENB-intelligence-20261111.md",
+      "json": "archive/20261112T054014Z-6c47e7f9/ENB/ENB-intelligence-20261111.json",
+      "pdf": "archive/20261112T054014Z-6c47e7f9/ENB/ENB-intelligence-20261111.pdf",
+      "source_sha256": {
+        "quant": "d8f64ee114b6b30403dd067c13fe8d12addf9f42836bde71d8cefc78a40ab88f",
+        "info": "652f15705f3b431f4bb6ed93ea371731cae9fef1d1882d464dd14cca354f61ee",
+        "ai-intel": "cdfc62e6b6e90cb7a624bec827fd8593e5c289ef69ef3f171315aae5733fce2e",
+        "rss-items": "595c08e29fb3158918cc190b02e016b3d75d17bdf7a5f39b38849ca2699f7ea7",
+        "comparables": "ff942d96f09359f01b0df9dda6ac35c267b3abb0324154fe39532a3a429bc0b0",
+        "earnings": "44cc791323e48ca4b25e328d0579a3e2abb07228a03909c205becc6f3f06d96c",
+        "edgar": "83c3d9e07b9d286ac249125859caeca15a910785114e8f2db2bd443ca118b3b1",
+        "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
+      }
     }
   ],
   "refresh_plan": {
@@ -30608,7 +30635,8 @@
       "CP.TO",
       "CSCO",
       "CSU.TO",
-      "DIS"
+      "DIS",
+      "ENB"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43162851575",
@@ -31022,6 +31050,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.516
+      },
+      "ENB": {
+        "quant": 0.916,
+        "ai_extract": 2.37,
+        "comparables": 1.568,
+        "earnings": 1.067,
+        "edgar": 2.921,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "ENB",
@@ -31064,7 +31101,8 @@
       "CP.TO": 3,
       "CSCO": 18,
       "CSU.TO": 3,
-      "DIS": 22
+      "DIS": 22,
+      "ENB": 12
     }
   },
   "last_complete_refresh": "2026-11-11T04:36:01.400084+00:00",
