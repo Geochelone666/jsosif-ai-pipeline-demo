@@ -29340,6 +29340,33 @@
         "edgar": "22c0be1fa71f64bd216d99364d28dfa704ffccbe9a3a9244d72075ac80465062",
         "fred": "168ca55756e6478c6ccb38db35ce3e8b94272e47ac370ce2e83a77e92a019c43"
       }
+    },
+    {
+      "report_id": "20261112T054014Z-6c47e7f9/NFLX",
+      "ticker": "NFLX",
+      "generated_at": "2026-11-12T05:41:29.242540+00:00",
+      "as_of": "2026-11-11",
+      "quality": "ready",
+      "market_as_of": "2026-11-11",
+      "news_as_of": "2026-11-11",
+      "sha256": {
+        "md": "6e6254a432971f1f72633c15e12d09b0c483e81ad31ab0ef32daaf8f4234828c",
+        "json": "1fdbbc244980e0a4a2c109a251fe5ed8b5f15375eadefd0e18e9e3cad667bd9e",
+        "pdf": "4ca1f2556d35251deee87e885c518405c15649243a1584f36a8984553188a103"
+      },
+      "md": "archive/20261112T054014Z-6c47e7f9/NFLX/NFLX-intelligence-20261111.md",
+      "json": "archive/20261112T054014Z-6c47e7f9/NFLX/NFLX-intelligence-20261111.json",
+      "pdf": "archive/20261112T054014Z-6c47e7f9/NFLX/NFLX-intelligence-20261111.pdf",
+      "source_sha256": {
+        "quant": "6c7b1c86a15df2d94169224109ae8c63ab913147311fe1efd5f3ff6a21c3ca54",
+        "info": "cd4115ee4adf60e9c694e10b25e9ccffe55d05a3c4fe309ad8ff7438b2b574e5",
+        "ai-intel": "1b8411426ceabf342b74710ec358b89c9b4349fc1df55d59f29b2abaeee309fd",
+        "rss-items": "8af73378e7e5edc9b6ffc85cc991f9ce217455fde1386f574c5a7816eb5f5871",
+        "comparables": "696b7cd84525760376deeb4b3fc322031d7868c8ae43984f9f298806be5531f4",
+        "earnings": "18c244cbd928bea4bd5008f66a5daf7ed0e066cd192ff060428cb3387ef77805",
+        "edgar": "bc2408d6ed634597e3e87d0ef853a5d6643a130f9a9c257a9855115bf0746f3e",
+        "fred": "d8d480fb59c30475a2cbe6857e318e850300d0bec8eea75e22176d7a33ff56a0"
+      }
     }
   ],
   "refresh_plan": {
@@ -29516,7 +29543,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "NFLX"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "43162851575",
     "degraded_tickers": [],
@@ -29575,7 +29604,17 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "NFLX": {
+        "quant": 1.468,
+        "ai_extract": 62.359,
+        "comparables": 1.668,
+        "earnings": 1.016,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.666
+      }
+    },
     "current_ticker": "NFLX",
     "last_progress_at": "2026-11-12T05:40:18.190835+00:00"
   },
