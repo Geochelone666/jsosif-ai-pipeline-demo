@@ -31473,6 +31473,33 @@
         "edgar": "6a14275b9a66a71e0a0be89c3da058019ce8f13db2739b9c0f05c7c9c7c8eb38",
         "fred": "9712359ffc15d793d805244c5e05b548f74e4ac0ddf4b079ed0cfd49a147f41a"
       }
+    },
+    {
+      "report_id": "20261113T045636Z-34122c9a/JPM",
+      "ticker": "JPM",
+      "generated_at": "2026-11-13T05:15:00.690049+00:00",
+      "as_of": "2026-11-12",
+      "quality": "ready",
+      "market_as_of": "2026-11-12",
+      "news_as_of": "2026-11-12",
+      "sha256": {
+        "md": "8e7ae28096a5853ea357ccb6606dc945211493291cd02f445255ac60d00d731c",
+        "json": "1bdc3508ff6a6c973fe85f78d8931054caa56f64a5afb8461be44cf5d2d702e9",
+        "pdf": "c4b5a9eea7d312a4e3ede16a8c07de45b15c53c36cdc037ad46909acb28abad7"
+      },
+      "md": "archive/20261113T045636Z-34122c9a/JPM/JPM-intelligence-20261112.md",
+      "json": "archive/20261113T045636Z-34122c9a/JPM/JPM-intelligence-20261112.json",
+      "pdf": "archive/20261113T045636Z-34122c9a/JPM/JPM-intelligence-20261112.pdf",
+      "source_sha256": {
+        "quant": "bc3f9e31698cef490cf2a7986307b383a8b95cd43357a3513974ca091954daba",
+        "info": "29d071652b50f9848839435756890601a64995f313d9236ec1a9313bcd4d1db0",
+        "ai-intel": "f68dbceb762968a171e1ac040de885ca62b8d9f8f33392846bea5051fd213505",
+        "rss-items": "20bb8f327be29026c7fba9bcbb1ab6727f720aca17d18a51edc6bf8c78a2b899",
+        "comparables": "903e31bd73f5b676fc59fc5469d1e0f96c70e4876848cee5cfdd2c96ec45cd20",
+        "earnings": "e230e88d6d0f23c5b6e291bba30fbdf097e78188d6d5dd75a8f195ef5b7e32ff",
+        "edgar": "03ef020248d59ce665e95e6aae8f048cdfe42b0a4406bb5ae1c91074ba5591fb",
+        "fred": "9712359ffc15d793d805244c5e05b548f74e4ac0ddf4b079ed0cfd49a147f41a"
+      }
     }
   ],
   "refresh_plan": {
@@ -31678,7 +31705,8 @@
       "GIS",
       "GOOGL",
       "ISRG",
-      "J"
+      "J",
+      "JPM"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43368676487",
@@ -31999,6 +32027,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.566
+      },
+      "JPM": {
+        "quant": 1.266,
+        "ai_extract": 49.279,
+        "comparables": 2.469,
+        "earnings": 1.468,
+        "edgar": 2.37,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.566
       }
     },
     "current_ticker": "JPM",
@@ -32032,7 +32069,8 @@
       "GIS": 9,
       "GOOGL": 21,
       "ISRG": 19,
-      "J": 5
+      "J": 5,
+      "JPM": 14
     }
   },
   "last_complete_refresh": "2026-11-12T05:40:14.263911+00:00",
