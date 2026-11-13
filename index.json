@@ -31500,6 +31500,33 @@
         "edgar": "03ef020248d59ce665e95e6aae8f048cdfe42b0a4406bb5ae1c91074ba5591fb",
         "fred": "9712359ffc15d793d805244c5e05b548f74e4ac0ddf4b079ed0cfd49a147f41a"
       }
+    },
+    {
+      "report_id": "20261113T045636Z-34122c9a/JWEL.TO",
+      "ticker": "JWEL.TO",
+      "generated_at": "2026-11-13T05:15:10.017855+00:00",
+      "as_of": "2026-11-12",
+      "quality": "ready",
+      "market_as_of": "2026-11-12",
+      "news_as_of": "2026-11-12",
+      "sha256": {
+        "md": "6f8afe9d33a3604ef37f41408f725396d8720ad0303f806b4ba04dd46d307f83",
+        "json": "517940b3522cf5c7d7dc1de5176707897ad6989c2e0c071c4fab78bc1bf9144a",
+        "pdf": "8ca6679ed3bacfc26a554350020b89f1588095046ee46df96773df5b0464f6f3"
+      },
+      "md": "archive/20261113T045636Z-34122c9a/JWEL.TO/JWEL.TO-intelligence-20261112.md",
+      "json": "archive/20261113T045636Z-34122c9a/JWEL.TO/JWEL.TO-intelligence-20261112.json",
+      "pdf": "archive/20261113T045636Z-34122c9a/JWEL.TO/JWEL.TO-intelligence-20261112.pdf",
+      "source_sha256": {
+        "quant": "2cb52807a5df77fd4ce7009ff7b8dcfe6c435e1cecc37efbea9e6028f6534c93",
+        "info": "e1f5b74a73839a81491228ef8158f935d1323aeb7108057a41fa55b3b1e24579",
+        "ai-intel": "2374201f1d2e15b815e590d2743b952b751438770bd777148e24af7290305139",
+        "rss-items": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "comparables": "4c659c9e8fec196704745f2bf96043b3885d267275b35144d6058b4b56ee719b",
+        "earnings": "1715d288e7f0b2909a29ecec886383691425e0ee5a44b299d0aed9758df85e3b",
+        "edgar": "83a60fbd7fc7cbb0ebec5389d20330b894de84b4ec4fb7e1f098408af8b08518",
+        "fred": "9712359ffc15d793d805244c5e05b548f74e4ac0ddf4b079ed0cfd49a147f41a"
+      }
     }
   ],
   "refresh_plan": {
@@ -31706,7 +31733,8 @@
       "GOOGL",
       "ISRG",
       "J",
-      "JPM"
+      "JPM",
+      "JWEL.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43368676487",
@@ -32036,6 +32064,15 @@
         "edgar": 2.37,
         "regenerate_report": 0.114,
         "report_pdf": 0.566
+      },
+      "JWEL.TO": {
+        "quant": 1.317,
+        "ai_extract": 0.415,
+        "comparables": 2.269,
+        "earnings": 1.317,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "JWEL.TO",
