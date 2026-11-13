@@ -32163,7 +32163,7 @@
     "run_id": "20261113T045636Z-34122c9a",
     "at": "2026-11-13T04:56:36.050731+00:00",
     "business_date": "2026-11-12",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -32780,7 +32780,6 @@
         "report_pdf": 0.615
       }
     },
-    "current_ticker": "T",
     "last_progress_at": "2026-11-13T05:20:57.190369+00:00",
     "news_cache_candidates": {
       "CAT": 23,
@@ -32832,8 +32831,12 @@
       "SPGI": 10,
       "SYY": 6,
       "T": 17
-    }
+    },
+    "pending_tickers": [
+      "NVDA"
+    ],
+    "finished_at": "2026-11-13T05:21:42.552480+00:00"
   },
-  "last_complete_refresh": "2026-11-12T05:40:14.263911+00:00",
-  "last_complete_business_date": "2026-11-11"
+  "last_complete_refresh": "2026-11-13T04:56:36.050731+00:00",
+  "last_complete_business_date": "2026-11-12"
 }
