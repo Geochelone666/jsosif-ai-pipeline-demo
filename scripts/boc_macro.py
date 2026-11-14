@@ -22,6 +22,17 @@ def parse(payload,start,end,retrieved_at):
     if (not isinstance(payload,dict) or not isinstance(payload.get('seriesDetail'),dict) or
             SERIES not in payload['seriesDetail'] or not isinstance(payload.get('observations'),list)):
         raise ValueError('Invalid Valet envelope')
+    detail=payload['seriesDetail'][SERIES]
+    if not isinstance(detail,dict):raise ValueError('Invalid series metadata')
+    # The series contract supplies units when older responses omit metadata;
+    # explicit provider metadata must never contradict that contract.
+    dimension=detail.get('dimension',{'key':'d'})
+    metadata=detail.get('metadata',{})
+    if (not isinstance(dimension,dict) or dimension.get('key')!='d' or
+            detail.get('dateFormat','daily')!='daily' or not isinstance(metadata,dict) or
+            metadata.get('unit','CAD per USD') not in ('CAD per USD','Canadian dollars per US dollar') or
+            metadata.get('frequency','Business daily') not in ('Business daily','Daily')):
+        raise ValueError('Contradictory FXUSDCAD series metadata')
     result=[];seen=set()
     for item in payload['observations']:
         if not isinstance(item,dict):raise ValueError('Invalid observation')
