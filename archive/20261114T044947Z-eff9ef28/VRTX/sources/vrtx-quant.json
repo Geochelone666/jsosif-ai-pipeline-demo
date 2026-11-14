@@ -1,0 +1,148 @@
+{
+  "ticker": "VRTX",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/VRTX/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/VRTX/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 538.5999755859375,
+    "Return 1D (%)": -0.7408535563422802,
+    "Return 1W (%)": -1.5518563404143704,
+    "Return 1M (%)": 11.001190023276553,
+    "Return YTD (%)": 18.801833639613076,
+    "Return 1Y (%)": 23.95286504736398,
+    "Annualized volatility (%)": 29.629540147903228,
+    "Max drawdown (%)": -15.211254913322614,
+    "Sharpe (rf=0)": 0.8740783489095422,
+    "Beta vs SPY": 0.432777673003073,
+    "MA50": 522.3674029541015,
+    "Close vs MA50 (%)": 3.107501069177987,
+    "MA200": 483.3424005126953,
+    "Close vs MA200 (%)": 11.432387271348187,
+    "RSI (14, Wilder)": 52.83378317674732,
+    "MACD (12,26)": 7.640936980183483,
+    "MACD signal (9)": 7.782016841977325,
+    "MACD histogram": -0.14107986179384202,
+    "Downside deviation (rf=0, %)": 18.272572035577447,
+    "Sortino (rf=0)": 1.417345050330229,
+    "Historical VaR 95% (1D, %)": 2.886611324604255,
+    "Historical ES 95% (1D, %)": 3.4956947874605495,
+    "Correlation vs SPY": 0.1991342387188865,
+    "Tracking error vs SPY (%)": 30.048278367613975,
+    "P/E (trailing)": 34.92866,
+    "P/B": 6.531018,
+    "EV/EBITDA": 26.806,
+    "Revenue growth (%)": 11.799999999999999,
+    "Forward P/E (estimate)": 27.042007,
+    "Gross margin (%)": 54.809,
+    "Operating margin (%)": 37.791999999999994,
+    "Return on equity (%)": 20.802,
+    "Free cash flow yield (%)": 1.7119700733543501
+  },
+  "as_of": "2026-11-13",
+  "verification": {
+    "base_date": "2025-11-13",
+    "base_close": 434.5199890136719,
+    "end_close": 538.5999755859375,
+    "manual_1Y_pct": 23.952865047363982,
+    "passed": true
+  },
+  "fetched_at": "2026-11-14T05:09:21.164021+00:00",
+  "requested_as_of": "2026-11-13",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "VRTX",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1794631795.3162775
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "VRTX": 282,
+    "SPY": 282
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 282 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 282. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'VRTX'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-13'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
