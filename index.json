@@ -32769,6 +32769,33 @@
         "edgar": "1687851d304b8a245f28adbb786d61707fd9a075930d8139f582a8b240886087",
         "fred": "c8b179006c52f76c1b9593c7df9d1792aca87a8af6329c756b409002ae41a459"
       }
+    },
+    {
+      "report_id": "20261114T044947Z-eff9ef28/PFE",
+      "ticker": "PFE",
+      "generated_at": "2026-11-14T05:05:05.219747+00:00",
+      "as_of": "2026-11-13",
+      "quality": "ready",
+      "market_as_of": "2026-11-13",
+      "news_as_of": "2026-11-13",
+      "sha256": {
+        "md": "a5b67f902beb00e3a603040ff00ccb7ddc858e5ee2e2e2e12ce2a94ef02557ea",
+        "json": "94ae0d766f1bd16cdfc700e64cbe86b608c270da73decf382b05256150c97bbd",
+        "pdf": "c0893397174f71a7d19e3fabaca8807b4618e1abe3272f5a9f098189b0a2514b"
+      },
+      "md": "archive/20261114T044947Z-eff9ef28/PFE/PFE-intelligence-20261113.md",
+      "json": "archive/20261114T044947Z-eff9ef28/PFE/PFE-intelligence-20261113.json",
+      "pdf": "archive/20261114T044947Z-eff9ef28/PFE/PFE-intelligence-20261113.pdf",
+      "source_sha256": {
+        "quant": "1e21ad7688378133dd94b35d03f8ae830bea48b2c72c29ae8911c5919eacf625",
+        "info": "fe0a485291684f5d944e2234eb8c9dae8f9a4e0f3d6d3da392f906b4e88dcaf4",
+        "ai-intel": "a67e455f8c96447314b9a752529b0101634c3eaab07057d91738e70974c82996",
+        "rss-items": "008ae395e175789aecce928cff2a455cfdf1f122c32004289b257e48c99fd1aa",
+        "comparables": "3928e369fb0944524986313eeef9ee9c5aaebf580dfe84c74b48591ebe9a891d",
+        "earnings": "de06039867a7ff30e636a4dc50290956fbdaa2f4b8850cd5e22fafc1c135bf1d",
+        "edgar": "2e4ca40563b8f68d5c232ccc433cc23180c3f808545a5c9c306fc6945dab0bcc",
+        "fred": "c8b179006c52f76c1b9593c7df9d1792aca87a8af6329c756b409002ae41a459"
+      }
     }
   ],
   "refresh_plan": {
@@ -32972,7 +32999,8 @@
       "NVAX",
       "NVO",
       "OTEX.TO",
-      "PEP"
+      "PEP",
+      "PFE"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43558505032",
@@ -33277,6 +33305,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.615
+      },
+      "PFE": {
+        "quant": 1.066,
+        "ai_extract": 2.019,
+        "comparables": 1.719,
+        "earnings": 1.168,
+        "edgar": 2.27,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "PFE",
@@ -33307,7 +33344,8 @@
       "NVAX": 4,
       "NVO": 18,
       "OTEX.TO": 2,
-      "PEP": 8
+      "PEP": 8,
+      "PFE": 7
     }
   },
   "last_complete_refresh": "2026-11-13T04:56:36.050731+00:00",
