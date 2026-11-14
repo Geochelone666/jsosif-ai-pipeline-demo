@@ -4,6 +4,8 @@ import io,json
 import pytest
 from boc_macro import collect,parse
 from datetime import date
+from pathlib import Path
+import hashlib
 
 NOW=datetime(2026,11,7,tzinfo=timezone.utc)
 PAYLOAD={'seriesDetail':{'FXUSDCAD':{'label':'US dollar'}},'observations':[
@@ -60,3 +62,35 @@ def test_retry_after_is_respected_and_cached_failure_fields_cannot_be_injected(t
  file=next(tmp_path.glob('*.json'));cached=json.loads(file.read_text());cached['result']['private']='secret';file.write_text(json.dumps(cached))
  result=collect('2026-11-02','2026-11-06',cache_dir=tmp_path,now=NOW+timedelta(seconds=120),opener=opener)
  assert result['cache_hit'] and len(calls)==1 and 'private' not in result
+
+
+def test_captured_live_response_contract_and_cache_replay(tmp_path):
+ fixture=json.loads((Path(__file__).parent/'fixtures/boc_fxusdcad_20261102_20261106.json').read_text())
+ raw=fixture['payload']
+ assert hashlib.sha256(json.dumps(raw,sort_keys=True,allow_nan=False).encode()).hexdigest()==fixture['canonical_payload_sha256']
+ calls=[]
+ def opener(request,timeout):
+  calls.append(request.full_url)
+  assert request.full_url==fixture['request_url']
+  return io.BytesIO(json.dumps(raw).encode())
+ now=datetime.fromisoformat(fixture['captured_at'])
+ first=collect('2026-11-02','2026-11-06',cache_dir=tmp_path,now=now,opener=opener)
+ second=collect('2026-11-02','2026-11-06',cache_dir=tmp_path,now=now,opener=opener)
+ assert len(calls)==1 and second['cache_hit'] and not first['cache_hit']
+ assert first['raw_sha256']==fixture['canonical_payload_sha256']==second['raw_sha256']
+ assert first['observations']==second['observations']
+ assert len(first['observations'])==5 and first['unit']=='CAD per USD'
+ assert first['observations'][0]=={'observed_on':'2026-11-02','value':1.3978,'status':'observed'}
+ assert first['observations'][-1]['value']==1.4113
+ assert first['publication_time'] is None
+
+
+@pytest.mark.parametrize('detail', [None, [], {'dimension':{'key':'month'}},
+ {'dateFormat':'monthly'}, {'metadata':None}, {'metadata':{'unit':'USD per CAD'}},
+ {'metadata':{'frequency':'Monthly'}}])
+def test_contradictory_provider_metadata_is_missing_not_mislabeled(detail,tmp_path):
+ payload=json.loads(json.dumps(PAYLOAD));payload['seriesDetail']['FXUSDCAD']=detail
+ result=collect('2026-11-02','2026-11-06',cache_dir=tmp_path,now=NOW,
+                opener=lambda *a,**kw:io.BytesIO(json.dumps(payload).encode()))
+ assert result['status']=='unavailable' and result['category']=='DATA_VALIDATION_ERROR'
+ assert result['observations']==[]

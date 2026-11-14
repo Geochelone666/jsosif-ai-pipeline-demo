@@ -1,0 +1,57 @@
+{
+  "captured_at": "2026-11-14T23:42:33.496687+00:00",
+  "request_url": "https://www.bankofcanada.ca/valet/observations/FXUSDCAD/json?start_date=2026-11-02&end_date=2026-11-06",
+  "canonical_payload_sha256": "a464db1c81c8ac07e09691761d13d7f8090af09aca54b5421c5d90ebb1c47e51",
+  "payload": {
+    "terms": {
+      "url": "https://www.bankofcanada.ca/terms/"
+    },
+    "seriesDetail": {
+      "FXUSDCAD": {
+        "label": "USD/CAD",
+        "description": "Daily average exchange rate of the US dollar in Canadian dollars.",
+        "dimension": {
+          "key": "d",
+          "name": "Date"
+        },
+        "dateFormat": "daily",
+        "metadata": {
+          "unit": "Canadian dollars per US dollar",
+          "frequency": "Business daily"
+        }
+      }
+    },
+    "observations": [
+      {
+        "d": "2026-11-02",
+        "FXUSDCAD": {
+          "v": "1.3978"
+        }
+      },
+      {
+        "d": "2026-11-03",
+        "FXUSDCAD": {
+          "v": "1.3994"
+        }
+      },
+      {
+        "d": "2026-11-04",
+        "FXUSDCAD": {
+          "v": "1.3961"
+        }
+      },
+      {
+        "d": "2026-11-05",
+        "FXUSDCAD": {
+          "v": "1.3989"
+        }
+      },
+      {
+        "d": "2026-11-06",
+        "FXUSDCAD": {
+          "v": "1.4113"
+        }
+      }
+    ]
+  }
+}

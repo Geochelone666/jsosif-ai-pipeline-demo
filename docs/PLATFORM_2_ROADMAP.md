@@ -102,7 +102,10 @@ this register intentionally leaves unfinished PDF goals open.
 ### Macro adapter progress
 
 A Bank of Canada Valet USD/CAD CLI and shared date-window cache are implemented
-with synthetic parser/failure/concurrency tests. Actual endpoint acceptance is
-blocked by development connectivity and remains unverified. It is not enabled in
+with synthetic parser/failure/concurrency tests. Local real-endpoint acceptance
+on 2026-11-14 obtained five observations for 2026-11-02 through 2026-11-06 and
+verified cache replay; the public capture is retained as a regression fixture.
+Contradictory provider metadata fails closed. This single-window check is not
+acceptance of all macro series or historical coverage. It is not enabled in
 production or used for inferred FX conversion. Archive publication now retains
 expected source checksums for verification before creating the public projection.
