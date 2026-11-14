@@ -32526,6 +32526,33 @@
         "edgar": "48aa2bdeb44504800639fbf7ceafbd893e23455714235f62c40b3ca49203201e",
         "fred": "c8b179006c52f76c1b9593c7df9d1792aca87a8af6329c756b409002ae41a459"
       }
+    },
+    {
+      "report_id": "20261114T044947Z-eff9ef28/MG.TO",
+      "ticker": "MG.TO",
+      "generated_at": "2026-11-14T05:01:15.554719+00:00",
+      "as_of": "2026-11-13",
+      "quality": "ready",
+      "market_as_of": "2026-11-13",
+      "news_as_of": "2026-11-13",
+      "sha256": {
+        "md": "25eedbb1b3ee093fdd60663b4ae172437159df3dc0d45a3593971eeb87bb6f7a",
+        "json": "768a365093ffd93e215a1c2fad80a5f291c9b422a7a172d65c64b6c720c785b2",
+        "pdf": "bca867f55977cc39246cd19b639820cfe9ce3f72a9c47d1f40b4b50b2a285925"
+      },
+      "md": "archive/20261114T044947Z-eff9ef28/MG.TO/MG.TO-intelligence-20261113.md",
+      "json": "archive/20261114T044947Z-eff9ef28/MG.TO/MG.TO-intelligence-20261113.json",
+      "pdf": "archive/20261114T044947Z-eff9ef28/MG.TO/MG.TO-intelligence-20261113.pdf",
+      "source_sha256": {
+        "quant": "bd360a01e69ac7d311d2f9c09291074dd3050e4e82964635a2d6d31e11f3fe2c",
+        "info": "772fa7a27361e83edc22e4d81ea52252cd9f48d00fd5e2a4a9bd27ca749547fd",
+        "ai-intel": "0f7a3a11e4e8516c691cb51dc0ad4249a20190009c995899672cf4cfbce37f0f",
+        "rss-items": "751aa616e9afefc32252be198bb7651ddd5e191254f92124158c74a6a6306324",
+        "comparables": "2f4f6f8f58db0763c1ce83ffb5d6ee8748ee443bb1261a4f88259a22bc263eb4",
+        "earnings": "7e241b182be76b7406db277ed0b7250084c1c90a4affac5998a4d12050ec8f04",
+        "edgar": "0fb4ac6501ff5c50449358b8cf60141e388d927d4a3c647ffc89657381083077",
+        "fred": "c8b179006c52f76c1b9593c7df9d1792aca87a8af6329c756b409002ae41a459"
+      }
     }
   ],
   "refresh_plan": {
@@ -32720,7 +32747,8 @@
       "MC.PA",
       "MCK",
       "MCO",
-      "META"
+      "META",
+      "MG.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43558505032",
@@ -32944,6 +32972,15 @@
         "edgar": 2.018,
         "regenerate_report": 0.114,
         "report_pdf": 0.669
+      },
+      "MG.TO": {
+        "quant": 1.016,
+        "ai_extract": 2.119,
+        "comparables": 1.57,
+        "earnings": 1.117,
+        "edgar": 3.021,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.566
       }
     },
     "current_ticker": "MG.TO",
@@ -32965,7 +33002,8 @@
       "MC.PA": 1,
       "MCK": 6,
       "MCO": 3,
-      "META": 15
+      "META": 15,
+      "MG.TO": 2
     }
   },
   "last_complete_refresh": "2026-11-13T04:56:36.050731+00:00",
