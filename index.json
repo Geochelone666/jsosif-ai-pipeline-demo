@@ -32094,6 +32094,33 @@
         "edgar": "2d0b6cd1e0832410b14d4b0233c386298d2632654c85346e39d17596691debc1",
         "fred": "c8b179006c52f76c1b9593c7df9d1792aca87a8af6329c756b409002ae41a459"
       }
+    },
+    {
+      "report_id": "20261114T044947Z-eff9ef28/CP.TO",
+      "ticker": "CP.TO",
+      "generated_at": "2026-11-14T04:53:34.205956+00:00",
+      "as_of": "2026-11-13",
+      "quality": "ready",
+      "market_as_of": "2026-11-13",
+      "news_as_of": "2026-11-13",
+      "sha256": {
+        "md": "14de82aedf262ac82d0c3fdc67852b103c66ac14eb7238c367947be234ed644e",
+        "json": "5fc033e1c8d127107318a385ce0a70aa682114b007fa14a4021ad5e365325238",
+        "pdf": "5940aa56d6236c0d430b3cdcb663eecdd3e4ca451a56b6917523f37d57943cba"
+      },
+      "md": "archive/20261114T044947Z-eff9ef28/CP.TO/CP.TO-intelligence-20261113.md",
+      "json": "archive/20261114T044947Z-eff9ef28/CP.TO/CP.TO-intelligence-20261113.json",
+      "pdf": "archive/20261114T044947Z-eff9ef28/CP.TO/CP.TO-intelligence-20261113.pdf",
+      "source_sha256": {
+        "quant": "f6c72c4c8a8c7a5c9af6e2589ccf1399967c3e721c7f341e6063b75ff2fb2d0a",
+        "info": "c7ab502950b57e7ac50daf45ce309b68cce32d8608e04dcda2cbe9da81792d79",
+        "ai-intel": "b3780ae527a19a4d2478ae5830016c505f28d2e54a20b5631168a4f34ef8cbd4",
+        "rss-items": "8d02a56a0c8e3cbca2f7e6d7c12f8195e86420cdfaf6b7cf1d36b50bd6c8d3c1",
+        "comparables": "deaa9f022f69cc449104b409fc0ad3ecbfdec7a75513fbf409ee7ef62529397a",
+        "earnings": "0e50d48633650ed45b81fa13319dbd9aefd8f3786675b74d1071d426ee90f0ff",
+        "edgar": "2819caba45ca7c4147706027e14cb6910abe3d1ac3bfc927c5a9c18dc47491d6",
+        "fred": "c8b179006c52f76c1b9593c7df9d1792aca87a8af6329c756b409002ae41a459"
+      }
     }
   ],
   "refresh_plan": {
@@ -32272,7 +32299,8 @@
     ],
     "successful_tickers": [
       "NVDA",
-      "COST"
+      "COST",
+      "CP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43558505032",
@@ -32352,13 +32380,23 @@
         "edgar": 1.969,
         "regenerate_report": 0.114,
         "report_pdf": 0.666
+      },
+      "CP.TO": {
+        "quant": 1.018,
+        "ai_extract": 1.818,
+        "comparables": 1.618,
+        "earnings": 1.117,
+        "edgar": 2.821,
+        "regenerate_report": 0.115,
+        "report_pdf": 0.618
       }
     },
     "current_ticker": "CP.TO",
     "last_progress_at": "2026-11-14T04:53:23.432141+00:00",
     "news_cache_candidates": {
       "NVDA": 17,
-      "COST": 8
+      "COST": 8,
+      "CP.TO": 2
     }
   },
   "last_complete_refresh": "2026-11-13T04:56:36.050731+00:00",
