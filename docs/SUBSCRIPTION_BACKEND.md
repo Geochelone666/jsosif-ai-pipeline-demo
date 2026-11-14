@@ -100,7 +100,10 @@ existing weekly member IDs are unchanged.
    Auth UUID for migrated members: that would bypass old weekly reservations.
    Import preferences/policies through a reviewed server-side migration and verify
    counts, disabled states, start dates and IDs without printing member values.
-   An automated importer/admin portal is not included in this foundation.
+   An offline fresh-authority review generator is available in
+   [SUBSCRIPTION_MIGRATION.md](SUBSCRIPTION_MIGRATION.md). It emits a private SQL
+   transaction ending in ROLLBACK and never connects or imports automatically.
+   An admin correction portal and incremental importer remain pending.
 4. Build and test the authenticated settings page against staging: signup, login,
    session expiration, cross-user denial, retries, version conflicts, email changes,
    opt-out and settings read-back. Do not enable the existing portal announcement
