@@ -34863,7 +34863,7 @@
     "run_id": "20261115T044154Z-6abfba73",
     "at": "2026-11-15T04:41:54.926433+00:00",
     "business_date": "2026-11-14",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -35481,7 +35481,6 @@
         "report_pdf": 0.465
       }
     },
-    "current_ticker": "META",
     "last_progress_at": "2026-11-15T05:01:37.098359+00:00",
     "news_cache_candidates": {
       "AMD": 19,
@@ -35532,8 +35531,13 @@
       "MCK": 6,
       "MCO": 2,
       "META": 19
-    }
+    },
+    "pending_tickers": [
+      "JPM",
+      "NVDA"
+    ],
+    "finished_at": "2026-11-15T05:01:50.609900+00:00"
   },
-  "last_complete_refresh": "2026-11-14T04:49:47.593562+00:00",
-  "last_complete_business_date": "2026-11-13"
+  "last_complete_refresh": "2026-11-15T04:41:54.926433+00:00",
+  "last_complete_business_date": "2026-11-14"
 }
