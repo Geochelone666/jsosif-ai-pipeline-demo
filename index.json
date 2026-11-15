@@ -34686,6 +34686,33 @@
         "edgar": "69c52771b3db3ac2a77b85a74d975f1ae55850988b49f5a6acfa19af4a65f35a",
         "fred": "45da5433b91936e3fe0a0bda1366cc2114cc79ce70bda37e1ccaa59945ec5e7d"
       }
+    },
+    {
+      "report_id": "20261115T044154Z-6abfba73/MCO",
+      "ticker": "MCO",
+      "generated_at": "2026-11-15T05:01:35.038537+00:00",
+      "as_of": "2026-11-14",
+      "quality": "ready",
+      "market_as_of": "2026-11-13",
+      "news_as_of": "2026-11-14",
+      "sha256": {
+        "md": "bb19fda5c2292e8657a1684fbc0363982720cdc9e575921e96407b5a29f698b5",
+        "json": "08b1804e8e4e15a41b7b7baf768571df9d99af530f61016487865a5505035275",
+        "pdf": "4e414b278eef1413dbfda4c6235e13aa19362a51585ed453f10fdd71f6307fc7"
+      },
+      "md": "archive/20261115T044154Z-6abfba73/MCO/MCO-intelligence-20261114.md",
+      "json": "archive/20261115T044154Z-6abfba73/MCO/MCO-intelligence-20261114.json",
+      "pdf": "archive/20261115T044154Z-6abfba73/MCO/MCO-intelligence-20261114.pdf",
+      "source_sha256": {
+        "quant": "5dc6d97003a461768dc42887e184ce54b2af5c1f127e0b912f071774f3f12782",
+        "info": "33dfee6c700bf8e56610c5b5484ab2af3471c24faad67d25026c0e11d935f9e6",
+        "ai-intel": "826359be49f5b69b9098e9c7efef30d4b129cb8251f50529bb8702a2ca067cdf",
+        "rss-items": "0c22b8e2a95be65035c6b02bd14fcadf688cab81e0aa9ea67608e36ba200cf7e",
+        "comparables": "8f58fc8c98c10cecc3fc5b8ed378a9a20651886d1c020748b1abde96a2ecaba3",
+        "earnings": "40993ab769ed05a412f075064651a3e5ec2bce83ab4f42f96f82da5f75d95e47",
+        "edgar": "76057c8b8f72a745fc1194dbb80bb705c0610eddb11c5321d03b066cc967e720",
+        "fred": "45da5433b91936e3fe0a0bda1366cc2114cc79ce70bda37e1ccaa59945ec5e7d"
+      }
     }
   ],
   "refresh_plan": {
@@ -34910,7 +34937,8 @@
       "JPM",
       "JWEL.TO",
       "MC.PA",
-      "MCK"
+      "MCK",
+      "MCO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43677845306",
@@ -35405,6 +35433,15 @@
         "edgar": 2.12,
         "regenerate_report": 0.114,
         "report_pdf": 0.415
+      },
+      "MCO": {
+        "quant": 0.716,
+        "ai_extract": 0.415,
+        "comparables": 1.117,
+        "earnings": 0.867,
+        "edgar": 2.171,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.416
       }
     },
     "current_ticker": "MCO",
@@ -35455,7 +35492,8 @@
       "J": 9,
       "JPM": 16,
       "MC.PA": 1,
-      "MCK": 6
+      "MCK": 6,
+      "MCO": 2
     }
   },
   "last_complete_refresh": "2026-11-14T04:49:47.593562+00:00",
