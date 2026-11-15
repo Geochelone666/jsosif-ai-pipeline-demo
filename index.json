@@ -33417,6 +33417,33 @@
         "edgar": "eeb58dcf97a8fa920479b78db115af031ba21b1e6c6bf12a59a9e4047aa53dd6",
         "fred": "45da5433b91936e3fe0a0bda1366cc2114cc79ce70bda37e1ccaa59945ec5e7d"
       }
+    },
+    {
+      "report_id": "20261115T044154Z-6abfba73/AMD",
+      "ticker": "AMD",
+      "generated_at": "2026-11-15T04:45:25.537372+00:00",
+      "as_of": "2026-11-14",
+      "quality": "ready",
+      "market_as_of": "2026-11-13",
+      "news_as_of": "2026-11-14",
+      "sha256": {
+        "md": "abcfc0036cc789e114fce23090b6386fb8a5dc4aa41481f000c0b80fbb54b15f",
+        "json": "05c22cb014095e61adc370339b5ef0cc5a2eb146cac6070e5e98832d3695c13e",
+        "pdf": "42d2f3e14aca658d947f745f39c4c608e8f92655f3aa0942570578a783e6ecae"
+      },
+      "md": "archive/20261115T044154Z-6abfba73/AMD/AMD-intelligence-20261114.md",
+      "json": "archive/20261115T044154Z-6abfba73/AMD/AMD-intelligence-20261114.json",
+      "pdf": "archive/20261115T044154Z-6abfba73/AMD/AMD-intelligence-20261114.pdf",
+      "source_sha256": {
+        "quant": "b1bb88884d658ac338ba5c3fa289445daab66390d1cc0d083c2ffccc84c07636",
+        "info": "70bb868d1a4d2d2b8277c284bdf05b8809cdacf985b4d18893ea2b8ffe9628a9",
+        "ai-intel": "d6522f908a636505cb27439bcea5b8ff8470623bb0fd1ca267e4a83fc65160f7",
+        "rss-items": "a950073d5af66c58e485d7d5568689a1e79654600a3b3af6b2b6874c765e2131",
+        "comparables": "8b44aeebea65437b7d0dc6c5c6c8ec5e8cf06cd5a0ab982523c3797903d9ef2b",
+        "earnings": "6057722eff29f6bc1d301423f105f3f3fa3ca64d81e8d2907d731b55b3254984",
+        "edgar": "1b55a6f30ac762b47056dffb3e9b785406619202abd132e01e77ccd84dcc095c",
+        "fred": "45da5433b91936e3fe0a0bda1366cc2114cc79ce70bda37e1ccaa59945ec5e7d"
+      }
     }
   ],
   "refresh_plan": {
@@ -33594,7 +33621,8 @@
       "XYL"
     ],
     "successful_tickers": [
-      "NVDA"
+      "NVDA",
+      "AMD"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43677845306",
@@ -33665,10 +33693,22 @@
         "edgar": 1.919,
         "regenerate_report": 0.114,
         "report_pdf": 0.566
+      },
+      "AMD": {
+        "quant": 0.715,
+        "ai_extract": 63.255,
+        "comparables": 1.068,
+        "earnings": 0.866,
+        "edgar": 2.12,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.465
       }
     },
     "current_ticker": "AMD",
-    "last_progress_at": "2026-11-15T04:44:15.080915+00:00"
+    "last_progress_at": "2026-11-15T04:44:15.080915+00:00",
+    "news_cache_candidates": {
+      "AMD": 19
+    }
   },
   "last_complete_refresh": "2026-11-14T04:49:47.593562+00:00",
   "last_complete_business_date": "2026-11-13"
