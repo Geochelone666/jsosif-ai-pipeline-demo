@@ -58,6 +58,15 @@ copied into this public dataset. Stock metrics remain the already-public verifie
 snapshot payload. Provider fiscal periods and currencies can differ.
 
 Test with `python scripts/research_browser_smoke.py --site site-build` using the
-same Chromium installation as other browser checks. Real shared provider caches,
-Bank of Canada adapters, historical charts, calendars, validated sector returns,
-industry KPI observations and weekly briefs remain subsequent delivery work.
+same Chromium installation as other browser checks. The Bank of Canada adapter
+has separate single-window live/cache acceptance; see PLATFORM_2_ROADMAP.md.
+Shared live provider caches, historical charts, calendars, validated sector
+returns, industry KPI observations and weekly briefs remain subsequent work.
+
+## Reusable evidence package
+
+The standalone `shared_research_pack.py` builder now projects verified archives,
+archived FRED/SEC/peer data and an optional validated BoC capture into a deterministic
+versioned package for future sector assembly. See [SHARED_RESEARCH_PACK.md](SHARED_RESEARCH_PACK.md)
+for the contract, actual 50-stock acceptance and temporal limitations. This does
+not activate production or make archive observations eligible for backtests.
