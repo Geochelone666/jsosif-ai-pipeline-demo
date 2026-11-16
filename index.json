@@ -35739,6 +35739,33 @@
         "edgar": "94de0f4ebfa187af9c1d3ee7d567757bf9d478c384b73fb88bda876b84cca691",
         "fred": "0dc80ef5f84f255b0de4d6b77a484115765a139d4b942a4a1380a210ca2b77f1"
       }
+    },
+    {
+      "report_id": "20261116T043911Z-b81cfeb4/NFLX",
+      "ticker": "NFLX",
+      "generated_at": "2026-11-16T04:57:47.124346+00:00",
+      "as_of": "2026-11-15",
+      "quality": "ready",
+      "market_as_of": "2026-11-13",
+      "news_as_of": "2026-11-15",
+      "sha256": {
+        "md": "fadb381dc2fd72c88a405b71bbf7ccdc425b8629704ffde04951b022c327520a",
+        "json": "a5972bb08d8d33c9e6e2ddc279bf0641c38540970d08cff32c6de0a7b0bd4857",
+        "pdf": "3b75336f468937727d2ff19f954228feda0e9801b53f136c1fa0598c6b6f67eb"
+      },
+      "md": "archive/20261116T043911Z-b81cfeb4/NFLX/NFLX-intelligence-20261115.md",
+      "json": "archive/20261116T043911Z-b81cfeb4/NFLX/NFLX-intelligence-20261115.json",
+      "pdf": "archive/20261116T043911Z-b81cfeb4/NFLX/NFLX-intelligence-20261115.pdf",
+      "source_sha256": {
+        "quant": "62442cbf25fca68f2d74951f03e7b3b7bf0888cd5eed8160783b139ffc644b21",
+        "info": "f6aed5438e1f1932c7802241c4e943cdf3c1efcc81edcaa499f206c4113b0ffb",
+        "ai-intel": "0c159e443d9a33e8ed8d4cce61cae5395a72be453f40fc06a6fe82d34dc4ecea",
+        "rss-items": "d0a2bc25d432ab98b2fddbfa1587951eafed738f945ff78280a87a4e32f71b2e",
+        "comparables": "ee2805905a15c2ed3ad404ec61be03a5319327b234cfa97870882adedfc3a0d1",
+        "earnings": "18c244cbd928bea4bd5008f66a5daf7ed0e066cd192ff060428cb3387ef77805",
+        "edgar": "bc2408d6ed634597e3e87d0ef853a5d6643a130f9a9c257a9855115bf0746f3e",
+        "fred": "0dc80ef5f84f255b0de4d6b77a484115765a139d4b942a4a1380a210ca2b77f1"
+      }
     }
   ],
   "refresh_plan": {
@@ -35952,7 +35979,8 @@
       "META",
       "MG.TO",
       "MSFT",
-      "MU"
+      "MU",
+      "NFLX"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43805305291",
@@ -36347,6 +36375,15 @@
         "edgar": 2.269,
         "regenerate_report": 0.114,
         "report_pdf": 0.666
+      },
+      "NFLX": {
+        "quant": 1.019,
+        "ai_extract": 2.871,
+        "comparables": 1.569,
+        "earnings": 1.22,
+        "edgar": 1.918,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.668
       }
     },
     "current_ticker": "NFLX",
@@ -36385,7 +36422,8 @@
       "META": 21,
       "MG.TO": 2,
       "MSFT": 21,
-      "MU": 10
+      "MU": 10,
+      "NFLX": 12
     }
   },
   "last_complete_refresh": "2026-11-15T04:41:54.926433+00:00",
