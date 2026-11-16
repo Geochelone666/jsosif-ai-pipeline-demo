@@ -76,7 +76,9 @@ start dates, personal holdings, groups and the shared delivery policy are retain
 The whole import commits once or rolls back. Re-running a committed plan fails the
 revision/unused-authority guards; it never overwrites later member edits or changes
 identities to UUIDs. Do not reset tables or ledgers to bypass these checks. Member
-correction, named-operator audit and incremental migration remain separate work.
+correction and named-operator audit now have a separate local candidate in
+[SUBSCRIPTION_ADMINISTRATION.md](SUBSCRIPTION_ADMINISTRATION.md). Incremental
+migration remains pending.
 
 ## Verification
 
