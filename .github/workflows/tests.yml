@@ -25,6 +25,17 @@ jobs:
           name: research-site-preview-${{ matrix.python }}
           path: site-preview
           retention-days: 14
+      - name: Build deterministic shared research evidence from historical fixtures
+        run: |
+          python scripts/shared_research_pack.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --output "$RUNNER_TEMP/shared-evidence.json"
+          python scripts/shared_research_pack.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --format markdown --output "$RUNNER_TEMP/shared-evidence.md"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: shared-research-evidence-${{ matrix.python }}
+          path: |
+            ${{ runner.temp }}/shared-evidence.json
+            ${{ runner.temp }}/shared-evidence.md
+          retention-days: 14
       - name: Package source for reproducible PDF visual review
         run: tar -czf "$RUNNER_TEMP/research-source-review.tar.gz" scripts requirements.lock requirements.txt
       - uses: actions/upload-artifact@v6

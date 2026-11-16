@@ -34,8 +34,8 @@ archives. These are prerequisites, not completion of the new shared data layer.
 
 | Requirement | Remaining implementation |
 | --- | --- |
-| Stock/Sector/Industry/Peer/Macro identity model | Versioned shared model with units, currency, observation/publication/retrieval times and source references |
-| FRED and Bank of Canada adapters | Reuse FRED; add reviewed BoC series, explicit missing data and source contracts |
+| Stock/Sector/Industry/Peer/Macro identity model | Deterministic retrospective evidence package implemented locally with units, currency provenance, explicit missing timestamps and verified source references; formal listing identities and point-in-time evidence pending; see SHARED_RESEARCH_PACK.md |
+| FRED and Bank of Canada adapters | Archived FRED/SEC and captured BoC USD/CAD integrated into local evidence package; BoC single-window live/cache acceptance recorded below; shared live refresh and historical vintages pending |
 | Sector benchmark and ETF-relative performance | Shared, budgeted observations with aligned calendars/currency and disclosed coverage |
 | Industry KPI templates / peer universe | Team-reviewed mapping; do not infer eight team identities from Yahoo sector labels |
 | Validated security onboarding | Identity/listing checks, quality/cost gates and Pending/Active transitions |
@@ -45,7 +45,9 @@ The team delegated the taxonomy choice. Eight configurable product defaults now
 cover all 50 instruments exactly once; benchmark candidates and KPI research
 topics are defined in config/research_teams.json. Shared price observations and
 relative-return contracts reject missing endpoints, inconsistent adjustment bases
-and unsupported currency comparisons. Real adapter/cache/KPI evidence remains pending.
+and unsupported currency comparisons. Shared evidence acceptance covers 50 latest
+archived stocks at the 2026-11-13 cutoff. Shared live caches, validated benchmark
+returns and company KPI evidence remain pending.
 
 ## Phase 3 — sector intelligence and email assembly
 
