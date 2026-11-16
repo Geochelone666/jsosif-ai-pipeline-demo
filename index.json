@@ -36213,7 +36213,7 @@
     "run_id": "20261116T043911Z-b81cfeb4",
     "at": "2026-11-16T04:39:11.891910+00:00",
     "business_date": "2026-11-15",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -36830,7 +36830,6 @@
         "report_pdf": 0.616
       }
     },
-    "current_ticker": "TD.TO",
     "last_progress_at": "2026-11-16T05:00:26.928166+00:00",
     "news_cache_candidates": {
       "JPM": 16,
@@ -36879,8 +36878,12 @@
       "SYY": 4,
       "T": 10,
       "TD.TO": 1
-    }
+    },
+    "pending_tickers": [
+      "ISRG"
+    ],
+    "finished_at": "2026-11-16T05:00:46.130011+00:00"
   },
-  "last_complete_refresh": "2026-11-15T04:41:54.926433+00:00",
-  "last_complete_business_date": "2026-11-14"
+  "last_complete_refresh": "2026-11-16T04:39:11.891910+00:00",
+  "last_complete_business_date": "2026-11-15"
 }
