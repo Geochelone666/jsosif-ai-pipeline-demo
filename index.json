@@ -34821,6 +34821,33 @@
         "edgar": "42a3cb93fc6de3760afac99c1c28e3a57374ebfca491329c46a5f52659fa7dd9",
         "fred": "0dc80ef5f84f255b0de4d6b77a484115765a139d4b942a4a1380a210ca2b77f1"
       }
+    },
+    {
+      "report_id": "20261116T043911Z-b81cfeb4/TSM",
+      "ticker": "TSM",
+      "generated_at": "2026-11-16T04:42:37.153078+00:00",
+      "as_of": "2026-11-15",
+      "quality": "ready",
+      "market_as_of": "2026-11-13",
+      "news_as_of": "2026-11-15",
+      "sha256": {
+        "md": "c3eb3e415cdcefcc9cd5b28b22151db5b498a1d1f6e6daa440509bce65026715",
+        "json": "eda20c469696b36a121258f4b69c5bfbd3205d8a82ed1ba092ab99d5b5ab3c4f",
+        "pdf": "87a28e7e011dcf1a359114073e751d969859b169a73115b0359ee3707a45661f"
+      },
+      "md": "archive/20261116T043911Z-b81cfeb4/TSM/TSM-intelligence-20261115.md",
+      "json": "archive/20261116T043911Z-b81cfeb4/TSM/TSM-intelligence-20261115.json",
+      "pdf": "archive/20261116T043911Z-b81cfeb4/TSM/TSM-intelligence-20261115.pdf",
+      "source_sha256": {
+        "quant": "a1f40b6fe49bd5ce86c69f171c487f207135960f3f2b6d8900d9ede7a34a98af",
+        "info": "177c5ea9a08e1781f7eb6bbd487c9ffcb664048bba8a6883f278ff509d9507a3",
+        "ai-intel": "d816dad6f75378ffaa7fcbe37e215274f071b4bbc0ee32acaaeb81ffb930dd9d",
+        "rss-items": "01cd19d0f83975212b8a163126d3c1208a7dec12ca97a7c3c70abd1f7bfe7bfd",
+        "comparables": "44894d19c45de8778f6d6274dac02e029a1fdf76b2d131e4e5cfc9e7e6544f3d",
+        "earnings": "8e9d7f712489020cf296f44938c8150ec1ee4b5cf36865430ab6bff93db82659",
+        "edgar": "6926ecf322b7d73e23f466fc41aeeaf0a9909607c7d690f772090f5197ed62b7",
+        "fred": "0dc80ef5f84f255b0de4d6b77a484115765a139d4b942a4a1380a210ca2b77f1"
+      }
     }
   ],
   "refresh_plan": {
@@ -35000,7 +35027,8 @@
     "successful_tickers": [
       "NVDA",
       "JPM",
-      "TMC"
+      "TMC",
+      "TSM"
     ],
     "reused_tickers": [],
     "workflow_run_id": "43805305291",
@@ -35087,13 +35115,23 @@
         "edgar": 1.969,
         "regenerate_report": 0.114,
         "report_pdf": 0.668
+      },
+      "TSM": {
+        "quant": 1.517,
+        "ai_extract": 37.904,
+        "comparables": 1.517,
+        "earnings": 1.168,
+        "edgar": 2.619,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.666
       }
     },
     "current_ticker": "TSM",
     "last_progress_at": "2026-11-16T04:41:49.793555+00:00",
     "news_cache_candidates": {
       "JPM": 16,
-      "TMC": 12
+      "TMC": 12,
+      "TSM": 19
     }
   },
   "last_complete_refresh": "2026-11-15T04:41:54.926433+00:00",
