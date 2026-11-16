@@ -18,8 +18,8 @@ still require review, deployment and actual integration acceptance.
 | Personal stock/group/day/time/timezone preferences | Implemented locally: existing validators, RPCs and browser editor; shared sender snapshot path |
 | Pause and participation | Implemented locally; browser save and sender pre-reservation checks; in-flight SMTP cannot be recalled |
 | Email changes | Auth request implemented locally; actual old/new mailbox confirmation and notification acceptance pending |
-| Team-approved signup | Auth signup UI plus database approval requirement implemented locally; operational invitation/approval UI pending |
-| Administrator member correction | Pending reviewed admin workflow/tooling; not exposed through member RPCs |
+| Team-approved signup | Auth signup UI plus explicit approval; named-admin approval/revocation RPC and private review CLI implemented locally; invitation/approval UI and live acceptance pending |
+| Administrator member correction | Named verified admin permissions, shared preference validation, optimistic versions, exact retries and private before/after audit implemented locally with inspect/review/apply CLI; hosted admin UI and team acceptance pending; see SUBSCRIPTION_ADMINISTRATION.md |
 | Legacy JSON/CSV migration preserving member IDs | Offline private, rollback-by-default fresh-authority review generator implemented; exact IDs/opt-outs and verified-identity/revision/non-overwrite guards tested. Real reviewed map, import acceptance and incremental migration pending; see SUBSCRIPTION_MIGRATION.md |
 | Unknown security request queue | Implemented locally: own-request RLS, portal submission/status, bounded duplicate-safe queue and backend versioned review audit; live acceptance and automated listing/source/cost onboarding pending |
 | One authoritative sender configuration | Implemented locally, opt-in; real service credential, source switch and integration acceptance pending |
