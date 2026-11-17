@@ -36090,6 +36090,33 @@
         "edgar": "fdbad70495d3a20d04a817374040f426c7cc410d49f9120b667b4fa6d7d01276",
         "fred": "0dc80ef5f84f255b0de4d6b77a484115765a139d4b942a4a1380a210ca2b77f1"
       }
+    },
+    {
+      "report_id": "20261117T062519Z-6171f6c2/ISRG",
+      "ticker": "ISRG",
+      "generated_at": "2026-11-17T06:25:44.290670+00:00",
+      "as_of": "2026-11-16",
+      "quality": "ready",
+      "market_as_of": "2026-11-16",
+      "news_as_of": "2026-11-16",
+      "sha256": {
+        "md": "f87032e81b18262021fbafcf96c13613d85393d308422173f114453a040970f1",
+        "json": "cf4f41e2d69f8377bb64040af0fe1cd7dbb98dbfe0374947a242a8b3459a5e54",
+        "pdf": "bc2d4afe8bb26d441dcf0be9a532871c4a1f35939190ebea84ae1b6f7bd1e93c"
+      },
+      "md": "archive/20261117T062519Z-6171f6c2/ISRG/ISRG-intelligence-20261116.md",
+      "json": "archive/20261117T062519Z-6171f6c2/ISRG/ISRG-intelligence-20261116.json",
+      "pdf": "archive/20261117T062519Z-6171f6c2/ISRG/ISRG-intelligence-20261116.pdf",
+      "source_sha256": {
+        "quant": "c9aa4d95468aa3ced6cab55872e1f6f77d31c789205a2ab66b6315f94adf684f",
+        "info": "87b15d3d7c78a5c1f67f9c9ce4be9e05b66b99d3abadb1a7f7f878741477c997",
+        "ai-intel": "76bd66d1182726a532b7d30481cfd337e40a5ec4c8e41b1aed652950eb8a1b7d",
+        "rss-items": "d0bf7b9387e8518ac1db9f3dc4aab12a183e9fe56325e05c9949739b0c745220",
+        "comparables": "ab46a465e42299ea3e05b209ba9ec2d2bac50425e30fdd096655749f9cd14ffe",
+        "earnings": "77ba715b4eb50f6ca1e1af3b72ae3710be9e9a91537634c9a0d9921da36d8dc9",
+        "edgar": "62c16e3841f3cf2ea0dd44572c876251f5676d7aebcd47cde9cc056458de3412",
+        "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
+      }
     }
   ],
   "refresh_plan": {
@@ -36266,7 +36293,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "ISRG"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "44030993868",
     "degraded_tickers": [],
@@ -36325,9 +36354,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "ISRG": {
+        "quant": 3.072,
+        "ai_extract": 7.433,
+        "comparables": 2.77,
+        "earnings": 1.418,
+        "edgar": 3.121,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.717
+      }
+    },
     "current_ticker": "ISRG",
-    "last_progress_at": "2026-11-17T06:25:23.676240+00:00"
+    "last_progress_at": "2026-11-17T06:25:23.676240+00:00",
+    "news_cache_candidates": {
+      "ISRG": 1
+    }
   },
   "last_complete_refresh": "2026-11-16T04:39:11.891910+00:00",
   "last_complete_business_date": "2026-11-15"
