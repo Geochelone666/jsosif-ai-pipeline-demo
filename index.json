@@ -36927,6 +36927,33 @@
         "edgar": "f7859c3eba08049a6d15d513d698bad7394e144d52f9ec4faad582b237139aa0",
         "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
       }
+    },
+    {
+      "report_id": "20261117T062519Z-6171f6c2/T",
+      "ticker": "T",
+      "generated_at": "2026-11-17T06:41:25.781620+00:00",
+      "as_of": "2026-11-16",
+      "quality": "ready",
+      "market_as_of": "2026-11-16",
+      "news_as_of": "2026-11-16",
+      "sha256": {
+        "md": "081e10ff41c9ddc060fbbc9e0c88042c9d5b304ea069d6fe42ee5960bdb5cbfc",
+        "json": "1e24b21d2ba388a4f6ee7c39d75f8de1435a4f0c2b273a1ee303e1cd634249bf",
+        "pdf": "69a1a210936d29c90373c843b69ecf5e363e8cee12e802c5894dee8b473b0c15"
+      },
+      "md": "archive/20261117T062519Z-6171f6c2/T/T-intelligence-20261116.md",
+      "json": "archive/20261117T062519Z-6171f6c2/T/T-intelligence-20261116.json",
+      "pdf": "archive/20261117T062519Z-6171f6c2/T/T-intelligence-20261116.pdf",
+      "source_sha256": {
+        "quant": "7ffaa54759a6242fed9e380937fb8d1ceb868da6fcf368bef244b57a66585ed7",
+        "info": "6d1473976725e4cf85f14c64b436a276d656ac569597b6bb65c3fc1334d7d151",
+        "ai-intel": "5f719a4aff98319f19f9413671d1afc51799165aa34ca668711aab8d3fed52b2",
+        "rss-items": "08424228eb5f7c6d4f2f80209bd89ba729ff2ed8f2f0c399c15287880ebcb48c",
+        "comparables": "e96793d3bb27a8e5a99225cf50650dd951969943b3b94a41179192dd97c0cf23",
+        "earnings": "f985f4c73042f6c84220f952fc0cc7a0f62f4d7d3fd2499db08235b9caf9f497",
+        "edgar": "689306436168e86e84392119b214df06db301e2421275806492282f9b449bacc",
+        "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
+      }
     }
   ],
   "refresh_plan": {
@@ -37134,7 +37161,8 @@
       "SCHW",
       "SHOP.TO",
       "SPGI",
-      "SYY"
+      "SYY",
+      "T"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44030993868",
@@ -37479,6 +37507,15 @@
         "edgar": 2.72,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "T": {
+        "quant": 1.367,
+        "ai_extract": 4.274,
+        "comparables": 2.42,
+        "earnings": 1.468,
+        "edgar": 2.17,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "T",
@@ -37512,7 +37549,8 @@
       "PFE": 6,
       "SCHW": 3,
       "SPGI": 8,
-      "SYY": 2
+      "SYY": 2,
+      "T": 11
     }
   },
   "last_complete_refresh": "2026-11-16T04:39:11.891910+00:00",
