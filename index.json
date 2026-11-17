@@ -36846,6 +36846,33 @@
         "edgar": "2d55aea193fe0c09fb0c73e963cb845514f608cb257bb0823ae552e84dc623b7",
         "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
       }
+    },
+    {
+      "report_id": "20261117T062519Z-6171f6c2/SHOP.TO",
+      "ticker": "SHOP.TO",
+      "generated_at": "2026-11-17T06:40:36.722607+00:00",
+      "as_of": "2026-11-16",
+      "quality": "ready",
+      "market_as_of": "2026-11-16",
+      "news_as_of": "2026-11-16",
+      "sha256": {
+        "md": "a4785e838911e3e0e3725969dd7f51f6a10ec70da172e509942152578f94408c",
+        "json": "7613a03a1bdcecc8668c8e064cef766e34449f7b225a5de9f1b9e25dd456f9df",
+        "pdf": "959607c72f682a7c8b02d8136363c19693278c894f338a5e4cfeee6ce2ae0c39"
+      },
+      "md": "archive/20261117T062519Z-6171f6c2/SHOP.TO/SHOP.TO-intelligence-20261116.md",
+      "json": "archive/20261117T062519Z-6171f6c2/SHOP.TO/SHOP.TO-intelligence-20261116.json",
+      "pdf": "archive/20261117T062519Z-6171f6c2/SHOP.TO/SHOP.TO-intelligence-20261116.pdf",
+      "source_sha256": {
+        "quant": "ce7cad658f081e99d409b25ea2109c3584a67079e7e45137930a2be6e932b16a",
+        "info": "17057f212ecb8fb0934058ee75a861f190fd1c86951ffe7b28a9877df07369e3",
+        "ai-intel": "8a1016e642a38fcc49d5a218db56ded2b1d16cd0495be9ad761ce371ded31513",
+        "rss-items": "dfd90f5b151364d0a5051470b311ccf72ec6953a8bb446b8c52994bd251de3c0",
+        "comparables": "8984509c9a1009faf11c84f8c74e6ef47cdfe4eb8ecaad46a305cfb874a88fd4",
+        "earnings": "85e781d29dbd7cd335f07316ff5fcc28df86d9cd8feec51b19c754b0879dc2a1",
+        "edgar": "faba50584504083cb9308f36f772d9435b0503602fc066ab502c60842855fd41",
+        "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
+      }
     }
   ],
   "refresh_plan": {
@@ -37050,7 +37077,8 @@
       "OTEX.TO",
       "PEP",
       "PFE",
-      "SCHW"
+      "SCHW",
+      "SHOP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44030993868",
@@ -37366,6 +37394,15 @@
         "comparables": 2.32,
         "earnings": 1.317,
         "edgar": 2.169,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.465
+      },
+      "SHOP.TO": {
+        "quant": 1.268,
+        "ai_extract": 3.574,
+        "comparables": 2.32,
+        "earnings": 1.318,
+        "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
       }
