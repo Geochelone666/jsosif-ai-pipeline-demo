@@ -1,0 +1,148 @@
+{
+  "ticker": "JWEL.TO",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/JWEL.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/JWEL.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 45.709999084472656,
+    "Return 1D (%)": 0.04377425774746424,
+    "Return 1W (%)": 0.15337356652134204,
+    "Return 1M (%)": 0.5499340189942803,
+    "Return YTD (%)": 38.35398435877213,
+    "Return 1Y (%)": 32.203988604240074,
+    "Annualized volatility (%)": 21.565700121095237,
+    "Max drawdown (%)": -14.622038433626072,
+    "Sharpe (rf=0)": 1.480492135893156,
+    "Beta vs SPY": 0.21013020234661683,
+    "MA50": 45.50379997253418,
+    "Close vs MA50 (%)": 0.4531470164314433,
+    "MA200": 39.51105472564697,
+    "Close vs MA200 (%)": 15.689139158317378,
+    "RSI (14, Wilder)": 72.31602913546232,
+    "MACD (12,26)": 0.07882252174035642,
+    "MACD signal (9)": 0.07822897743209553,
+    "MACD histogram": 0.0005935443082608904,
+    "Downside deviation (rf=0, %)": 10.546563595287854,
+    "Sortino (rf=0)": 3.0273225156084744,
+    "Historical VaR 95% (1D, %)": 1.5452614349927551,
+    "Historical ES 95% (1D, %)": 2.079758714881634,
+    "Correlation vs SPY": 0.13377407541081984,
+    "Tracking error vs SPY (%)": 24.149845016157464,
+    "P/E (trailing)": 24.84239,
+    "P/B": 3.7220094,
+    "EV/EBITDA": 16.401,
+    "Revenue growth (%)": 17.4,
+    "Forward P/E (estimate)": 18.48609,
+    "Gross margin (%)": 41.879,
+    "Operating margin (%)": 14.831,
+    "Return on equity (%)": 15.246001000000001,
+    "Free cash flow yield (%)": -0.3944001955077624
+  },
+  "as_of": "2026-11-16",
+  "verification": {
+    "base_date": "2025-11-14",
+    "base_close": 34.575355529785156,
+    "end_close": 45.709999084472656,
+    "manual_1Y_pct": 32.20398860424007,
+    "passed": true
+  },
+  "fetched_at": "2026-11-17T06:32:02.008610+00:00",
+  "requested_as_of": "2026-11-16",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "JWEL.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1794896728.263272
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 250,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "CAD",
+    "financial_currency": "CAD"
+  },
+  "history_count": {
+    "JWEL.TO": 282,
+    "SPY": 283
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 282 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 282. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'JWEL.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-16'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}

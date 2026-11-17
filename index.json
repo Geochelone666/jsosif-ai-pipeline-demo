@@ -36387,6 +36387,33 @@
         "edgar": "03ef020248d59ce665e95e6aae8f048cdfe42b0a4406bb5ae1c91074ba5591fb",
         "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
       }
+    },
+    {
+      "report_id": "20261117T062519Z-6171f6c2/JWEL.TO",
+      "ticker": "JWEL.TO",
+      "generated_at": "2026-11-17T06:32:09.179593+00:00",
+      "as_of": "2026-11-16",
+      "quality": "degraded",
+      "market_as_of": "2026-11-16",
+      "news_as_of": "2026-11-16",
+      "sha256": {
+        "md": "b3d9f18150250efd88cf6577a8e95c441d45c3f2ff932b9523faad0ef1933d26",
+        "json": "e3818831eec2fcad4dc185dc85c6070fa0b970725a2532f71712b0fd69bd995a",
+        "pdf": "c2bf3bc7fe7fc659c663723f865a58cf79ab3fe9f03246ee539e50dabb97fe36"
+      },
+      "md": "archive/20261117T062519Z-6171f6c2/JWEL.TO/JWEL.TO-intelligence-20261116.md",
+      "json": "archive/20261117T062519Z-6171f6c2/JWEL.TO/JWEL.TO-intelligence-20261116.json",
+      "pdf": "archive/20261117T062519Z-6171f6c2/JWEL.TO/JWEL.TO-intelligence-20261116.pdf",
+      "source_sha256": {
+        "quant": "41689447d9b7b934f8856a90edadd7d5538c0dd9998ac81bbf465579c2ca69d4",
+        "info": "538b1163d6469afd755bb73c19d81bafeea4825681c0ddeb71fb19324f9af8c2",
+        "ai-intel": "58c904d743c957ef29c08c0062a3496bc6ee2bebf5ff711977cb6fdb394dd864",
+        "rss-items": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "comparables": "e6a5092e3906ee2d791e83616fcaeacbbc0050d2e71c3a862419dfa18b259f5c",
+        "earnings": "06583ecba42a324587e07b79ffc7a348bf59922b95ba9cccfdcea0974a7a495e",
+        "edgar": "83a60fbd7fc7cbb0ebec5389d20330b894de84b4ec4fb7e1f098408af8b08518",
+        "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
+      }
     }
   ],
   "refresh_plan": {
@@ -36574,14 +36601,16 @@
       "GIS",
       "GOOGL",
       "J",
-      "JPM"
+      "JPM",
+      "JWEL.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44030993868",
     "degraded_tickers": [
       "DIS",
       "GIS",
-      "JPM"
+      "JPM",
+      "JWEL.TO"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -36737,6 +36766,15 @@
         "edgar": 2.369,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "JWEL.TO": {
+        "quant": 1.368,
+        "ai_extract": 2.52,
+        "comparables": 2.319,
+        "earnings": 1.568,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.466
       }
     },
     "current_ticker": "JWEL.TO",
