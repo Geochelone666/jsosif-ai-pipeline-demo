@@ -1,0 +1,205 @@
+# V Intelligence Report
+
+- ticker: **V**
+- Report as_of: **2026-11-16**
+- Market data as_of: **2026-11-16**
+- Quant sources: https://finance.yahoo.com/quote/V/history/, https://finance.yahoo.com/quote/SPY/history/, https://finance.yahoo.com/quote/V/key-statistics/
+- AI analysis snapshot as_of: **2026-11-16**
+- Snapshot note: report rendering uses saved source snapshots with separate observation dates. The daily price bar may be provisional before the listing market closes. Check source dates and availability.
+- Market data fetched_at (UTC): **2026-11-17T06:45:16.777297+00:00**
+- AI status: **Available**
+- AI model (configured): **openai/gpt-oss-20b** (RSS headlines; rule and AI item counts: {'unique_headlines': 16, 'rule': 5, 'ai': 4, 'unknown': 0, 'irrelevant': 7})
+- AI model(s) actually used: **openai/gpt-oss-20b**
+- Verified recent classification reuse: **6** exact headline/source/date matches; prior report **20261116T043911Z-b81cfeb4/V** (reused decisions are not new model calls).
+- News classification review flags (heuristic, not confirmed errors): **1**; {'low_uncalibrated_model_confidence': 1}
+- RSS source audit (metadata only, not article fact-checking): 16 unique headlines; 5 named publishers; 0 exact duplicates; 16 HTTPS source links; largest publisher share 50.0%; oldest publication 2026-11-10
+
+## QUANTITATIVE
+
+| Metric | Value |
+|---|---:|
+| Close | 426.4600 |
+| Return 1D (%) | 0.1644 |
+| Return 1W (%) | 1.2056 |
+| Return 1M (%) | 6.1199 |
+| Return YTD (%) | 22.5557 |
+| Return 1Y (%) | 30.2391 |
+| Annualized volatility (%) | 22.8973 |
+| Beta vs SPY | 0.3189 |
+| Max drawdown (%) | -17.1805 |
+| Sharpe (rf=0) | 1.3342 |
+| Downside deviation (rf=0, %) | 14.0194 |
+| Sortino (rf=0) | 2.1790 |
+| Historical VaR 95% (1D, %) | 1.7967 |
+| Historical ES 95% (1D, %) | 2.7900 |
+| Correlation vs SPY | 0.1917 |
+| Tracking error vs SPY (%) | 24.3504 |
+| P/E (trailing) | 34.62 |
+| P/B | 22.25 |
+| EV/EBITDA | 24.82 |
+| Revenue growth (%) | 13.20 |
+| Forward P/E (estimate) | 24.88 |
+| Gross margin (%) | 97.68 |
+| Operating margin (%) | 66.31 |
+| Return on equity (%) | 63.51 |
+| Free cash flow yield (%) | 2.64 |
+| MA50 | 390.7456 |
+| Close vs MA50 (%) | 9.1401 |
+| MA200 | 346.3254 |
+| Close vs MA200 (%) | 23.1385 |
+| RSI (14, Wilder) | 63.6432 |
+| MACD (12,26) | 9.9933 |
+| MACD signal (9) | 10.6459 |
+| MACD histogram | -0.6526 |
+
+Methodology: adjusted daily closes (yfinance auto_adjust=True; Stooq fallback if unavailable). 1Y return uses the last trading day on or before the one-year boundary.
+Market data sample: {'V': 283, 'SPY': 283}.
+Fundamental context (yfinance company info snapshot): forward P/E is an estimate; gross/operating margins and return on equity are provider-reported fractional ratios converted to percentages. Free cash flow yield is computed only when financial and listing currencies are explicitly equal. Vendor fundamentals can be stale and may use different fiscal periods.
+Additional risk measures use a trailing calendar year of observed daily adjusted closes: downside deviation and Sortino use a zero target and sqrt(252) scaling (minimum 20 daily returns); historical one-day 95% VaR/ES use the empirical 5th percentile and tail average (minimum 100 daily returns); correlation and tracking error align asset/SPY return end dates (minimum 20 pairs). Values are historical, not forecasts. SPY comparisons are in each listing's native currency, without FX conversion.
+
+## HOW TO READ THE QUANTITATIVE SECTION
+
+These rule-based bands are judgment choices for this research report, not investment advice.
+
+- **Close**: The latest adjusted closing price is measured in the quoted currency. This value: 426.4600 -> Price level only; it does not by itself indicate valuation.
+- **Return 1D (%)**: The adjusted closing price change over one trading day is measured as a percentage. This value: 0.1644 -> Adjusted price rose over this period.
+- **Return 1W (%)**: The adjusted closing price change over one week is measured as a percentage. This value: 1.2056 -> Adjusted price rose over this period.
+- **Return 1M (%)**: The adjusted closing price change over one month is measured as a percentage. This value: 6.1199 -> Adjusted price rose over this period.
+- **Return YTD (%)**: The adjusted closing price change over the year to date is measured as a percentage. This value: 22.5557 -> Adjusted price rose over this period.
+- **Return 1Y (%)**: The adjusted closing price change over one year is measured as a percentage. This value: 30.2391 -> Adjusted price rose over this period.
+- **Annualized volatility (%)**: The variability of daily returns is scaled to one year as a percentage. This value: 22.8973 -> Moderate annualized volatility.
+- **Downside deviation (rf=0, %)**: Root-mean-square downside daily return below zero, annualized with 252 trading days; historical, not predictive. This value: 14.0194 -> No interpretation rule is available for this metric.
+- **Sortino (rf=0)**: Mean daily return divided by zero-target downside deviation, scaled by sqrt(252); undefined when downside deviation is zero. This value: 2.1790 -> No interpretation rule is available for this metric.
+- **Historical VaR 95% (1D, %)**: Observed daily loss at the empirical fifth-percentile return, floored at zero; not a maximum loss. This value: 1.7967 -> No interpretation rule is available for this metric.
+- **Historical ES 95% (1D, %)**: Average observed loss in returns at or below the empirical fifth percentile, floored at zero. This value: 2.7900 -> No interpretation rule is available for this metric.
+- **Correlation vs SPY**: Pearson correlation of date-aligned daily asset/SPY returns in the sample; native-currency returns are not converted. This value: 0.1917 -> No interpretation rule is available for this metric.
+- **Tracking error vs SPY (%)**: Annualized sample standard deviation of date-aligned daily asset-minus-SPY returns, in percentage points. This value: 24.3504 -> No interpretation rule is available for this metric.
+- **Beta vs SPY**: Beta estimates how sensitively returns move with the SPY market benchmark. This value: 0.3189 -> Moves with the market with reduced sensitivity.
+- **Max drawdown (%)**: The largest peak-to-trough price decline in the sampled history is measured as a percentage. This value: -17.1805 -> Moderate peak-to-trough loss magnitude.
+- **Sharpe (rf=0)**: Sharpe measures annualized return per unit of volatility using a zero risk-free rate. This value: 1.3342 -> Strong risk-adjusted return.
+- **Forward P/E (estimate)**: Vendor estimate of price relative to expected future earnings; estimates can change. This value: 24.8804 -> No interpretation rule is available for this metric.
+- **Gross margin (%)**: Gross profit divided by revenue, using the vendor-provided ratio; periods may differ. This value: 97.6780 -> No interpretation rule is available for this metric.
+- **Operating margin (%)**: Operating income divided by revenue, using the vendor-provided ratio. This value: 66.3070 -> No interpretation rule is available for this metric.
+- **Return on equity (%)**: Vendor-reported profit relative to shareholder equity; leverage can affect the ratio. This value: 63.5070 -> Adjusted price rose over this period.
+- **Free cash flow yield (%)**: Free cash flow divided by market capitalization, only when both reported currencies match. This value: 2.6371 -> No interpretation rule is available for this metric.
+- **P/E (trailing)**: The share price is divided by trailing earnings per share. This value: 34.6153 -> High trailing earnings multiple under the research bands.
+- **RSI (14, Wilder)**: The 14-period relative strength index compares recent gains with losses on a 0 to 100 scale. This value: 63.6432 -> Neutral momentum reading.
+- **MACD histogram**: The difference between MACD and its signal line measures their momentum gap in price units. This value: -0.6526 -> Negative momentum relative to the MACD signal line.
+- **Close vs MA50 (%)**: The closing price distance from its 50-day moving average is measured as a percentage. This value: 9.1401 -> Clearly above the moving-average trend level.
+- **Close vs MA200 (%)**: The closing price distance from its 200-day moving average is measured as a percentage. This value: 23.1385 -> Clearly above the moving-average trend level.
+
+## TAILWINDS
+
+No items in this run
+
+## HEADWINDS
+
+No items in this run
+
+## CATALYSTS
+
+### Visa (V) Stock Gets Fair Value Bump As Analysts Lift Targets On New Growth Areas
+- Summary: Visa (V) Stock Gets Fair Value Bump As Analysts Lift Targets On New Growth Areas
+- Date: 2026-11-14 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMikAFBVV95cUxNdGg3Q1R2bzk1WktDVWFnWGFQbkxGMHJocnRaVEJ4anhNXzZRYWxNdFVFVzA5dHQ3UGUxcURZMTJKWnRtT3huRzJydFliQjhIcWVranRKVl9TbWtadndhQk16ZFhicXBDank5TjR6V2hwcnRhZ2RMMjc2QTZ3dzN5Tl9JTFNiNl85MW5QMjdIbkU?oc=5>
+
+### Visa Inc. (NYSE:V) Stock Now Rated "Buy" by Wall Street Analysts
+- Summary: Visa Inc. (NYSE:V) Stock Now Rated "Buy" by Wall Street Analysts
+- Date: 2026-11-12 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiwAFBVV95cUxOZzFfQ09haUVqblBwVDh1U0pQVHJZS2VhMEpMUFZxWndwdXRoeGpnX2VVSGhPbTcyRUtseC04dVVjczJXTDVhUnNuNWJBNEs5ZE9INU9OU1MySUVpR3hITi1CTDkwQmh4ejFtSEYwb3B4aV9NNTZoM2hVWDdDT1VMQzJDdU83RDlsZ1Bma3N5V1JKS3lYYndIdFBZaEtUSHlzUEJBZFVrYkw1akVBYjhTWF9ZQ2JGc0Y2TDNfUFlzaHA?oc=5>
+
+### Visa Inc. $V Stock Sold by Danske Bank A S
+- Summary: Visa Inc. $V Stock Sold by Danske Bank A S
+- Date: 2026-11-15 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiowFBVV95cUxPcnU2QmVMeGhob2E3WDhtRW1VMmsxMlNEVjV2MXhnX083bmpFRDlaSG5NeFcyaVJkbW5zbnBXSTZfdVkwa01DZWNLQTZqaHJZbFBHaUZxaXdKT2EweVd1VTFlZGpaekRuU1RVSXV6ZEcyVGdxdmdSanFnWHdkOGRGVzAwNDc1dGtuSGI3UVJWbjJEMW1YT3dlcl9xZmRTLU1NVGo0?oc=5>
+
+### Visa Inc. $V Stock: M&G PLC Reduces Position
+- Summary: Visa Inc. $V Stock: M&G PLC Reduces Position
+- Date: 2026-11-10 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiowFBVV95cUxNQU5wU1JKQi1KdlpnY3FVcnpRMWlSX3lQZEFZdzM1c1JqN1cyNGN5dXJjRFpKZzFsTUxCSVFsaTJjWGJWUjdKSWZhMkk2OWZaT0hqRkltRlREeVVYdWFmenFZU1BtNG93MERpUHZWMElER0N6S1BpQV9fVjVkT2VEZ25tZmRXb3lwandxM2praFExSVpEeEJpb2pRTWJpY1hlN3g4?oc=5>
+
+### Visa Inc. $V Stock Purchased by Kestra Investment Management LLC
+- Summary: Visa Inc. $V Stock Purchased by Kestra Investment Management LLC
+- Date: 2026-11-10 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMiwAFBVV95cUxONGc0N2FvdDVpbnhSN3JlY19IRWlMQ1VfU0tzcUp5YThYS0dsRFNyeGY0NkRGVm5GaHdwQVFKUi1td2tvNDFRVlQ0YmFvQUFZOHh1UzE3bHNxcjNRaXpCNU42S1BpODlOaGxNckZXb1dHQlRib0hfVUhQeExXVHZBY3J5VXlMM01aalhjVUdRUHNjLUNMSUl4Z3RSenBXVzR0aGVpWE1pbHdHLTBHWGliYkRhYXIxRWNZWUt4SERFa3k?oc=5>
+
+### Visa (V) Stock Could Be Reasonable With Excess Returns Intact
+- Summary: Speculation that Visa stock may remain attractive with excess returns intact.
+- Date: 2026-11-10 | Impact: low | Horizon: short | Confidence: 0.6
+- Sources: <https://news.google.com/rss/articles/CBMimgFBVV95cUxPamgyTVlJR1Rza3hGS3VHejlSczNrQ2J0cndUSVM4cDlsQ0xsNWNkdzdtUVo5ZkZQOTJkSVZNNHcwWUkxMUNQQ0hrTmxCZU1wdUV6OHlla1VoTTlDZmRxTUhZTFhfbF8yMTVCTTVNYjEwR2d4clpoTzFHZkZ3aUhQeDVoZlJVOGxnWEtqZEVOdFUzLTJKekdoSDNB?oc=5>
+
+### Visa (NYSE:V) Stock Jumps 1.2% - Time to Buy?
+- Summary: Visa shares rose 1.2%, reflecting short-term positive market reaction.
+- Date: 2026-11-13 | Impact: medium | Horizon: short | Confidence: 0.9
+- Sources: <https://news.google.com/rss/articles/CBMinwFBVV95cUxOYWYyZU9CcllwdkZqV3EzSXUzdmpjU3pVa2ZKMDI3bTFrZmxxaHJzX1RiUUhmVGJLZlIta2pKOExHbG8wUHFoQVZfcUhpQkttN0RNY0VhakxLVE90S1JLS0pWMkhVZ2ZUYnM1YVlHZ21Nb25PNk1TOVp4cFpRbl9Vb3dHeHg4enZUWDFYajFod242Ukx5V215bnB3VUh5czA?oc=5>
+
+### Citigroup Issues Positive Forecast for Visa (NYSE:V) Stock Price
+- Summary: Citigroup forecasts a positive outlook for Visa stock.
+- Date: 2026-11-10 | Impact: low | Horizon: short | Confidence: 0.7
+- Sources: <https://news.google.com/rss/articles/CBMiwgFBVV95cUxQS0JsRjVsMzh1UG55eVFlaHpwaWJTam5DQjVZUFo3dG1SVUpFWU1CRHBLV1JLSkZhSm5kTEd4MGZrdmFKQ0ZzNlBSODdpcjgxa3FzNTJzOEFUQlJXUmxtVlF5ZGR1blc0c0J4bElpS1hkcDZiNXF6TC1UVnhBV3UzcHkzcVJtLTk3T2NvUF9zU29UZFQ1SE1xU0txQnNtd0piQ05YR1FEc2kxbG9LZEJfMFFFckNnTWtrY0xGdmFvZklFQQ?oc=5>
+
+### Visa (V) Stock Price Prediction: Visa Holds Above Key Support as Earnings Beat Meets Mixed Derivatives Signals
+- Summary: Visa beat earnings expectations, supporting stock above key support levels amid mixed derivatives signals.
+- Date: 2026-11-12 | Impact: medium | Horizon: short | Confidence: 0.8
+- Sources: <https://news.google.com/rss/articles/CBMikgFBVV95cUxOLWlwVmc1aXJfZDZqWndnZmJsbFZfX1lKWlFtbmpNejhFQzlnZVFWNkc5ZkE1RWFJSjhwVzNpMlBMOUkwNEc1UU9XQkowbFYzNC1xd0hweWRiN2lIdEFtWTBhVjI3bnhQQzlrSVF5V2dKVHNpbngyVTJua1BBblhLVExPZ1R4eEwta09Xc0wyLS1aUQ?oc=5>
+
+## RISKS
+
+No items in this run
+
+## PEER COMPARABLES
+
+| ticker | P/E | P/B | EV/EBITDA | Revenue growth (%) | Market cap (listing currency) | 1Y return (%) |
+|---|---:|---:|---:|---:|---:|---:|
+| **V** | **34.62** | **22.25** | **24.82** | **13.20** | **795,689,091,072.00 USD** | **30.24** |
+| MA | 34.63 | 85.46 | 25.62 | 14.00 | 576,465,993,728.00 USD | 22.03 |
+| PYPL | 11.31 | 2.53 | 8.10 | 2.00 | 48,867,631,104.00 USD | -5.29 |
+| AXP | 17.97 | 5.98 | N/A | 11.30 | 213,939,601,408.00 USD | -9.67 |
+
+Peers fetched as_of: 2026-11-16; V reuses existing data (market data as_of: 2026-11-16); fundamentals are yfinance info snapshots. 1Y return uses adjusted daily closes relative to the nearest trading day on or before one year earlier; missing values are not interpolated.
+
+## EARNINGS CALENDAR
+
+- Last reported earnings: 2026-10-27
+- Next expected earnings: 2027-01-26 (yfinance; expected dates may change)
+
+## MACRO (FRED)
+
+Fetched as_of: 2026-11-16
+
+| Metric | series_id | Latest value | Observation date |
+|---|---|---:|---|
+| Unemployment rate (%) | UNRATE | 4.10 | 2026-10-01 |
+| Consumer Price Index (1982–1984=100) | CPIAUCSL | 337.48 | 2026-10-01 |
+| Federal funds rate (%) | FEDFUNDS | 3.88 | 2026-10-01 |
+| ISM Manufacturing PMI | NAPM | N/A | N/A |
+
+## LATEST FILING (EDGAR)
+
+- Form: 10-K
+- Filing date: 2026-11-05
+- Revenue (latest available single quarter): 5,840,000,000.00 USD; period 2019-04-01/2019-06-30; fiscal year/reporting period 2019/Q3
+- Net income (latest available single quarter): 5,628,000,000.00 USD; period 2026-04-01/2026-06-30; fiscal year/reporting period 2026/Q3
+- SEC link: https://www.sec.gov/Archives/edgar/data/1403161/000140316126000134/v-20260930.htm
+
+SEC requests use the configured organization and contact identity; unavailable source data is shown as N/A. Financial values use directly reported periods of approximately three months, without deriving quarters from cumulative values; fiscal year/period labels come from original facts and may refer to later comparative statements.
+
+API documentation: [SEC EDGAR APIs](https://www.sec.gov/search-filings/edgar-application-programming-interfaces), [FRED observations](https://fred.stlouisfed.org/docs/api/fred/series_observations.html).
+
+## SOURCES
+
+- https://news.google.com/rss/articles/CBMikAFBVV95cUxNdGg3Q1R2bzk1WktDVWFnWGFQbkxGMHJocnRaVEJ4anhNXzZRYWxNdFVFVzA5dHQ3UGUxcURZMTJKWnRtT3huRzJydFliQjhIcWVranRKVl9TbWtadndhQk16ZFhicXBDank5TjR6V2hwcnRhZ2RMMjc2QTZ3dzN5Tl9JTFNiNl85MW5QMjdIbkU?oc=5
+- https://news.google.com/rss/articles/CBMiwAFBVV95cUxOZzFfQ09haUVqblBwVDh1U0pQVHJZS2VhMEpMUFZxWndwdXRoeGpnX2VVSGhPbTcyRUtseC04dVVjczJXTDVhUnNuNWJBNEs5ZE9INU9OU1MySUVpR3hITi1CTDkwQmh4ejFtSEYwb3B4aV9NNTZoM2hVWDdDT1VMQzJDdU83RDlsZ1Bma3N5V1JKS3lYYndIdFBZaEtUSHlzUEJBZFVrYkw1akVBYjhTWF9ZQ2JGc0Y2TDNfUFlzaHA?oc=5
+- https://news.google.com/rss/articles/CBMiowFBVV95cUxPcnU2QmVMeGhob2E3WDhtRW1VMmsxMlNEVjV2MXhnX083bmpFRDlaSG5NeFcyaVJkbW5zbnBXSTZfdVkwa01DZWNLQTZqaHJZbFBHaUZxaXdKT2EweVd1VTFlZGpaekRuU1RVSXV6ZEcyVGdxdmdSanFnWHdkOGRGVzAwNDc1dGtuSGI3UVJWbjJEMW1YT3dlcl9xZmRTLU1NVGo0?oc=5
+- https://news.google.com/rss/articles/CBMiowFBVV95cUxNQU5wU1JKQi1KdlpnY3FVcnpRMWlSX3lQZEFZdzM1c1JqN1cyNGN5dXJjRFpKZzFsTUxCSVFsaTJjWGJWUjdKSWZhMkk2OWZaT0hqRkltRlREeVVYdWFmenFZU1BtNG93MERpUHZWMElER0N6S1BpQV9fVjVkT2VEZ25tZmRXb3lwandxM2praFExSVpEeEJpb2pRTWJpY1hlN3g4?oc=5
+- https://news.google.com/rss/articles/CBMiwAFBVV95cUxONGc0N2FvdDVpbnhSN3JlY19IRWlMQ1VfU0tzcUp5YThYS0dsRFNyeGY0NkRGVm5GaHdwQVFKUi1td2tvNDFRVlQ0YmFvQUFZOHh1UzE3bHNxcjNRaXpCNU42S1BpODlOaGxNckZXb1dHQlRib0hfVUhQeExXVHZBY3J5VXlMM01aalhjVUdRUHNjLUNMSUl4Z3RSenBXVzR0aGVpWE1pbHdHLTBHWGliYkRhYXIxRWNZWUt4SERFa3k?oc=5
+- https://news.google.com/rss/articles/CBMimgFBVV95cUxPamgyTVlJR1Rza3hGS3VHejlSczNrQ2J0cndUSVM4cDlsQ0xsNWNkdzdtUVo5ZkZQOTJkSVZNNHcwWUkxMUNQQ0hrTmxCZU1wdUV6OHlla1VoTTlDZmRxTUhZTFhfbF8yMTVCTTVNYjEwR2d4clpoTzFHZkZ3aUhQeDVoZlJVOGxnWEtqZEVOdFUzLTJKekdoSDNB?oc=5
+- https://news.google.com/rss/articles/CBMinwFBVV95cUxOYWYyZU9CcllwdkZqV3EzSXUzdmpjU3pVa2ZKMDI3bTFrZmxxaHJzX1RiUUhmVGJLZlIta2pKOExHbG8wUHFoQVZfcUhpQkttN0RNY0VhakxLVE90S1JLS0pWMkhVZ2ZUYnM1YVlHZ21Nb25PNk1TOVp4cFpRbl9Vb3dHeHg4enZUWDFYajFod242Ukx5V215bnB3VUh5czA?oc=5
+- https://news.google.com/rss/articles/CBMiwgFBVV95cUxQS0JsRjVsMzh1UG55eVFlaHpwaWJTam5DQjVZUFo3dG1SVUpFWU1CRHBLV1JLSkZhSm5kTEd4MGZrdmFKQ0ZzNlBSODdpcjgxa3FzNTJzOEFUQlJXUmxtVlF5ZGR1blc0c0J4bElpS1hkcDZiNXF6TC1UVnhBV3UzcHkzcVJtLTk3T2NvUF9zU29UZFQ1SE1xU0txQnNtd0piQ05YR1FEc2kxbG9LZEJfMFFFckNnTWtrY0xGdmFvZklFQQ?oc=5
+- https://news.google.com/rss/articles/CBMikgFBVV95cUxOLWlwVmc1aXJfZDZqWndnZmJsbFZfX1lKWlFtbmpNejhFQzlnZVFWNkc5ZkE1RWFJSjhwVzNpMlBMOUkwNEc1UU9XQkowbFYzNC1xd0hweWRiN2lIdEFtWTBhVjI3bnhQQzlrSVF5V2dKVHNpbngyVTJua1BBblhLVExPZ1R4eEwta09Xc0wyLS1aUQ?oc=5
+
+## Research notes and limitations
+
+- Daily multi-source research; AI items require human spot checks; RSS coverage is not guaranteed.
+- News classifications use source headlines, with rule-based extraction and the configured AI provider when its daily budget is available.
+- Missing market data or fundamentals are marked N/A; no numbers are fabricated. This report is not investment advice.
