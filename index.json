@@ -37563,7 +37563,7 @@
     "run_id": "20261117T062519Z-6171f6c2",
     "at": "2026-11-17T06:25:19.243285+00:00",
     "business_date": "2026-11-16",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -38185,7 +38185,6 @@
         "report_pdf": 0.567
       }
     },
-    "current_ticker": "COST",
     "last_progress_at": "2026-11-17T06:54:52.705321+00:00",
     "news_cache_candidates": {
       "ISRG": 1,
@@ -38236,8 +38235,17 @@
       "CAT": 22,
       "CNQ.TO": 6,
       "COST": 13
-    }
+    },
+    "pending_tickers": [
+      "DIS",
+      "GIS",
+      "JPM",
+      "JWEL.TO",
+      "META",
+      "TMC"
+    ],
+    "finished_at": "2026-11-17T06:55:33.284709+00:00"
   },
-  "last_complete_refresh": "2026-11-16T04:39:11.891910+00:00",
-  "last_complete_business_date": "2026-11-15"
+  "last_complete_refresh": "2026-11-17T06:25:19.243285+00:00",
+  "last_complete_business_date": "2026-11-16"
 }
