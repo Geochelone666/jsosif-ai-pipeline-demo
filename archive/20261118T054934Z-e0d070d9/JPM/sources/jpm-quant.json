@@ -1,0 +1,161 @@
+{
+  "ticker": "JPM",
+  "errors": [
+    "warning: enterpriseToEbitda unavailable (N/A)",
+    "warning: EV/EBITDA unavailable (N/A)",
+    "warning: Free cash flow yield (%) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/JPM/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/JPM/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 329.9599914550781,
+    "Return 1D (%)": -2.439312914590752,
+    "Return 1W (%)": -3.5402156312589472,
+    "Return 1M (%)": -2.872957061861159,
+    "Return YTD (%)": 4.374314725928019,
+    "Return 1Y (%)": 11.96688214062549,
+    "Annualized volatility (%)": 22.862556599702447,
+    "Max drawdown (%)": -15.471735654053731,
+    "Sharpe (rf=0)": 0.6106499961597869,
+    "Beta vs SPY": 0.7985799126537259,
+    "MA50": 338.8950213623047,
+    "Close vs MA50 (%)": -2.636518492159956,
+    "MA200": 322.7504327392578,
+    "Close vs MA200 (%)": 2.2337874668768354,
+    "RSI (14, Wilder)": 42.10452437647952,
+    "MACD (12,26)": 0.20710923576865525,
+    "MACD signal (9)": 0.6630247216488261,
+    "MACD histogram": -0.45591548588017083,
+    "Downside deviation (rf=0, %)": 16.40929497416009,
+    "Sortino (rf=0)": 0.8507995085587645,
+    "Historical VaR 95% (1D, %)": 2.435670266154244,
+    "Historical ES 95% (1D, %)": 3.3207826415634587,
+    "Correlation vs SPY": 0.4813662243061818,
+    "Tracking error vs SPY (%)": 20.230809097487686,
+    "P/E (trailing)": 14.185726,
+    "P/B": 2.4940853,
+    "EV/EBITDA": null,
+    "Revenue growth (%)": 10.2,
+    "Forward P/E (estimate)": 12.90264,
+    "Gross margin (%)": 0.0,
+    "Operating margin (%)": 44.787997000000004,
+    "Return on equity (%)": 18.013,
+    "Free cash flow yield (%)": null
+  },
+  "as_of": "2026-11-17",
+  "verification": {
+    "base_date": "2025-11-17",
+    "base_close": 294.69427490234375,
+    "end_close": 329.9599914550781,
+    "manual_1Y_pct": 11.966882140625495,
+    "passed": true
+  },
+  "fetched_at": "2026-11-18T05:51:22.710808+00:00",
+  "requested_as_of": "2026-11-17",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "JPM",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1794980982.5745733
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {
+    "EV/EBITDA": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    },
+    "Free cash flow yield (%)": {
+      "status": "undefined",
+      "reason": "undefined: finite free cash flow and positive market capitalization are required"
+    }
+  },
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "JPM": 284,
+    "SPY": 284
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 284 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 284. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'JPM'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-17'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
