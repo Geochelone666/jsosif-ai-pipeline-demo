@@ -37440,6 +37440,33 @@
         "edgar": "2d0b6cd1e0832410b14d4b0233c386298d2632654c85346e39d17596691debc1",
         "fred": "24e1f78116a1ac379f30d5993d18efafe438e8019fac77ed8e2017cb917983c4"
       }
+    },
+    {
+      "report_id": "20261118T054934Z-e0d070d9/TMC",
+      "ticker": "TMC",
+      "generated_at": "2026-11-18T05:49:50.436541+00:00",
+      "as_of": "2026-11-17",
+      "quality": "ready",
+      "market_as_of": "2026-11-17",
+      "news_as_of": "2026-11-17",
+      "sha256": {
+        "md": "45ed5c97db66f1a27422a8d0878bd2b35c63d00b12bb9f2afabc41a1f398090f",
+        "json": "a6cce1222f50ad7170c4f6d56bcb06c2777e6d395ad9d25d95833b484db433fc",
+        "pdf": "cabe7fee4608fad6d71404d2c83fd5cd10bdaffa65ad81c59e8ea8ce9bb30e8a"
+      },
+      "md": "archive/20261118T054934Z-e0d070d9/TMC/TMC-intelligence-20261117.md",
+      "json": "archive/20261118T054934Z-e0d070d9/TMC/TMC-intelligence-20261117.json",
+      "pdf": "archive/20261118T054934Z-e0d070d9/TMC/TMC-intelligence-20261117.pdf",
+      "source_sha256": {
+        "quant": "0c08d1f6150ba488e7ee0e06bb249149e5018d73da43796b60682131c376ee91",
+        "info": "e17f1d2785e0f58d8f0ef3d929321464c92c8de31694c51c1dc4fb847487c69c",
+        "ai-intel": "d156448cc158262e9e11710fcc97299ffbdb3e404cac1d2eef4082975a89af25",
+        "rss-items": "2e7e7d52c358335bbe3e28b97b4e8cc4ea1ba818a4934ce1e14db2b648743b06",
+        "comparables": "8183c680774c1e9d10cb4f515ef2f171da70b2eb10949f743816379681352ad7",
+        "earnings": "17ba7774cffa95123cbc4d1f134c00dacd23830d30281c5d123a284bba320f04",
+        "edgar": "42a3cb93fc6de3760afac99c1c28e3a57374ebfca491329c46a5f52659fa7dd9",
+        "fred": "d3f33db447106bf1344f1dca8bfb1a550f61a46c57428cbec0e276dbe539230f"
+      }
     }
   ],
   "refresh_plan": {
@@ -37616,7 +37643,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "TMC"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "44246849731",
     "degraded_tickers": [],
@@ -37675,9 +37704,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "TMC": {
+        "quant": 1.818,
+        "ai_extract": 2.173,
+        "comparables": 1.468,
+        "earnings": 1.217,
+        "edgar": 1.818,
+        "regenerate_report": 0.164,
+        "report_pdf": 0.718
+      }
+    },
     "current_ticker": "TMC",
-    "last_progress_at": "2026-11-18T05:49:39.158551+00:00"
+    "last_progress_at": "2026-11-18T05:49:39.158551+00:00",
+    "news_cache_candidates": {
+      "TMC": 7
+    }
   },
   "last_complete_refresh": "2026-11-17T06:25:19.243285+00:00",
   "last_complete_business_date": "2026-11-16"
