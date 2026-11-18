@@ -1,0 +1,148 @@
+{
+  "ticker": "NFLX",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/NFLX/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/NFLX/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 59.68000030517578,
+    "Return 1D (%)": -1.761316370081023,
+    "Return 1W (%)": -5.65918133314085,
+    "Return 1M (%)": -15.38352284404968,
+    "Return YTD (%)": -36.34812399165421,
+    "Return 1Y (%)": -45.88811332870917,
+    "Annualized volatility (%)": 36.2603246943395,
+    "Max drawdown (%)": -47.69041789744071,
+    "Sharpe (rf=0)": -1.5184850700236887,
+    "Beta vs SPY": 0.27079454290608235,
+    "MA50": 68.49280044555664,
+    "Close vs MA50 (%)": -12.866753999036662,
+    "MA200": 80.26874977111817,
+    "Close vs MA200 (%)": -25.649769710690705,
+    "RSI (14, Wilder)": 32.982997773286456,
+    "MACD (12,26)": -2.040103291263648,
+    "MACD signal (9)": -1.955119337715663,
+    "MACD histogram": -0.08498395354798505,
+    "Downside deviation (rf=0, %)": 26.693257979639007,
+    "Sortino (rf=0)": -2.062721670189711,
+    "Historical VaR 95% (1D, %)": 3.4402693104515434,
+    "Historical ES 95% (1D, %)": 5.1152332146625845,
+    "Correlation vs SPY": 0.10291774108772753,
+    "Tracking error vs SPY (%)": 37.441570676775655,
+    "P/E (trailing)": 17.55294,
+    "P/B": 8.367919,
+    "EV/EBITDA": 15.941,
+    "Revenue growth (%)": 11.799999999999999,
+    "Forward P/E (estimate)": 15.824615,
+    "Gross margin (%)": 50.685,
+    "Operating margin (%)": 31.296000000000003,
+    "Return on equity (%)": 53.46300000000001,
+    "Free cash flow yield (%)": 10.395508126864895
+  },
+  "as_of": "2026-11-17",
+  "verification": {
+    "base_date": "2025-11-17",
+    "base_close": 110.29000091552734,
+    "end_close": 59.68000030517578,
+    "manual_1Y_pct": -45.88811332870916,
+    "passed": true
+  },
+  "fetched_at": "2026-11-18T05:58:39.956023+00:00",
+  "requested_as_of": "2026-11-17",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "NFLX",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1794980982.5745733
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "NFLX": 284,
+    "SPY": 284
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 284 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 284. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'NFLX'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-17'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
