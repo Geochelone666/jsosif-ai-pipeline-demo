@@ -37602,6 +37602,33 @@
         "edgar": "48aa2bdeb44504800639fbf7ceafbd893e23455714235f62c40b3ca49203201e",
         "fred": "d3f33db447106bf1344f1dca8bfb1a550f61a46c57428cbec0e276dbe539230f"
       }
+    },
+    {
+      "report_id": "20261118T054934Z-e0d070d9/MSFT",
+      "ticker": "MSFT",
+      "generated_at": "2026-11-18T05:56:37.246553+00:00",
+      "as_of": "2026-11-17",
+      "quality": "ready",
+      "market_as_of": "2026-11-17",
+      "news_as_of": "2026-11-17",
+      "sha256": {
+        "md": "40d819ebd1e058006266e19db7e44421c8cfdd0c90036585462dc7f871d618ea",
+        "json": "13200ddc11d57924f1c8d025dca4a16f8178dc36d024bafe90f7b2ccd1d4f11a",
+        "pdf": "ed9665bd96942cbfc742fe11c770b5ba994a1546ab5336ec9a58b3a942ec1678"
+      },
+      "md": "archive/20261118T054934Z-e0d070d9/MSFT/MSFT-intelligence-20261117.md",
+      "json": "archive/20261118T054934Z-e0d070d9/MSFT/MSFT-intelligence-20261117.json",
+      "pdf": "archive/20261118T054934Z-e0d070d9/MSFT/MSFT-intelligence-20261117.pdf",
+      "source_sha256": {
+        "quant": "b2d5b2a783af35f06ac59e07ce9e37d6ad3c96ddb40d5fe679c5883406ebb96c",
+        "info": "b9a64fe762a731e5338d1f6d3642843fc8e985c047cb4b016a5719e333605c67",
+        "ai-intel": "e94da6fb5a6112b373568f95fed6248e05efa6f95e1ad998974d4c8d725a762d",
+        "rss-items": "b3fb99a5848d218a1fdbb60589b89a2cf94d08eab51fd9af82488b4516f29f39",
+        "comparables": "655d4ed1c8bbf9b677dd6791aeac96834c878cfe0fa6c222b950b91841a21465",
+        "earnings": "a86f06891b8ddaa44a0f3a3749a9ae61f0b30285c3a60aa346a22ae4d90183f4",
+        "edgar": "3214c434e70d7092ff0accae48dcba2b6f7017f49e7125a7864af940aaa6ccc1",
+        "fred": "d3f33db447106bf1344f1dca8bfb1a550f61a46c57428cbec0e276dbe539230f"
+      }
     }
   ],
   "refresh_plan": {
@@ -37784,7 +37811,8 @@
       "GIS",
       "JPM",
       "JWEL.TO",
-      "META"
+      "META",
+      "MSFT"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44246849731",
@@ -37900,6 +37928,15 @@
         "edgar": 2.019,
         "regenerate_report": 0.114,
         "report_pdf": 0.667
+      },
+      "MSFT": {
+        "quant": 1.066,
+        "ai_extract": 69.226,
+        "comparables": 1.518,
+        "earnings": 1.118,
+        "edgar": 1.818,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.666
       }
     },
     "current_ticker": "MSFT",
@@ -37909,7 +37946,8 @@
       "DIS": 23,
       "GIS": 17,
       "JPM": 18,
-      "META": 14
+      "META": 14,
+      "MSFT": 21
     }
   },
   "last_complete_refresh": "2026-11-17T06:25:19.243285+00:00",
