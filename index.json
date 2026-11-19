@@ -38790,6 +38790,33 @@
         "edgar": "0fb4ac6501ff5c50449358b8cf60141e388d927d4a3c647ffc89657381083077",
         "fred": "d3f33db447106bf1344f1dca8bfb1a550f61a46c57428cbec0e276dbe539230f"
       }
+    },
+    {
+      "report_id": "20261119T054856Z-9eb86811/JPM",
+      "ticker": "JPM",
+      "generated_at": "2026-11-19T05:50:14.006472+00:00",
+      "as_of": "2026-11-18",
+      "quality": "ready",
+      "market_as_of": "2026-11-18",
+      "news_as_of": "2026-11-18",
+      "sha256": {
+        "md": "22de96a68c2c7f71a505ba1ba2ed28e158ec435b10d533f9160b3dc9484ee9cb",
+        "json": "794f69fcd807b5198a52622a98bd7f5d709bbe8f9d04e95a232b194d0ea7a6a5",
+        "pdf": "879ee0f89b460d769d0398f286bd37e7b8c8a6be572b7be629bf3ed438f301d7"
+      },
+      "md": "archive/20261119T054856Z-9eb86811/JPM/JPM-intelligence-20261118.md",
+      "json": "archive/20261119T054856Z-9eb86811/JPM/JPM-intelligence-20261118.json",
+      "pdf": "archive/20261119T054856Z-9eb86811/JPM/JPM-intelligence-20261118.pdf",
+      "source_sha256": {
+        "quant": "1c925e3b57b09da7977b28aaaecfc05eea82580149a50fa02abe00004818549b",
+        "info": "3ac0dda75a28f950ee6c8ac317b2606d9f8a50af82f19a375cdd5b6d9848cf85",
+        "ai-intel": "f9bdbbabcde6ede0a90cd7b6fa156b04a7901acceb5c7a7544bd13856e11169b",
+        "rss-items": "cf5ada670ca43e9963c48efe14ec9b81a4e690d3207742cd0f47695f016369d4",
+        "comparables": "873eff7a9d4bf05c30b813e7dfa3677edc83144e232c3f543dc3df118b4101de",
+        "earnings": "e230e88d6d0f23c5b6e291bba30fbdf097e78188d6d5dd75a8f195ef5b7e32ff",
+        "edgar": "03ef020248d59ce665e95e6aae8f048cdfe42b0a4406bb5ae1c91074ba5591fb",
+        "fred": "fa06f45fd252ef996da09953406b9d48fff5db8a8865f8230fbb6bb5b0a86a7e"
+      }
     }
   ],
   "refresh_plan": {
@@ -38966,7 +38993,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "JPM"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "44467652524",
     "degraded_tickers": [],
@@ -39025,7 +39054,17 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "JPM": {
+        "quant": 1.869,
+        "ai_extract": 64.377,
+        "comparables": 1.318,
+        "earnings": 0.867,
+        "edgar": 2.169,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
+      }
+    },
     "current_ticker": "JPM",
     "last_progress_at": "2026-11-19T05:49:00.807713+00:00"
   },
