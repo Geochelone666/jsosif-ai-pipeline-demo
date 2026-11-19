@@ -39195,6 +39195,33 @@
         "edgar": "22c0be1fa71f64bd216d99364d28dfa704ffccbe9a3a9244d72075ac80465062",
         "fred": "fa06f45fd252ef996da09953406b9d48fff5db8a8865f8230fbb6bb5b0a86a7e"
       }
+    },
+    {
+      "report_id": "20261119T054856Z-9eb86811/CNQ.TO",
+      "ticker": "CNQ.TO",
+      "generated_at": "2026-11-19T05:58:02.879501+00:00",
+      "as_of": "2026-11-18",
+      "quality": "ready",
+      "market_as_of": "2026-11-18",
+      "news_as_of": "2026-11-18",
+      "sha256": {
+        "md": "97d58ec47d3928c1797819936e15b7dde03e65322afa59e08930e7c9aaedfd8d",
+        "json": "0366d2633937e69aee8f7a35594d5bfe34685599b700c2d7bc77dff178eca946",
+        "pdf": "66d5e3aad30f0230513c27ec37728412bd497eb3b12e1684d6e245dfba308e4f"
+      },
+      "md": "archive/20261119T054856Z-9eb86811/CNQ.TO/CNQ.TO-intelligence-20261118.md",
+      "json": "archive/20261119T054856Z-9eb86811/CNQ.TO/CNQ.TO-intelligence-20261118.json",
+      "pdf": "archive/20261119T054856Z-9eb86811/CNQ.TO/CNQ.TO-intelligence-20261118.pdf",
+      "source_sha256": {
+        "quant": "243072085e9427b07d34f8049fcd7a613d63fa82b089be8b35831384a1c22986",
+        "info": "67959d1b93a0f0eef1c970501fb4ff8adc9bd7e32766d0ef12befe42450997b8",
+        "ai-intel": "299a79ca762128f3ca72771bfde8324a890c99184f44227086f7023a4709ff1e",
+        "rss-items": "afd419ad1c3ed25562fb83ca10836287bd544cb911de03b284ee995985cac3cc",
+        "comparables": "ba77d92f36fb0c0cba8078889e13b1ab00f14a47ece2a9b98a85d290a64bc908",
+        "earnings": "38940657e72a9e4d220caf6c73d9f3f3d27a82fc5bf608671c9ed4219e74ec1f",
+        "edgar": "07f143abec44c450fc88ab202c31516890299522e6f1b7b7e2bc867a5d295a7b",
+        "fred": "fa06f45fd252ef996da09953406b9d48fff5db8a8865f8230fbb6bb5b0a86a7e"
+      }
     }
   ],
   "refresh_plan": {
@@ -39386,7 +39413,8 @@
       "ATD.TO",
       "BMO.TO",
       "BRK-B",
-      "CAT"
+      "CAT",
+      "CNQ.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44467652524",
@@ -39581,6 +39609,15 @@
         "edgar": 2.27,
         "regenerate_report": 0.114,
         "report_pdf": 0.465
+      },
+      "CNQ.TO": {
+        "quant": 0.766,
+        "ai_extract": 3.974,
+        "comparables": 1.218,
+        "earnings": 0.866,
+        "edgar": 2.721,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.466
       }
     },
     "current_ticker": "CNQ.TO",
@@ -39598,7 +39635,8 @@
       "ATD.TO": 1,
       "BMO.TO": 5,
       "BRK-B": 22,
-      "CAT": 21
+      "CAT": 21,
+      "CNQ.TO": 4
     }
   },
   "last_complete_refresh": "2026-11-18T05:49:34.904773+00:00",
