@@ -40437,6 +40437,33 @@
         "edgar": "ccd9fa4e14d6108bd90750f462b94f6b0d2ae75a8c4b3056e515863e444b5ea9",
         "fred": "d22dc4e8e1f45a57e20d3e9908fe3edae4cb2f843f96128923eb0deb33291e83"
       }
+    },
+    {
+      "report_id": "20261120T053808Z-e360129e/ASML",
+      "ticker": "ASML",
+      "generated_at": "2026-11-20T06:03:05.243161+00:00",
+      "as_of": "2026-11-19",
+      "quality": "degraded",
+      "market_as_of": "2026-11-19",
+      "news_as_of": "2026-11-19",
+      "sha256": {
+        "md": "ae1fb4f1f1036e83dbe5716dfad7f3d4ee307679419663a542340ea893bd9cc7",
+        "json": "d541e8fb40c9e78efa2237d1fc81632dd02bd4d8881246ab3fb8f48d45ca5573",
+        "pdf": "74497440ce24b122302f4e36f5134f6a330371900d6eb6badbe464920b35c37d"
+      },
+      "md": "archive/20261120T053808Z-e360129e/ASML/ASML-intelligence-20261119.md",
+      "json": "archive/20261120T053808Z-e360129e/ASML/ASML-intelligence-20261119.json",
+      "pdf": "archive/20261120T053808Z-e360129e/ASML/ASML-intelligence-20261119.pdf",
+      "source_sha256": {
+        "quant": "5fd05fcf3e4b8b8641acfc7768cf6b35fe6b472b82df08de2fd518bf0e15a0c2",
+        "info": "b969234d986b35c8efc69d3e09a7a8c32296180dbdce634ac14399ad79d996e3",
+        "ai-intel": "cacca35202d486eef04ed1aa4c70a0780e769f40b160a781e21583c5f8867b1b",
+        "rss-items": "d7fdd75da07038f08a407dc130cf8196aa9c4894397e69a4f83068d2f7b60597",
+        "comparables": "bf31543706b8af94cd0aeaa671c6f09e24264c76fc209d39492e93707bcfe7e8",
+        "earnings": "4998ba6d0729c5b58cbdcb57866acdeded8279bff454222b373121c2ad762202",
+        "edgar": "1c379c91a6cfa737d5d731ce6fe954a101161a600ef6bbf75811386c15d4dfed",
+        "fred": "d22dc4e8e1f45a57e20d3e9908fe3edae4cb2f843f96128923eb0deb33291e83"
+      }
     }
   ],
   "refresh_plan": {
@@ -40655,12 +40682,14 @@
       "ACN",
       "AMD",
       "AMTM",
-      "AMZN"
+      "AMZN",
+      "ASML"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44682263642",
     "degraded_tickers": [
-      "TSM"
+      "TSM",
+      "ASML"
     ],
     "failed_tickers": [],
     "failures": [],
@@ -41095,6 +41124,15 @@
         "edgar": 3.022,
         "regenerate_report": 0.114,
         "report_pdf": 0.517
+      },
+      "ASML": {
+        "quant": 0.816,
+        "ai_extract": 30.304,
+        "comparables": 1.318,
+        "earnings": 0.967,
+        "edgar": 2.821,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.517
       }
     },
     "current_ticker": "ASML",
@@ -41141,7 +41179,8 @@
       "ACN": 9,
       "AMD": 15,
       "AMTM": 1,
-      "AMZN": 17
+      "AMZN": 17,
+      "ASML": 19
     }
   },
   "last_complete_refresh": "2026-11-18T05:49:34.904773+00:00",
