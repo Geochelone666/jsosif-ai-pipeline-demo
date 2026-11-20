@@ -1,0 +1,107 @@
+{
+  "ticker": "TD.TO",
+  "as_of": "2026-11-19",
+  "tailwinds": [],
+  "headwinds": [
+    {
+      "headline": "Toronto-Dominion Bank falls 3.07% in Wednesday's session",
+      "summary": "Toronto-Dominion Bank falls 3.07% in Wednesday's session",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.8,
+      "companies": [
+        "TD.TO"
+      ],
+      "event_type": "market_move",
+      "sentiment": "negative",
+      "extraction_method": "rule",
+      "date": "2026-11-18",
+      "source": "Global Banking & Finance Review",
+      "pubDate": "Wed, 18 Nov 2026 22:04:46 GMT",
+      "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPNXBXbUx6YmJlY1p1SUktRmNvcEFId3VoOTVHYWZOSlhRQTdPLV90ZHg0bFppaHhSaHZOZ18zY0FWN09ILU5vSG80TUplM2lBTjFQdmRrQ1ZCd2RZSlQ5c0RiTkJVYXlWUE1jN0IzY3JPd1pzRkE1Y3NKLWFKTzYxVFVrdVJhV2k4WTdzV0Zn?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMijgFBVV95cUxPNXBXbUx6YmJlY1p1SUktRmNvcEFId3VoOTVHYWZOSlhRQTdPLV90ZHg0bFppaHhSaHZOZ18zY0FWN09ILU5vSG80TUplM2lBTjFQdmRrQ1ZCd2RZSlQ5c0RiTkJVYXlWUE1jN0IzY3JPd1pzRkE1Y3NKLWFKTzYxVFVrdVJhV2k4WTdzV0Zn?oc=5"
+      ],
+      "publication_freshness": {
+        "age_days": 1,
+        "label": "current_window",
+        "presentation_window_days": 2
+      }
+    }
+  ],
+  "catalysts": [],
+  "risks": [],
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "irrelevant": [
+    {
+      "headline": "The Toronto-Dominion Bank (TD.TO) stock price, news, quote and history",
+      "reason": "Provides historical price data, not a specific event"
+    },
+    {
+      "headline": "Toronto-dominion Bank Stock Price Forecast. Should You Buy TD.TO?",
+      "reason": "Opinion/forecast, not a factual event"
+    },
+    {
+      "headline": "Toronto-Dominion Bank Stock (TD) Closed Down by 3.36% on Nov 18: What Investors Need To Know",
+      "reason": "Price movement report, not an event"
+    }
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 4,
+    "rule": 1,
+    "ai": 0,
+    "unknown": 0,
+    "irrelevant": 3
+  },
+  "rss_audit": {
+    "raw_items": 5,
+    "unique_headlines": 4,
+    "duplicates_excluded": 1,
+    "invalid_headline_items": 0,
+    "unique_publishers": 4,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 25.0,
+    "publisher_hhi": 0.25,
+    "https_link_headlines": 4,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-11-17",
+    "newest_publication_date": "2026-11-18",
+    "oldest_headline_age_days": 2
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-11-19",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 0,
+    "flagged_headlines": 0,
+    "by_reason": {},
+    "flags": [],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-11-20T05:54:54.129317+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=Toronto-Dominion%20Bank%20TD.TO%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 5
+  }
+}
