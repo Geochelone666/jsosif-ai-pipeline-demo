@@ -39303,6 +39303,33 @@
         "edgar": "52d29225829bef74758f4842322f82b33a9a786a0bf944ae80148c83355797a3",
         "fred": "fa06f45fd252ef996da09953406b9d48fff5db8a8865f8230fbb6bb5b0a86a7e"
       }
+    },
+    {
+      "report_id": "20261120T053808Z-e360129e/CSU.TO",
+      "ticker": "CSU.TO",
+      "generated_at": "2026-11-20T05:38:20.272381+00:00",
+      "as_of": "2026-11-19",
+      "quality": "ready",
+      "market_as_of": "2026-11-19",
+      "news_as_of": "2026-11-19",
+      "sha256": {
+        "md": "a6e09ed19f3100b2f5445ddabb9eb978dd7e2ef0ddfc930097af5b64ff18e71a",
+        "json": "1541908e289126908da9af26801dc640aec67111187b52ff3c4cf87e87b4ed3d",
+        "pdf": "fe0d46d945dea2e4a4c5197c0fb4d920caf27e898e0a423efa668c84897f6973"
+      },
+      "md": "archive/20261120T053808Z-e360129e/CSU.TO/CSU.TO-intelligence-20261119.md",
+      "json": "archive/20261120T053808Z-e360129e/CSU.TO/CSU.TO-intelligence-20261119.json",
+      "pdf": "archive/20261120T053808Z-e360129e/CSU.TO/CSU.TO-intelligence-20261119.pdf",
+      "source_sha256": {
+        "quant": "59c3d14c850b789e7818b84eac6d74b9f7cff60ba5061ff4f38acb29a82201c6",
+        "info": "73bfdb1910d33bbd2db6eb84467c6359e7a2563b89417fdbbd647407bfa25e38",
+        "ai-intel": "77ada9658daccfb38fd598a6a87a2213ffc56cdb6e1a3065f06f670b000fa3c6",
+        "rss-items": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+        "comparables": "6e3d414bf23fe86fb5ac9669b42ef8fce08ab4ec1021b90dfb42c78b69cac6ea",
+        "earnings": "51a61cdf4ec533b4baccb58d61be6115e44af840b2016cb09e8e0483809b0bae",
+        "edgar": "a2b6b5948ec9baa3f382a6b330e8395188b81b0ad4515d5d53a419352ffb4b08",
+        "fred": "d22dc4e8e1f45a57e20d3e9908fe3edae4cb2f843f96128923eb0deb33291e83"
+      }
     }
   ],
   "refresh_plan": {
@@ -39479,7 +39506,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "CSU.TO"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "44682263642",
     "degraded_tickers": [],
@@ -39538,9 +39567,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "CSU.TO": {
+        "quant": 1.418,
+        "ai_extract": 0.415,
+        "comparables": 1.217,
+        "earnings": 0.967,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.565
+      }
+    },
     "current_ticker": "CSU.TO",
-    "last_progress_at": "2026-11-20T05:38:13.404530+00:00"
+    "last_progress_at": "2026-11-20T05:38:13.404530+00:00",
+    "news_cache_candidates": {
+      "CSU.TO": 1
+    }
   },
   "last_complete_refresh": "2026-11-18T05:49:34.904773+00:00",
   "last_complete_business_date": "2026-11-17"
