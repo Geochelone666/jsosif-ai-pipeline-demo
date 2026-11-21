@@ -40653,6 +40653,33 @@
         "edgar": "2819caba45ca7c4147706027e14cb6910abe3d1ac3bfc927c5a9c18dc47491d6",
         "fred": "d22dc4e8e1f45a57e20d3e9908fe3edae4cb2f843f96128923eb0deb33291e83"
       }
+    },
+    {
+      "report_id": "20261121T053104Z-422ce34b/TSM",
+      "ticker": "TSM",
+      "generated_at": "2026-11-21T05:32:22.197206+00:00",
+      "as_of": "2026-11-20",
+      "quality": "ready",
+      "market_as_of": "2026-11-20",
+      "news_as_of": "2026-11-20",
+      "sha256": {
+        "md": "78cff81255218d904ddcee92cda8577a530e95864b8e7f0f8ee695604955e982",
+        "json": "77b33dd8ef12c119716c94f79799639afcfe74a4d4eab199bd861798fe5e0c9f",
+        "pdf": "89b3600c9f631ae75b272c6e43df685a3beeefc5b40610b067e86b360da5db2e"
+      },
+      "md": "archive/20261121T053104Z-422ce34b/TSM/TSM-intelligence-20261120.md",
+      "json": "archive/20261121T053104Z-422ce34b/TSM/TSM-intelligence-20261120.json",
+      "pdf": "archive/20261121T053104Z-422ce34b/TSM/TSM-intelligence-20261120.pdf",
+      "source_sha256": {
+        "quant": "065ca12a95f519a3603d2aff44a7b798bf7a094dc2be6658235f9a62ac980713",
+        "info": "4a6537b6f008b4e9795e6151f36e0bfb434d0b4da00d546b08bcf2149b58132a",
+        "ai-intel": "1e182fb4b3977c863178be8a90b2331a4418465205ff3368f26a52423320294a",
+        "rss-items": "d50061fea835e2749e683cd4f5baba6de4eaf5092510f6ad9b6dfa0018ffb4e4",
+        "comparables": "35249d9bc20870a067e3c00be228744d620f0c850bde5c7277f02ca449fafeb0",
+        "earnings": "8e9d7f712489020cf296f44938c8150ec1ee4b5cf36865430ab6bff93db82659",
+        "edgar": "6926ecf322b7d73e23f466fc41aeeaf0a9909607c7d690f772090f5197ed62b7",
+        "fred": "8be056d49b5a5962980828cb2f3a593e44a3aefd8c7f048f58c5b3757d3e9b1f"
+      }
     }
   ],
   "refresh_plan": {
@@ -40829,7 +40856,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "TSM"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "44871180024",
     "degraded_tickers": [],
@@ -40888,9 +40917,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "TSM": {
+        "quant": 1.972,
+        "ai_extract": 62.334,
+        "comparables": 2.469,
+        "earnings": 1.468,
+        "edgar": 2.77,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.566
+      }
+    },
     "current_ticker": "TSM",
-    "last_progress_at": "2026-11-21T05:31:08.650665+00:00"
+    "last_progress_at": "2026-11-21T05:31:08.650665+00:00",
+    "news_cache_candidates": {
+      "TSM": 21
+    }
   },
   "last_complete_refresh": "2026-11-20T05:38:08.941120+00:00",
   "last_complete_business_date": "2026-11-19"
