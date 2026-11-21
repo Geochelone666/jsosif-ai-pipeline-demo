@@ -40707,6 +40707,33 @@
         "edgar": "1c379c91a6cfa737d5d731ce6fe954a101161a600ef6bbf75811386c15d4dfed",
         "fred": "8be056d49b5a5962980828cb2f3a593e44a3aefd8c7f048f58c5b3757d3e9b1f"
       }
+    },
+    {
+      "report_id": "20261121T053104Z-422ce34b/MU",
+      "ticker": "MU",
+      "generated_at": "2026-11-21T05:34:38.757504+00:00",
+      "as_of": "2026-11-20",
+      "quality": "ready",
+      "market_as_of": "2026-11-20",
+      "news_as_of": "2026-11-20",
+      "sha256": {
+        "md": "64cb0e302f9e213328427c1d9c73de4697ef68fd41bb25a4f7abff2a2a6f0222",
+        "json": "0ff16ced5097586206e96a7b1637338202353be8dfc066f4172ab6d95db2c026",
+        "pdf": "20c4b8e8fd12dd5480a428cd8a8ef92d1cc1347f347c96e48c86512bb6b103ce"
+      },
+      "md": "archive/20261121T053104Z-422ce34b/MU/MU-intelligence-20261120.md",
+      "json": "archive/20261121T053104Z-422ce34b/MU/MU-intelligence-20261120.json",
+      "pdf": "archive/20261121T053104Z-422ce34b/MU/MU-intelligence-20261120.pdf",
+      "source_sha256": {
+        "quant": "6812696d382c355b3bce2e220b0595b76027e49b8c5c1ad2b2a1afd8f4c7e76e",
+        "info": "5bba854fbf962d7dac6fb15ec66549ff801b69ddf305071cb7c1eb8a99aaffcc",
+        "ai-intel": "34379efdc1262fd0e9a9912ecffb9b4482262de44a78b567e3f76972a0c6e484",
+        "rss-items": "4a0ac4a7b40a0b11616f89752c808e69fbd2fa764fc432136964222815463d3a",
+        "comparables": "179dd87c153c0549169ea8613594d785f1c168c21de675c4753db213e4ea23ec",
+        "earnings": "c36abed6399f5c1d80661d729ad456e8611302033fd77cf4779b58c4d3bd85a4",
+        "edgar": "94de0f4ebfa187af9c1d3ee7d567757bf9d478c384b73fb88bda876b84cca691",
+        "fred": "8be056d49b5a5962980828cb2f3a593e44a3aefd8c7f048f58c5b3757d3e9b1f"
+      }
     }
   ],
   "refresh_plan": {
@@ -40885,7 +40912,8 @@
     ],
     "successful_tickers": [
       "TSM",
-      "ASML"
+      "ASML",
+      "MU"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44871180024",
@@ -40963,13 +40991,23 @@
         "edgar": 2.821,
         "regenerate_report": 0.114,
         "report_pdf": 0.516
+      },
+      "MU": {
+        "quant": 1.367,
+        "ai_extract": 105.3,
+        "comparables": 1.818,
+        "earnings": 1.167,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.515
       }
     },
     "current_ticker": "MU",
     "last_progress_at": "2026-11-21T05:32:44.535067+00:00",
     "news_cache_candidates": {
       "TSM": 21,
-      "ASML": 19
+      "ASML": 19,
+      "MU": 22
     }
   },
   "last_complete_refresh": "2026-11-20T05:38:08.941120+00:00",
