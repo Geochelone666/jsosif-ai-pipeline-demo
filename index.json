@@ -43476,7 +43476,7 @@
     "run_id": "20261122T045655Z-f5ef568d",
     "at": "2026-11-22T04:56:55.399898+00:00",
     "business_date": "2026-11-21",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -44093,7 +44093,6 @@
         "report_pdf": 0.666
       }
     },
-    "current_ticker": "TSM",
     "last_progress_at": "2026-11-22T05:18:23.819813+00:00",
     "news_cache_candidates": {
       "BRK-B": 20,
@@ -44144,8 +44143,12 @@
       "TD.TO": 5,
       "TMC": 1,
       "TSM": 19
-    }
+    },
+    "pending_tickers": [
+      "AMZN"
+    ],
+    "finished_at": "2026-11-22T05:19:41.097834+00:00"
   },
-  "last_complete_refresh": "2026-11-21T05:31:04.489417+00:00",
-  "last_complete_business_date": "2026-11-20"
+  "last_complete_refresh": "2026-11-22T04:56:55.399898+00:00",
+  "last_complete_business_date": "2026-11-21"
 }
