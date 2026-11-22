@@ -1,0 +1,155 @@
+{
+  "ticker": "OTEX.TO",
+  "errors": [
+    "warning: Free cash flow yield (%) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/OTEX.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/OTEX.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 32.5,
+    "Return 1D (%)": 1.3724223576470074,
+    "Return 1W (%)": -8.476481170960648,
+    "Return 1M (%)": -12.798498522073508,
+    "Return YTD (%)": -24.797970810630645,
+    "Return 1Y (%)": -26.226847283751464,
+    "Annualized volatility (%)": 37.99757643595329,
+    "Max drawdown (%)": -39.22347327518909,
+    "Sharpe (rf=0)": -0.6146487438815929,
+    "Beta vs SPY": 0.5413794045131471,
+    "MA50": 34.56040008544922,
+    "Close vs MA50 (%)": -5.961736786480943,
+    "MA200": 32.462603616714475,
+    "Close vs MA200 (%)": 0.11519834862003808,
+    "RSI (14, Wilder)": 33.93689794826429,
+    "MACD (12,26)": -0.6367139984078705,
+    "MACD signal (9)": -0.07286200703231446,
+    "MACD histogram": -0.563851991375556,
+    "Downside deviation (rf=0, %)": 26.809095984573656,
+    "Sortino (rf=0)": -0.8711656163394097,
+    "Historical VaR 95% (1D, %)": 4.010261591968805,
+    "Historical ES 95% (1D, %)": 4.739309954310804,
+    "Correlation vs SPY": 0.2038825709532862,
+    "Tracking error vs SPY (%)": 37.93039950892364,
+    "P/E (trailing)": 8.879781,
+    "P/B": 1.3353298,
+    "EV/EBITDA": 7.888,
+    "Revenue growth (%)": -4.0,
+    "Forward P/E (estimate)": 5.450576,
+    "Gross margin (%)": 77.185,
+    "Operating margin (%)": 23.023,
+    "Return on equity (%)": 16.169000999999998,
+    "Free cash flow yield (%)": null
+  },
+  "as_of": "2026-11-20",
+  "verification": {
+    "base_date": "2025-11-20",
+    "base_close": 44.0539665222168,
+    "end_close": 32.5,
+    "manual_1Y_pct": -26.22684728375147,
+    "passed": true
+  },
+  "fetched_at": "2026-11-22T05:15:41.091184+00:00",
+  "requested_as_of": "2026-11-21",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "OTEX.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1795323423.4458842
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {
+    "Free cash flow yield (%)": {
+      "status": "undefined",
+      "reason": "undefined: free cash flow and market capitalization currency match is unverified"
+    }
+  },
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "CAD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "OTEX.TO": 286,
+    "SPY": 287
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 286 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 286. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'OTEX.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-21'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
