@@ -42219,6 +42219,33 @@
         "edgar": "1b55a6f30ac762b47056dffb3e9b785406619202abd132e01e77ccd84dcc095c",
         "fred": "91ad03ca9455d7b0f6c0651395f0be13e3266aa6e9560c18dfbe5fe96b13c3c0"
       }
+    },
+    {
+      "report_id": "20261122T045655Z-f5ef568d/AMTM",
+      "ticker": "AMTM",
+      "generated_at": "2026-11-22T05:03:42.920316+00:00",
+      "as_of": "2026-11-21",
+      "quality": "ready",
+      "market_as_of": "2026-11-20",
+      "news_as_of": "2026-11-21",
+      "sha256": {
+        "md": "dbeedc04c23c563a714b9b0a080f176dbff814b5ef059ab34a0a41e8867e826a",
+        "json": "3c935a784f5737c17402afaaedd47f6a76e3b1a30a724ddf400428960385d2e1",
+        "pdf": "0cd0972c2c199a36437e6ebfc37dde9a6b62cdc18dec0b48d6fd8c10935f31ef"
+      },
+      "md": "archive/20261122T045655Z-f5ef568d/AMTM/AMTM-intelligence-20261121.md",
+      "json": "archive/20261122T045655Z-f5ef568d/AMTM/AMTM-intelligence-20261121.json",
+      "pdf": "archive/20261122T045655Z-f5ef568d/AMTM/AMTM-intelligence-20261121.pdf",
+      "source_sha256": {
+        "quant": "13327b0c22cfe11b74192dd5d4bd6ca9b47ef4aca6dae7f10ac19858c99d3054",
+        "info": "8de9f5058aaaf1796d479d2190aeeb5c09449b0f2e1a51c770592cefe67f669b",
+        "ai-intel": "c7967f9b75e8bb9c46cc5edd8ae114cd0b9abee4fdecaaf7056340bb3b7ebce1",
+        "rss-items": "868599c544efacb2b405c62a2005ed3c58786a8e9dc45f5b609c74d6e2364121",
+        "comparables": "8da8ab93022411a3a1e704e178bbd16dc2e590f2fa131c2bdba71dc97ed4dc28",
+        "earnings": "8b87ec8c65b2cc0ddf2382a132110db93ecfedea3e64894ca0f4d59e8904f2a3",
+        "edgar": "60364c88673524ba830d1b998f8a14a2da665de28c3f49c13aae95c60ea109ca",
+        "fred": "91ad03ca9455d7b0f6c0651395f0be13e3266aa6e9560c18dfbe5fe96b13c3c0"
+      }
     }
   ],
   "refresh_plan": {
@@ -42403,7 +42430,8 @@
       "XYL",
       "AAPL",
       "ACN",
-      "AMD"
+      "AMD",
+      "AMTM"
     ],
     "reused_tickers": [],
     "workflow_run_id": "44987200045",
@@ -42535,6 +42563,15 @@
         "edgar": 1.868,
         "regenerate_report": 0.114,
         "report_pdf": 0.667
+      },
+      "AMTM": {
+        "quant": 0.967,
+        "ai_extract": 1.668,
+        "comparables": 1.52,
+        "earnings": 1.067,
+        "edgar": 3.873,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.615
       }
     },
     "current_ticker": "AMTM",
@@ -42547,7 +42584,8 @@
       "XYL": 2,
       "AAPL": 22,
       "ACN": 13,
-      "AMD": 21
+      "AMD": 21,
+      "AMTM": 1
     }
   },
   "last_complete_refresh": "2026-11-21T05:31:04.489417+00:00",
