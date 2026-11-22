@@ -42003,6 +42003,33 @@
         "edgar": "3214c434e70d7092ff0accae48dcba2b6f7017f49e7125a7864af940aaa6ccc1",
         "fred": "8be056d49b5a5962980828cb2f3a593e44a3aefd8c7f048f58c5b3757d3e9b1f"
       }
+    },
+    {
+      "report_id": "20261122T045655Z-f5ef568d/BRK-B",
+      "ticker": "BRK-B",
+      "generated_at": "2026-11-22T04:58:15.819434+00:00",
+      "as_of": "2026-11-21",
+      "quality": "ready",
+      "market_as_of": "2026-11-20",
+      "news_as_of": "2026-11-21",
+      "sha256": {
+        "md": "f8d2c29e5a1299d8d11afad3cb85f3c03cc76da10363f3cc2f212c1292107e2b",
+        "json": "4a2dd7f4e7ff16064dce6ccdb1998638f3924ce0342fb9a3cc5afe606896f195",
+        "pdf": "5dca46962e349ca205780fb845d2a2ccac29c6266cc4a606d0d2124b28fa2c0f"
+      },
+      "md": "archive/20261122T045655Z-f5ef568d/BRK-B/BRK-B-intelligence-20261121.md",
+      "json": "archive/20261122T045655Z-f5ef568d/BRK-B/BRK-B-intelligence-20261121.json",
+      "pdf": "archive/20261122T045655Z-f5ef568d/BRK-B/BRK-B-intelligence-20261121.pdf",
+      "source_sha256": {
+        "quant": "098a9194cf88e555df2d808ab3f7f176df8a4663e0903114224f0cc281ee94ce",
+        "info": "41626cb1e3015260777125bab91e12b40f84ec4ca328471162f6937640d21fe7",
+        "ai-intel": "b95a5a1104822e4d2f9a1e9815e6b632b0bf61e536255ceff18e7fbcd19e26eb",
+        "rss-items": "c045dcf6103ea319b640b6fb6736ef9a4b0721f09bdacc85c1b99bd671fc4cf6",
+        "comparables": "c4224e0675036baaa62d8079a1972fec12c29da217d1c236fbe96e8f05c13053",
+        "earnings": "375c7b4783737e64d676489fc564c2beea57c4dbb5c29089c1d14354275ab9b3",
+        "edgar": "28696725205966a0710cca1fd5ff6d4e71bd2ac969ee83f157c38c4356eadbfb",
+        "fred": "91ad03ca9455d7b0f6c0651395f0be13e3266aa6e9560c18dfbe5fe96b13c3c0"
+      }
     }
   ],
   "refresh_plan": {
@@ -42179,7 +42206,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "BRK-B"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "44987200045",
     "degraded_tickers": [],
@@ -42238,9 +42267,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "BRK-B": {
+        "quant": 1.717,
+        "ai_extract": 66.423,
+        "comparables": 1.718,
+        "earnings": 1.117,
+        "edgar": 1.868,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.766
+      }
+    },
     "current_ticker": "BRK-B",
-    "last_progress_at": "2026-11-22T04:56:59.894596+00:00"
+    "last_progress_at": "2026-11-22T04:56:59.894596+00:00",
+    "news_cache_candidates": {
+      "BRK-B": 20
+    }
   },
   "last_complete_refresh": "2026-11-21T05:31:04.489417+00:00",
   "last_complete_business_date": "2026-11-20"
