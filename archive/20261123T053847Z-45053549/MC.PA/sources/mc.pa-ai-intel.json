@@ -1,0 +1,131 @@
+{
+  "ticker": "MC.PA",
+  "as_of": "2026-11-22",
+  "tailwinds": [],
+  "headwinds": [
+    {
+      "headline": "LVMH (ENXTPA:MC) Stock Could Be 11% Undervalued On Cash Flow Strength",
+      "summary": "Suggests LVMH stock may be undervalued based on cash flow analysis.",
+      "impact": "medium",
+      "horizon": "short",
+      "confidence": 0.8,
+      "companies": [
+        "MC.PA"
+      ],
+      "event_type": "unknown",
+      "sentiment": "neutral",
+      "extraction_method": "ai",
+      "date": "2026-11-15",
+      "source": "Yahoo Finance",
+      "pubDate": "Sun, 15 Nov 2026 04:17:00 GMT",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOdmFuQnlPM1d5ZmNuWU52MjBXZ3VVUnJlNUY5VjU0SnU5Um5tLUplbmRoTnppM0E4R2pBTWt1eXoxVWVUdjd0anhmTXBjVHpEZjdxVEQ1elhBeFhrQ3Rrc2RwMnlpVGFPZGJ1azAwcTUwM0tLVGN3MFNfcDJ1SGhINVlGa3RpYWlJMWFfazhaNEVkS3F6c0E?oc=5",
+      "sources": [
+        "https://news.google.com/rss/articles/CBMilgFBVV95cUxOdmFuQnlPM1d5ZmNuWU52MjBXZ3VVUnJlNUY5VjU0SnU5Um5tLUplbmRoTnppM0E4R2pBTWt1eXoxVWVUdjd0anhmTXBjVHpEZjdxVEQ1elhBeFhrQ3Rrc2RwMnlpVGFPZGJ1azAwcTUwM0tLVGN3MFNfcDJ1SGhINVlGa3RpYWlJMWFfazhaNEVkS3F6c0E?oc=5"
+      ],
+      "reuse_origin": "verified_prior_archive",
+      "reuse_as_of": "2026-11-21",
+      "publication_freshness": {
+        "age_days": 7,
+        "label": "current_window",
+        "presentation_window_days": 7
+      }
+    }
+  ],
+  "catalysts": [],
+  "risks": [],
+  "irrelevant": [
+    {
+      "headline": "LVMH Moët Hennessy - Louis Vuitton, Société Européenne (MC.PA) Interactive Stock Chart - Yahoo Finance",
+      "reason": "Provides a chart, no event."
+    },
+    {
+      "headline": "LVMH Moët Hennessy - Louis Vuitton, Société Européenne (MC.PA) latest stock news and headlines",
+      "reason": "Generic headline, no event detail"
+    },
+    {
+      "headline": "LVMH Moët Hennessy - Louis Vuitton, Société Européenne (MC.PA) Stock Price, News, Quote & History",
+      "reason": "Contains only stock price information, no event"
+    },
+    {
+      "headline": "Lvmh Moët Hennessy - Louis Vuitton Société Européenne Stock Price Forecast. Should You Buy MC.PA?",
+      "reason": "Contains only price forecast, no event"
+    }
+  ],
+  "ai_reuse": {
+    "reused_headlines": 3,
+    "from_report": "20261122T045655Z-f5ef568d/MC.PA",
+    "source_as_of": "2026-11-21",
+    "prior_models": [
+      "openai/gpt-oss-20b"
+    ],
+    "policy": "exact ticker, headline, published date and source link"
+  },
+  "models_used": [
+    "openai/gpt-oss-20b"
+  ],
+  "unclassified": [],
+  "extraction_stats": {
+    "unique_headlines": 5,
+    "rule": 0,
+    "ai": 1,
+    "unknown": 0,
+    "irrelevant": 4
+  },
+  "rss_audit": {
+    "raw_items": 6,
+    "unique_headlines": 5,
+    "duplicates_excluded": 1,
+    "invalid_headline_items": 0,
+    "unique_publishers": 4,
+    "unknown_publisher_headlines": 0,
+    "largest_publisher_share_pct": 40.0,
+    "publisher_hhi": 0.28,
+    "https_link_headlines": 5,
+    "missing_or_insecure_link_headlines": 0,
+    "invalid_publication_dates": 0,
+    "future_publication_dates": 0,
+    "oldest_publication_date": "2026-11-15",
+    "newest_publication_date": "2026-11-22",
+    "oldest_headline_age_days": 7
+  },
+  "publication_freshness_summary": {
+    "reference_date": "2026-11-22",
+    "rss_window_days": 7,
+    "classified_or_unresolved_counts": {
+      "current_window": 1,
+      "historical_context": 0,
+      "outside_rss_window": 0,
+      "future_dated": 0,
+      "unknown_publication_date": 0
+    },
+    "method": "publication date relative to report business date; labels are editorial and do not certify event materiality"
+  },
+  "decision_audit": {
+    "reviewed_classified_items": 1,
+    "flag_count": 1,
+    "flagged_headlines": 1,
+    "by_reason": {
+      "directional_claim_without_event_type": 1
+    },
+    "flags": [
+      {
+        "headline": "LVMH (ENXTPA:MC) Stock Could Be 11% Undervalued On Cash Flow Strength",
+        "category": "headwinds",
+        "reason": "directional_claim_without_event_type",
+        "method": "ai"
+      }
+    ],
+    "note": "Flags are heuristic review priorities only; no category was changed and confidence is not calibrated."
+  },
+  "fetched_at": "2026-11-23T05:44:00.145288+00:00",
+  "model": "openai/gpt-oss-20b",
+  "fetch_status": {
+    "stage": "rss_fetch",
+    "status": "ok",
+    "category": null,
+    "retryable": false,
+    "attempts": 1,
+    "url": "https://news.google.com/rss/search?q=LVMH%20MC.PA%20stock&hl=en-US&gl=US&ceid=US:en",
+    "items": 6
+  }
+}
