@@ -43812,6 +43812,33 @@
         "edgar": "3214c434e70d7092ff0accae48dcba2b6f7017f49e7125a7864af940aaa6ccc1",
         "fred": "60e418741e69135c3cf962e6113b212dbdff0494cf36a1d793aadc387a74af9d"
       }
+    },
+    {
+      "report_id": "20261123T053847Z-45053549/MU",
+      "ticker": "MU",
+      "generated_at": "2026-11-23T05:46:05.681819+00:00",
+      "as_of": "2026-11-22",
+      "quality": "ready",
+      "market_as_of": "2026-11-20",
+      "news_as_of": "2026-11-22",
+      "sha256": {
+        "md": "a1393ae5300bb5075ff61521d088d38c93cd436588595d0539040c888c7d48e5",
+        "json": "6667969dcb757297b17abd5188c1ba17ab392810ac9b8f24c678948779c82c29",
+        "pdf": "c9cc5214109ce9eadd9b716f2c2f007f0fdd0d94dd277a1163df833a5005258a"
+      },
+      "md": "archive/20261123T053847Z-45053549/MU/MU-intelligence-20261122.md",
+      "json": "archive/20261123T053847Z-45053549/MU/MU-intelligence-20261122.json",
+      "pdf": "archive/20261123T053847Z-45053549/MU/MU-intelligence-20261122.pdf",
+      "source_sha256": {
+        "quant": "1039157140e391735785bafec456b6a2bdc82e4dacd3e9eb70fd0a8367be6a45",
+        "info": "fdaf501a2ac525b9945bcd71d875e2328b5214f86f820dfe111d99a618efc34a",
+        "ai-intel": "0c83b5bf8096579317e1730b58d1b21a4a84395104bc2aa78b5076a038a19203",
+        "rss-items": "83f2ba3d129b3d18df77ebdf6d9d85a320f7d194b2a759b2e04bcacaa6d44e83",
+        "comparables": "ebaacf9d5c5d4abd2ae0f70b13a60a981229d0ddd8bcb85b2d6b905f8921ab0f",
+        "earnings": "c36abed6399f5c1d80661d729ad456e8611302033fd77cf4779b58c4d3bd85a4",
+        "edgar": "94de0f4ebfa187af9c1d3ee7d567757bf9d478c384b73fb88bda876b84cca691",
+        "fred": "60e418741e69135c3cf962e6113b212dbdff0494cf36a1d793aadc387a74af9d"
+      }
     }
   ],
   "refresh_plan": {
@@ -44005,7 +44032,8 @@
       "MCO",
       "META",
       "MG.TO",
-      "MSFT"
+      "MSFT",
+      "MU"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45119007005",
@@ -44221,6 +44249,15 @@
         "edgar": 1.968,
         "regenerate_report": 0.114,
         "report_pdf": 0.665
+      },
+      "MU": {
+        "quant": 0.966,
+        "ai_extract": 15.199,
+        "comparables": 1.619,
+        "earnings": 1.167,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "MU",
@@ -44241,7 +44278,8 @@
       "MCO": 4,
       "META": 22,
       "MG.TO": 2,
-      "MSFT": 21
+      "MSFT": 21,
+      "MU": 20
     }
   },
   "last_complete_refresh": "2026-11-22T04:56:55.399898+00:00",
