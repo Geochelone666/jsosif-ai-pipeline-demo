@@ -45027,6 +45027,33 @@
         "edgar": "faba50584504083cb9308f36f772d9435b0503602fc066ab502c60842855fd41",
         "fred": "a10c8712e4ee86231e5d37263592260dba21d3c3bef2ff923be9bc5ae336d931"
       }
+    },
+    {
+      "report_id": "20261124T081701Z-6c335e3d/SPGI",
+      "ticker": "SPGI",
+      "generated_at": "2026-11-24T08:23:52.103239+00:00",
+      "as_of": "2026-11-23",
+      "quality": "ready",
+      "market_as_of": "2026-11-23",
+      "news_as_of": "2026-11-23",
+      "sha256": {
+        "md": "c65216f1ddd0a9c2e16a56b32be0fb18867aad5576f7a555a5fdf72cc214b8a0",
+        "json": "52041f2f266ecf467d801b80a6d9bebc137b70d83d2069b6d5c3a22ed94bab27",
+        "pdf": "e000d8dc7f5d2e7f1d07280c4dcc9f57701e1bc7de8f930132396c1b252a5f8b"
+      },
+      "md": "archive/20261124T081701Z-6c335e3d/SPGI/SPGI-intelligence-20261123.md",
+      "json": "archive/20261124T081701Z-6c335e3d/SPGI/SPGI-intelligence-20261123.json",
+      "pdf": "archive/20261124T081701Z-6c335e3d/SPGI/SPGI-intelligence-20261123.pdf",
+      "source_sha256": {
+        "quant": "867a5f82b4255669dfddc4f476773a8058cb399f860f9033b72c27aa5f7d66e2",
+        "info": "d4e2a230300dd8d36123e5f10242967edf48773f5d8dc7559d3de0d84a399521",
+        "ai-intel": "b618b1c10a76166c5a8df749ec9cacd29b62c73c55500bb707f81ba31487f02a",
+        "rss-items": "53191ac531fbe7c6d1032998e755b9d924f0f02011fa3190c3f7e22a1654f976",
+        "comparables": "687dc1d69a15ffd50a60cc0044ad8a405d00c469514fa76ced1ccc87c95ccfc0",
+        "earnings": "12e5a3e95cf8f34940a2c03676a6d006ba2aa2aff3a8656178427f48b01965c2",
+        "edgar": "a9703ee13671ef676ee843003bece362a7413b4cfa08c136e010b8d2bf561a79",
+        "fred": "a10c8712e4ee86231e5d37263592260dba21d3c3bef2ff923be9bc5ae336d931"
+      }
     }
   ],
   "refresh_plan": {
@@ -45215,7 +45242,8 @@
       "PEP",
       "PFE",
       "SCHW",
-      "SHOP.TO"
+      "SHOP.TO",
+      "SPGI"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45354666074",
@@ -45386,6 +45414,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.565
+      },
+      "SPGI": {
+        "quant": 1.317,
+        "ai_extract": 3.575,
+        "comparables": 2.172,
+        "earnings": 1.267,
+        "edgar": 2.22,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.567
       }
     },
     "current_ticker": "SPGI",
@@ -45401,7 +45438,8 @@
       "PEP": 13,
       "PFE": 8,
       "SCHW": 5,
-      "SHOP.TO": 4
+      "SHOP.TO": 4,
+      "SPGI": 7
     }
   },
   "last_complete_refresh": "2026-11-23T05:38:47.159095+00:00",
