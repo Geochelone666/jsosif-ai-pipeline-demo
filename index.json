@@ -44757,6 +44757,33 @@
         "edgar": "e5f4d0b7df9a8dd343df62f47d20120120caa48454185939b64db826c40ffebc",
         "fred": "a10c8712e4ee86231e5d37263592260dba21d3c3bef2ff923be9bc5ae336d931"
       }
+    },
+    {
+      "report_id": "20261124T081701Z-6c335e3d/NFLX",
+      "ticker": "NFLX",
+      "generated_at": "2026-11-24T08:19:37.595194+00:00",
+      "as_of": "2026-11-23",
+      "quality": "ready",
+      "market_as_of": "2026-11-23",
+      "news_as_of": "2026-11-23",
+      "sha256": {
+        "md": "b3721ee839282824c88bdc1cfb440691ccd76e294cdab891c245ecd32ec768ac",
+        "json": "6ed4ed0aac66a706b7875b731dfd858beb4e6430e36d4eb7402701071478b399",
+        "pdf": "696bfb944f71c60fe2dbb14488ac67bcc1a54cec49e660023a6d60ef8f055fb7"
+      },
+      "md": "archive/20261124T081701Z-6c335e3d/NFLX/NFLX-intelligence-20261123.md",
+      "json": "archive/20261124T081701Z-6c335e3d/NFLX/NFLX-intelligence-20261123.json",
+      "pdf": "archive/20261124T081701Z-6c335e3d/NFLX/NFLX-intelligence-20261123.pdf",
+      "source_sha256": {
+        "quant": "b93e0ba81fe84cc9739f421ebd0705124ff36be0067db15636935785590bd9f6",
+        "info": "b22f585ca9ffcac65fc6ba3afa15ccadcc8c9e586ccd244a87ef19d61c20680d",
+        "ai-intel": "ddc108a00bd81885e8f86310090c69ec09c1356a297d04defc6ee0bc37a7e187",
+        "rss-items": "5344ca7f37ee2ead2d06729833318d0b86d4b4694ada2294b28bd8d1649fdcb1",
+        "comparables": "69dd76e9e807f6672bd85cbcf204b4083dfa8aecdf1eba67cae6b8396c12db74",
+        "earnings": "18c244cbd928bea4bd5008f66a5daf7ed0e066cd192ff060428cb3387ef77805",
+        "edgar": "bc2408d6ed634597e3e87d0ef853a5d6643a130f9a9c257a9855115bf0746f3e",
+        "fred": "a10c8712e4ee86231e5d37263592260dba21d3c3bef2ff923be9bc5ae336d931"
+      }
     }
   ],
   "refresh_plan": {
@@ -44935,7 +44962,8 @@
     ],
     "successful_tickers": [
       "AMZN",
-      "GIS"
+      "GIS",
+      "NFLX"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45354666074",
@@ -45013,12 +45041,22 @@
         "edgar": 3.122,
         "regenerate_report": 0.114,
         "report_pdf": 0.565
+      },
+      "NFLX": {
+        "quant": 1.069,
+        "ai_extract": 45.535,
+        "comparables": 1.918,
+        "earnings": 1.418,
+        "edgar": 2.17,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.566
       }
     },
     "current_ticker": "NFLX",
     "last_progress_at": "2026-11-24T08:18:42.763632+00:00",
     "news_cache_candidates": {
-      "GIS": 12
+      "GIS": 12,
+      "NFLX": 19
     }
   },
   "last_complete_refresh": "2026-11-23T05:38:47.159095+00:00",
