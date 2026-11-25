@@ -46080,6 +46080,33 @@
         "edgar": "94de0f4ebfa187af9c1d3ee7d567757bf9d478c384b73fb88bda876b84cca691",
         "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
       }
+    },
+    {
+      "report_id": "20261125T065354Z-0b3565c6/PEP",
+      "ticker": "PEP",
+      "generated_at": "2026-11-25T06:56:21.626420+00:00",
+      "as_of": "2026-11-24",
+      "quality": "ready",
+      "market_as_of": "2026-11-24",
+      "news_as_of": "2026-11-24",
+      "sha256": {
+        "md": "94a2799afcc8c246458eec849dab489486d38cb7ed9931614c2f415ca4613b9c",
+        "json": "bd9cef9befae9da2e95d222633be7c98ee767e02bc221c7fc436606ce7b32c42",
+        "pdf": "cc9a01f4f91fb3124cba8eeadc2cb75a5f9015dccad41a5e51cdd5eb5122a3fe"
+      },
+      "md": "archive/20261125T065354Z-0b3565c6/PEP/PEP-intelligence-20261124.md",
+      "json": "archive/20261125T065354Z-0b3565c6/PEP/PEP-intelligence-20261124.json",
+      "pdf": "archive/20261125T065354Z-0b3565c6/PEP/PEP-intelligence-20261124.pdf",
+      "source_sha256": {
+        "quant": "3252a2f37b039e435e596585cfd1100afe577f904b976f5023f63670464f642e",
+        "info": "698df61d0bed95c893759dc38bd9b08981b0268862dd2e277a28c566d15c7bd4",
+        "ai-intel": "1f6f93e489a9b5dcde178408abeb72c8349615e223d1e48143489faf14b4fe8a",
+        "rss-items": "c8042e8c0927496d1efd37859c25e25a154af5f5dbded6ef02ca49280f5e8a06",
+        "comparables": "02309b6aa72a4d7c086eb40cb0553fa833574c179d0e2e91376be45b05255d70",
+        "earnings": "08d7e88e51efee1e6cfd0cf7f7a0e196bf99c7afda1d45dcf89c894dc017d8b9",
+        "edgar": "1687851d304b8a245f28adbb786d61707fd9a075930d8139f582a8b240886087",
+        "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
+      }
     }
   ],
   "refresh_plan": {
@@ -46257,7 +46284,8 @@
       "XYL"
     ],
     "successful_tickers": [
-      "MU"
+      "MU",
+      "PEP"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45563925232",
@@ -46326,12 +46354,22 @@
         "edgar": 2.068,
         "regenerate_report": 0.165,
         "report_pdf": 0.716
+      },
+      "PEP": {
+        "quant": 1.417,
+        "ai_extract": 47.795,
+        "comparables": 2.073,
+        "earnings": 1.369,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.667
       }
     },
     "current_ticker": "PEP",
     "last_progress_at": "2026-11-25T06:55:24.284382+00:00",
     "news_cache_candidates": {
-      "MU": 20
+      "MU": 20,
+      "PEP": 13
     }
   },
   "last_complete_refresh": "2026-11-24T08:17:01.333332+00:00",
