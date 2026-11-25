@@ -46107,6 +46107,33 @@
         "edgar": "1687851d304b8a245f28adbb786d61707fd9a075930d8139f582a8b240886087",
         "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
       }
+    },
+    {
+      "report_id": "20261125T065354Z-0b3565c6/PFE",
+      "ticker": "PFE",
+      "generated_at": "2026-11-25T06:56:38.247318+00:00",
+      "as_of": "2026-11-24",
+      "quality": "ready",
+      "market_as_of": "2026-11-24",
+      "news_as_of": "2026-11-24",
+      "sha256": {
+        "md": "5b6d167124fad1080666e75d3e3e0c5f79d88c750824ec3d01e7bd9f7410dc9f",
+        "json": "d054ef71dcaae3d85a649a13536dab6be89e04292c0dd9168789256f114658bf",
+        "pdf": "53d948a3325340e80e2773ea623e2c83823f7230e8cf17293b363a34949c583c"
+      },
+      "md": "archive/20261125T065354Z-0b3565c6/PFE/PFE-intelligence-20261124.md",
+      "json": "archive/20261125T065354Z-0b3565c6/PFE/PFE-intelligence-20261124.json",
+      "pdf": "archive/20261125T065354Z-0b3565c6/PFE/PFE-intelligence-20261124.pdf",
+      "source_sha256": {
+        "quant": "25add9215749ee7c8b104a8527352a111bbc3acbefa39424606b6024e0eb9fc4",
+        "info": "2f18900c335f1b874086bdf81fcff8c490561aaf673bf16234a520be205523eb",
+        "ai-intel": "ed67f6b6ad2355043b456f2b08b828af289c425d38303604665b20d362f56219",
+        "rss-items": "1977204021c622fce9164620c93c06496bcf50fe0fb58f9d385c635852ca819c",
+        "comparables": "46bf2a739f28df3b7d487afe19c7a7b764fd7be72d49925b235f14d2b253baed",
+        "earnings": "de06039867a7ff30e636a4dc50290956fbdaa2f4b8850cd5e22fafc1c135bf1d",
+        "edgar": "2e4ca40563b8f68d5c232ccc433cc23180c3f808545a5c9c306fc6945dab0bcc",
+        "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
+      }
     }
   ],
   "refresh_plan": {
@@ -46285,7 +46312,8 @@
     ],
     "successful_tickers": [
       "MU",
-      "PEP"
+      "PEP",
+      "PFE"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45563925232",
@@ -46363,13 +46391,23 @@
         "edgar": 2.069,
         "regenerate_report": 0.114,
         "report_pdf": 0.667
+      },
+      "PFE": {
+        "quant": 1.267,
+        "ai_extract": 4.581,
+        "comparables": 2.17,
+        "earnings": 1.518,
+        "edgar": 1.969,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "PFE",
     "last_progress_at": "2026-11-25T06:56:24.013607+00:00",
     "news_cache_candidates": {
       "MU": 20,
-      "PEP": 13
+      "PEP": 13,
+      "PFE": 8
     }
   },
   "last_complete_refresh": "2026-11-24T08:17:01.333332+00:00",
