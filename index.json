@@ -46053,6 +46053,33 @@
         "edgar": "94de0f4ebfa187af9c1d3ee7d567757bf9d478c384b73fb88bda876b84cca691",
         "fred": "a10c8712e4ee86231e5d37263592260dba21d3c3bef2ff923be9bc5ae336d931"
       }
+    },
+    {
+      "report_id": "20261125T065354Z-0b3565c6/MU",
+      "ticker": "MU",
+      "generated_at": "2026-11-25T06:55:21.951913+00:00",
+      "as_of": "2026-11-24",
+      "quality": "ready",
+      "market_as_of": "2026-11-24",
+      "news_as_of": "2026-11-24",
+      "sha256": {
+        "md": "5571ae81bac2e7152b931f959d5a3829465d82de6ef3ae34cd7dd2cd46af70fa",
+        "json": "dac51bd648c1ddf4266492daa8ab98e393f9fde6b87b6c96504b6749159cd80c",
+        "pdf": "97ef07b38841d1cf1eac3f367534bd250e3867b1c3986c740edfbd6e64d3f897"
+      },
+      "md": "archive/20261125T065354Z-0b3565c6/MU/MU-intelligence-20261124.md",
+      "json": "archive/20261125T065354Z-0b3565c6/MU/MU-intelligence-20261124.json",
+      "pdf": "archive/20261125T065354Z-0b3565c6/MU/MU-intelligence-20261124.pdf",
+      "source_sha256": {
+        "quant": "1b34ff3832d95ad868872d6ad00c29f206044360116faa9c7988c772fb4fb2ef",
+        "info": "640c0b3ac3cfd79581afe91296f3ddaa87312d358dfb54f8f464977cfc33e3db",
+        "ai-intel": "7c1df99588d09e5a6b86ff9150731b20a5cffcc55f9a5462d1f30ac8dfd6f980",
+        "rss-items": "4ca40de674a1ab507ca85b7f9eda34f688cdcfbdad266487ef1c53b06ab2f6cc",
+        "comparables": "65e579f5ae16e5a66e02d20a1a882d9a1f245bbc0857e1a110c60a3e6534201f",
+        "earnings": "c36abed6399f5c1d80661d729ad456e8611302033fd77cf4779b58c4d3bd85a4",
+        "edgar": "94de0f4ebfa187af9c1d3ee7d567757bf9d478c384b73fb88bda876b84cca691",
+        "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
+      }
     }
   ],
   "refresh_plan": {
@@ -46229,7 +46256,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "MU"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "45563925232",
     "degraded_tickers": [],
@@ -46288,9 +46317,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "MU": {
+        "quant": 2.019,
+        "ai_extract": 72.612,
+        "comparables": 2.37,
+        "earnings": 1.417,
+        "edgar": 2.068,
+        "regenerate_report": 0.165,
+        "report_pdf": 0.716
+      }
+    },
     "current_ticker": "MU",
-    "last_progress_at": "2026-11-25T06:53:58.624782+00:00"
+    "last_progress_at": "2026-11-25T06:53:58.624782+00:00",
+    "news_cache_candidates": {
+      "MU": 20
+    }
   },
   "last_complete_refresh": "2026-11-24T08:17:01.333332+00:00",
   "last_complete_business_date": "2026-11-23"
