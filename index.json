@@ -47214,6 +47214,33 @@
         "edgar": "2d55aea193fe0c09fb0c73e963cb845514f608cb257bb0823ae552e84dc623b7",
         "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
       }
+    },
+    {
+      "report_id": "20261125T065354Z-0b3565c6/SHOP.TO",
+      "ticker": "SHOP.TO",
+      "generated_at": "2026-11-25T07:21:13.537119+00:00",
+      "as_of": "2026-11-24",
+      "quality": "ready",
+      "market_as_of": "2026-11-24",
+      "news_as_of": "2026-11-24",
+      "sha256": {
+        "md": "000bc801b62fff49fef43606a79b41a931d6812cf3760b0bebcdc5826b857428",
+        "json": "6b9fdda5f7b55192cc68ea5c983e7200ee0b18c5e6e0bfbf8abd7ac9ad05802d",
+        "pdf": "797bee378688aeb0e379628914c6566eeeec9f5b31091a22c5af22f90d0e3e8a"
+      },
+      "md": "archive/20261125T065354Z-0b3565c6/SHOP.TO/SHOP.TO-intelligence-20261124.md",
+      "json": "archive/20261125T065354Z-0b3565c6/SHOP.TO/SHOP.TO-intelligence-20261124.json",
+      "pdf": "archive/20261125T065354Z-0b3565c6/SHOP.TO/SHOP.TO-intelligence-20261124.pdf",
+      "source_sha256": {
+        "quant": "6ecffacce5a1399b3f7078799531eb4f07bc1a56b277faf4a53c94b682971fd1",
+        "info": "a4c45b502d15be5ae21c878199fff75ea23c46e23f77c4583c0393e70ba88930",
+        "ai-intel": "6158b93f6e19c2a15a1d67e8884c4ebf7b96318fbc7fea4643e940a540dfe894",
+        "rss-items": "e28239c8e18d9d53fc437cd480ad04327846dc22f3c4f63a6399b1f27bacc878",
+        "comparables": "0c7e7539f2be4ef0c55547f19473f3c3431e910a81ac0cf5c2e79a173cddcf4d",
+        "earnings": "85e781d29dbd7cd335f07316ff5fcc28df86d9cd8feec51b19c754b0879dc2a1",
+        "edgar": "faba50584504083cb9308f36f772d9435b0503602fc066ab502c60842855fd41",
+        "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
+      }
     }
   ],
   "refresh_plan": {
@@ -47433,7 +47460,8 @@
       "NVDA",
       "NVO",
       "OTEX.TO",
-      "SCHW"
+      "SCHW",
+      "SHOP.TO"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45563925232",
@@ -47880,6 +47908,15 @@
         "edgar": 2.119,
         "regenerate_report": 0.114,
         "report_pdf": 0.615
+      },
+      "SHOP.TO": {
+        "quant": 1.367,
+        "ai_extract": 2.37,
+        "comparables": 2.27,
+        "earnings": 1.368,
+        "edgar": 0.064,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.565
       }
     },
     "current_ticker": "SHOP.TO",
@@ -47926,7 +47963,8 @@
       "NVDA": 21,
       "NVO": 20,
       "OTEX.TO": 5,
-      "SCHW": 14
+      "SCHW": 14,
+      "SHOP.TO": 4
     }
   },
   "last_complete_refresh": "2026-11-24T08:17:01.333332+00:00",
