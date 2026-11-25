@@ -47079,6 +47079,33 @@
         "edgar": "66aed35731040ffb3231245a8c67cc63e002f9ec9f15fd0d3632d1831b0014d9",
         "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
       }
+    },
+    {
+      "report_id": "20261125T065354Z-0b3565c6/NVAX",
+      "ticker": "NVAX",
+      "generated_at": "2026-11-25T07:17:58.668429+00:00",
+      "as_of": "2026-11-24",
+      "quality": "ready",
+      "market_as_of": "2026-11-24",
+      "news_as_of": "2026-11-24",
+      "sha256": {
+        "md": "792b7d92c7dadafb76b1a798d65d5a2f993f978a6a07515974ac05c08fc39ec6",
+        "json": "0de888c0faab3aff22152f7925a36c7f94a6191d175bbbb9f40989e79aa11654",
+        "pdf": "88b6fdadc7e16e79b704ead29fcb6e76cfcd4b69bfe166182712769977511fb1"
+      },
+      "md": "archive/20261125T065354Z-0b3565c6/NVAX/NVAX-intelligence-20261124.md",
+      "json": "archive/20261125T065354Z-0b3565c6/NVAX/NVAX-intelligence-20261124.json",
+      "pdf": "archive/20261125T065354Z-0b3565c6/NVAX/NVAX-intelligence-20261124.pdf",
+      "source_sha256": {
+        "quant": "84acb01ab441a8a5592c736448f43c65538c731527fa4d382e3deaf8a8a529dc",
+        "info": "672221d12d929b43be05b0a7e739fa13c9cc3c9277215d59c5fb2e67768cecdf",
+        "ai-intel": "c04416462376d5495f68fbf69cd2e6aeca3f21616c6e836f7def523eb8c00bbc",
+        "rss-items": "883b65fffad213fe5fdbb9bf6ac116e946eebd261a357b6829c9cd7fa9d014b7",
+        "comparables": "da51d727f80ebe3e313dea646e6e1f45d57c6b36e39c5843f6723d69ab789c3a",
+        "earnings": "2929b5dd0644559e315cbe26a0d5cc5f456394141cdd037977f84c9f0112a253",
+        "edgar": "cdb7f49e2004af0713f02f0162c1cb6fde59c0412fb2dae3ce0ed9a2b5d9e619",
+        "fred": "19a07a9c9c4fc5bbca660f54f9e72cbe1f32dc1bc879a838d9d0d64d1a4a822f"
+      }
     }
   ],
   "refresh_plan": {
@@ -47293,7 +47320,8 @@
       "MG.TO",
       "MSFT",
       "NFLX",
-      "NTR.TO"
+      "NTR.TO",
+      "NVAX"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45563925232",
@@ -47695,6 +47723,15 @@
         "edgar": 2.571,
         "regenerate_report": 0.114,
         "report_pdf": 0.615
+      },
+      "NVAX": {
+        "quant": 1.317,
+        "ai_extract": 2.42,
+        "comparables": 2.27,
+        "earnings": 1.369,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.617
       }
     },
     "current_ticker": "NVAX",
@@ -47736,7 +47773,8 @@
       "MG.TO": 4,
       "MSFT": 14,
       "NFLX": 19,
-      "NTR.TO": 1
+      "NTR.TO": 1,
+      "NVAX": 3
     }
   },
   "last_complete_refresh": "2026-11-24T08:17:01.333332+00:00",
