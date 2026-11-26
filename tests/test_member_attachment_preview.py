@@ -272,3 +272,69 @@ def test_cli_writes_only_private_previews_and_logs_no_member_data(inputs, tmp_pa
     assert len(list(output.glob('*.eml'))) == 1
     for secret in ('reviewer@example.com', 'Example Reviewer', 'synthetic-1'):
         assert secret not in result.stdout + result.stderr
+
+
+def macro_bundle_for(inputs, tmp_path, as_of='2026-11-06'):
+    from macro_overview import assemble, write_bundle
+    path = tmp_path / ('macro-' + as_of)
+    write_bundle(assemble(build(inputs[1], as_of=as_of)), path)
+    return path
+
+
+def test_macro_is_independent_of_sector_preference_and_requires_own_switch(inputs, tmp_path):
+    macro = macro_bundle_for(inputs, tmp_path)
+    content = inputs[0]['members'][0]['content_preferences']
+    content.update(macro_overview=True, sector_brief=False)
+    review, _ = prepare(inputs, macro_bundle=macro, include_sector_drafts=True)
+    assert 'macro_overview: draft review not enabled' in review['members'][0]['gaps']
+    assert len(review['members'][0]['attachments']) == 3
+    review, messages = prepare(inputs, macro_bundle=macro, include_macro_drafts=True)
+    assert [a['kind'] for a in review['members'][0]['attachments']].count('macro_draft') == 1
+    assert len(list(parse_one(messages).iter_attachments())) == 4 and not review['members'][0]['gaps']
+    content['macro_overview'] = False
+    review, _ = prepare(inputs, macro_bundle=macro, include_macro_drafts=True)
+    assert len(review['members'][0]['attachments']) == 3
+
+
+def test_macro_snapshot_hash_must_match_even_when_report_id_is_unchanged(inputs, tmp_path):
+    macro = macro_bundle_for(inputs, tmp_path)
+    inputs[0]['members'][0]['content_preferences'] = {'macro_overview': True}
+    index = read_json(inputs[1] / 'index.json'); entry = index['reports'][0]
+    path = inputs[1] / entry['json']; snapshot = read_json(path)
+    snapshot['quant'][0]['value'] = '123'; write_json(path, snapshot)
+    entry['sha256']['json'] = digest(path); write_json(inputs[1] / 'index.json', index)
+    review, _ = prepare(inputs, macro_bundle=macro, include_macro_drafts=True)
+    assert 'macro_overview: stock snapshot lineage mismatch' in review['members'][0]['gaps']
+    assert len(review['members'][0]['attachments']) == 3
+
+
+def test_future_macro_is_disclosed_and_not_attached(inputs, tmp_path):
+    macro = macro_bundle_for(inputs, tmp_path, '2026-11-07')
+    inputs[0]['members'][0]['content_preferences'] = {'macro_overview': True}
+    review, _ = prepare(inputs, macro_bundle=macro, include_macro_drafts=True)
+    assert review['members'][0]['gaps'] == ['macro_overview: stale or future draft']
+    assert len(review['members'][0]['attachments']) == 3
+
+
+def test_macro_counts_toward_encoded_budget_and_news_remains_missing(inputs, tmp_path):
+    macro = macro_bundle_for(inputs, tmp_path)
+    inputs[0]['members'][0]['content_preferences'] = {'macro_overview': True, 'news_catalysts': True}
+    review, messages = prepare(inputs, macro_bundle=macro, include_macro_drafts=True)
+    assert review['members'][0]['gaps'] == ['news_catalysts: standalone artifact unavailable']
+    size = len(next(iter(messages.values())))
+    blocked, messages = prepare(inputs, macro_bundle=macro, include_macro_drafts=True, max_bytes=size-1)
+    assert not messages and blocked['members'][0]['status'] == 'deferred_size'
+
+
+def test_macro_cli_builds_a_private_preview(inputs, tmp_path):
+    macro = macro_bundle_for(inputs, tmp_path)
+    config, root, _ = inputs
+    config['members'][0]['content_preferences'] = {'macro_overview': True}
+    config_file = tmp_path / 'macro-members.json'; write_json(config_file, config)
+    output = tmp_path / 'macro-review'
+    result = subprocess.run([sys.executable, 'scripts/member_attachment_preview.py', '--config', str(config_file),
+        '--store', str(root), '--macro-bundle', str(macro), '--at', NOW.isoformat(), '--include-macro-drafts',
+        '--output', str(output)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    plan = read_json(output / 'review.json')['members'][0]
+    assert plan['attachments'][-1]['kind'] == 'macro_draft' and plan['delivery_ready'] is False
