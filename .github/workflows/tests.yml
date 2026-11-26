@@ -37,12 +37,20 @@ jobs:
             ${{ runner.temp }}/shared-evidence.md
           retention-days: 14
       - name: Package source for reproducible PDF visual review
-        run: tar -czf "$RUNNER_TEMP/research-source-review.tar.gz" scripts requirements.lock requirements.txt
+        run: tar -czf "$RUNNER_TEMP/research-source-review.tar.gz" scripts config requirements.lock requirements.txt
       - uses: actions/upload-artifact@v6
         with:
           name: research-source-review-${{ matrix.python }}
           path: ${{ runner.temp }}/research-source-review.tar.gz
           retention-days: 7
+
+      - name: Build eight sector brief drafts and verify four-page structure
+        run: python scripts/sector_briefs.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --output "$RUNNER_TEMP/sector-briefs"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: sector-brief-drafts-${{ matrix.python }}
+          path: ${{ runner.temp }}/sector-briefs
+          retention-days: 14
 
   browser:
     runs-on: ubuntu-latest
