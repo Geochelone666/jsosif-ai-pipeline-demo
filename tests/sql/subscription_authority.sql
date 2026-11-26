@@ -19,6 +19,7 @@ grant execute on function auth.uid() to authenticated;
 -- Simulate permissive project defaults; queue migration must narrow these.
 alter default privileges in schema subscription_private grant all on tables to service_role, authenticated;
 \ir ../../supabase/migrations/202611110001_security_requests.sql
+\ir ../../supabase/migrations/202611150001_subscription_administration.sql
 alter default privileges in schema subscription_private revoke all on tables from service_role, authenticated;
 \ir ../../supabase/seed_securities.sql
 insert into auth.users values
@@ -146,3 +147,4 @@ reset role;
 insert into subscription_private.approved_members(user_id) values ('00000000-0000-0000-0000-000000000001');
 
 \ir security_requests.sql
+\ir subscription_administration.sql
