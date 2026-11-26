@@ -21,6 +21,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  actions: read
 
 jobs:
   schedule:
@@ -115,6 +116,7 @@ jobs:
         if: ${{ !cancelled() && steps.persist.outcome == 'success' && steps.persist.outputs.publish == 'true' }}
         run: python scripts/build_site.py --store ../report-store --output site-build
       - name: Record the strict daily release check
+        id: strict_release
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         env:
           REPORT_BUSINESS_DATE: ${{ needs.schedule.outputs.business_date }}
@@ -128,14 +130,38 @@ jobs:
           name: report-store-${{ github.run_id }}
           path: ${{ runner.temp }}/report-store-backup.tar.gz
           retention-days: 30
+      # Never publish a report batch that failed the strict source-evidence gate.
+      # Archival, backups and privacy-safe health summaries still run on failure.
       - uses: actions/upload-pages-artifact@v3
         id: upload
-        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.strict_release.outcome == 'success' && vars.PAGES_DEPLOY_ENABLED == 'true' }}
         with:
           path: site-build
+      # The Pages deploy endpoint can temporarily fail to see an artifact that
+      # upload-pages-artifact already confirmed. Check its indexed metadata before
+      # handing off; bounded retries do not regenerate reports or invoke Groq.
+      - name: Wait for the Pages artifact to become discoverable
+        id: pages_artifact_ready
+        if: ${{ !cancelled() && steps.upload.outcome == 'success' && steps.strict_release.outcome == 'success' && vars.PAGES_DEPLOY_ENABLED == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            count="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100" --jq '[.artifacts[] | select(.name == "github-pages" and (.expired | not))] | length')" || count=''
+            if [ "$count" = 1 ]; then
+              echo "Pages artifact is indexed for the current workflow run."
+              exit 0
+            fi
+            if [ "$attempt" -eq 6 ]; then
+              echo "::error::The Pages artifact was not discoverable; no deployment attempted."
+              exit 1
+            fi
+            echo "::warning::Pages artifact is not discoverable yet (attempt $attempt of 6)."
+            sleep 15
+          done
       - name: Deploy archive to Pages
         id: deployment
-        if: ${{ !cancelled() && steps.upload.outcome == 'success' && vars.PAGES_DEPLOY_ENABLED == 'true' }}
+        if: ${{ !cancelled() && steps.strict_release.outcome == 'success' && steps.pages_artifact_ready.outcome == 'success' && vars.PAGES_DEPLOY_ENABLED == 'true' }}
         uses: actions/deploy-pages@v4
       - name: Verify the deployed publication and archived files
         if: ${{ !cancelled() && steps.deployment.outcome == 'success' }}
