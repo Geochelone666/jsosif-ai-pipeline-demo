@@ -48294,6 +48294,33 @@
         "edgar": "5f1b698a9e9d88944a3cba50fb92f5b38450920a579e415b8a854fa1169562b4",
         "fred": "1ac8321716b78fa5eab2c526996450419ea0684c8159c44ad567226aaaefbb36"
       }
+    },
+    {
+      "report_id": "20261126T064454Z-dbdd6f45/VRTX",
+      "ticker": "VRTX",
+      "generated_at": "2026-11-26T07:02:27.167240+00:00",
+      "as_of": "2026-11-25",
+      "quality": "ready",
+      "market_as_of": "2026-11-25",
+      "news_as_of": "2026-11-25",
+      "sha256": {
+        "md": "99ac9e7783c7daae36e92a2e105e28888099ed66693f96ee540d01ca867b6b40",
+        "json": "05a520c9017db93bae5ff9030c9beeba6f426c2977eb36b665ddb060c476897b",
+        "pdf": "d28a7935c986b27573026923c931b354a14221e3705cfb92cf1e77ce32a9ae7a"
+      },
+      "md": "archive/20261126T064454Z-dbdd6f45/VRTX/VRTX-intelligence-20261125.md",
+      "json": "archive/20261126T064454Z-dbdd6f45/VRTX/VRTX-intelligence-20261125.json",
+      "pdf": "archive/20261126T064454Z-dbdd6f45/VRTX/VRTX-intelligence-20261125.pdf",
+      "source_sha256": {
+        "quant": "093a6b98ccca2b7b670c1ed71ec16a9e4a30e4c17429c15ebae38733d3e109ea",
+        "info": "eb131bf0ddf0c303d5b626d74b48b6f71e9ff054f8c8656518d27333c14b519a",
+        "ai-intel": "53016c6c471c7db870d93f1133843a49152c502bddd3be37068343af31e4ee21",
+        "rss-items": "e04bdce43a57e6409a489c063bf4b21431f7d1de1e45ded645b1e935956dac59",
+        "comparables": "728334c1cb773c1e04da790e5d05a1f40720bd4f442923e175d41e551a95b110",
+        "earnings": "34b2bf39a39cf0b4133e3a852873a15f3b5171d6a334d9a511e3bbfbf80df716",
+        "edgar": "f085527fbea5b719a7c0a140c4fdeabf76bfcafb9a6e883cb1e85fb75e9a3998",
+        "fred": "1ac8321716b78fa5eab2c526996450419ea0684c8159c44ad567226aaaefbb36"
+      }
     }
   ],
   "refresh_plan": {
@@ -48503,7 +48530,8 @@
       "TD.TO",
       "TMC",
       "TSM",
-      "V"
+      "V",
+      "VRTX"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45770251235",
@@ -48860,6 +48888,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.615
+      },
+      "VRTX": {
+        "quant": 1.016,
+        "ai_extract": 32.339,
+        "comparables": 1.518,
+        "earnings": 1.067,
+        "edgar": 2.369,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.62
       }
     },
     "current_ticker": "VRTX",
@@ -48897,7 +48934,8 @@
       "TD.TO": 7,
       "TMC": 3,
       "TSM": 19,
-      "V": 23
+      "V": 23,
+      "VRTX": 12
     }
   },
   "last_complete_refresh": "2026-11-25T06:53:54.448618+00:00",
