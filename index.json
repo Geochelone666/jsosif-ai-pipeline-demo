@@ -48876,7 +48876,7 @@
     "run_id": "20261126T064454Z-dbdd6f45",
     "at": "2026-11-26T06:44:54.204087+00:00",
     "business_date": "2026-11-25",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -49493,7 +49493,6 @@
         "report_pdf": 0.566
       }
     },
-    "current_ticker": "CSU.TO",
     "last_progress_at": "2026-11-26T07:11:02.260190+00:00",
     "news_cache_candidates": {
       "DIS": 22,
@@ -49545,8 +49544,12 @@
       "COST": 12,
       "CP.TO": 3,
       "CSCO": 17
-    }
+    },
+    "pending_tickers": [
+      "ACN"
+    ],
+    "finished_at": "2026-11-26T07:11:15.640292+00:00"
   },
-  "last_complete_refresh": "2026-11-25T06:53:54.448618+00:00",
-  "last_complete_business_date": "2026-11-24"
+  "last_complete_refresh": "2026-11-26T06:44:54.204087+00:00",
+  "last_complete_business_date": "2026-11-25"
 }
