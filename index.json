@@ -48402,6 +48402,33 @@
         "edgar": "0b5aae9e99fe90c380a8aaef35602bb4c9cc4460b34175556a0fa70120fa4191",
         "fred": "1ac8321716b78fa5eab2c526996450419ea0684c8159c44ad567226aaaefbb36"
       }
+    },
+    {
+      "report_id": "20261126T064454Z-dbdd6f45/AMD",
+      "ticker": "AMD",
+      "generated_at": "2026-11-26T07:04:27.274182+00:00",
+      "as_of": "2026-11-25",
+      "quality": "ready",
+      "market_as_of": "2026-11-25",
+      "news_as_of": "2026-11-25",
+      "sha256": {
+        "md": "c8d88a35da7b3d9f34d58b3235defb63091f33bb217bd28c2a449a8476770717",
+        "json": "998287483c9c3947e98162e281b0ca76fca2d974a83441524c636238188967fb",
+        "pdf": "916fdf2ff4d28057a0d1cc676b718020f5aaeed1d712b8bfa6c5f3cb2dc570bd"
+      },
+      "md": "archive/20261126T064454Z-dbdd6f45/AMD/AMD-intelligence-20261125.md",
+      "json": "archive/20261126T064454Z-dbdd6f45/AMD/AMD-intelligence-20261125.json",
+      "pdf": "archive/20261126T064454Z-dbdd6f45/AMD/AMD-intelligence-20261125.pdf",
+      "source_sha256": {
+        "quant": "98b11f92e0372b2f5cb557bed018b22a5bcd91ae60d30ffa1d97d9c42e97c8c5",
+        "info": "8c32c6e800ddd66d13183c100c0bb3abfcc02f7a350130aa6bd6e4c2e3c0e44f",
+        "ai-intel": "55b0a761d0a32fa30c7878149bf62dc8c0d99ea15a5758c684f8d49fd730c347",
+        "rss-items": "c7c82f15d29cac2714b512a8a0da943bdcf2899f1c9fe3e3d765f72c9228a61f",
+        "comparables": "f846e6d5ab42760f1765e24c0730ce9abaf4e332c70136db869be4eebf145f7c",
+        "earnings": "6057722eff29f6bc1d301423f105f3f3fa3ca64d81e8d2907d731b55b3254984",
+        "edgar": "1b55a6f30ac762b47056dffb3e9b785406619202abd132e01e77ccd84dcc095c",
+        "fred": "1ac8321716b78fa5eab2c526996450419ea0684c8159c44ad567226aaaefbb36"
+      }
     }
   ],
   "refresh_plan": {
@@ -48615,7 +48642,8 @@
       "VRTX",
       "XYL",
       "AAPL",
-      "ACN"
+      "ACN",
+      "AMD"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45770251235",
@@ -49010,6 +49038,15 @@
         "edgar": 2.269,
         "regenerate_report": 0.114,
         "report_pdf": 0.618
+      },
+      "AMD": {
+        "quant": 0.916,
+        "ai_extract": 15.447,
+        "comparables": 1.418,
+        "earnings": 1.066,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
       }
     },
     "current_ticker": "AMD",
@@ -49051,7 +49088,8 @@
       "VRTX": 12,
       "XYL": 7,
       "AAPL": 17,
-      "ACN": 15
+      "ACN": 15,
+      "AMD": 23
     }
   },
   "last_complete_refresh": "2026-11-25T06:53:54.448618+00:00",
