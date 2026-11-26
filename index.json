@@ -47538,6 +47538,33 @@
         "edgar": "d07a86b21e04a792b7e86f5ceb8024014c65bfb1e0d5a097eb427142ed4bed6e",
         "fred": "1ac8321716b78fa5eab2c526996450419ea0684c8159c44ad567226aaaefbb36"
       }
+    },
+    {
+      "report_id": "20261126T064454Z-dbdd6f45/ISRG",
+      "ticker": "ISRG",
+      "generated_at": "2026-11-26T06:47:47.314383+00:00",
+      "as_of": "2026-11-25",
+      "quality": "ready",
+      "market_as_of": "2026-11-25",
+      "news_as_of": "2026-11-25",
+      "sha256": {
+        "md": "547f4ea6b285da1bd7b8ecee28356cd83d8f968a37840e2e1791b25f3d460b77",
+        "json": "ad0f34a64fcffa3bcea9c4d32dd308facf5179fb6b75deedb1f2888b89997ae2",
+        "pdf": "59ab71018622be6f46c58e7a2f09fd2785b8f92cda3c28976a9dfd47ecca7b73"
+      },
+      "md": "archive/20261126T064454Z-dbdd6f45/ISRG/ISRG-intelligence-20261125.md",
+      "json": "archive/20261126T064454Z-dbdd6f45/ISRG/ISRG-intelligence-20261125.json",
+      "pdf": "archive/20261126T064454Z-dbdd6f45/ISRG/ISRG-intelligence-20261125.pdf",
+      "source_sha256": {
+        "quant": "d454241fe7b8d80e193d4c3ef42cc7080dc4c601655fef8b8cc9543c77fb0e33",
+        "info": "d7ae56b4e8fd47ff28a44f94a50ff21cb9daf8f4c3784a20eb2dfbd592c82812",
+        "ai-intel": "ba500c68d7f3508d50af26d1aa50e6de42cce810e258c814da6956b492265f1f",
+        "rss-items": "6f72ab26ecffbad97d62b70ac718f0df0266bf4e4c0abab77e122de20c67c34f",
+        "comparables": "2e1f3eb02910f89a1d40a09b190ac76271ee19e870dc9beef6673cd48c02601e",
+        "earnings": "77ba715b4eb50f6ca1e1af3b72ae3710be9e9a91537634c9a0d9921da36d8dc9",
+        "edgar": "62c16e3841f3cf2ea0dd44572c876251f5676d7aebcd47cde9cc056458de3412",
+        "fred": "1ac8321716b78fa5eab2c526996450419ea0684c8159c44ad567226aaaefbb36"
+      }
     }
   ],
   "refresh_plan": {
@@ -47719,7 +47746,8 @@
       "ENB",
       "EW",
       "GIS",
-      "GOOGL"
+      "GOOGL",
+      "ISRG"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45770251235",
@@ -47824,6 +47852,15 @@
         "edgar": 2.219,
         "regenerate_report": 0.114,
         "report_pdf": 0.616
+      },
+      "ISRG": {
+        "quant": 1.216,
+        "ai_extract": 3.071,
+        "comparables": 1.467,
+        "earnings": 1.217,
+        "edgar": 2.77,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.615
       }
     },
     "current_ticker": "ISRG",
@@ -47833,7 +47870,8 @@
       "ENB": 12,
       "EW": 10,
       "GIS": 5,
-      "GOOGL": 18
+      "GOOGL": 18,
+      "ISRG": 9
     }
   },
   "last_complete_refresh": "2026-11-25T06:53:54.448618+00:00",
