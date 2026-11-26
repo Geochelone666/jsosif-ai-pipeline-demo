@@ -51,8 +51,13 @@ returns and company KPI evidence remain pending.
 
 ## Phase 3 — sector intelligence and email assembly
 
-Pending: eight team templates; independent Sector Weekly Brief; stock-specific
-Sector Context and 3–5 peer snapshots; deterministic, sourced catalysts/events;
+Implemented locally: eight independent four-page Sector Weekly Brief **drafts**,
+with group-specific coverage/KPI research topics, stock industry context and up to
+five sourced peer snapshots. Deterministic JSON companions preserve full evidence
+and missing fields. See SECTOR_BRIEFS.md. These retrospective drafts always have
+delivery readiness false; they are not completed current weekly intelligence.
+
+Pending: live-complete sector briefs; deterministic, sourced catalysts/events;
 relevant sector attachment selection; per-member attachment deduplication;
 controlled-link fallback for oversized messages. Existing 20 MiB message gating
 remains in force. Public links must never be used as a substitute for an approved
