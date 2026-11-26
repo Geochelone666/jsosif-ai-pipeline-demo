@@ -1,5 +1,6 @@
 """Build a static latest/history site from the persisted archive, excluding private state."""
 import argparse
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 import shutil
@@ -86,7 +87,7 @@ def health_summary(index):
     }
 
 
-def build(store, output, template=None):
+def build(store, output, template=None, portal_config=None):
     if Path(output).is_symlink():
         raise ValueError('Site output must not be a symlink')
     store, output = Path(store).resolve(), Path(output).resolve()
@@ -95,7 +96,8 @@ def build(store, output, template=None):
     index = read_json(store / 'index.json')
     if not isinstance(index, dict) or not isinstance(index.get('reports'), list):
         raise ValueError('A valid persisted archive index is required before building the site')
-    index = public_index(index)
+    archive_index = index
+    index = public_index(archive_index)
     version_file = Path(__file__).resolve().parents[1] / 'VERSION'
     index['publication'] = {'published_at': datetime.now(timezone.utc).isoformat(),
                             'schedule': 'Daily at 19:00 America/Toronto; execution can be delayed',
@@ -111,14 +113,30 @@ def build(store, output, template=None):
         stage = Path(temporary) / 'build'
         stage.mkdir()
         shutil.copy2(template, stage / 'index.html')
+        from release_announcements import load, page
+        (stage / 'whats-new.html').write_text(page(load()), encoding='utf-8')
+        public_portal = {'enabled': False}
+        if portal_config is not None:
+            public_portal = read_json(portal_config)
+            if (not isinstance(public_portal, dict) or
+                    set(public_portal) != {'enabled', 'url', 'publishable_key'} or
+                    public_portal['enabled'] is not True or
+                    not isinstance(public_portal['url'], str) or
+                    not re.fullmatch(r'https://[a-z0-9-]+\.supabase\.co', public_portal['url']) or
+                    not isinstance(public_portal['publishable_key'], str) or
+                    not re.fullmatch(r'sb_publishable_[A-Za-z0-9_-]+', public_portal['publishable_key'])):
+                raise ValueError('Portal configuration must contain only a project URL and public publishable key')
+        for name in ('subscriptions.html', 'subscriptions.js'):
+            shutil.copy2(Path(__file__).resolve().parents[1] / 'docs' / name, stage / name)
+        write_json(stage / 'portal-config.json', public_portal)
         members_page = Path(template).with_name('members.html')
         if members_page.is_file():
             shutil.copy2(members_page, stage / 'members.html')
         excel_template = Path(template).with_name('members.example.xlsx')
         if excel_template.is_file():
             shutil.copy2(excel_template, stage / 'members.example.xlsx')
-        for entry in index['reports']:
-            files = verified_report_files(store, entry)
+        for entry, archived_entry in zip(index['reports'], archive_index['reports'], strict=True):
+            files = verified_report_files(store, archived_entry)
             advisory = report_advisory(store, entry)
             if advisory:
                 entry['advisory'] = advisory
@@ -128,6 +146,10 @@ def build(store, output, template=None):
                 target = stage / entry[kind]
                 target.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(source, target)
+        from research_workspace import build_dataset
+        write_json(stage / 'research-data.json', build_dataset(store, archive_index))
+        for name in ('research.html', 'research.js'):
+            shutil.copy2(Path(__file__).resolve().parents[1] / 'docs' / name, stage / name)
         # Delivery/quota state, member config and credentials never enter the site.
         write_json(stage / 'index.json', index)
         write_json(stage / 'health.json', health_summary(index))
@@ -149,8 +171,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--store', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--portal-config', type=Path, help='Reviewed public portal configuration; omitted keeps it disabled')
     args = parser.parse_args()
-    index = build(args.store, args.output)
+    index = build(args.store, args.output, portal_config=args.portal_config)
     print(f'Site built: {len(index["reports"])} report versions')
 
 

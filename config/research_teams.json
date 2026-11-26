@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "status": "product_default",
+  "teams": [
+    {
+      "id": "financial-services",
+      "name": "Financials",
+      "tickers": [
+        "JPM",
+        "BMO.TO",
+        "SCHW",
+        "V",
+        "SPGI",
+        "MCO",
+        "TD.TO",
+        "BRK-B"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLF",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Net interest margin (banks only)",
+        "Credit losses (lenders only)",
+        "Payment volume growth (networks only)"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    },
+    {
+      "id": "technology",
+      "name": "Technology",
+      "tickers": [
+        "CSCO",
+        "ACN",
+        "OTEX.TO",
+        "AMD",
+        "NVDA",
+        "MSFT",
+        "SHOP.TO",
+        "AAPL",
+        "TSM",
+        "MU",
+        "CSU.TO",
+        "ASML"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLK",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Revenue growth",
+        "Gross margin",
+        "Research and development intensity"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    },
+    {
+      "id": "healthcare",
+      "name": "Healthcare",
+      "tickers": [
+        "VRTX",
+        "PFE",
+        "NVO",
+        "MCK",
+        "ISRG",
+        "EW",
+        "NVAX"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLV",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Revenue growth",
+        "Research and development intensity (developers)",
+        "Regulatory and clinical milestones"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    },
+    {
+      "id": "energy",
+      "name": "Energy",
+      "tickers": [
+        "CNQ.TO",
+        "ENB"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLE",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Production volumes (producers)",
+        "Realized commodity prices (producers)",
+        "Throughput (midstream)"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    },
+    {
+      "id": "industrials",
+      "name": "Industrials",
+      "tickers": [
+        "CP.TO",
+        "J",
+        "XYL",
+        "AMTM",
+        "CAT"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLI",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Order backlog (where disclosed)",
+        "Operating margin",
+        "Capital expenditure"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    },
+    {
+      "id": "consumer",
+      "name": "Consumer",
+      "tickers": [
+        "COST",
+        "ATD.TO",
+        "JWEL.TO",
+        "PEP",
+        "MG.TO",
+        "GIS",
+        "MC.PA",
+        "AMZN",
+        "SYY"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLP",
+          "currency": "USD",
+          "status": "proposed"
+        },
+        {
+          "ticker": "XLY",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Comparable sales (retailers)",
+        "Inventory turnover",
+        "Operating margin"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    },
+    {
+      "id": "basic-materials",
+      "name": "Materials",
+      "tickers": [
+        "NTR.TO",
+        "TMC"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLB",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Realized prices (producers)",
+        "Production volumes (operating producers)",
+        "Funding runway (pre-production)"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    },
+    {
+      "id": "communication-services",
+      "name": "Communications and Media",
+      "tickers": [
+        "DIS",
+        "GOOGL",
+        "META",
+        "T",
+        "NFLX"
+      ],
+      "benchmark_candidates": [
+        {
+          "ticker": "XLC",
+          "currency": "USD",
+          "status": "proposed"
+        }
+      ],
+      "kpi_topics": [
+        "Subscriber metrics (subscription businesses)",
+        "Advertising revenue (ad-supported businesses)",
+        "Capital expenditure (networks)"
+      ],
+      "weekly_sections": [
+        "Coverage and source dates",
+        "Relative performance",
+        "Macro drivers",
+        "Peer valuation snapshot",
+        "Industry KPIs and missing evidence",
+        "Regulation and next-week events",
+        "Risks and limitations"
+      ]
+    }
+  ]
+}

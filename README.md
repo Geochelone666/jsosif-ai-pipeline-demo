@@ -281,6 +281,11 @@ To investigate a failed daily run:
 Member stock selections, delivery weekday/time, and consent are managed by the
 private subscription configuration, not by this troubleshooting procedure.
 
+
+[Release announcements](docs/RELEASE_ANNOUNCEMENTS.md) use reviewed deployment
+records for the website's What's new page and relevant updates in the next eligible
+weekly digest. Draft features are excluded; the initial announcement list is empty.
+
 ## Tests and legacy commands
 
 ```bash
@@ -323,3 +328,19 @@ For failure diagnosis, strict coverage checks and safe recovery, see the
 [recovery runbook](docs/RECOVERY_RUNBOOK.md). Public health counts distinguish
 ready, degraded, missing and pending current-date evidence; deployment, backups
 and delivery still require their own direct verification.
+
+The 2.0 [team Supabase subscription foundation](docs/SUBSCRIPTION_BACKEND.md)
+adds a default-off authoritative snapshot path and versioned member preferences.
+Live portal activation and production roster migration remain pending;
+the existing local member editor does not become an online account system.
+
+The full [Platform 2.0 delivery register](docs/PLATFORM_2_ROADMAP.md) tracks all
+five phases and distinguishes local implementation from production acceptance.
+
+The [shared research foundation](docs/SHARED_RESEARCH.md) defines configurable
+eight-team coverage defaults and deterministic comparison contracts. Proposed
+benchmarks and KPI topics are not yet live sector data or investment signals.
+
+Site builds also include an [archive-backed shared research view](docs/SHARED_RESEARCH.md)
+for eight sector groups, saved-metric comparisons, provider peers and available FRED
+observations. Source dates and missing evidence remain visible; it makes no new API calls.

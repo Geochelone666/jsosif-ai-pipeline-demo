@@ -19,12 +19,22 @@ def load_ledger(root, *, require_manifest=True):
     for key, record in ledger.items():
         if (not isinstance(key, str) or not re.fullmatch('[a-f0-9]{64}', key)
                 or not isinstance(record, dict) or record.get('status') not in ('accepted', 'sending', 'unknown')
-                or set(record) != {'period', 'status', 'reports', 'updated_at'}
+                or set(record) not in ({'period', 'status', 'reports', 'updated_at'},
+                                      {'period', 'status', 'reports', 'updated_at',
+                                       'announcements', 'announcement_recipient'})
                 or not isinstance(record.get('reports'), list)
                 or not record['reports']
                 or not all(isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9._-]+/[A-Z0-9][A-Z0-9.-]*', value)
                            for value in record['reports'])):
             raise ValueError('Invalid delivery reservation')
+        if 'announcements' in record:
+            if (not isinstance(record['announcements'], list) or not 1 <= len(record['announcements']) <= 2 or
+                    not all(isinstance(value, str) and re.fullmatch(r'[a-z0-9][a-z0-9._-]{0,79}', value)
+                            for value in record['announcements']) or
+                    len(set(record['announcements'])) != len(record['announcements']) or
+                    not isinstance(record['announcement_recipient'], str) or
+                    not re.fullmatch(r'[a-f0-9]{64}', record['announcement_recipient'])):
+                raise ValueError('Invalid announcement reservation')
         date.fromisoformat(record['period'])
         if datetime.fromisoformat(record['updated_at']).utcoffset() is None:
             raise ValueError('Delivery timestamps must include a time zone')
