@@ -62,6 +62,11 @@ encoded-MIME size review are implemented locally; see MEMBER_ATTACHMENT_PREVIEW.
 They preserve content opt-in, pause/schedule rules and explicit draft gates, with
 no sender or ledger integration.
 
+An independent two-page macro overview draft is implemented locally from verified
+FRED/BoC archive evidence. Source ages, missing/latest-date conflicts and complete
+lineage remain explicit. Private attachment review requires separate macro consent
+and a draft switch, plus matching stock snapshot hashes; see MACRO_OVERVIEW.md.
+
 Pending: live-complete sector briefs; deterministic, sourced catalysts/events;
 authorized attachment delivery integration; controlled-link fallback for oversized
 messages. Existing 20 MiB message gating

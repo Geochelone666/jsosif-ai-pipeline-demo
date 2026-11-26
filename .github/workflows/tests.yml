@@ -51,6 +51,13 @@ jobs:
           name: sector-brief-drafts-${{ matrix.python }}
           path: ${{ runner.temp }}/sector-briefs
           retention-days: 14
+      - name: Build and validate standalone macro overview draft
+        run: python scripts/macro_overview.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --output "$RUNNER_TEMP/macro-overview"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: macro-overview-draft-${{ matrix.python }}
+          path: ${{ runner.temp }}/macro-overview
+          retention-days: 14
 
   browser:
     runs-on: ubuntu-latest

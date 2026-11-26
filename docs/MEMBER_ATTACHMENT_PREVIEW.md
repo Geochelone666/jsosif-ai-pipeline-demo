@@ -37,10 +37,14 @@ check, reservation, uncertain-outcome handling and schedule/consent checks.
   `--include-sector-drafts` review switch; otherwise the plan lists the unmet
   request. Drafts must fit the report-age window and match the selected stock
   report version IDs. A mismatch is disclosed, not silently mixed.
-- `macro_overview` and `news_catalysts` have no standalone artifact yet. A true
-  preference is recorded as an unmet request. Macro context embedded in a sector
-  document is not claimed to satisfy a standalone macro subscription. Selecting
-  a sector document selects its whole contents.
+- `macro_overview` can independently select a verified standalone macro draft via
+  `--macro-bundle` and `--include-macro-drafts`. It requires its own explicit true
+  preference, age checks and matching stock report IDs/dates/snapshot hashes.
+  The sector draft switch cannot enable it. Missing or rejected macro drafts are
+  disclosed as gaps. See [MACRO_OVERVIEW.md](MACRO_OVERVIEW.md).
+- `news_catalysts` has no standalone artifact yet and remains an unmet request.
+  Macro context embedded in a sector document is not claimed to satisfy a standalone
+  macro subscription. Selecting a sector document selects its whole contents.
 - Unknown preference names and nonboolean values fail closed, including legacy
   configs not previously subjected to the backend's stricter preference checks.
 - Final attachments are deduplicated by PDF SHA-256 per member. When multiple
@@ -74,7 +78,7 @@ idempotency keys. No `From` header or SMTP credentials are added.
 
 ## Private output and failure behavior
 
-The CLI requires a new directory outside the report store, sector bundle and source
+The CLI requires a new directory outside the report store, sector/macro bundles and source
 repository. Directory mode is 0700 and every file is created exclusively with mode
 0600. Existing directories, files and symlinks are never overwritten. `review.json`
 is written last; a directory without it is incomplete. Logs contain no member
@@ -95,7 +99,7 @@ rejection, unsupported content, checksums and altered coverage, MIME boundary/si
 limits, retained bytes, private file modes, no network or input/ledger mutation,
 and deterministic output. Real-archive acceptance uses synthetic members only.
 
-Still pending: complete/live-accepted sector intelligence, standalone macro/news
+Still pending: complete/live-accepted sector and macro intelligence, standalone news
 artifacts, authorized sender integration with fresh authority and ledger gates,
 controlled private downloads, expiry/access checks, and end-to-end team acceptance.
 This candidate does not enable these features in production.
