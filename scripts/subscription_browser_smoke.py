@@ -27,7 +27,7 @@ try:
   expect(page.locator('#status')).to_contain_text('not yet enabled')
   assert not page.locator('#login').is_visible()
   page.route('**/portal-config.json',lambda route:route.fulfill(json={'enabled':True,'url':'https://portal-test.supabase.co','publishable_key':'sb_publishable_synthetic'}))
-  state={'version':1,'approved':True,'failed':False,'conflict':False,'saves':[],'emails':0,
+  state={'version':1,'approved':True,'failed':False,'conflict':False,'saves':[],'emails':0,'security_requests':[],'request_attempts':[],'request_failed':False,'delay_requests':False,'expires_in':3600,
          'preferences':{'name':'Example Analyst','groups':['tech'],'tickers':['CSCO'],'enabled':True,
                         'timezone':'America/Toronto','send_weekday':1,'send_time':'09:00'}}
   def api(route):
@@ -38,12 +38,26 @@ try:
     assert data['email']=='analyst@example.com';state['emails']+=1;route.fulfill(json={})
    elif path=='/auth/v1/verify':
     assert data['token']=='12345678'
-    route.fulfill(json={'access_token':'synthetic-session','expires_in':3600,'user':{'email':'analyst@example.com'}})
+    route.fulfill(json={'access_token':'synthetic-session','expires_in':state['expires_in'],'user':{'email':'analyst@example.com'}})
    else:
     assert req.headers.get('authorization')=='Bearer synthetic-session'
     if path.endswith('subscription_options'):
      if not state['approved']:route.fulfill(status=403,json={});return
      route.fulfill(json={'groups':{'tech':{'name':'Technology','tickers':['CSCO']}},'tickers':['CSCO','JPM']})
+    elif path.endswith('get_my_security_requests'):
+     if state['delay_requests']:
+      # Expire only the one-second Auth session, not the 20-second request timeout.
+      page.clock.fast_forward(1001)
+      if state['delay_requests']=='conflict':route.fulfill(status=409,json={});return
+      if state['delay_requests']=='network':route.abort();return
+     route.fulfill(json=state['security_requests'])
+    elif path.endswith('request_security'):
+     state['request_attempts'].append(deepcopy(data))
+     if not state['security_requests']:
+      state['security_requests'].append({'id':'synthetic-request','ticker':data['p_ticker'],'exchange_mic':data['p_exchange_mic'],'status':'pending','review_note':None,'updated_at':'2026-11-11T10:00:00Z'})
+     if not state['request_failed']:
+      state['request_failed']=True;route.abort();return
+     route.fulfill(json={'id':'synthetic-request','status':'pending','version':1})
     elif path.endswith('get_my_subscription'):
      route.fulfill(json={'version':state['version'],'updated_at':'2026-11-05T10:00:00Z','preferences':state['preferences']})
     elif path.endswith('save_my_subscription'):
@@ -79,6 +93,22 @@ try:
   page.locator('#enabled').uncheck();page.get_by_role('button',name='Save preferences',exact=True).click()
   expect(page.locator('#version')).to_contain_text('version: 4')
   assert not state['preferences']['enabled']
+  saved=deepcopy(state['preferences']);saved_version=state['version']
+  page.locator('#tickers').fill('UNSUPPORTED');page.get_by_role('button',name='Save preferences',exact=True).click()
+  expect(page.locator('#status')).to_contain_text('security request form')
+  page.locator('#request-ticker').fill('xyz');page.locator('#request-exchange').fill('xnas');page.locator('#request-reason').fill('Company coverage')
+  page.get_by_role('button',name='Submit security request',exact=True).click()
+  expect(page.locator('#status')).to_contain_text('could not be completed')
+  page.get_by_role('button',name='Submit security request',exact=True).click()
+  expect(page.locator('#status')).to_contain_text('Request recorded: pending')
+  expect(page.locator('#security-requests')).to_contain_text('XYZ · XNAS — pending')
+  assert state['request_attempts'][0]==state['request_attempts'][1]
+  assert len(state['security_requests'])==1 and state['preferences']==saved and state['version']==saved_version
+  state['security_requests'][0].update(status='reviewing',review_note='<img src=x onerror=alert(1)> Listing check')
+  page.get_by_role('button',name='Refresh request progress',exact=True).click()
+  expect(page.locator('#security-requests')).to_contain_text('reviewing')
+  expect(page.locator('#security-requests')).to_contain_text('<img src=x onerror=alert(1)>')
+  assert page.locator('#security-requests img').count()==0
   page.locator('#new-email').fill('new@example.com');page.get_by_role('button',name='Request email change',exact=True).click()
   expect(page.locator('#status')).to_contain_text('Email change requested')
   assert page.evaluate('localStorage.length===0 && sessionStorage.length===0')
@@ -86,11 +116,27 @@ try:
   page.screenshot(path=str(args.artifacts/'subscription-settings-mobile.png'),full_page=True)
   page.get_by_role('button',name='Sign out',exact=True).click();page.locator('#account').wait_for(state='hidden')
   assert page.locator('#name').input_value()==''
+  assert page.locator('#security-requests').inner_text()=='' and page.locator('#request-reason').input_value()==''
   state['approved']=False;login()
   expect(page.locator('#status')).to_contain_text('approve')
   assert not page.locator('#account').is_visible()
+  # A response arriving after local expiry must not reopen the account panel.
+  state['approved']=True;state['expires_in']=1
+  page.clock.install()
+  for outcome in ('success','conflict','network'):
+   state['delay_requests']=outcome;login()
+   expect(page.locator('#status')).to_contain_text('session expired')
+   expect(page.locator('#account')).to_be_hidden()
+   # Wait for the late response handler, not just the earlier expiry timer.
+   expect(page.locator('#verify-code button')).to_be_enabled()
+   expect(page.locator('#status')).to_contain_text('session expired')
+   assert page.locator('#security-requests').inner_text()==''
+   assert page.locator('#name').input_value()==''
+  state['delay_requests']=False;state['expires_in']=3600
+  login();expect(page.locator('#account')).to_be_visible()
+  expect(page.locator('#security-requests')).to_contain_text('reviewing')
   assert errors==[],errors
-  print('Portal browser checks passed: disabled gate, login, read/write, idempotent retry, conflict, opt-out, email-change request, logout, approval denial and mobile layout; all Auth/RPC requests mocked')
+  print('Portal browser checks passed: disabled gate, login, read/write, idempotent retry, conflict, opt-out, email-change request, logout, approval denial, security request retry/progress/non-activation/escaping, late-response expiry, re-login and mobile layout; all Auth/RPC requests mocked')
   browser.close()
 finally:
  server.shutdown();server.server_close()
