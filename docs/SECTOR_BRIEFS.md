@@ -78,6 +78,8 @@ It is a historical acceptance fixture, not the latest production state. There is
 no claim of current freshness on the November 26 development date.
 
 Still pending: validated benchmark observations and industry KPIs, sourced events,
-live refresh, analyst acceptance, member-based attachment selection/deduplication,
-email-size handling and approved controlled links. No private research URLs are
+live refresh, analyst acceptance, production attachment delivery and approved
+controlled links. Offline member selection, deduplication and MIME-size review are
+implemented separately in [MEMBER_ATTACHMENT_PREVIEW.md](MEMBER_ATTACHMENT_PREVIEW.md),
+with explicit draft opt-in and no sending. No private research URLs are
 published by this builder, and the existing sender remains unchanged.
