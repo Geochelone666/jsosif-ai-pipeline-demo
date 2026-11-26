@@ -57,9 +57,14 @@ five sourced peer snapshots. Deterministic JSON companions preserve full evidenc
 and missing fields. See SECTOR_BRIEFS.md. These retrospective drafts always have
 delivery readiness false; they are not completed current weekly intelligence.
 
+Offline private member attachment selection, per-member content deduplication and
+encoded-MIME size review are implemented locally; see MEMBER_ATTACHMENT_PREVIEW.md.
+They preserve content opt-in, pause/schedule rules and explicit draft gates, with
+no sender or ledger integration.
+
 Pending: live-complete sector briefs; deterministic, sourced catalysts/events;
-relevant sector attachment selection; per-member attachment deduplication;
-controlled-link fallback for oversized messages. Existing 20 MiB message gating
+authorized attachment delivery integration; controlled-link fallback for oversized
+messages. Existing 20 MiB message gating
 remains in force. Public links must never be used as a substitute for an approved
 access-control design for private research.
 
