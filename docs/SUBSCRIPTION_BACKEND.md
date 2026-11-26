@@ -103,7 +103,10 @@ existing weekly member IDs are unchanged.
    An offline fresh-authority review generator is available in
    [SUBSCRIPTION_MIGRATION.md](SUBSCRIPTION_MIGRATION.md). It emits a private SQL
    transaction ending in ROLLBACK and never connects or imports automatically.
-   An admin correction portal and incremental importer remain pending.
+   A named-admin correction RPC and private inspect/review/apply CLI are described
+   in [SUBSCRIPTION_ADMINISTRATION.md](SUBSCRIPTION_ADMINISTRATION.md); they need
+   the additional 202611150001 migration. Hosted admin UI and incremental import
+   remain pending.
 4. Build and test the authenticated settings page against staging: signup, login,
    session expiration, cross-user denial, retries, version conflicts, email changes,
    opt-out and settings read-back. Do not enable the existing portal announcement
