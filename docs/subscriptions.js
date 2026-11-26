@@ -3,15 +3,22 @@
 const $=id=>document.getElementById(id);
 let config, token=null, version=0, options, pending=null, timer, conflict=false, busy=false;
 function status(message){$('status').textContent=message;}
-function clear(){clearTimeout(timer);token=null;pending=null;version=0;options=null;conflict=false;$('preferences').reset();$('change-email').reset();$('code').value='';$('identity').textContent='';$('groups').replaceChildren();$('account').hidden=true;$('login').hidden=false;}
+function clear(){clearTimeout(timer);token=null;pending=null;version=0;options=null;conflict=false;$('preferences').reset();$('change-email').reset();$('security-request').reset();$('security-requests').replaceChildren();$('code').value='';$('identity').textContent='';$('groups').replaceChildren();$('account').hidden=true;$('login').hidden=false;}
 async function request(path,body,method='POST'){
+ const sessionToken=token;
  const headers={'apikey':config.publishable_key,'Content-Type':'application/json'};
  if(token)headers.Authorization='Bearer '+token;
  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),20000);
  try{
   const response=await fetch(config.url+path,{method,headers,body:JSON.stringify(body),redirect:'error',cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:controller.signal});
   if(!response.ok){const error=new Error('Request failed');error.status=response.status;throw error;}
-  return response.status===204?null:await response.json();
+  const result=response.status===204?null:await response.json();
+  if(token!==sessionToken){const error=new Error('Session changed');error.status=401;throw error;}
+  return result;
+ }catch(error){
+  // An expired session stays expired even if the late response is an error.
+  if(token!==sessionToken)error.status=401;
+  throw error;
  }finally{clearTimeout(timeout);}
 }
 function failure(error){
@@ -27,6 +34,16 @@ function groupControls(){
   const label=document.createElement('label'),input=document.createElement('input');input.type='checkbox';input.value=id;input.name='group';label.append(input,document.createTextNode(group.name||id));$('groups').append(label);
  }
 }
+async function loadSecurityRequests(){
+ const rows=await request('/rest/v1/rpc/get_my_security_requests',{});
+ const list=$('security-requests');list.replaceChildren();
+ if(!rows.length){const row=document.createElement('li');row.textContent='No security requests yet.';list.append(row);}
+ for(const item of rows){
+  const row=document.createElement('li');
+  row.textContent=item.ticker+' · '+item.exchange_mic+' — '+item.status+' · Updated: '+item.updated_at+(item.review_note?' · '+item.review_note:'');
+  list.append(row);
+ }
+}
 async function reload(){
  options=await request('/rest/v1/rpc/subscription_options',{});
  const saved=await request('/rest/v1/rpc/get_my_subscription',{});
@@ -36,6 +53,7 @@ async function reload(){
  for(const input of $('groups').querySelectorAll('input'))input.checked=(p.groups||[]).includes(input.value);
  for(const [id,key] of [['sector','sector_brief'],['macro','macro_overview'],['news','news_catalysts']])$(id).checked=p.content_preferences?.[key]===true;
  $('version').textContent='Settings version: '+version+(saved?.updated_at?' · Updated: '+saved.updated_at:'');
+ await loadSecurityRequests();
  $('account').hidden=false;$('login').hidden=true;status(saved?'Saved settings loaded.':'Team access confirmed. Choose your preferences to create a subscription.');
 }
 $('request-code').addEventListener('submit',event=>{event.preventDefault();action(async()=>{await request('/auth/v1/otp',{email:$('email').value.trim(),create_user:true});$('verify-code').hidden=false;status('If the address is eligible, a sign-in code has been requested. Check your email.');});});
@@ -48,7 +66,7 @@ $('verify-code').addEventListener('submit',event=>{event.preventDefault();action
 $('reload').addEventListener('click',()=>action(reload));
 $('preferences').addEventListener('submit',event=>{event.preventDefault();action(async()=>{
  const tickers=[...new Set($('tickers').value.toUpperCase().split(/[\s,;]+/).filter(Boolean))];
- if(tickers.some(t=>!options.tickers.includes(t))){status('One or more stocks are not active. Ask the team to review them before subscribing.');return;}
+ if(tickers.some(t=>!options.tickers.includes(t))){status('One or more stocks are not active. Use the security request form below to request a review before subscribing.');return;}
  const groups=[...$('groups').querySelectorAll('input:checked')].map(input=>input.value);
  if(!groups.length&&!tickers.length){status('Select a research group or at least one active stock.');return;}
  const preferences={name:$('name').value.trim(),enabled:$('enabled').checked,timezone:$('timezone').value.trim(),send_weekday:Number($('weekday').value),send_time:$('time').value,groups,tickers,content_preferences:{sector_brief:$('sector').checked,macro_overview:$('macro').checked,news_catalysts:$('news').checked}};
@@ -59,6 +77,12 @@ $('preferences').addEventListener('submit',event=>{event.preventDefault();action
  if(!Number.isSafeInteger(result.version)||result.version<=version)throw Error('Invalid save response');
  version=result.version;pending=null;$('version').textContent='Settings version: '+version+' · Updated: '+result.updated_at;status('Preferences saved. Future eligible deliveries will use the effective settings.');
 });});
+$('security-request').addEventListener('submit',event=>{event.preventDefault();action(async()=>{
+ const result=await request('/rest/v1/rpc/request_security',{p_ticker:$('request-ticker').value.trim().toUpperCase(),p_exchange_mic:$('request-exchange').value.trim().toUpperCase(),p_reason:$('request-reason').value.trim()});
+ status('Request recorded: '+result.status+'. Repeated requests retain the original review. Your subscriptions have not changed.');
+ await loadSecurityRequests();
+});});
+$('refresh-requests').addEventListener('click',()=>action(async()=>{await loadSecurityRequests();status('Security request progress refreshed.');}));
 $('change-email').addEventListener('submit',event=>{event.preventDefault();action(async()=>{await request('/auth/v1/user',{email:$('new-email').value.trim()},'PUT');$('new-email').value='';status('Email change requested. Complete the required confirmations, then sign in with the verified address.');});});
 $('signout').addEventListener('click',()=>action(async()=>{try{await request('/auth/v1/logout',{});}finally{clear();status('Signed out on this page.');}}));
 (async()=>{try{

@@ -21,7 +21,7 @@ still require review, deployment and actual integration acceptance.
 | Team-approved signup | Auth signup UI plus database approval requirement implemented locally; operational invitation/approval UI pending |
 | Administrator member correction | Pending reviewed admin workflow/tooling; not exposed through member RPCs |
 | Legacy JSON/CSV migration preserving member IDs | Compatibility and schema support implemented; real migration tooling, reviewed identity map and production import pending |
-| Unknown security request queue | Pending; current UI and server reject unsupported activation |
+| Unknown security request queue | Implemented locally: own-request RLS, portal submission/status, bounded duplicate-safe queue and backend versioned review audit; live acceptance and automated listing/source/cost onboarding pending |
 | One authoritative sender configuration | Implemented locally, opt-in; real service credential, source switch and integration acceptance pending |
 | Verified release records / website What's new | Implemented locally; catalogue intentionally empty |
 | Relevant announcement in next eligible weekly mail, deduplication | Implemented locally; bounded selection, reservation before SMTP, uncertain-outcome suppression |

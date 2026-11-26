@@ -82,7 +82,10 @@ jobs:
         if: always()
         with:
           name: browser-acceptance
-          path: review/browser
+          path: |
+            review/browser
+            review/subscription-browser
+            review/shared-research
           retention-days: 14
 
   subscription-database:

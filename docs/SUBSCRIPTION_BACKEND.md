@@ -38,7 +38,8 @@ IANA timezone, weekday (Monday=0), HH:MM, optional start date and the boolean
 `sector_brief`, `macro_overview`, `news_catalysts` content preferences. Content
 preferences are stored for the next development stages; they do not imply that
 Sector/Macro reports are generated or attached yet. Unsupported symbols are
-rejected; the requested-security onboarding queue is still to be implemented.
+rejected; members can submit a separate review request through the security queue.
+Requests never activate securities or change subscriptions; see SECURITY_REQUESTS.md.
 
 `subscription_snapshot()` is executable only by the server service role. One
 statement exports verified Auth emails, stable member IDs, preferences and policy
@@ -146,7 +147,8 @@ no legacy fallback, email/opt-out changes and failure before ledger mutation/SMT
 
 Phase 1 still needs actual hosted authentication/email-change acceptance,
 reviewed roster migration/admin correction, security acceptance on the actual
-Supabase project, unsupported-security requests and deployed release announcements.
+Supabase project and deployed release announcements. Unsupported-security requests
+now have a locally tested queue; see [SECURITY_REQUESTS.md](SECURITY_REQUESTS.md).
 Phase 2 then establishes shared Sector/Macro/Peer data; sector briefs depend on
 those verified sources. Keep the existing report integrity, quota and email gates
 throughout. No live capability is announced by this foundation.
@@ -169,7 +171,8 @@ portal-config.json by default. The current deployment workflows do not enable it
 For staging only, supply `--portal-config /private/path/portal-public.json` to the
 site builder, containing exactly `enabled: true`, the HTTPS Supabase `url`, and a
 `publishable_key` starting with sb_publishable_. No service/secret key is accepted.
-Apply the second subscription_options migration after the authority migration.
+Apply the subscription_options migration after the authority migration, then
+202611110001_security_requests.sql before enabling this portal version.
 It returns active tickers and group options only to approved authenticated members.
 
 The browser requests email codes, verifies them with Auth and calls own-member
