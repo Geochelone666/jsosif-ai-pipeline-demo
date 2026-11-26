@@ -43,6 +43,9 @@ jobs:
       - name: Load and validate private member configuration
         id: members
         env:
+          SUBSCRIPTIONS_BACKEND: ${{ vars.SUBSCRIPTIONS_BACKEND || 'legacy' }}
+          SUBSCRIPTIONS_SUPABASE_URL: ${{ vars.SUBSCRIPTIONS_SUPABASE_URL }}
+          SUBSCRIPTIONS_SERVICE_KEY: ${{ secrets.SUBSCRIPTIONS_SERVICE_KEY }}
           SUBSCRIPTIONS_JSON: ${{ secrets.SUBSCRIPTIONS_JSON }}
           MEMBERS_CSV: ${{ secrets.MEMBERS_CSV }}
         run: python scripts/prepare_subscriptions.py "$RUNNER_TEMP/subscriptions.json"
@@ -61,6 +64,9 @@ jobs:
         env:
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          SUBSCRIPTIONS_BACKEND: ${{ vars.SUBSCRIPTIONS_BACKEND || 'legacy' }}
+          SUBSCRIPTIONS_SUPABASE_URL: ${{ vars.SUBSCRIPTIONS_SUPABASE_URL }}
+          SUBSCRIPTIONS_SERVICE_KEY: ${{ secrets.SUBSCRIPTIONS_SERVICE_KEY }}
           JSOSIF_APPROVED_SEND: '1'
           EVENT_NAME: ${{ github.event_name }}
           CONFIRM: ${{ inputs.confirm }}

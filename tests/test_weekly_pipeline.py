@@ -262,6 +262,69 @@ def test_health_counts_current_reports_instead_of_attempt_claims(store, tmp_path
     assert health['status'] == 'interrupted'
 
 
+@pytest.fixture
+def release_catalog(tmp_path):
+    p = tmp_path / 'reviewed-releases.json'
+    write_json(p, {'schema_version': 1, 'releases': [{
+        'id': 'research-v2', 'version': '2.0', 'title': 'Reviewed research update',
+        'summary': ['A verified improvement is now available.'], 'kind': 'feature', 'status': 'published',
+        'audience': {'groups': [], 'tickers': []},
+        'url': 'https://geochelone666.github.io/jsosif-ai-pipeline-demo/whats-new.html',
+        'deployed_at': '2026-10-18T10:00:00Z', 'verified_at': '2026-10-18T11:00:00Z',
+        'evidence_url': 'https://github.com/Geochelone666/jsosif-ai-pipeline-demo/actions/runs/123'}]})
+    return p
+
+
+def test_announcements_preview_does_not_consume_slot_and_reserves_before_smtp(config, store, release_catalog):
+    kwargs = {'now': NOW, 'release_catalog': release_catalog}
+    preview = store.parent / (store.name + '-private-preview')
+    assert weekly.deliver(config, store, preview_dir=preview, **kwargs)['prepared'] == 1
+    assert not (store / 'state/deliveries.json').exists()
+    assert 'Reviewed research update' in next(preview.glob('*.eml')).read_text()
+    sent = []
+    def backend(message):
+        state = next(iter(read_json(store / 'state/deliveries.json').values()))
+        assert state['status'] == 'sending' and state['announcements'] == ['research-v2']
+        assert 'Reviewed research update' in message.get_body(('plain',)).get_content()
+        assert 'Reviewed research update' in message.get_body(('html',)).get_content()
+        assert len(list(message.iter_attachments())) == 2
+        sent.append(message)
+    assert weekly.deliver(config, store, really_send=True, backend=backend, **kwargs)['sent'] == 1
+    assert weekly.deliver(config, store, really_send=True, backend=backend, **kwargs)['skipped'] == 1
+    assert len(sent) == 1
+
+
+def test_announcements_wait_for_eligible_reports_and_never_create_standalone_mail(config, store, release_catalog):
+    from datetime import timedelta
+    sent = []
+    result = weekly.deliver(config, store, now=NOW+timedelta(days=7), really_send=True,
+                            backend=sent.append, release_catalog=release_catalog)
+    assert result['deferred'] == 1 and sent == []
+    assert not (store / 'state/deliveries.json').exists()
+
+
+def test_announcement_unknown_blocks_repetition_across_weeks(config, store, release_catalog):
+    from datetime import timedelta
+    def unknown(message): raise TimeoutError('Synthetic uncertain SMTP')
+    assert weekly.deliver(config, store, now=NOW, really_send=True, backend=unknown,
+                          release_catalog=release_catalog)['unknown'] == 1
+    # Previous-week ambiguity must also suppress this announcement in later valid digests.
+    import release_announcements
+    assert release_announcements.select(release_announcements.load(release_catalog), config['members'][0],
+            ['CSCO','JPM'], read_json(store / 'state/deliveries.json'), NOW+timedelta(days=7)) == []
+
+
+def test_bad_release_catalog_preserves_existing_site(store, tmp_path, monkeypatch):
+    import release_announcements
+    output=tmp_path.parent/(tmp_path.name+'-site')
+    build(store,output)
+    before=(output/'index.json').read_bytes()
+    bad=tmp_path/'bad-releases.json'; bad.write_text('{broken')
+    monkeypatch.setattr(release_announcements,'CATALOG',bad)
+    with pytest.raises(ValueError): build(store,output)
+    assert (output/'index.json').read_bytes()==before
+
+
 def test_site_has_all_versions_but_no_private_state(store, tmp_path):
     write_json(store / 'state/deliveries.json', {'private': 'sensitive'})
     output = tmp_path.parent / (tmp_path.name + '-site')
@@ -649,3 +712,133 @@ def test_invalid_public_metadata_preserves_previous_site(store, tmp_path, locati
     with pytest.raises(ValueError, match='Invalid public'):
         build(store, output)
     assert {p.relative_to(output): p.read_bytes() for p in output.rglob('*') if p.is_file()} == before
+
+
+def test_authority_change_blocks_before_ledger_reservation_or_smtp(config, store, monkeypatch):
+    import subscription_authority
+    def changed(_):
+        raise ValueError('Subscriptions changed')
+    monkeypatch.setattr(subscription_authority, 'assert_current', changed)
+    submitted = []
+    with pytest.raises(ValueError, match='Subscriptions changed'):
+        weekly.deliver(config, store, now=NOW, really_send=True, backend=submitted.append)
+    assert submitted == []
+    assert not (store / 'state/deliveries.json').exists()
+
+
+def test_prepared_authority_snapshot_drives_real_sender_and_deduplication(config, store, monkeypatch, tmp_path):
+    import subscription_authority as authority
+    import prepare_subscriptions
+    from subscriptions import load
+    # Exercise the same prepare -> file -> sender path used by Actions.
+    snapshot = dict(config, _subscription_authority={
+        'revision': '1', 'sha256': authority.fingerprint(config), 'generated_at': NOW.isoformat()})
+    monkeypatch.setenv('SUBSCRIPTIONS_BACKEND', 'supabase')
+    monkeypatch.setattr(authority, 'fetch_snapshot', lambda: snapshot)
+    target = tmp_path / 'private-prepared.json'
+    assert prepare_subscriptions.prepare(target)
+    submitted = []
+    assert weekly.deliver(load(target), store, now=NOW, really_send=True, backend=submitted.append)['sent'] == 1
+    assert weekly.deliver(load(target), store, now=NOW, really_send=True, backend=submitted.append)['skipped'] == 1
+    assert len(submitted) == 1
+    config['members'][0]['enabled'] = False
+    snapshot = dict(config, _subscription_authority={
+        'revision': '2', 'sha256': authority.fingerprint(config), 'generated_at': NOW.isoformat()})
+    assert prepare_subscriptions.prepare(target)
+    assert weekly.deliver(load(target), store, now=NOW, really_send=True, backend=submitted.append)['skipped'] == 1
+    assert len(submitted) == 1
+
+
+def test_portal_build_is_disabled_by_default_and_only_accepts_public_key(store,tmp_path):
+    output=tmp_path.parent/(tmp_path.name+'-portal-site')
+    build(store,output)
+    assert read_json(output/'portal-config.json')=={'enabled':False}
+    assert (output/'subscriptions.js').is_file()
+    public={'enabled':True,'url':'https://team-test.supabase.co','publishable_key':'sb_publishable_synthetic'}
+    path=tmp_path/'portal.json';write_json(path,public)
+    build(store,output,portal_config=path)
+    assert read_json(output/'portal-config.json')==public
+    before=(output/'portal-config.json').read_bytes()
+    write_json(path,dict(public,publishable_key='sb_secret_should_never_be_public'))
+    with pytest.raises(ValueError,match='public publishable'):build(store,output,portal_config=path)
+    assert (output/'portal-config.json').read_bytes()==before
+    write_json(path,dict(public,service_key='private'))
+    with pytest.raises(ValueError):build(store,output,portal_config=path)
+
+
+def test_shared_workspace_projects_allowlisted_sources_and_deduplicates_macro(store):
+    from research_workspace import build_dataset
+    index=read_json(store/'index.json')
+    for entry in index['reports']:
+        source=(store/entry['json']).parent/'sources'
+        write_json(source/'fred.json',{'available':True,'indicators':[
+            {'series_id':'UNRATE','value':0,'date':'2026-10-01','api_key':'synthetic-private'},
+            {'series_id':'PRIVATE','value':99,'date':'2026-10-01'}], 'members':['private@example.com']})
+        write_json(source/(entry['ticker'].lower()+'-comparables.json'),
+                   {'as_of':'2026-10-19','peers':[{'ticker':'V','currency':'USD','pe':20,'revenue_growth':0.05,'ret_1y':0.2,'mktcap':0,'email':'private@example.com'}]})
+    value=build_dataset(store,index)
+    assert len(value['macro_versions'])==1 and len(value['stocks'])==2
+    macro=next(iter(value['macro_versions'].values()))
+    assert macro['observations'][0]['value']==0
+    assert len(macro['observations'])==1
+    assert macro['provenance']['integrity'].startswith('hash observed at build')
+    assert 'synthetic-private' not in json.dumps(value) and 'private@example.com' not in json.dumps(value)
+    metrics={r['metric']:r for r in value['stocks'][0]['peers']['rows'][0]['metrics']}
+    assert metrics['revenue_growth']['value']==0.05 and metrics['revenue_growth']['unit']=='fraction'
+    assert metrics['mktcap']['value']==0 and metrics['mktcap']['unit']=='USD'
+
+
+def test_shared_workspace_isolates_bad_optional_sources_and_retains_report_quality(store):
+    from research_workspace import build_dataset
+    index=read_json(store/'index.json');entry=index['reports'][0]
+    source=(store/entry['json']).parent/'sources';source.mkdir()
+    (source/'fred.json').write_text('{broken')
+    write_json(source/(entry['ticker'].lower()+'-comparables.json'),{'as_of':'2099-01-01','peers':[]})
+    value=build_dataset(store,index)
+    stock=next(s for s in value['stocks'] if s['ticker']==entry['ticker'])
+    assert stock['quality']=='ready' and stock['peers']['status']=='missing' and stock['macro_status']=='missing'
+    assert len(value['stocks'])==2
+
+
+def test_shared_workspace_keeps_latest_version_and_missing_peer_currency_explicit(store):
+    from research_workspace import build_dataset
+    index=read_json(store/'index.json');entry=index['reports'][0]
+    source=(store/entry['json']).parent/'sources'
+    write_json(source/(entry['ticker'].lower()+'-comparables.json'),
+               {'as_of':entry['as_of'],'peers':[{'ticker':'V','mktcap':100,'ret_1y':True}]})
+    newer=dict(entry,report_id='new/'+entry['ticker'],generated_at='2026-10-19T14:00:00+00:00')
+    index['reports'].append(newer)
+    value=build_dataset(store,index);stock=next(s for s in value['stocks'] if s['ticker']==entry['ticker'])
+    assert len(value['stocks'])==2 and stock['report_id']==newer['report_id']
+    metrics={m['metric']:m for m in stock['peers']['rows'][0]['metrics']}
+    assert metrics['mktcap']['value'] is None and metrics['ret_1y']['value'] is None
+    assert stock['peers']['status']=='missing' and stock['peers']['reason']
+
+
+def test_macro_future_observations_do_not_become_available_for_older_report_context(store):
+    from research_workspace import macro
+    entry=read_json(store/'index.json')['reports'][0]
+    source=(store/entry['json']).parent/'sources'
+    write_json(source/'fred.json',{'available':True,'indicators':[{'series_id':'UNRATE','date':'2026-10-19','value':4.2}]})
+    current=macro(store,entry)
+    older=macro(store,dict(entry,as_of='2026-10-18'))
+    assert current['status']=='observed' and older['status']=='missing'
+    assert older['observations'][0]['value'] is None
+    assert current['provenance']['sha256']==older['provenance']['sha256']
+
+
+def test_site_cannot_drop_expected_source_checksums_before_validation(store,tmp_path):
+    index=read_json(store/'index.json');entry=index['reports'][0]
+    sources=(store/entry['json']).parent/'sources';expected={}
+    for kind in ('quant','info','ai-intel','rss-items','comparables','earnings','edgar','fred'):
+        name='fred.json' if kind=='fred' else entry['ticker'].lower()+'-'+kind+'.json'
+        write_json(sources/name,{})
+        expected[kind]=digest(sources/name)
+    entry['source_sha256']=expected
+    write_json(store/'index.json',index)
+    output=tmp_path.parent/(tmp_path.name+'-checksummed-site')
+    build(store,output);before=(output/'index.json').read_bytes()
+    write_json(sources/'fred.json',{'available':True,'indicators':[{'series_id':'UNRATE','value':99,'date':entry['as_of']}]})
+    with pytest.raises(ValueError,match='source integrity'):
+        build(store,output)
+    assert (output/'index.json').read_bytes()==before
