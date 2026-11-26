@@ -111,3 +111,7 @@ jobs:
         run: psql -X -v ON_ERROR_STOP=1 -f tests/sql/subscription_authority.sql
       - name: Verify concurrent preference updates
         run: python tests/sql/concurrent_subscriptions.py
+      - name: Verify private migration reviews in a separate disposable database
+        run: |
+          createdb subscription_migration_review
+          PGDATABASE=subscription_migration_review PYTHONPATH=scripts python tests/sql/migration_review.py
