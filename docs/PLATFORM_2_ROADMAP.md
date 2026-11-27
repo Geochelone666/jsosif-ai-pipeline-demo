@@ -67,7 +67,13 @@ FRED/BoC archive evidence. Source ages, missing/latest-date conflicts and comple
 lineage remain explicit. Private attachment review requires separate macro consent
 and a draft switch, plus matching stock snapshot hashes; see MACRO_OVERVIEW.md.
 
-Pending: live-complete sector briefs; deterministic, sourced catalysts/events;
+An archive-backed news evidence index is implemented locally; see NEWS_EVIDENCE.md.
+It retains exact RSS identities, UTC publication metadata, per-stock saved prediction
+references, source hashes and explicit unmatched/conflicting evidence. Publication
+dates do not establish event occurrence dates. Standalone news PDFs and member
+attachment selection remain pending; this index does not satisfy a news subscription.
+
+Pending: live-complete sector briefs; verified, sourced catalysts/events;
 authorized attachment delivery integration; controlled-link fallback for oversized
 messages. Existing 20 MiB message gating
 remains in force. Public links must never be used as a substitute for an approved

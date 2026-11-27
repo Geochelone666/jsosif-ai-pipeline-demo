@@ -44,6 +44,14 @@ jobs:
           path: ${{ runner.temp }}/research-source-review.tar.gz
           retention-days: 7
 
+      - name: Build retrospective news evidence with explicit source gaps
+        run: python scripts/news_evidence.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --output "$RUNNER_TEMP/news-evidence"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: news-evidence-${{ matrix.python }}
+          path: ${{ runner.temp }}/news-evidence
+          retention-days: 14
+
       - name: Build eight sector brief drafts and verify four-page structure
         run: python scripts/sector_briefs.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --output "$RUNNER_TEMP/sector-briefs"
       - uses: actions/upload-artifact@v6
