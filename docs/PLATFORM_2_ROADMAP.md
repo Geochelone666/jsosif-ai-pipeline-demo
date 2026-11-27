@@ -70,8 +70,10 @@ and a draft switch, plus matching stock snapshot hashes; see MACRO_OVERVIEW.md.
 An archive-backed news evidence index is implemented locally; see NEWS_EVIDENCE.md.
 It retains exact RSS identities, UTC publication metadata, per-stock saved prediction
 references, source hashes and explicit unmatched/conflicting evidence. Publication
-dates do not establish event occurrence dates. Standalone news PDFs and member
-attachment selection remain pending; this index does not satisfy a news subscription.
+dates do not establish event occurrence dates. Standalone four-page news review
+drafts and separately opted-in private attachment previews are implemented locally;
+see NEWS_REVIEW.md. The archive-wide draft is not personalized or live-accepted
+news intelligence and remains ineligible for production delivery.
 
 Pending: live-complete sector briefs; verified, sourced catalysts/events;
 authorized attachment delivery integration; controlled-link fallback for oversized

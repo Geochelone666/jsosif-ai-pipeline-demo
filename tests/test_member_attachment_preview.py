@@ -12,6 +12,9 @@ import sys
 
 import pytest
 
+import news_review
+import news_evidence
+
 import member_attachment_preview as preview
 from report_store import write_json, read_json, digest
 from sector_briefs import write_bundle
@@ -338,3 +341,101 @@ def test_macro_cli_builds_a_private_preview(inputs, tmp_path):
     assert result.returncode == 0, result.stderr
     plan = read_json(output / 'review.json')['members'][0]
     assert plan['attachments'][-1]['kind'] == 'macro_draft' and plan['delivery_ready'] is False
+
+
+def news_bundle_for(inputs, tmp_path, *, as_of='2026-11-06'):
+    out = tmp_path / ('news-' + as_of)
+    news_review.write_bundle(news_review.assemble(news_evidence.build(inputs[1], as_of=as_of)), out, store=inputs[1])
+    return out
+
+
+def test_news_requires_own_preference_and_independent_draft_switch(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path)
+    config = inputs[0]; config['members'][0]['content_preferences'] = {}
+    review, _ = prepare(inputs, news_bundle=bundle, include_news_drafts=True)
+    assert len(review['members'][0]['attachments']) == 3
+    config['members'][0]['content_preferences'] = {'news_catalysts': True}
+    review, _ = prepare(inputs, news_bundle=bundle, include_macro_drafts=True, include_sector_drafts=True)
+    assert review['members'][0]['gaps'] == ['news_catalysts: draft review not enabled']
+    review, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True)
+    plan = review['members'][0]
+    assert plan['status'] == 'prepared' and not plan['delivery_ready'] and not review['ledger_consulted']
+    assert [a['kind'] for a in plan['attachments']] == ['stock_report']*3 + ['news_draft']
+    message = parse_one(messages)
+    assert len(list(message.iter_attachments())) == 4 and message['From'] is None
+    assert 'not only your holdings' in message.get_body(preferencelist=('plain',)).get_content()
+
+
+def test_news_preview_keeps_pause_personal_override_and_recipients_separate(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path)
+    first = inputs[0]['members'][0]; first['tickers'] = ['CSCO']; first['content_preferences'] = {'news_catalysts': True}
+    second = deepcopy(first); second.update(id='second', email='second@example.com', enabled=False)
+    third = deepcopy(first); third.update(id='third', email='third@example.com', content_preferences={'news_catalysts': False})
+    inputs[0]['members'] += [second, third]
+    review, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True, preview_all=True)
+    assert len(messages) == 2
+    assert sorted(len(m['attachments']) for m in review['members']) == [0, 1, 2]
+    assert sum(a['kind'] == 'news_draft' for m in review['members'] for a in m['attachments']) == 1
+    assert any(m['reason'] == 'paused' for m in review['members'])
+
+
+def test_news_snapshot_lineage_mismatch_is_explicit(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path)
+    inputs[0]['members'][0]['content_preferences'] = {'news_catalysts': True}
+    index = read_json(inputs[1] / 'index.json'); entry = index['reports'][0]
+    path = inputs[1] / entry['json']; snap = read_json(path); snap['disclaimer'] = 'Changed source snapshot'
+    write_json(path, snap); entry['sha256']['json'] = digest(path); write_json(inputs[1] / 'index.json', index)
+    review, _ = prepare(inputs, news_bundle=bundle, include_news_drafts=True)
+    assert review['members'][0]['gaps'] == ['news_catalysts: stock snapshot lineage mismatch']
+    assert len(review['members'][0]['attachments']) == 3
+
+
+@pytest.mark.parametrize('as_of', ['2026-11-07', '2026-11-01'])
+def test_news_future_or_stale_drafts_are_not_attached(inputs, tmp_path, as_of):
+    bundle = news_bundle_for(inputs, tmp_path, as_of=as_of)
+    inputs[0]['members'][0]['content_preferences'] = {'news_catalysts': True}
+    review, _ = prepare(inputs, news_bundle=bundle, include_news_drafts=True)
+    assert review['members'][0]['gaps'] == ['news_catalysts: stale or future draft']
+
+
+def test_news_uses_verified_captured_bytes_even_if_file_changes(inputs, tmp_path, monkeypatch):
+    bundle = news_bundle_for(inputs, tmp_path); manifest = read_json(bundle / 'manifest.json')
+    expected = (bundle / manifest['pdf']).read_bytes()
+    original = news_review.load_bundle
+    def load_then_change(root):
+        result = original(root)
+        (root / manifest['pdf']).write_bytes(b'changed after capture')
+        return result
+    monkeypatch.setattr(news_review, 'load_bundle', load_then_change)
+    inputs[0]['members'][0]['content_preferences'] = {'news_catalysts': True}
+    _, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True)
+    attachments = list(parse_one(messages).iter_attachments())
+    assert attachments[-1].get_payload(decode=True) == expected
+
+
+def test_news_counts_toward_actual_encoded_mime_budget(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path)
+    inputs[0]['members'][0]['content_preferences'] = {'news_catalysts': True}
+    baseline, _ = prepare(inputs)
+    cap = baseline['members'][0]['encoded_bytes'] + 1
+    review, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True, max_bytes=cap)
+    plan = review['members'][0]
+    assert not messages and plan['status'] == 'deferred_size'
+    assert plan['encoded_bytes'] > cap and plan['link_fallback'] == 'unavailable_requires_approved_access_control'
+
+
+def test_news_cli_writes_private_outputs_and_leaves_inputs_unchanged(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path); config, root, _ = inputs
+    config['members'][0]['content_preferences'] = {'news_catalysts': True}
+    before = {p: p.read_bytes() for folder in (root, bundle) for p in folder.rglob('*') if p.is_file()}
+    config_file = tmp_path / 'news-members.json'; write_json(config_file, config)
+    output = tmp_path / 'private-news'
+    result = subprocess.run([sys.executable, 'scripts/member_attachment_preview.py', '--config', str(config_file),
+        '--store', str(root), '--news-bundle', str(bundle), '--at', NOW.isoformat(), '--include-news-drafts',
+        '--output', str(output)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    plan = read_json(output / 'review.json')['members'][0]
+    assert plan['attachments'][-1]['kind'] == 'news_draft' and not plan['delivery_ready']
+    assert stat.S_IMODE(output.stat().st_mode) == 0o700
+    assert all(stat.S_IMODE(p.stat().st_mode) == 0o600 for p in output.iterdir())
+    assert all(p.read_bytes() == raw for p, raw in before.items())

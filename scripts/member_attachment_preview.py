@@ -136,6 +136,10 @@ def encode_message(member, attachments, gaps, now, plan_id):
     if any(a['kind'] == 'macro_draft' for a in attachments):
         lines += ['', 'The standalone macro overview is a retrospective draft with explicit observation dates.',
                   'It is not a live refresh, forecast or point-in-time backtest dataset.']
+    if any(a['kind'] == 'news_draft' for a in attachments):
+        lines += ['', 'The standalone news review is a retrospective headline draft, not verified event intelligence.',
+                  'It shows a bounded chronology across the covered archive, not only your holdings.',
+                  'Publication dates are not event dates; saved predictions and missing evidence remain explicit.']
     if gaps:
         lines += ['', 'Requested content not included:'] + ['- ' + g for g in gaps]
     lines += ['', 'Do not send this file. Rebuild through an authorized delivery flow after live acceptance.']
@@ -147,17 +151,20 @@ def encode_message(member, attachments, gaps, now, plan_id):
 
 
 def prepare(config, store, *, now, sector_bundle=None, include_sector_drafts=False,
-            macro_bundle=None, include_macro_drafts=False, preview_all=False, max_bytes=MAX_MESSAGE_BYTES):
+            macro_bundle=None, include_macro_drafts=False, news_bundle=None, include_news_drafts=False,
+            preview_all=False, max_bytes=MAX_MESSAGE_BYTES):
     validate_review_config(config)
     if now.utcoffset() is None:
         raise ValueError('Review time must include a timezone')
     if type(max_bytes) is not int or not 1 <= max_bytes <= MAX_MESSAGE_BYTES:
         raise ValueError('Message budget must not exceed 20 MiB')
-    if any(type(flag) is not bool for flag in (include_sector_drafts, include_macro_drafts, preview_all)):
+    if any(type(flag) is not bool for flag in (include_sector_drafts, include_macro_drafts, include_news_drafts, preview_all)):
         raise ValueError('Review options must be booleans')
     briefs = load_briefs(sector_bundle)
     from macro_overview import load_bundle
     macro = load_bundle(macro_bundle)
+    from news_review import load_bundle as load_news
+    news = load_news(news_bundle)
     mapping = {ticker: row['id'] for row in teams(ROOT / 'config/research_teams.json') for ticker in row['tickers']}
     index = read_object(Path(store) / 'index.json', limit=MAX_INDEX_BYTES)
     if not isinstance(index.get('reports'), list):
@@ -217,7 +224,22 @@ def prepare(config, store, *, now, sector_bundle=None, include_sector_drafts=Fal
                     attachments.append({'kind': 'macro_draft', 'id': macro['overview_id'], 'as_of': macro['as_of'],
                                         'filename': macro['filename'], 'sha256': macro['sha256'], 'bytes': macro['bytes']})
         if content.get('news_catalysts') is True:
-            gaps.append('news_catalysts: standalone artifact unavailable')
+            if news is None:
+                gaps.append('news_catalysts: standalone artifact unavailable')
+            else:
+                age = (now.astimezone(ZoneInfo('America/Toronto')).date() - exact_date(news['as_of'])).days
+                matching = all(news['report_versions'].get(t) == {
+                    'report_id': r['report_id'], 'as_of': r['as_of'], 'snapshot_sha256': r['sha256']['json']}
+                    for t, r in selected.items())
+                if not 0 <= age <= config.get('max_report_age_days', 4):
+                    gaps.append('news_catalysts: stale or future draft')
+                elif not matching:
+                    gaps.append('news_catalysts: stock snapshot lineage mismatch')
+                elif not include_news_drafts:
+                    gaps.append('news_catalysts: draft review not enabled')
+                else:
+                    attachments.append({'kind': 'news_draft', 'id': news['review_id'], 'as_of': news['as_of'],
+                                        'filename': news['filename'], 'sha256': news['sha256'], 'bytes': news['bytes']})
         if content.get('sector_brief') is True:
             for sector_id in sorted({mapping[t] for t in selected}):
                 brief = briefs.get(sector_id)
@@ -277,9 +299,11 @@ def main():
     parser.add_argument('--store', type=Path, required=True)
     parser.add_argument('--sector-bundle', type=Path)
     parser.add_argument('--macro-bundle', type=Path)
+    parser.add_argument('--news-bundle', type=Path)
     parser.add_argument('--at', required=True, help='Explicit timezone-aware review timestamp')
     parser.add_argument('--include-sector-drafts', action='store_true')
     parser.add_argument('--include-macro-drafts', action='store_true')
+    parser.add_argument('--include-news-drafts', action='store_true')
     parser.add_argument('--preview-all', action='store_true', help='Ignore schedule/start date, never pause')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
@@ -287,8 +311,9 @@ def main():
         review, messages = prepare(read_object(args.config), args.store,
             now=datetime.fromisoformat(args.at.replace('Z', '+00:00')), sector_bundle=args.sector_bundle,
             include_sector_drafts=args.include_sector_drafts, macro_bundle=args.macro_bundle,
-            include_macro_drafts=args.include_macro_drafts, preview_all=args.preview_all)
-        write_private(args.output, review, messages, forbidden_roots=[args.store, args.sector_bundle, args.macro_bundle, ROOT])
+            include_macro_drafts=args.include_macro_drafts, news_bundle=args.news_bundle,
+            include_news_drafts=args.include_news_drafts, preview_all=args.preview_all)
+        write_private(args.output, review, messages, forbidden_roots=[args.store, args.sector_bundle, args.macro_bundle, args.news_bundle, ROOT])
     except (ValueError, OSError, KeyError, TypeError, AttributeError):
         parser.error('Private review failed; check input integrity, preferences and a new output directory')
     print('Private attachment review completed; no send or ledger operation performed')

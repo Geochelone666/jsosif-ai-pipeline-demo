@@ -61,7 +61,8 @@ ineligible for sending, including when those preview gates pass.
 One macro PDF is added per member and included in the existing per-member content
 deduplication and actual encoded 20 MiB MIME budget. Verified bytes are retained for
 assembly. Pause/schedule rules, private 0700/0600 output, no-authority/no-ledger
-semantics and unsupported news gaps remain unchanged. No direct send mode exists.
+semantics remain unchanged. News drafts require a separate preference and switch;
+see NEWS_REVIEW.md. No direct send mode exists.
 
 ## Output and acceptance
 
@@ -80,4 +81,5 @@ claim of current November 26 data. The delivery evidence records PDF review, ful
 regression, deterministic rebuilds and synthetic-member MIME acceptance.
 
 Live refresh, additional series, revised-data/vintage handling, current-data team
-acceptance, news artifacts and authorized production distribution remain pending.
+acceptance and authorized production distribution remain pending. Independent news
+review drafts and private attachment opt-in are described in NEWS_REVIEW.md.
