@@ -48753,6 +48753,33 @@
         "edgar": "a2b6b5948ec9baa3f382a6b330e8395188b81b0ad4515d5d53a419352ffb4b08",
         "fred": "1ac8321716b78fa5eab2c526996450419ea0684c8159c44ad567226aaaefbb36"
       }
+    },
+    {
+      "report_id": "20261127T063646Z-c0c26981/ACN",
+      "ticker": "ACN",
+      "generated_at": "2026-11-27T06:37:04.240834+00:00",
+      "as_of": "2026-11-26",
+      "quality": "ready",
+      "market_as_of": "2026-11-25",
+      "news_as_of": "2026-11-26",
+      "sha256": {
+        "md": "c7a618fc4cdce61bef465b26205b0d27b01b75af265ebc235ee2f962e797fd2b",
+        "json": "8fcc752300720c5f6a965288f57d07890667f04d1ab0f4dd9d532be0e7c880c5",
+        "pdf": "740425901dce49678d9a7ce29c8f2b516e3a5eb4837efe21c330854d9cd59207"
+      },
+      "md": "archive/20261127T063646Z-c0c26981/ACN/ACN-intelligence-20261126.md",
+      "json": "archive/20261127T063646Z-c0c26981/ACN/ACN-intelligence-20261126.json",
+      "pdf": "archive/20261127T063646Z-c0c26981/ACN/ACN-intelligence-20261126.pdf",
+      "source_sha256": {
+        "quant": "714a4c996e7d81e87533176b35cc455103ed3aa55606fb2e17af915fb91dbcc2",
+        "info": "c4c27d4cb610fec1fbfa5c357cefe4a35836eab8107bba09be763d4692d73b3f",
+        "ai-intel": "ee8bdbf4c2fade4e72819943c6a239ec4b9dec6a15910a79b1b47de979ad7ecd",
+        "rss-items": "e7533e4e3409a7d58679bd9c7666077dccc14ecc4ba6638233907c6ce5f45da0",
+        "comparables": "f978e03d2b2e62dccd2da337471e10714ed69c1f34247f6bde68a31c71d2a458",
+        "earnings": "46d3d99561a7adadef049a9b5c7596c07bcf983fb42e4753e8608fb4cadbf06d",
+        "edgar": "0b5aae9e99fe90c380a8aaef35602bb4c9cc4460b34175556a0fa70120fa4191",
+        "fred": "6736240c87f9589ed94d28f14ae6f3d1d518cfbed93e810a9375640c432652bf"
+      }
     }
   ],
   "refresh_plan": {
@@ -48929,7 +48956,9 @@
       "VRTX",
       "XYL"
     ],
-    "successful_tickers": [],
+    "successful_tickers": [
+      "ACN"
+    ],
     "reused_tickers": [],
     "workflow_run_id": "45952898653",
     "degraded_tickers": [],
@@ -48988,9 +49017,22 @@
       "XYL"
     ],
     "ai_deferred_tickers": [],
-    "stage_seconds": {},
+    "stage_seconds": {
+      "ACN": {
+        "quant": 2.369,
+        "ai_extract": 2.52,
+        "comparables": 1.969,
+        "earnings": 1.268,
+        "edgar": 2.119,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.616
+      }
+    },
     "current_ticker": "ACN",
-    "last_progress_at": "2026-11-27T06:36:51.059017+00:00"
+    "last_progress_at": "2026-11-27T06:36:51.059017+00:00",
+    "news_cache_candidates": {
+      "ACN": 15
+    }
   },
   "last_complete_refresh": "2026-11-26T06:44:54.204087+00:00",
   "last_complete_business_date": "2026-11-25"
