@@ -1,0 +1,161 @@
+{
+  "ticker": "BMO.TO",
+  "errors": [
+    "warning: enterpriseToEbitda unavailable (N/A)",
+    "warning: EV/EBITDA unavailable (N/A)",
+    "warning: Free cash flow yield (%) unavailable (N/A)"
+  ],
+  "sources": [
+    "https://finance.yahoo.com/quote/BMO.TO/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/BMO.TO/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 227.49000549316406,
+    "Return 1D (%)": -0.03954492361654127,
+    "Return 1W (%)": -1.5450498152647096,
+    "Return 1M (%)": -4.170430099647737,
+    "Return YTD (%)": 31.615997440562047,
+    "Return 1Y (%)": 33.24558904176192,
+    "Annualized volatility (%)": 20.133888284967995,
+    "Max drawdown (%)": -12.339220493404135,
+    "Sharpe (rf=0)": 1.5325581899523562,
+    "Beta vs SPY": 0.814462281076453,
+    "MA50": 237.58390197753906,
+    "Close vs MA50 (%)": -4.248560782257571,
+    "MA200": 224.11790962219237,
+    "Close vs MA200 (%)": 1.5046079434955617,
+    "RSI (14, Wilder)": 38.053749738254844,
+    "MACD (12,26)": -3.0342373424658433,
+    "MACD signal (9)": -1.2144733998627366,
+    "MACD histogram": -1.8197639426031067,
+    "Downside deviation (rf=0, %)": 13.941750543052489,
+    "Sortino (rf=0)": 2.2132339329575768,
+    "Historical VaR 95% (1D, %)": 2.1034722090937876,
+    "Historical ES 95% (1D, %)": 2.7377820374516566,
+    "Correlation vs SPY": 0.6016261586882025,
+    "Tracking error vs SPY (%)": 16.489753074480763,
+    "P/E (trailing)": 18.540342,
+    "P/B": 1.8664008,
+    "EV/EBITDA": null,
+    "Revenue growth (%)": 12.0,
+    "Forward P/E (estimate)": 13.821634,
+    "Gross margin (%)": 0.0,
+    "Operating margin (%)": 37.938,
+    "Return on equity (%)": 10.574,
+    "Free cash flow yield (%)": null
+  },
+  "as_of": "2026-11-26",
+  "verification": {
+    "base_date": "2025-11-26",
+    "base_close": 170.7298583984375,
+    "end_close": 227.49000549316406,
+    "manual_1Y_pct": 33.24558904176191,
+    "passed": true
+  },
+  "fetched_at": "2026-11-27T06:45:55.659383+00:00",
+  "requested_as_of": "2026-11-26",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "BMO.TO",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1795761415.275656
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {
+    "EV/EBITDA": {
+      "status": "undefined",
+      "reason": "undefined: fundamental value is missing or non-finite"
+    },
+    "Free cash flow yield (%)": {
+      "status": "undefined",
+      "reason": "undefined: finite free cash flow and positive market capitalization are required"
+    }
+  },
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "CAD",
+    "financial_currency": "CAD"
+  },
+  "history_count": {
+    "BMO.TO": 290,
+    "SPY": 290
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 290 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 290. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'BMO.TO'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-26'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
