@@ -73,7 +73,9 @@ references, source hashes and explicit unmatched/conflicting evidence. Publicati
 dates do not establish event occurrence dates. Standalone four-page news review
 drafts and separately opted-in private attachment previews are implemented locally;
 see NEWS_REVIEW.md. The archive-wide draft is not personalized or live-accepted
-news intelligence and remains ineligible for production delivery.
+news intelligence and remains ineligible for production delivery. Optional private
+news scoping by effective holdings is implemented locally, preserving archived
+report associations without inferring relevance; see SCOPED_NEWS_PREVIEW.md.
 
 Pending: live-complete sector briefs; verified, sourced catalysts/events;
 authorized attachment delivery integration; controlled-link fallback for oversized

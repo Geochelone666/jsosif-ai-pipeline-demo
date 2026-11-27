@@ -1,8 +1,10 @@
 from io import BytesIO
+from copy import deepcopy
 import json
 from pathlib import Path
 import subprocess
 import sys
+import stat
 
 import pytest
 from pypdf import PdfReader
@@ -161,3 +163,92 @@ def test_cli_builds_draft(archive, tmp_path):
         '--as-of', '2026-11-06', '--output', str(tmp_path / 'cli')], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     assert news.load_bundle(tmp_path / 'cli')['review_id'] == value(archive)['review_id']
+
+
+def two_stock_review(archive):
+    index = read_json(archive / 'index.json'); source = index['reports'][0]
+    entry = deepcopy(source); entry.update(ticker='JPM', report_id='synthetic/JPM')
+    for kind in ('pdf', 'md', 'json'):
+        relative = source[kind].replace('CSCO', 'JPM')
+        path = archive / relative; path.parent.mkdir(parents=True, exist_ok=True)
+        if kind == 'json':
+            snapshot = read_json(archive / source[kind]); snapshot['identity']['ticker'] = 'JPM'
+            write_json(path, snapshot)
+        else:
+            path.write_bytes((archive / source[kind]).read_bytes())
+        entry[kind] = relative; entry['sha256'][kind] = file_digest(path)
+    index['reports'].append(entry); write_json(archive / 'index.json', index)
+    rows = read_json(archive / 'archive/synthetic/CSCO/sources/csco-rss-items.json')
+    own = dict(rows[1], headline='JPM exclusive headline', link='https://example.org/jpm')
+    write_json(archive / 'archive/synthetic/JPM/sources/jpm-rss-items.json', [rows[0], own])
+    return value(archive)
+
+
+def test_scope_prunes_unselected_context_and_retains_shared_articles_once(archive):
+    parent = two_stock_review(archive); before = deepcopy(parent)
+    scoped = news.scope_review(parent, ['JPM'])
+    assert scoped['schema_version'] == 2 and scoped['evidence']['schema_version'] == 2
+    assert scoped['scope']['tickers'] == ['JPM'] and scoped['scope']['parent_review_id'] == parent['review_id']
+    assert len(scoped['evidence']['articles']) == 2 and scoped['summary']['stocks'] == 1
+    assert set(scoped['report_versions']) == {'JPM'}
+    assert all(r['ticker'] == 'JPM' for r in scoped['evidence']['reports'])
+    assert scoped['evidence']['missing_reports'] == []
+    assert all(t in ['JPM'] for s in scoped['evidence']['sectors'] for t in s['tickers'])
+    used = {r[k] for r in scoped['evidence']['reports'] for k in ('rss_source_id', 'ai_source_id') if r[k]}
+    assert {s['id'] for s in scoped['evidence']['sources']} == used
+    both = news.scope_review(parent, ['CSCO', 'JPM'])
+    assert len(both['evidence']['articles']) == len(parent['evidence']['articles'])
+    assert both['summary']['references'] > both['summary']['articles']
+    assert parent == before  # No mutation of the shared parent or a different member's context.
+
+
+def test_scope_order_and_duplicates_are_canonical_and_missing_reports_are_honest(archive):
+    parent = two_stock_review(archive)
+    assert news.scope_review(parent, ['JPM', 'CSCO', 'JPM']) == news.scope_review(parent, ['CSCO', 'JPM'])
+    missing = news.scope_review(parent, ['MSFT'])
+    assert missing['evidence']['missing_reports'] == ['MSFT'] and missing['summary']['stocks'] == 0
+    assert missing['summary']['articles'] == 0 and not missing['report_versions']
+    raw = news.render(missing); assert news.inspect_pdf(raw, missing)['pages'] == 4
+    assert 'JPM' not in PdfReader(BytesIO(raw)).pages[3].extract_text()
+
+
+@pytest.mark.parametrize('tickers', [[], ['INVALID'], ['csco'], 'CSCO', [True], [None]])
+def test_invalid_scope_is_rejected(archive, tickers):
+    with pytest.raises(ValueError, match='scope'): news.scope_review(value(archive), tickers)
+
+
+def test_scope_cannot_be_widened_or_claim_extra_stock_context_after_rehash(archive):
+    parent = two_stock_review(archive); scoped = news.scope_review(parent, ['CSCO'])
+    with pytest.raises(ValueError, match='widen'): news.scope_review(scoped, ['CSCO', 'JPM'])
+    forged = deepcopy(scoped); forged['evidence']['reports'].append(parent['evidence']['reports'][1]); rehash(forged)
+    with pytest.raises(ValueError): news.validate_review(forged)
+    forged = deepcopy(scoped); forged['scope']['tickers'] = ['JPM']; rehash(forged)
+    with pytest.raises(ValueError, match='scope'): news.validate_review(forged)
+
+
+def test_scoped_bundle_is_private_deterministic_and_contains_only_requested_coverage(archive, tmp_path):
+    scoped = news.scope_review(two_stock_review(archive), ['JPM'])
+    first = news.write_bundle(scoped, tmp_path / 'first', store=archive)
+    second = news.write_bundle(scoped, tmp_path / 'second', store=archive)
+    assert first == second and first['schema_version'] == 2
+    assert 'JPM' not in first['pdf'] and scoped['review_id'][:16] in first['pdf']
+    assert stat.S_IMODE((tmp_path / 'first').stat().st_mode) == 0o700
+    assert all(stat.S_IMODE(p.stat().st_mode) == 0o600 for p in (tmp_path / 'first').iterdir())
+    loaded = news.load_bundle(tmp_path / 'first')
+    assert loaded['review'] == scoped
+    text = PdfReader(BytesIO(loaded['bytes'])).pages[3].extract_text()
+    assert 'JPM' in text and 'CSCO' not in text and 'Selected-stock scope:' in text
+    assert news.artifact_stem(scoped) + '.json' in text
+
+
+def test_all_stock_scoped_layout_stays_four_pages(archive):
+    scoped = news.scope_review(value(archive), sorted(news.SUPPORTED))
+    assert news.inspect_pdf(news.render(scoped), scoped)['pages'] == 4
+
+
+def test_scoped_cli_produces_private_bundle(archive, tmp_path):
+    result = subprocess.run([sys.executable, str(Path(news.__file__)), '--store', str(archive),
+        '--as-of', '2026-11-06', '--tickers', 'CSCO', '--output', str(tmp_path / 'scoped-cli')], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    loaded = news.load_bundle(tmp_path / 'scoped-cli')
+    assert loaded['review']['scope']['tickers'] == ['CSCO']

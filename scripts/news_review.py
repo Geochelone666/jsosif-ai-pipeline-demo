@@ -1,9 +1,11 @@
 """Render and verify a standalone retrospective news review draft."""
 import argparse
+from copy import deepcopy
 import hashlib
 from html import escape
 from io import BytesIO
 import json
+import os
 from pathlib import Path
 import re
 import unicodedata
@@ -35,6 +37,21 @@ LIMITATIONS = [
     'Checksums establish consistency, not publisher authentication or point-in-time backtest eligibility.',
     'Incomplete draft only. Delivery readiness is false; private preview opt-in does not authorize sending.',
 ]
+SCOPED_LIMITATIONS = LIMITATIONS + [
+    'Filtered by archived report references for the requested stocks, not inferred headline relevance.',
+    'The eight-story cap is chronological across this scope; it does not guarantee a story for every requested stock.',
+]
+
+
+def normalize_tickers(tickers):
+    if (not isinstance(tickers, (list, tuple)) or not tickers or
+            any(not isinstance(t, str) or t not in SUPPORTED for t in tickers)):
+        raise ValueError('News scope requires nonempty supported stock symbols')
+    return sorted(set(tickers))
+
+
+def artifact_stem(value):
+    return 'news-review-' + value['as_of'] + ('-' + value['review_id'][:16] if value['schema_version'] == 2 else '')
 
 
 def fingerprint(value):
@@ -57,11 +74,16 @@ def registry(rows, prefix):
 
 def validate_evidence(value):
     """Validate retained evidence and derived fields, not publisher authenticity."""
-    if (not isinstance(value, dict) or set(value) != {'index_id', 'schema_version', 'kind', 'as_of', 'status',
-            'delivery_ready', 'temporal_scope', 'sectors', 'missing_reports', 'reports', 'articles', 'sources', 'limitations'}
+    scoped = isinstance(value, dict) and value.get('schema_version') == 2
+    keys = {'index_id', 'schema_version', 'kind', 'as_of', 'status', 'delivery_ready', 'temporal_scope',
+            'sectors', 'missing_reports', 'reports', 'articles', 'sources', 'limitations'}
+    if scoped:
+        keys |= {'scope_tickers', 'parent_index_id'}
+    if (not isinstance(value, dict) or set(value) != keys
             or value.get('index_id') != digest({k:v for k,v in value.items() if k != 'index_id'})
-            or type(value.get('schema_version')) is not int or value['schema_version'] != 1
-            or value.get('kind') != 'news_evidence_index' or value.get('status') != 'draft_incomplete_evidence'
+            or type(value.get('schema_version')) is not int or value['schema_version'] not in (1, 2)
+            or value.get('kind') != ('scoped_news_evidence_index' if scoped else 'news_evidence_index')
+            or value.get('status') != 'draft_incomplete_evidence'
             or value.get('delivery_ready') is not False
             or value.get('temporal_scope') != 'retrospective_reconstruction_not_point_in_time'
             or value.get('limitations') != evidence.LIMITATIONS):
@@ -69,6 +91,12 @@ def validate_evidence(value):
     cutoff = exact_date(value['as_of'])
     configured = [{'id': t['id'], 'name': t['name'], 'tickers': t['tickers']}
                   for t in teams(ROOT / 'config/research_teams.json')]
+    universe = set(SUPPORTED)
+    if scoped:
+        if value['scope_tickers'] != normalize_tickers(value['scope_tickers']) or not fingerprint(value['parent_index_id']):
+            raise ValueError('Invalid news evidence scope')
+        universe = set(value['scope_tickers'])
+        configured = [dict(t, tickers=sorted(set(t['tickers']) & universe)) for t in configured if set(t['tickers']) & universe]
     if value['sectors'] != configured:
         raise ValueError('News taxonomy mismatch')
     articles = registry(value['articles'], 'article:')
@@ -112,7 +140,7 @@ def validate_evidence(value):
                 'malformed_decisions', 'references'}:
             raise ValueError('Invalid news report fields')
         ticker = r['ticker']
-        if (ticker not in SUPPORTED or ticker in tickers or not evidence.text(r['report_id'], 300)
+        if (ticker not in universe or ticker in tickers or not evidence.text(r['report_id'], 300)
                 or r['report_id'] in report_ids or exact_date(r['as_of']) > cutoff
                 or not timestamp(r['generated_at']) or timestamp(r['generated_at']) != r['generated_at'] or not fingerprint(r['snapshot_sha256'])
                 or r['sector_ids'] != [s['id'] for s in configured if ticker in s['tickers']]):
@@ -167,7 +195,7 @@ def validate_evidence(value):
         if (occurrences + r['invalid_rss_rows'] != r['raw_rss_rows'] or r['rss_status'] != 'available' and occurrences
                 or sum(ref['saved_decision_occurrences'] for ref in r['references']) + r['unmatched_decisions'] + r['malformed_decisions'] > 1000):
             raise ValueError('Invalid RSS accounting')
-    if (value['missing_reports'] != sorted(set(SUPPORTED) - tickers)
+    if (value['missing_reports'] != sorted(universe - tickers)
             or used_articles != set(articles) or used_sources != set(sources)):
         raise ValueError('Unreferenced news evidence or coverage mismatch')
     return value
@@ -188,26 +216,72 @@ def derived(index):
                             for r in index['reports']}}
 
 
-def assemble(index):
+def assemble(index, *, parent_review_id=None):
     validate_evidence(index)
-    payload = {'schema_version': 1, 'kind': 'news_review', 'as_of': index['as_of'],
+    scoped = index['schema_version'] == 2
+    if scoped and not fingerprint(parent_review_id):
+        raise ValueError('Scoped review requires parent identity')
+    payload = {'schema_version': 2 if scoped else 1, 'kind': 'news_review', 'as_of': index['as_of'],
         'status': 'draft_incomplete_evidence', 'delivery_ready': False, 'evidence': index,
-        **derived(index), 'limitations': LIMITATIONS}
+        **derived(index), 'limitations': SCOPED_LIMITATIONS if scoped else LIMITATIONS}
+    if scoped:
+        payload['scope'] = {'mode': 'selected_stocks', 'tickers': index['scope_tickers'], 'parent_review_id': parent_review_id}
     return {'review_id': digest(payload), **payload}
 
 
 def validate_review(value):
-    if (not isinstance(value, dict) or set(value) != {'review_id', 'schema_version', 'kind', 'as_of',
-            'status', 'delivery_ready', 'evidence', 'selected_article_ids', 'summary', 'report_versions', 'limitations'}
-            or type(value['schema_version']) is not int or value['schema_version'] != 1
+    scoped = isinstance(value, dict) and value.get('schema_version') == 2
+    keys = {'review_id', 'schema_version', 'kind', 'as_of', 'status', 'delivery_ready', 'evidence',
+            'selected_article_ids', 'summary', 'report_versions', 'limitations'} | ({'scope'} if scoped else set())
+    if (not isinstance(value, dict) or set(value) != keys
+            or type(value['schema_version']) is not int or value['schema_version'] not in (1, 2)
             or value['kind'] != 'news_review' or value['status'] != 'draft_incomplete_evidence'
-            or value['delivery_ready'] is not False or value['limitations'] != LIMITATIONS
+            or value['delivery_ready'] is not False or value['limitations'] != (SCOPED_LIMITATIONS if scoped else LIMITATIONS)
             or value['review_id'] != digest({k:v for k,v in value.items() if k != 'review_id'})):
         raise ValueError('Invalid news review contract')
     validate_evidence(value['evidence'])
+    if value['evidence']['schema_version'] != value['schema_version']:
+        raise ValueError('News review and evidence scope versions disagree')
+    if scoped:
+        scope = value['scope']
+        if (not isinstance(scope, dict) or set(scope) != {'mode', 'tickers', 'parent_review_id'}
+                or scope['mode'] != 'selected_stocks' or scope['tickers'] != value['evidence']['scope_tickers']
+                or not fingerprint(scope['parent_review_id'])):
+            raise ValueError('News review scope disagrees with evidence')
     if value['as_of'] != value['evidence']['as_of'] or any(value[k] != v for k,v in derived(value['evidence']).items()):
         raise ValueError('News review differs from retained evidence')
     return value
+
+
+def scope_review(value, tickers):
+    """Project verified retained evidence without re-reading the archive or inferring relevance."""
+    validate_review(value)
+    tickers = normalize_tickers(tickers)
+    if value['schema_version'] == 2 and not set(tickers) <= set(value['scope']['tickers']):
+        raise ValueError('Cannot widen a previously scoped news review')
+    index = deepcopy(value['evidence'])
+    parent = index['index_id']
+    index['reports'] = [r for r in index['reports'] if r['ticker'] in tickers]
+    article_ids = {ref['article_id'] for r in index['reports'] for ref in r['references']}
+    source_ids = {r[k] for r in index['reports'] for k in ('rss_source_id', 'ai_source_id') if r[k]}
+    index['articles'] = [a for a in index['articles'] if a['id'] in article_ids]
+    index['sources'] = [s for s in index['sources'] if s['id'] in source_ids]
+    index['sectors'] = [dict(s, tickers=sorted(set(s['tickers']) & set(tickers)))
+                        for s in index['sectors'] if set(s['tickers']) & set(tickers)]
+    index.update(schema_version=2, kind='scoped_news_evidence_index', scope_tickers=tickers,
+                 parent_index_id=parent, missing_reports=sorted(set(tickers) - {r['ticker'] for r in index['reports']}))
+    index['index_id'] = digest({k:v for k,v in index.items() if k != 'index_id'})
+    return validate_review(assemble(index, parent_review_id=value['review_id']))
+
+
+def scoped_attachment(loaded, tickers):
+    value = scope_review(loaded['review'], tickers)
+    raw = render(value); inspect_pdf(raw, value)
+    if len(raw) > MAX_PDF:
+        raise ValueError('Scoped news PDF exceeds size limit')
+    return {'review_id': value['review_id'], 'as_of': value['as_of'], 'report_versions': value['report_versions'],
+            'filename': artifact_stem(value) + '.pdf', 'sha256': hashlib.sha256(raw).hexdigest(),
+            'bytes': raw, 'scope': value['scope']}
 
 
 def display(value, limit=240):
@@ -221,7 +295,9 @@ def render(value):
     out = BytesIO(); index = value['evidence']; summary = value['summary']
     def header(title):
         return [para('JSOSIF / NEWS REVIEW', size=10, bold=True, color=TEAL), para(title, size=21, bold=True),
-                para('Cutoff ' + value['as_of'] + ' | Draft - incomplete evidence', size=9, color=MUTED)]
+                para('Cutoff ' + value['as_of'] + ' | Draft - incomplete evidence', size=9, color=MUTED)] + (
+                    [para(f"Selected-stock scope: {len(value['scope']['tickers'])} requested stocks", size=8, color=TEAL)]
+                    if value['schema_version'] == 2 else [])
     def footer(canvas, doc):
         canvas.saveState(); canvas.setStrokeColor(TEAL); canvas.line(44, 39, A4[0]-44, 39)
         canvas.setFont('Helvetica', 8); canvas.setFillColor(MUTED)
@@ -238,7 +314,7 @@ def render(value):
             ['Unmatched saved prediction rows', summary['unmatched_predictions']],
             ['Undated / future article metadata', f"{summary['undated_articles']} / {summary['future_articles']}"]], [.75, .25]),
         Spacer(1, 12), para('Reading this draft', size=13, bold=True)]
-    story += [para(line, size=9) for line in LIMITATIONS]
+    story += [para(line, size=9) for line in value['limitations']]
     story += [para('Evidence index SHA-256: ' + index['index_id'], size=7),
               para('Review SHA-256: ' + value['review_id'], size=7), PageBreak()]
     articles = {a['id']: a for a in index['articles']}
@@ -276,12 +352,13 @@ def render(value):
         refs = r['references']
         return [ticker + ('*' if r['rss_status'] != 'available' else ''),
                 f"{len(refs)} / {sum(x['decision_status'] == 'missing' for x in refs)} / {sum(x['decision_status'] == 'conflicting' for x in refs)}"]
-    tickers = sorted(SUPPORTED); middle = (len(tickers)+1)//2
+    tickers = value['scope']['tickers'] if value['schema_version'] == 2 else sorted(SUPPORTED)
+    middle = (len(tickers)+1)//2
     story += [table(['Stock', 'References / gaps', 'Stock', 'References / gaps'],
         [cells(tickers[i]) + (cells(tickers[i+middle]) if i+middle < len(tickers) else ['', '']) for i in range(middle)],
         [.16, .34, .16, .34], size=7),
         para('All source hashes, report versions, original headlines, URLs and prediction flags are retained in '
-             'news-review-' + value['as_of'] + '.json. Hashes are not provider signatures.', size=8)]
+             + artifact_stem(value) + '.json. Hashes are not provider signatures.', size=8)]
     doc = SimpleDocTemplate(out, pagesize=A4, leftMargin=44, rightMargin=44, topMargin=36, bottomMargin=54,
                             title='JSOSIF News Review - ' + value['as_of'], author='JSOSIF')
     doc.build(story, onFirstPage=footer, onLaterPages=footer,
@@ -297,6 +374,8 @@ def inspect_pdf(raw, value):
         text = page.extract_text() or ''
         if HEADINGS[i] not in text or 'Draft - incomplete evidence' not in text or value['as_of'] not in text or f'{i+1} / 4' not in text:
             raise ValueError('Missing news draft identity')
+        if value['schema_version'] == 2 and 'Selected-stock scope:' not in text:
+            raise ValueError('Missing news scope disclosure')
     for i, key in enumerate(value['selected_article_ids']):
         if key.removeprefix('article:') not in (reader.pages[1+i//4].extract_text() or ''):
             raise ValueError('Missing selected news evidence reference')
@@ -312,16 +391,22 @@ def write_bundle(value, output, *, store):
     raw_json = (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + '\n').encode()
     if len(raw_json) > MAX_JSON or len(raw_pdf) > MAX_PDF:
         raise ValueError('News artifact exceeds bundle limit')
-    stem = 'news-review-' + value['as_of']
-    manifest = {'schema_version': 1, 'kind': 'news_review', 'review_id': value['review_id'],
+    stem = artifact_stem(value)
+    manifest = {'schema_version': value['schema_version'], 'kind': 'news_review', 'review_id': value['review_id'],
         'as_of': value['as_of'], 'status': value['status'], 'delivery_ready': False,
         'pdf': stem+'.pdf', 'json': stem+'.json', 'validation': check,
         'sha256': {'pdf': hashlib.sha256(raw_pdf).hexdigest(), 'json': hashlib.sha256(raw_json).hexdigest()}}
-    output.mkdir(parents=False, exist_ok=False)
+    private = value['schema_version'] == 2
+    output.mkdir(mode=0o700 if private else 0o777, parents=False, exist_ok=False)
     for name, raw in ((manifest['pdf'], raw_pdf), (manifest['json'], raw_json),
                       ('manifest.json', (json.dumps(manifest, indent=2)+'\n').encode())):
-        with (output/name).open('xb') as stream:
-            stream.write(raw)
+        if private:
+            fd = os.open(output/name, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, 'wb') as stream:
+                stream.write(raw)
+        else:
+            with (output/name).open('xb') as stream:
+                stream.write(raw)
     return manifest
 
 
@@ -331,33 +416,37 @@ def load_bundle(root):
     def read(name, limit):
         return evidence.read_bytes(resolve_file(root, name), limit)
     manifest = json.loads(read('manifest.json', 2*1024*1024))
-    if (type(manifest.get('schema_version')) is not int or manifest['schema_version'] != 1
+    if (type(manifest.get('schema_version')) is not int or manifest['schema_version'] not in (1, 2)
             or manifest.get('kind') != 'news_review' or manifest.get('status') != 'draft_incomplete_evidence'
-            or manifest.get('delivery_ready') is not False):
+            or manifest.get('delivery_ready') is not False or not fingerprint(manifest.get('review_id'))):
         raise ValueError('Invalid news draft manifest')
     exact_date(manifest['as_of']); loaded = {}
     for kind, limit in (('json', MAX_JSON), ('pdf', MAX_PDF)):
-        if manifest[kind] != 'news-review-' + manifest['as_of'] + '.' + kind:
+        if manifest[kind] != artifact_stem(manifest) + '.' + kind:
             raise ValueError('Invalid news filename')
         raw = read(manifest[kind], limit)
         if hashlib.sha256(raw).hexdigest() != manifest['sha256'][kind]:
             raise ValueError('News artifact checksum mismatch')
         loaded[kind] = raw
     value = validate_review(json.loads(loaded['json']))
-    if any(value[k] != manifest[k] for k in ('review_id', 'as_of', 'status', 'delivery_ready')):
+    if any(value[k] != manifest[k] for k in ('schema_version', 'review_id', 'as_of', 'status', 'delivery_ready')):
         raise ValueError('News manifest and companion disagree')
     inspect_pdf(loaded['pdf'], value)
     return {'review_id': value['review_id'], 'as_of': value['as_of'], 'report_versions': value['report_versions'],
-            'filename': manifest['pdf'], 'sha256': manifest['sha256']['pdf'], 'bytes': loaded['pdf']}
+            'filename': manifest['pdf'], 'sha256': manifest['sha256']['pdf'], 'bytes': loaded['pdf'], 'review': value}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--store', type=Path, required=True); parser.add_argument('--as-of', required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--tickers', nargs='+', help='Optional supported stock scope; produces a private bundle')
     args = parser.parse_args()
     try:
-        write_bundle(assemble(evidence.build(args.store, as_of=args.as_of)), args.output, store=args.store)
+        value = assemble(evidence.build(args.store, as_of=args.as_of))
+        if args.tickers is not None:
+            value = scope_review(value, args.tickers)
+        write_bundle(value, args.output, store=args.store)
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
         parser.error('News draft failed; verify archive and use a new output directory')
     print('Built standalone news review draft; no refresh or send')

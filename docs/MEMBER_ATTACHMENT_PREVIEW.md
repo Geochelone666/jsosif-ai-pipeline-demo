@@ -44,7 +44,9 @@ check, reservation, uncertain-outcome handling and schedule/consent checks.
   disclosed as gaps. See [MACRO_OVERVIEW.md](MACRO_OVERVIEW.md).
 - `news_catalysts` requires its own explicit preference and `--include-news-drafts`
   with `--news-bundle`. Age and stock ID/date/snapshot hashes must match. It adds
-  one archive-wide news draft, not a personalized news feed; see NEWS_REVIEW.md.
+  one news draft; default scope is archive-wide. `--news-scope selected-stocks`
+  projects it using effective holdings, with private scope metadata and no new
+  relevance inference; see SCOPED_NEWS_PREVIEW.md and NEWS_REVIEW.md.
   Missing or ineligible news remains an unmet request.
   Macro context embedded in a sector document is not claimed to satisfy a standalone
   macro subscription. Selecting a sector document selects its whole contents.
