@@ -34,8 +34,8 @@ archives. These are prerequisites, not completion of the new shared data layer.
 
 | Requirement | Remaining implementation |
 | --- | --- |
-| Stock/Sector/Industry/Peer/Macro identity model | Versioned shared model with units, currency, observation/publication/retrieval times and source references |
-| FRED and Bank of Canada adapters | Reuse FRED; add reviewed BoC series, explicit missing data and source contracts |
+| Stock/Sector/Industry/Peer/Macro identity model | Deterministic retrospective evidence package implemented locally with units, currency provenance, explicit missing timestamps and verified source references; formal listing identities and point-in-time evidence pending; see SHARED_RESEARCH_PACK.md |
+| FRED and Bank of Canada adapters | Archived FRED/SEC and captured BoC USD/CAD integrated into local evidence package; BoC single-window live/cache acceptance recorded below; shared live refresh and historical vintages pending |
 | Sector benchmark and ETF-relative performance | Shared, budgeted observations with aligned calendars/currency and disclosed coverage |
 | Industry KPI templates / peer universe | Team-reviewed mapping; do not infer eight team identities from Yahoo sector labels |
 | Validated security onboarding | Identity/listing checks, quality/cost gates and Pending/Active transitions |
@@ -45,14 +45,31 @@ The team delegated the taxonomy choice. Eight configurable product defaults now
 cover all 50 instruments exactly once; benchmark candidates and KPI research
 topics are defined in config/research_teams.json. Shared price observations and
 relative-return contracts reject missing endpoints, inconsistent adjustment bases
-and unsupported currency comparisons. Real adapter/cache/KPI evidence remains pending.
+and unsupported currency comparisons. Shared evidence acceptance covers 50 latest
+archived stocks at the 2026-11-13 cutoff. Shared live caches, validated benchmark
+returns and company KPI evidence remain pending.
 
 ## Phase 3 — sector intelligence and email assembly
 
-Pending: eight team templates; independent Sector Weekly Brief; stock-specific
-Sector Context and 3–5 peer snapshots; deterministic, sourced catalysts/events;
-relevant sector attachment selection; per-member attachment deduplication;
-controlled-link fallback for oversized messages. Existing 20 MiB message gating
+Implemented locally: eight independent four-page Sector Weekly Brief **drafts**,
+with group-specific coverage/KPI research topics, stock industry context and up to
+five sourced peer snapshots. Deterministic JSON companions preserve full evidence
+and missing fields. See SECTOR_BRIEFS.md. These retrospective drafts always have
+delivery readiness false; they are not completed current weekly intelligence.
+
+Offline private member attachment selection, per-member content deduplication and
+encoded-MIME size review are implemented locally; see MEMBER_ATTACHMENT_PREVIEW.md.
+They preserve content opt-in, pause/schedule rules and explicit draft gates, with
+no sender or ledger integration.
+
+An independent two-page macro overview draft is implemented locally from verified
+FRED/BoC archive evidence. Source ages, missing/latest-date conflicts and complete
+lineage remain explicit. Private attachment review requires separate macro consent
+and a draft switch, plus matching stock snapshot hashes; see MACRO_OVERVIEW.md.
+
+Pending: live-complete sector briefs; deterministic, sourced catalysts/events;
+authorized attachment delivery integration; controlled-link fallback for oversized
+messages. Existing 20 MiB message gating
 remains in force. Public links must never be used as a substitute for an approved
 access-control design for private research.
 
@@ -95,14 +112,20 @@ explicit coverage/limitations before presentation as signals.
 - Production sends, paid services, real member import, source switch and destructive
   operations remain subject to the team's explicit authorization boundaries.
 
-The local integration branch combines the two backend/announcement candidates
-without merging them into main. New tests provide evidence for implementation;
-this register intentionally leaves unfinished PDF goals open.
+Main now contains the foundation, security queue, offline migration review and
+administrator correction integrations (#63–#66). The current research integration
+candidate combines the remaining shared evidence, sector/macro drafts and private
+attachment previews on that base; see MAIN_RESEARCH_INTEGRATION.md. Tests provide
+implementation evidence, not production acceptance. This register intentionally
+leaves unfinished PDF goals open.
 
 ### Macro adapter progress
 
 A Bank of Canada Valet USD/CAD CLI and shared date-window cache are implemented
-with synthetic parser/failure/concurrency tests. Actual endpoint acceptance is
-blocked by development connectivity and remains unverified. It is not enabled in
+with synthetic parser/failure/concurrency tests. Local real-endpoint acceptance
+on 2026-11-14 obtained five observations for 2026-11-02 through 2026-11-06 and
+verified cache replay; the public capture is retained as a regression fixture.
+Contradictory provider metadata fails closed. This single-window check is not
+acceptance of all macro series or historical coverage. It is not enabled in
 production or used for inferred FX conversion. Archive publication now retains
 expected source checksums for verification before creating the public projection.

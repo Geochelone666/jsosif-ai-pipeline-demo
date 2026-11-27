@@ -23,9 +23,18 @@ responses and transport failures produce sanitized categories without raw errors
 No API key is required by this public adapter. TLS and redirect verification stay
 in force. Cache files are local performance state, not immutable report history.
 
-The official API URL could not be reached from this development environment.
-Tests use explicitly synthetic Valet-shaped fixtures, not captured production
-responses. Live metadata/observation acceptance remains required. This CLI is not
+The former cloud environment could not reach the official API. On 2026-11-14,
+the local CLI successfully fetched the requested 2026-11-02 through 2026-11-06
+window, containing five observed business-day values. The captured provider
+metadata identifies USD/CAD as Canadian dollars per US dollar, business daily.
+The same cached payload replayed without a second network call. A public captured
+fixture now joins the synthetic failure fixtures, with capture time, exact URL
+and canonical JSON SHA-256. `raw_sha256` is the digest of the canonical parsed
+payload, not a claim to hash the original HTTP bytes or authenticate the provider.
+Explicit contradictory series units, date dimension or frequency now fail closed.
+
+This is acceptance of one series/window and the local cache contract, not broad
+coverage or a long-running availability assessment. This CLI is not
 enabled in scheduled production, does not feed automatic FX conversion, and does
 not claim Bank of Canada observation coverage on the public site. Validate the
 actual endpoint and reviewed series semantics before activation. Source failure
@@ -51,7 +60,7 @@ No historical report was changed or expected checksum weakened by this fix.
 ## Remaining work
 
 FRED continues through the existing collector. Canonical cache/history integration,
-live BoC validation, approved series catalogues, aligned currency conversion,
+additional BoC series/window validation, approved series catalogues, aligned currency conversion,
 sector benchmark collectors, industry KPI observations and Sector Weekly Brief
 assembly remain distinct delivery items. No current macro/sector readiness claim
 is justified merely by a passing parser test.
