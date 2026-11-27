@@ -439,3 +439,86 @@ def test_news_cli_writes_private_outputs_and_leaves_inputs_unchanged(inputs, tmp
     assert stat.S_IMODE(output.stat().st_mode) == 0o700
     assert all(stat.S_IMODE(p.stat().st_mode) == 0o600 for p in output.iterdir())
     assert all(p.read_bytes() == raw for p, raw in before.items())
+
+
+def test_selected_news_uses_personal_override_and_group_union_with_one_render_per_scope(inputs, tmp_path, monkeypatch):
+    bundle = news_bundle_for(inputs, tmp_path)
+    first = inputs[0]['members'][0]; first['content_preferences'] = {'news_catalysts': True}; first['tickers'] = ['CSCO']
+    second = deepcopy(first); second.update(id='second', email='second@example.com', tickers=['CSCO', 'CSCO'])
+    third = deepcopy(first); third.update(id='third', email='third@example.com'); third.pop('tickers')
+    inputs[0]['members'] += [second, third]
+    calls = []; original = news_review.scoped_attachment
+    def record(loaded, tickers):
+        calls.append(tuple(tickers)); return original(loaded, tickers)
+    monkeypatch.setattr(news_review, 'scoped_attachment', record)
+    review, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True, news_scope='selected-stocks')
+    assert sorted(calls) == [('CSCO',), ('CSCO', 'JPM', 'MSFT')]
+    scopes = [m['attachments'][-1]['news_scope']['tickers'] for m in review['members']]
+    assert scopes == [['CSCO'], ['CSCO'], ['CSCO', 'JPM', 'MSFT']]
+    assert review['members'][0]['attachments'][-1]['sha256'] == review['members'][1]['attachments'][-1]['sha256']
+    assert review['members'][0]['attachments'][-1]['sha256'] != review['members'][2]['attachments'][-1]['sha256']
+    for m in review['members']:
+        msg = BytesParser(policy=policy.default).parsebytes(messages[m['eml']])
+        assert 'filtered by archived report references' in msg.get_body(preferencelist=('plain',)).get_content()
+
+
+def test_selected_news_scope_cannot_enable_preference_draft_or_paused_member(inputs, tmp_path, monkeypatch):
+    bundle = news_bundle_for(inputs, tmp_path)
+    def forbidden(*a, **kw): raise AssertionError('Must not render scoped news')
+    monkeypatch.setattr(news_review, 'scoped_attachment', forbidden)
+    first = inputs[0]['members'][0]; first['content_preferences'] = {}
+    prepare(inputs, news_bundle=bundle, include_news_drafts=True, news_scope='selected-stocks')
+    first['content_preferences'] = {'news_catalysts': True}
+    review, _ = prepare(inputs, news_bundle=bundle, news_scope='selected-stocks')
+    assert 'draft review not enabled' in review['members'][0]['gaps'][0]
+    first['enabled'] = False
+    review, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True, news_scope='selected-stocks', preview_all=True)
+    assert not messages and review['members'][0]['reason'] == 'paused'
+
+
+def test_selected_news_uses_retained_evidence_and_preserves_inputs(inputs, tmp_path, monkeypatch):
+    bundle = news_bundle_for(inputs, tmp_path); original = news_review.load_bundle
+    inputs[0]['members'][0]['content_preferences'] = {'news_catalysts': True}
+    baseline, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True, news_scope='selected-stocks')
+    def change_after_read(root):
+        result = original(root)
+        manifest = read_json(root / 'manifest.json')
+        (root / manifest['json']).write_text('changed after capture')
+        (root / manifest['pdf']).write_bytes(b'changed after capture')
+        return result
+    monkeypatch.setattr(news_review, 'load_bundle', change_after_read)
+    actual, actual_messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True, news_scope='selected-stocks')
+    assert actual == baseline and actual_messages == messages
+
+
+def test_selected_news_counts_toward_mime_cap_and_rejects_unknown_mode(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path); inputs[0]['members'][0]['content_preferences'] = {'news_catalysts': True}
+    baseline, _ = prepare(inputs)
+    review, messages = prepare(inputs, news_bundle=bundle, include_news_drafts=True, news_scope='selected-stocks',
+                               max_bytes=baseline['members'][0]['encoded_bytes']+1)
+    assert not messages and review['members'][0]['status'] == 'deferred_size'
+    with pytest.raises(ValueError, match='scope'): prepare(inputs, news_scope='unknown')
+
+
+def test_scoped_bundle_cannot_be_used_as_archive_or_expanded_to_other_holdings(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path)
+    value = news_review.scope_review(news_review.load_bundle(bundle)['review'], ['CSCO'])
+    private = tmp_path / 'private-scope'; news_review.write_bundle(value, private, store=inputs[1])
+    inputs[0]['members'][0]['content_preferences'] = {'news_catalysts': True}
+    with pytest.raises(ValueError, match='selected-stocks'): prepare(inputs, news_bundle=private, include_news_drafts=True)
+    review, _ = prepare(inputs, news_bundle=private, include_news_drafts=True, news_scope='selected-stocks')
+    assert review['members'][0]['gaps'] == ['news_catalysts: stock snapshot lineage mismatch']
+
+
+def test_selected_news_cli_records_private_scope(inputs, tmp_path):
+    bundle = news_bundle_for(inputs, tmp_path); config, root, _ = inputs
+    config['members'][0]['content_preferences'] = {'news_catalysts': True}; config['members'][0]['tickers'] = ['CSCO']
+    config_file = tmp_path / 'members.json'; write_json(config_file, config)
+    output = tmp_path / 'private'
+    result = subprocess.run([sys.executable, 'scripts/member_attachment_preview.py', '--config', str(config_file),
+        '--store', str(root), '--news-bundle', str(bundle), '--at', NOW.isoformat(), '--include-news-drafts',
+        '--news-scope', 'selected-stocks', '--output', str(output)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    assert read_json(output / 'review.json')['members'][0]['attachments'][-1]['news_scope']['tickers'] == ['CSCO']
+    assert stat.S_IMODE(output.stat().st_mode) == 0o700
+    assert all(stat.S_IMODE(p.stat().st_mode) == 0o600 for p in output.iterdir())

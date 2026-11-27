@@ -18,7 +18,7 @@ python scripts/news_review.py --store /path/to/archive --as-of 2026-11-13 \
 4. All 50 configured stocks, with per-stock reference and prediction-gap counts;
    missing/malformed RSS and absent reports have distinct markers.
 
-This is an archive-wide chronology, not a personalized selection or importance
+By default this is an archive-wide chronology, not a personalized selection or importance
 ranking. A member's holdings need not occur among the eight displayed stories.
 Future/undated metadata is excluded from that bounded chronology but retained in
 the companion. Older dated news may appear with its actual age; no current-news
@@ -54,7 +54,9 @@ Both `content_preferences.news_catalysts: true` and `--include-news-drafts` are
 required. Sector/macro switches do not enable news. A missing draft, stale/future
 cutoff, mismatched selected stock report ID/date/snapshot hash or disabled news
 switch leaves a gap. The preview attaches at most one full archive-wide news PDF,
-disclosed in its message body; it does not promise holdings-filtered news coverage.
+disclosed in its message body. Optional `--news-scope selected-stocks` filters the
+retained evidence by effective stock selection; see SCOPED_NEWS_PREVIEW.md for the
+version-two contract, private output and its relevance limitations.
 
 The PDF is checked using captured, bounded bytes and those same bytes are attached.
 News participates in per-member SHA-256 deduplication and the actual SMTP-encoded
@@ -79,6 +81,6 @@ CLI output, independent consent, lineages, age gates, retained bytes and MIME ca
 CI builds/uploads the draft alongside the existing offline artifacts.
 
 Live sources and current-data acceptance, human review of catalyst materiality,
-verified event calendars, personalized news selection, controlled private downloads,
+verified event calendars, independently reviewed news relevance, controlled private downloads,
 fresh-authority sender integration and production delivery remain pending. Preparing
 a draft attachment does not complete those goals or authorize a real send.

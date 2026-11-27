@@ -60,6 +60,14 @@ jobs:
           path: ${{ runner.temp }}/news-review
           retention-days: 14
 
+      - name: Build a private scoped news draft from a fixed public fixture selection
+        run: python scripts/news_review.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --tickers CSCO JPM --output "$RUNNER_TEMP/scoped-news-fixture"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: scoped-news-fixture-${{ matrix.python }}
+          path: ${{ runner.temp }}/scoped-news-fixture
+          retention-days: 14
+
       - name: Build eight sector brief drafts and verify four-page structure
         run: python scripts/sector_briefs.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --output "$RUNNER_TEMP/sector-briefs"
       - uses: actions/upload-artifact@v6
