@@ -50226,7 +50226,7 @@
     "run_id": "20261127T063646Z-c0c26981",
     "at": "2026-11-27T06:36:46.266743+00:00",
     "business_date": "2026-11-26",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -50843,7 +50843,6 @@
         "report_pdf": 0.516
       }
     },
-    "current_ticker": "NFLX",
     "last_progress_at": "2026-11-27T06:57:23.287468+00:00",
     "news_cache_candidates": {
       "ACN": 15,
@@ -50896,8 +50895,12 @@
       "MSFT": 19,
       "MU": 25,
       "NFLX": 17
-    }
+    },
+    "pending_tickers": [
+      "JPM"
+    ],
+    "finished_at": "2026-11-27T06:57:50.958740+00:00"
   },
-  "last_complete_refresh": "2026-11-26T06:44:54.204087+00:00",
-  "last_complete_business_date": "2026-11-25"
+  "last_complete_refresh": "2026-11-27T06:36:46.266743+00:00",
+  "last_complete_business_date": "2026-11-26"
 }
