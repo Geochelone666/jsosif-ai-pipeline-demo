@@ -13,7 +13,8 @@ python scripts/news_evidence.py --store /path/to/archive --as-of 2026-11-13 \
 The result is always `draft_incomplete_evidence`, `delivery_ready: false` and
 `retrospective_reconstruction_not_point_in_time`. This is an evidence foundation
 for news/catalyst research, not a completed newsletter or event calendar. Existing
-member previews continue to report standalone news as an unmet preference.
+member previews can separately opt into the standalone draft in NEWS_REVIEW.md;
+this index itself is not an attachment.
 
 ## Evidence identities and provenance
 
@@ -94,7 +95,8 @@ CI builds this index from offline historical fixtures. Those imported fixtures c
 have no retained news sources, so missing-source coverage is expected there; the
 separate 50-stock acceptance supplies populated news evidence.
 
-Pending: live source acceptance, verified event dates and calendars, reviewed
-materiality/catalyst narratives, standalone news PDFs, explicit member selection,
-controlled private links and authorized production delivery. No existing quality,
+Standalone four-page news PDF drafts and private opt-in attachment previews are
+implemented separately in NEWS_REVIEW.md. Pending: live source acceptance, verified
+event dates and calendars, reviewed materiality/catalyst narratives, personalized
+news selection, controlled private links and authorized production delivery. No existing quality,
 sender, release, taxonomy or backend defaults change in this increment.
