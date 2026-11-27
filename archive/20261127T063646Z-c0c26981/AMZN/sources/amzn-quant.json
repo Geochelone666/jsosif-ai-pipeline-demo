@@ -1,0 +1,148 @@
+{
+  "ticker": "AMZN",
+  "errors": [],
+  "sources": [
+    "https://finance.yahoo.com/quote/AMZN/history/",
+    "https://finance.yahoo.com/quote/SPY/history/",
+    "https://finance.yahoo.com/quote/AMZN/key-statistics/"
+  ],
+  "metrics": {
+    "Close": 244.42999267578125,
+    "Return 1D (%)": -3.1154626895713577,
+    "Return 1W (%)": -8.706206920448667,
+    "Return 1M (%)": -1.4395190823462745,
+    "Return YTD (%)": 5.896362932024957,
+    "Return 1Y (%)": 6.42660975508802,
+    "Annualized volatility (%)": 34.50664337879575,
+    "Max drawdown (%)": -19.64185085197063,
+    "Sharpe (rf=0)": 0.34990686107572944,
+    "Beta vs SPY": 1.241667757989252,
+    "MA50": 255.11580017089844,
+    "Close vs MA50 (%)": -4.188610618377586,
+    "MA200": 245.78109992980956,
+    "Close vs MA200 (%)": -0.5497197524195974,
+    "RSI (14, Wilder)": 41.95498714377703,
+    "MACD (12,26)": -0.9803720323835137,
+    "MACD signal (9)": 0.9062195277332211,
+    "MACD histogram": -1.886591560116735,
+    "Downside deviation (rf=0, %)": 21.453706039584123,
+    "Sortino (rf=0)": 0.5627983924388702,
+    "Historical VaR 95% (1D, %)": 3.228398775173819,
+    "Historical ES 95% (1D, %)": 4.129971828155677,
+    "Correlation vs SPY": 0.5372424587122181,
+    "Tracking error vs SPY (%)": 29.326673134168114,
+    "P/E (trailing)": 19.759903,
+    "P/B": 4.3066053,
+    "EV/EBITDA": 15.424,
+    "Revenue growth (%)": 12.1,
+    "Forward P/E (estimate)": 22.371244,
+    "Gross margin (%)": 51.373999999999995,
+    "Operating margin (%)": 13.086999999999998,
+    "Return on equity (%)": 27.416,
+    "Free cash flow yield (%)": -1.3140757507397007
+  },
+  "as_of": "2026-11-25",
+  "verification": {
+    "base_date": "2025-11-25",
+    "base_close": 229.6699981689453,
+    "end_close": 244.42999267578125,
+    "manual_1Y_pct": 6.4266097550880295,
+    "passed": true
+  },
+  "fetched_at": "2026-11-27T06:44:30.995913+00:00",
+  "requested_as_of": "2026-11-26",
+  "price_status": [
+    {
+      "stage": "price_fetch",
+      "symbol": "AMZN",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully"
+    },
+    {
+      "stage": "price_fetch",
+      "symbol": "SPY",
+      "source": "yfinance",
+      "status": "ok",
+      "category": null,
+      "retryable": false,
+      "attempts": 1,
+      "detail": "Price history fetched successfully",
+      "cache_hit": true,
+      "observed_at": 1795761415.275656
+    }
+  ],
+  "risk_methodology": {
+    "window": "trailing calendar year through latest observed close",
+    "annualization_days": 252,
+    "daily_return_observations": 251,
+    "tail_method": "historical 5th percentile of daily adjusted-close returns; ES averages returns at or below the percentile",
+    "tail_minimum_daily_returns": 100,
+    "benchmark": "SPY; intersect independently computed daily returns by end date; listing currencies are not converted",
+    "benchmark_minimum_aligned_returns": 20,
+    "risk_free_rate": 0
+  },
+  "metric_notes": {},
+  "fundamental_methodology": {
+    "source": "yfinance company info snapshot; vendor fundamental dates may differ from market close",
+    "margin_and_roe": "provider fractional ratios multiplied by 100",
+    "forward_pe": "provider estimate, not realized earnings",
+    "fcf_yield": "freeCashflow / marketCap * 100, only when listing and financial currencies explicitly match",
+    "listing_currency": "USD",
+    "financial_currency": "USD"
+  },
+  "history_count": {
+    "AMZN": 290,
+    "SPY": 290
+  },
+  "assumptions_version": 1,
+  "assumptions_checked": {
+    "prices-adjusted-close": {
+      "status": "uncheckable",
+      "detail": "Returns depend on provider adjustments; flags cannot verify their correctness."
+    },
+    "prices-lookback-start": {
+      "status": "ok",
+      "detail": "Observed '2025-10-02'. Earlier report dates or newer runs may lack the intended one-year coverage."
+    },
+    "stooq-us-only": {
+      "status": "ok",
+      "detail": "Observed []. A US fallback can otherwise select the wrong listing."
+    },
+    "prices-normalized-index": {
+      "status": "ok",
+      "detail": "Observed 290 labels; timezone=None. Date slicing and benchmark alignment require consistent daily labels."
+    },
+    "prices-trading-calendar": {
+      "status": "uncheckable",
+      "detail": "Observation counts do not establish continuous trading-day coverage."
+    },
+    "prices-currency-usd": {
+      "status": "uncheckable",
+      "detail": "Listing-currency returns must not be mistaken for USD portfolio returns."
+    },
+    "prices-minimum-history": {
+      "status": "ok",
+      "detail": "Observed 290. Without a usable close the quant snapshot has no price evidence; short histories still produce N/A metrics."
+    },
+    "phase1-artifacts-exist": {
+      "status": "uncheckable",
+      "detail": "Missing inputs prevent a complete report; existence does not establish schema validity or freshness."
+    },
+    "fred-shared-freshness": {
+      "status": "uncheckable",
+      "detail": "A report date does not imply current macro observations."
+    },
+    "supported-ticker": {
+      "status": "ok",
+      "detail": "Observed 'AMZN'. Unsupported symbols have no configured pipeline universe entry."
+    },
+    "report-as-of-date": {
+      "status": "ok",
+      "detail": "Observed '2026-11-26'. Invalid dates make snapshot selection unreliable."
+    }
+  }
+}
