@@ -50022,6 +50022,33 @@
         "edgar": "0fb4ac6501ff5c50449358b8cf60141e388d927d4a3c647ffc89657381083077",
         "fred": "6736240c87f9589ed94d28f14ae6f3d1d518cfbed93e810a9375640c432652bf"
       }
+    },
+    {
+      "report_id": "20261127T063646Z-c0c26981/MSFT",
+      "ticker": "MSFT",
+      "generated_at": "2026-11-27T06:56:47.738830+00:00",
+      "as_of": "2026-11-26",
+      "quality": "ready",
+      "market_as_of": "2026-11-25",
+      "news_as_of": "2026-11-26",
+      "sha256": {
+        "md": "b4aa5ec3f18235b2026b9210426c76c91bbe7d17c3452f2dade8bd1996fe699c",
+        "json": "de6379ca64f122f990a2e78932f6d60da26471c179508934db43cfc4f5ee3218",
+        "pdf": "38a66ee99a68e873e7e646b81f5878d5b0754edc7fa44c3255765f3ae74c08ed"
+      },
+      "md": "archive/20261127T063646Z-c0c26981/MSFT/MSFT-intelligence-20261126.md",
+      "json": "archive/20261127T063646Z-c0c26981/MSFT/MSFT-intelligence-20261126.json",
+      "pdf": "archive/20261127T063646Z-c0c26981/MSFT/MSFT-intelligence-20261126.pdf",
+      "source_sha256": {
+        "quant": "152b8da1019d0f339d7a374a9cec4f7c3c2384604347d9c248f177748f9b2630",
+        "info": "8fb3d07fc1d1846a9720dface5aeae6473f84c2e04a490149b63977ab51bfe83",
+        "ai-intel": "12da7d435a2a011614e8fc9595445e38b19b06c871a075fe014b111437d03a0a",
+        "rss-items": "a958db83e3aba05158f5bc0499498760380fb68be65e32007537f37f95cb8b69",
+        "comparables": "5ed8c17fb2e5a042be067ab8bcf7ee580077b6f3a75cd3f5e7b12d959773841c",
+        "earnings": "a86f06891b8ddaa44a0f3a3749a9ae61f0b30285c3a60aa346a22ae4d90183f4",
+        "edgar": "3214c434e70d7092ff0accae48dcba2b6f7017f49e7125a7864af940aaa6ccc1",
+        "fred": "6736240c87f9589ed94d28f14ae6f3d1d518cfbed93e810a9375640c432652bf"
+      }
     }
   ],
   "refresh_plan": {
@@ -50245,7 +50272,8 @@
       "MCK",
       "MCO",
       "META",
-      "MG.TO"
+      "MG.TO",
+      "MSFT"
     ],
     "reused_tickers": [],
     "workflow_run_id": "45952898653",
@@ -50730,6 +50758,15 @@
         "edgar": 2.22,
         "regenerate_report": 0.114,
         "report_pdf": 0.467
+      },
+      "MSFT": {
+        "quant": 1.016,
+        "ai_extract": 4.076,
+        "comparables": 1.97,
+        "earnings": 1.268,
+        "edgar": 1.919,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.516
       }
     },
     "current_ticker": "MSFT",
@@ -50781,7 +50818,8 @@
       "MCK": 13,
       "MCO": 12,
       "META": 20,
-      "MG.TO": 6
+      "MG.TO": 6,
+      "MSFT": 19
     }
   },
   "last_complete_refresh": "2026-11-26T06:44:54.204087+00:00",
