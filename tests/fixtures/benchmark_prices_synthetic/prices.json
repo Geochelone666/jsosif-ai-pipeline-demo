@@ -1,0 +1,61 @@
+{
+  "capture_id": "d060e4c0848e17f4f625784df509c1b312b2f0c67b28b17378171a12455acd49",
+  "schema_version": 1,
+  "kind": "benchmark_price_capture",
+  "provider": "yfinance",
+  "capture_mode": "injected_fetcher",
+  "start": "2025-10-01",
+  "end": "2025-10-08",
+  "started_at": "2025-10-10T12:00:00+00:00",
+  "finished_at": "2025-10-10T12:00:00+00:00",
+  "series": [
+    {
+      "symbol": "CSCO",
+      "currency": "USD",
+      "exchange_timezone": "America/New_York",
+      "exchange_name": "SYNTHETIC",
+      "instrument_type": "EQUITY",
+      "provider_version": "synthetic-test",
+      "observations": [
+        {
+          "observed_on": "2025-10-01",
+          "value": 100
+        },
+        {
+          "observed_on": "2025-10-08",
+          "value": 110
+        }
+      ],
+      "retrieved_at": "2025-10-10T12:00:00+00:00",
+      "source_url": "https://finance.yahoo.com/quote/CSCO/history",
+      "adjustment_basis": "adjusted_close",
+      "status": "observed",
+      "reason": null
+    },
+    {
+      "symbol": "XLK",
+      "currency": "USD",
+      "exchange_timezone": "America/New_York",
+      "exchange_name": "SYNTHETIC",
+      "instrument_type": "ETF",
+      "provider_version": "synthetic-test",
+      "observations": [
+        {
+          "observed_on": "2025-10-01",
+          "value": 100
+        },
+        {
+          "observed_on": "2025-10-08",
+          "value": 105
+        }
+      ],
+      "retrieved_at": "2025-10-10T12:00:00+00:00",
+      "source_url": "https://finance.yahoo.com/quote/XLK/history",
+      "adjustment_basis": "adjusted_close",
+      "status": "observed",
+      "reason": null
+    }
+  ],
+  "listing_identity": "provider_symbol_metadata_only",
+  "point_in_time_eligible": false
+}
