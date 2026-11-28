@@ -91,4 +91,6 @@ Real-source acceptance is a separate local artifact: CSCO and XLK, historical
 does not validate every instrument or establish production data readiness.
 Formal listing/MIC verification, benchmark selection review, unified provider-wide
 refresh budgets and per-instrument cache reuse, FX conversion, corporate-action methodology, current/full coverage,
-sector-brief integration and point-in-time/backtest eligibility remain pending.
+production integration and point-in-time/backtest eligibility remain pending.
+An optional sector appendix is implemented in
+[SECTOR_BENCHMARK_APPENDIX.md](SECTOR_BENCHMARK_APPENDIX.md).

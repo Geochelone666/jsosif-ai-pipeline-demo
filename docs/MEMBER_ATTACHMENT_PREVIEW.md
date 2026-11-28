@@ -5,6 +5,9 @@
 stock archive and optional sector, macro and news draft bundles. It has no send mode, network
 request, subscription-authority call, ledger read/write or production integration.
 Every record has `delivery_ready: false`; the subject says REVIEW ONLY / DO NOT SEND.
+Sector input supports the original four-page bundle and the optional five-page
+candidate benchmark bundle, with shared evidence and per-sector comparisons
+revalidated before attachment. See [SECTOR_BENCHMARK_APPENDIX.md](SECTOR_BENCHMARK_APPENDIX.md).
 
 ```sh
 python scripts/member_attachment_preview.py --config /private/members.json \

@@ -89,6 +89,15 @@ jobs:
           name: sector-brief-drafts-${{ matrix.python }}
           path: ${{ runner.temp }}/sector-briefs
           retention-days: 14
+      - name: Build five-page sector drafts with explicit synthetic benchmark appendix
+        run: |
+          python scripts/sector_briefs.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --benchmark-review "$RUNNER_TEMP/benchmark-review-synthetic" --output "$RUNNER_TEMP/sector-benchmark-drafts"
+          PYTHONPATH=scripts python -c 'import os; from pathlib import Path; from member_attachment_preview import load_briefs; assert len(load_briefs(Path(os.environ["RUNNER_TEMP"])/"sector-benchmark-drafts")) == 8'
+      - uses: actions/upload-artifact@v6
+        with:
+          name: sector-benchmark-drafts-${{ matrix.python }}
+          path: ${{ runner.temp }}/sector-benchmark-drafts
+          retention-days: 14
       - name: Build and validate standalone macro overview draft
         run: python scripts/macro_overview.py --store "$RUNNER_TEMP/report-preview" --as-of 2026-11-06 --boc-capture tests/fixtures/boc_fxusdcad_20261102_20261106.json --output "$RUNNER_TEMP/macro-overview"
       - uses: actions/upload-artifact@v6

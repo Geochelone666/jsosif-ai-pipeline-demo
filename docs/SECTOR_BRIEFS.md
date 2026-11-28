@@ -3,6 +3,9 @@
 `scripts/sector_briefs.py` builds eight independent, four-page PDF review drafts
 and JSON companions from the verified shared archive evidence. It has no network,
 member-config, email, production-workflow or delivery-ledger integration.
+An optional validated candidate-benchmark appendix adds a fifth page and a
+version-two bundle; see [SECTOR_BENCHMARK_APPENDIX.md](SECTOR_BENCHMARK_APPENDIX.md).
+The default four-page output remains unchanged.
 
 ```sh
 python scripts/sector_briefs.py --store /path/to/archive --as-of 2026-11-13 \
@@ -77,7 +80,7 @@ The real review sample is the previously verified 50-stock selection from
 It is a historical acceptance fixture, not the latest production state. There is
 no claim of current freshness on the November 26 development date.
 
-Still pending: validated benchmark observations and industry KPIs, sourced events,
+Still pending: approved/current/full benchmark coverage and industry KPIs, sourced events,
 live refresh, analyst acceptance, production attachment delivery and approved
 controlled links. Offline member selection, deduplication and MIME-size review are
 implemented separately in [MEMBER_ATTACHMENT_PREVIEW.md](MEMBER_ATTACHMENT_PREVIEW.md),
