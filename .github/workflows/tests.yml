@@ -36,6 +36,13 @@ jobs:
             ${{ runner.temp }}/shared-evidence.json
             ${{ runner.temp }}/shared-evidence.md
           retention-days: 14
+      - name: Build candidate benchmark review from explicitly synthetic offline prices
+        run: python scripts/benchmark_review.py --capture tests/fixtures/benchmark_prices_synthetic --output "$RUNNER_TEMP/benchmark-review-synthetic"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: benchmark-review-synthetic-${{ matrix.python }}
+          path: ${{ runner.temp }}/benchmark-review-synthetic
+          retention-days: 14
       - name: Package source for reproducible PDF visual review
         run: tar -czf "$RUNNER_TEMP/research-source-review.tar.gz" scripts config requirements.lock requirements.txt
       - uses: actions/upload-artifact@v6
