@@ -50562,6 +50562,33 @@
         "edgar": "a2b6b5948ec9baa3f382a6b330e8395188b81b0ad4515d5d53a419352ffb4b08",
         "fred": "81826733bb49d221834610d4bb08fe7241ffded0916cdaa1ca2896f8a78cd27d"
       }
+    },
+    {
+      "report_id": "20261128T061051Z-cc57646b/DIS",
+      "ticker": "DIS",
+      "generated_at": "2026-11-28T06:20:46.581127+00:00",
+      "as_of": "2026-11-27",
+      "quality": "ready",
+      "market_as_of": "2026-11-27",
+      "news_as_of": "2026-11-27",
+      "sha256": {
+        "md": "18c9b384e5830bfd16db97dd5ff2a41d75ed28ac31e8b43892bee86d55536a21",
+        "json": "368ec1960715d9f2d6628d915ba8084ede8108d40ce06587a58a90e1214198bb",
+        "pdf": "358b8eeebf01310682f637904296bca257cea8e60ea4b24ea76a28d50d289d82"
+      },
+      "md": "archive/20261128T061051Z-cc57646b/DIS/DIS-intelligence-20261127.md",
+      "json": "archive/20261128T061051Z-cc57646b/DIS/DIS-intelligence-20261127.json",
+      "pdf": "archive/20261128T061051Z-cc57646b/DIS/DIS-intelligence-20261127.pdf",
+      "source_sha256": {
+        "quant": "718289b9501e5dfb40b4158b097fc0c8b95e9bb6cf269ddd592b75d5f66b188f",
+        "info": "3b03d197a4eff7d60fb5be05d093aeb25609d6240cea1fe9cee67da77001b796",
+        "ai-intel": "39457a0aabace2a990c00e867ede5383f8a53be1195422a3c026ffb43b76bb81",
+        "rss-items": "d53e7d3770b1979f47e710748afbdcd83164af4a5849a120ea231ff14e6a4287",
+        "comparables": "44e837387672eaa6bd115e1dc56e8263885f00784ae9a2355566ccb8649ce826",
+        "earnings": "af6f7807b6ef71c4a98a89d5ff49d965688ec23efc8ac7cc8fb3b61511390f45",
+        "edgar": "bef43e52ccc9876ab04c9c08599af8046d19afc3912fbcf2ed3acd311bd31a58",
+        "fred": "81826733bb49d221834610d4bb08fe7241ffded0916cdaa1ca2896f8a78cd27d"
+      }
     }
   ],
   "refresh_plan": {
@@ -50755,7 +50782,8 @@
       "COST",
       "CP.TO",
       "CSCO",
-      "CSU.TO"
+      "CSU.TO",
+      "DIS"
     ],
     "reused_tickers": [],
     "workflow_run_id": "46115351183",
@@ -50968,6 +50996,15 @@
         "edgar": 0.064,
         "regenerate_report": 0.114,
         "report_pdf": 0.565
+      },
+      "DIS": {
+        "quant": 1.467,
+        "ai_extract": 19.911,
+        "comparables": 2.469,
+        "earnings": 1.518,
+        "edgar": 2.069,
+        "regenerate_report": 0.114,
+        "report_pdf": 0.615
       }
     },
     "current_ticker": "DIS",
@@ -50989,7 +51026,8 @@
       "COST": 15,
       "CP.TO": 13,
       "CSCO": 17,
-      "CSU.TO": 2
+      "CSU.TO": 2,
+      "DIS": 21
     }
   },
   "last_complete_refresh": "2026-11-27T06:36:46.266743+00:00",
