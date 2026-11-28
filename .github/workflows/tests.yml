@@ -43,6 +43,13 @@ jobs:
           name: benchmark-review-synthetic-${{ matrix.python }}
           path: ${{ runner.temp }}/benchmark-review-synthetic
           retention-days: 14
+      - name: Verify shared benchmark cache without provider calls
+        run: PYTHONPATH=scripts python tests/benchmark_cache_acceptance.py --cache "$RUNNER_TEMP/benchmark-cache-state" --output "$RUNNER_TEMP/benchmark-cache-acceptance"
+      - uses: actions/upload-artifact@v6
+        with:
+          name: benchmark-cache-acceptance-${{ matrix.python }}
+          path: ${{ runner.temp }}/benchmark-cache-acceptance
+          retention-days: 14
       - name: Package source for reproducible PDF visual review
         run: tar -czf "$RUNNER_TEMP/research-source-review.tar.gz" scripts config requirements.lock requirements.txt
       - uses: actions/upload-artifact@v6
