@@ -28,9 +28,13 @@ def para(value, *, size=9, bold=False, color=NAVY):
                      fontSize=size, leading=size * 1.35, textColor=color, spaceAfter=7))
 
 
-def table(headers, rows, widths, *, size=8):
-    body = [[para(h, size=size, bold=True, color=colors.white) for h in headers]]
-    body += [[para(c, size=size) for c in row] for row in rows]
+def table(headers, rows, widths, *, size=8, compact=False):
+    def item(value, bold=False, color=NAVY):
+        result = value if isinstance(value, Paragraph) else para(value,size=size,bold=bold,color=color)
+        if compact: result.style = ParagraphStyle('compact',parent=result.style,spaceAfter=0)
+        return result
+    body = [[item(h,bold=True,color=colors.white) for h in headers]]
+    body += [[item(c) for c in row] for row in rows]
     result = Table(body, colWidths=[WIDTH * w for w in widths], repeatRows=1, hAlign='LEFT')
     result.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), NAVY), ('VALIGN', (0, 0), (-1, -1), 'TOP'),
@@ -39,10 +43,17 @@ def table(headers, rows, widths, *, size=8):
         ('TOPPADDING', (0, 0), (-1, -1), 5), ('BOTTOMPADDING', (0, 0), (-1, -1), 2),
         ('LINEBELOW', (0, 0), (-1, 0), 1, TEAL),
     ]))
+    if compact:
+        result.setStyle(TableStyle([('TOPPADDING',(0,0),(-1,-1),3),('BOTTOMPADDING',(0,0),(-1,-1),3)]))
     return result
 
 
-def render(brief, path, sidecar_name):
+def render(brief, path, sidecar_name, *, benchmark_review=None):
+    from sector_benchmark import verify
+    projection = verify(brief,benchmark_review) if benchmark_review is not None else None
+    if brief.get('schema_version') == 2 and projection is None:
+        raise ValueError('Benchmark sector draft requires retained review evidence')
+    page_count = 5 if projection is not None else 4
     observations = {o['id']: o for o in brief['observations']}
     source_alias = {s['id']: 'S' + str(i + 1).zfill(2) for i, s in enumerate(brief['sources'])}
 
@@ -60,7 +71,7 @@ def render(brief, path, sidecar_name):
         canvas.setFont('Helvetica', 8)
         canvas.setFillColor(MUTED)
         canvas.drawString(44, 26, 'JSOSIF | Retrospective draft | Not investment advice')
-        canvas.drawRightString(A4[0] - 44, 26, f'{doc.page} / 4')
+        canvas.drawRightString(A4[0] - 44, 26, f'{doc.page} / {page_count}')
         canvas.restoreState()
 
     def heading(title):
@@ -103,7 +114,8 @@ def render(brief, path, sidecar_name):
     story += [table(['Series', 'Value', 'Unit', 'Observed on', 'Sources'],
                     rows or [['Unavailable', 'N/A', '-', '-', '-']], [.25, .17, .23, .20, .15])]
     story += [Spacer(1, 12), para('Relative performance', size=12, bold=True),
-              para('Unavailable. Proposed benchmark candidates: ' +
+              para(('Unavailable. Proposed benchmark candidates: ' if projection is None else
+                    'Individual candidate comparisons: see page 5 for explicit price dates and gaps. Proposed candidates: ') +
                    ', '.join(b['ticker'] + ' (' + b['currency'] + ')' for b in brief['benchmark_candidates']) +
                    '. Listings, aligned calendars, adjustment bases and currency comparability require validation.'),
               para('Industry KPIs and missing evidence', size=12, bold=True)]
@@ -157,6 +169,35 @@ def render(brief, path, sidecar_name):
                    'Exact public URLs are recorded in each source entry.', size=8),
               para('Companion: ' + sidecar_name, size=8),
               para('Dataset SHA-256: ' + brief['dataset_id'], size=7)]
+    if projection is not None:
+        from sector_benchmark import TITLE, mode_label, period_label, table_rows
+        story += [PageBreak(), *heading(TITLE),
+                  para('Price endpoints: '+projection['start']+' to '+projection['end']+' | '+mode_label(projection),size=8),
+                  para(period_label(projection),size=9,bold=True,color=TEAL),
+                  para(f"Comparable pairs: {projection['available_pairs']} / {len(projection['pairs'])}; "
+                       f"missing: {projection['missing_pairs']}. ETFs remain proposed; delivery readiness is false.",size=8),
+                  para('Exact endpoints, matching native currency and adjusted close basis. Difference is in percentage points (pp). '
+                       'No currency conversion, forward fill, sector average or Consumer ETF blend.',size=8)]
+        series = {r['symbol']:r for r in benchmark_review['capture']['series']}
+        rows = table_rows(projection)
+        for row in rows:
+            for i in (0,1):
+                source = series.get(row[i])
+                if source is not None and source['status']=='observed':
+                    row[i] = Paragraph('<link href="'+escape(source['source_url'],quote=True)+'">'+escape(row[i])+'</link>',
+                                       ParagraphStyle('price-link',fontName='Helvetica',fontSize=8,leading=10.8,textColor=TEAL))
+        story += [table(['Stock','Proposed ETF','CCY','Stock %','ETF %','Diff (pp)','Evidence'],rows,
+                        [.13,.10,.08,.15,.15,.15,.24],size=8,compact=True),Spacer(1,9),
+                  para('Gaps: S0 = stock not captured; B0 = ETF not captured; DATA = empty/failed source; '
+                       'END = missing exact endpoint; FX = conversion evidence needed; CCY = candidate currency mismatch; '
+                       'OTHER = see JSON. N/A is not zero.',size=8),
+                  para('Captured at (UTC): '+projection['retrieved_at'],size=8),
+                  para('Linked symbols point to retained Yahoo price-history sources. Historical adjusted prices can be revised. '
+                       'Provider symbol metadata is not verified listing/MIC identity; these are not certified total returns.',size=8),
+                  para('Evidence: benchmark-review.json retains full prices, URLs, retrieval times and calculations. '
+                       'Hashes establish retained consistency, not provider authenticity. Point-in-time eligible: false.',size=8),
+                  para('Capture SHA-256: '+projection['capture_id'],size=7),
+                  para('Review SHA-256: '+projection['review_id'],size=7)]
     doc = SimpleDocTemplate(str(path), pagesize=A4, leftMargin=44, rightMargin=44,
                             topMargin=36, bottomMargin=54, title=brief['name'] + ' - Sector Weekly Brief',
                             author='JSOSIF', pageCompression=1)
@@ -166,19 +207,36 @@ def render(brief, path, sidecar_name):
 
 def inspect(path, brief):
     reader = PdfReader(path)
-    if reader.is_encrypted or len(reader.pages) != 4:
-        raise ValueError('Sector draft must fit its four-page review layout')
+    result = inspect_reader(reader,brief)
+    return {'pages':result['pages'],'bytes':Path(path).stat().st_size,
+            'text_characters':result['text_characters'],'visual_review_required':True}
+
+
+def inspect_reader(reader, brief):
+    from sector_benchmark import TITLE, mode_label, period_label, table_rows
+    projection = brief.get('relative_performance') if brief.get('schema_version')==2 else None
+    titles = PAGE_TITLES + ((TITLE,) if projection is not None else ())
+    count = len(titles)
+    if reader.is_encrypted or len(reader.pages) != count:
+        raise ValueError('Sector draft must fit its declared review layout')
     extracted = []
     for i, page in enumerate(reader.pages):
         content = page.extract_text() or ''
-        if PAGE_TITLES[i] not in content or 'Draft - incomplete evidence' not in content:
+        if titles[i] not in content or 'Draft - incomplete evidence' not in content:
             raise ValueError('Missing section heading or draft label')
-        if f'{i + 1} / 4' not in content:
+        if f'{i + 1} / {count}' not in content:
             raise ValueError('Invalid page footer')
         extracted.append(content)
     if any(s['ticker'] not in extracted[0] or s['ticker'] not in extracted[2] for s in brief['stocks']):
         raise ValueError('Missing covered stock')
     if any(section not in '\n'.join(extracted) for section in brief['sections']):
         raise ValueError('Missing weekly template section')
-    return {'pages': 4, 'bytes': Path(path).stat().st_size, 'text_characters': sum(map(len, extracted)),
+    if projection is not None:
+        content = ' '.join(extracted[4].split())
+        expected = [mode_label(projection),period_label(projection),projection['start'],projection['end'],
+                    projection['retrieved_at'],projection['capture_id'],projection['review_id']]
+        expected += [' '.join(row) for row in table_rows(projection)]
+        if any(' '.join(part.split()) not in content for part in expected):
+            raise ValueError('Candidate PDF differs from its retained comparison')
+    return {'pages': count, 'text_characters': sum(map(len, extracted)),
             'visual_review_required': True}

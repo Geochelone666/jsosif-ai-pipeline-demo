@@ -50,12 +50,25 @@ def load_briefs(root):
         return {}
     root = Path(root)
     manifest = read_object(root / 'manifest.json')
-    if (type(manifest.get('schema_version')) is not int or manifest['schema_version'] != 1
+    if (type(manifest.get('schema_version')) is not int or manifest['schema_version'] not in (1,2)
             or manifest.get('status') != 'draft_incomplete_evidence'
             or manifest.get('delivery_ready') is not False
             or not isinstance(manifest.get('briefs'), list) or len(manifest['briefs']) != 8):
         raise ValueError('Expected a completed eight-sector draft bundle')
     exact_date(manifest['as_of'])
+    benchmark = None
+    if manifest['schema_version']==2:
+        from benchmark_review import validate as validate_benchmark
+        reference = manifest.get('benchmark_review')
+        if (not isinstance(reference,dict) or set(reference)!={'json','review_id','sha256'}
+                or reference['json']!='benchmark-review.json'):
+            raise ValueError('Missing retained benchmark reference')
+        raw = read_bytes(resolve_file(root,reference['json']),8*1024*1024)
+        if checksum(raw)!=reference['sha256']:raise ValueError('Benchmark artifact checksum mismatch')
+        benchmark = validate_benchmark(json.loads(raw))
+        if benchmark['review_id']!=reference['review_id']:raise ValueError('Benchmark reference identity mismatch')
+    elif 'benchmark_review' in manifest:
+        raise ValueError('Unexpected benchmark reference in legacy sector bundle')
     configured = {t['id']: t for t in teams(ROOT / 'config/research_teams.json')}
     result = {}
     for entry in manifest['briefs']:
@@ -74,6 +87,13 @@ def load_briefs(root):
                 raise ValueError('Sector artifact checksum mismatch')
             loaded[kind] = raw
         brief = json.loads(loaded['json'])
+        if type(brief.get('schema_version')) is not int or brief['schema_version']!=manifest['schema_version']:
+            raise ValueError('Sector schema differs from manifest')
+        if benchmark is not None:
+            from sector_benchmark import verify
+            verify(brief,benchmark)
+        elif brief.get('relative_performance') is not None:
+            raise ValueError('Legacy sector draft cannot claim benchmark evidence')
         if (brief['brief_id'] != entry['brief_id'] or
                 brief['brief_id'] != digest({k:v for k,v in brief.items() if k != 'brief_id'}) or
                 brief['dataset_id'] != manifest['dataset_id'] or brief['sector_id'] != identity or
@@ -98,16 +118,9 @@ def inspect_captured_pdf(raw, brief):
     # the retained bytes here so a changed path cannot alter the reviewed message.
     from io import BytesIO
     from pypdf import PdfReader
-    from sector_brief_pdf import PAGE_TITLES
+    from sector_brief_pdf import inspect_reader
     reader = PdfReader(BytesIO(raw))
-    if reader.is_encrypted or len(reader.pages) != 4:
-        raise ValueError('Invalid sector PDF structure')
-    pages = [p.extract_text() or '' for p in reader.pages]
-    for i, page in enumerate(pages):
-        if PAGE_TITLES[i] not in page or 'Draft - incomplete evidence' not in page or f'{i+1} / 4' not in page:
-            raise ValueError('Invalid sector PDF draft labels')
-    if any(s['ticker'] not in pages[0] or s['ticker'] not in pages[2] for s in brief['stocks']):
-        raise ValueError('Sector PDF is missing covered stocks')
+    inspect_reader(reader,brief)
 
 
 def validate_review_config(config):

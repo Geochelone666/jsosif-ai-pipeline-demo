@@ -32,7 +32,7 @@ def one(rows, subject, metric):
     return matches[0]['id'] if matches else None
 
 
-def assemble(pack):
+def assemble(pack, *, benchmark_review=None):
     """Build deterministic evidence projections; never infer facts from prose or peers."""
     validate_pack(pack)
     entities = {r['id']: r for r in pack['entities']}
@@ -122,6 +122,17 @@ def assemble(pack):
             'observations': [observations[k] for k in sorted(used_obs)],
             'sources': [sources[k] for k in sorted(used_sources)], 'limitations': list(LIMITATIONS),
         }
+        if benchmark_review is not None:
+            from sector_benchmark import project, LIMITATIONS as benchmark_limitations
+            projection = project(benchmark_review,sector_id=sector['id'],name=sector['name'],
+                                 tickers=sector['tickers'],candidates=sector['benchmark_candidates'],as_of=pack['as_of'])
+            payload['schema_version'] = 2
+            payload['relative_performance'] = projection
+            payload['limitations'][3] = benchmark_limitations[0]
+            payload['limitations'][6] = benchmark_limitations[1]
+            payload['missing_evidence'][0] = 'approved_sector_benchmarks'
+            if projection['missing_pairs']: payload['missing_evidence'].append('candidate_pair_gaps')
+            if not projection['within_review_window']: payload['missing_evidence'].append('candidate_window_outside_review')
         result.append({'brief_id': digest(payload), **payload})
     if len(result) != 8:
         raise ValueError('Eight sector drafts are required')
@@ -137,17 +148,25 @@ def cell(brief, identity):
     return value
 
 
-def write_bundle(pack, output):
+def write_bundle(pack, output, *, benchmark_review=None):
     """Reserve a new directory; publish its completion manifest only after all checks."""
     from sector_brief_pdf import render, inspect
     output = Path(output)
-    briefs = assemble(pack)
+    briefs = assemble(pack, benchmark_review=benchmark_review)
     output.mkdir(parents=False, exist_ok=False)
     # A failure leaves no completed manifest, never overwrites a user's directory,
     # and removes only our TemporaryDirectory, not the reserved parent.
     with TemporaryDirectory(prefix='.building-', dir=output) as temp:
         stage = Path(temp)
         entries = []
+        benchmark_reference = None
+        if benchmark_review is not None:
+            evidence = stage / 'benchmark-review.json'
+            evidence.write_text(json.dumps(benchmark_review,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
+            if evidence.stat().st_size > 8 * 1024 * 1024:
+                raise ValueError('Benchmark evidence exceeds bundle size limit')
+            benchmark_reference = {'json':evidence.name,'review_id':benchmark_review['review_id'],
+                                   'sha256':hashlib.sha256(evidence.read_bytes()).hexdigest()}
         for brief in briefs:
             stem = brief['sector_id'].removeprefix('sector:') + '-' + brief['as_of']
             if Path(stem).name != stem or '/' in stem or '\\' in stem or '..' in stem:
@@ -155,7 +174,8 @@ def write_bundle(pack, output):
             sidecar = stage / (stem + '.json')
             sidecar.write_text(json.dumps(brief, ensure_ascii=False, indent=2, allow_nan=False) + '\n')
             pdf = stage / (stem + '.pdf')
-            render(brief, pdf, sidecar.name)
+            if benchmark_review is None: render(brief, pdf, sidecar.name)
+            else: render(brief, pdf, sidecar.name, benchmark_review=benchmark_review)
             check = inspect(pdf, brief)
             entries.append({'sector_id': brief['sector_id'], 'brief_id': brief['brief_id'],
                             'pdf': pdf.name, 'json': sidecar.name, 'validation': check,
@@ -163,6 +183,8 @@ def write_bundle(pack, output):
                                        for p in (pdf, sidecar)}})
         manifest = {'schema_version': 1, 'dataset_id': pack['dataset_id'], 'as_of': pack['as_of'],
                     'status': 'draft_incomplete_evidence', 'delivery_ready': False, 'briefs': entries}
+        if benchmark_reference is not None:
+            manifest.update(schema_version=2,benchmark_review=benchmark_reference)
         # Exclusive writes also detect a concurrently inserted file. No implicit merge.
         for path in sorted(stage.iterdir()):
             with (output / path.name).open('xb') as stream:
@@ -177,13 +199,20 @@ def main():
     parser.add_argument('--store', type=Path, required=True)
     parser.add_argument('--as-of', required=True)
     parser.add_argument('--boc-capture', type=Path)
+    parser.add_argument('--benchmark-review', type=Path, help='Optional validated candidate review bundle; adds a fifth page')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     try:
         if args.output.resolve().is_relative_to(args.store.resolve()):
             raise ValueError('Output must not alter the report archive')
+        benchmark = None
+        if args.benchmark_review is not None:
+            from benchmark_review import load_bundle
+            if args.output.resolve().is_relative_to(args.benchmark_review.resolve()):
+                raise ValueError('Output must not alter benchmark evidence')
+            benchmark = load_bundle(args.benchmark_review)
         pack = build(args.store, as_of=args.as_of, boc_capture=args.boc_capture)
-        result = write_bundle(pack, args.output)
+        result = write_bundle(pack, args.output, benchmark_review=benchmark)
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
         parser.error('Brief build failed; check archive integrity and use a new output directory')
     print(f"Built {len(result['briefs'])} sector drafts; delivery readiness remains false")

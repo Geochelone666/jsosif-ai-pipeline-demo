@@ -36,7 +36,7 @@ archives. These are prerequisites, not completion of the new shared data layer.
 | --- | --- |
 | Stock/Sector/Industry/Peer/Macro identity model | Deterministic retrospective evidence package implemented locally with units, currency provenance, explicit missing timestamps and verified source references; formal listing identities and point-in-time evidence pending; see SHARED_RESEARCH_PACK.md |
 | FRED and Bank of Canada adapters | Archived FRED/SEC and captured BoC USD/CAD integrated into local evidence package; BoC single-window live/cache acceptance recorded below; shared live refresh and historical vintages pending |
-| Sector benchmark and ETF-relative performance | Standalone adjusted-price capture, exact-batch cache/local quota and offline candidate review implemented; exact endpoints/currency, explicit pair coverage and retained evidence. Unified provider-wide refresh, formal benchmark/listing review and sector-brief integration pending; see BENCHMARK_REVIEW.md and BENCHMARK_CACHE.md |
+| Sector benchmark and ETF-relative performance | Standalone capture, exact-batch cache/local quota, offline candidate review and optional five-page sector appendix implemented; aligned endpoints/currency and explicit period/coverage gaps. Unified provider-wide refresh, approved/current/full coverage and formal listing review pending; see SECTOR_BENCHMARK_APPENDIX.md |
 | Industry KPI templates / peer universe | Team-reviewed mapping; do not infer eight team identities from Yahoo sector labels |
 | Validated security onboarding | Identity/listing checks, quality/cost gates and Pending/Active transitions |
 | Shared cache and failure isolation | Standalone benchmark exact-batch cache binds provider/version, symbols, window and adjustment contract; local reservations survive failures/crashes, invalid entries refresh within quota, corrupt budget state fails closed. Cross-provider budgets, per-instrument reuse and production integration pending; see BENCHMARK_CACHE.md |
@@ -61,6 +61,10 @@ with group-specific coverage/KPI research topics, stock industry context and up 
 five sourced peer snapshots. Deterministic JSON companions preserve full evidence
 and missing fields. See SECTOR_BRIEFS.md. These retrospective drafts always have
 delivery readiness false; they are not completed current weekly intelligence.
+An optional fifth page now projects retained candidate benchmark evidence with
+explicit observation windows and source links. The private preview validates
+version-two bundles; default four-page artifacts remain byte-compatible. See
+SECTOR_BENCHMARK_APPENDIX.md.
 
 Offline private member attachment selection, per-member content deduplication and
 encoded-MIME size review are implemented locally; see MEMBER_ATTACHMENT_PREVIEW.md.
