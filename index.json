@@ -51576,7 +51576,7 @@
     "run_id": "20261128T061051Z-cc57646b",
     "at": "2026-11-28T06:10:51.485269+00:00",
     "business_date": "2026-11-27",
-    "status": "running",
+    "status": "degraded",
     "expected_tickers": [
       "AAPL",
       "ACN",
@@ -52193,7 +52193,6 @@
         "report_pdf": 0.665
       }
     },
-    "current_ticker": "VRTX",
     "last_progress_at": "2026-11-28T06:33:52.356016+00:00",
     "news_cache_candidates": {
       "JPM": 18,
@@ -52246,8 +52245,12 @@
       "TSM": 18,
       "V": 21,
       "VRTX": 23
-    }
+    },
+    "pending_tickers": [
+      "SCHW"
+    ],
+    "finished_at": "2026-11-28T06:34:52.140029+00:00"
   },
-  "last_complete_refresh": "2026-11-27T06:36:46.266743+00:00",
-  "last_complete_business_date": "2026-11-26"
+  "last_complete_refresh": "2026-11-28T06:10:51.485269+00:00",
+  "last_complete_business_date": "2026-11-27"
 }
