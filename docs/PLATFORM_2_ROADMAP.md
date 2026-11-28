@@ -36,10 +36,10 @@ archives. These are prerequisites, not completion of the new shared data layer.
 | --- | --- |
 | Stock/Sector/Industry/Peer/Macro identity model | Deterministic retrospective evidence package implemented locally with units, currency provenance, explicit missing timestamps and verified source references; formal listing identities and point-in-time evidence pending; see SHARED_RESEARCH_PACK.md |
 | FRED and Bank of Canada adapters | Archived FRED/SEC and captured BoC USD/CAD integrated into local evidence package; BoC single-window live/cache acceptance recorded below; shared live refresh and historical vintages pending |
-| Sector benchmark and ETF-relative performance | Standalone adjusted-price capture and offline candidate review implemented; exact endpoints/currency, explicit pair coverage and retained evidence. Shared budgeted refresh, formal benchmark/listing review and sector-brief integration pending; see BENCHMARK_REVIEW.md |
+| Sector benchmark and ETF-relative performance | Standalone adjusted-price capture, exact-batch cache/local quota and offline candidate review implemented; exact endpoints/currency, explicit pair coverage and retained evidence. Unified provider-wide refresh, formal benchmark/listing review and sector-brief integration pending; see BENCHMARK_REVIEW.md and BENCHMARK_CACHE.md |
 | Industry KPI templates / peer universe | Team-reviewed mapping; do not infer eight team identities from Yahoo sector labels |
 | Validated security onboarding | Identity/listing checks, quality/cost gates and Pending/Active transitions |
-| Shared cache and failure isolation | Cache keys bind source, instrument and date; corruption recovery preserves quotas/history |
+| Shared cache and failure isolation | Standalone benchmark exact-batch cache binds provider/version, symbols, window and adjustment contract; local reservations survive failures/crashes, invalid entries refresh within quota, corrupt budget state fails closed. Cross-provider budgets, per-instrument reuse and production integration pending; see BENCHMARK_CACHE.md |
 
 The team delegated the taxonomy choice. Eight configurable product defaults now
 cover all 50 instruments exactly once; benchmark candidates and KPI research
@@ -49,8 +49,10 @@ and unsupported currency comparisons. Shared evidence acceptance covers 50 lates
 archived stocks at the 2026-11-13 cutoff. A separate retrospective candidate review
 now computes individual comparable stock/ETF pairs from retained adjusted-price
 captures; Consumer candidates stay separate and currency mismatches remain gaps.
-Shared live caches, approved benchmarks, complete/current benchmark coverage and
-company KPI evidence remain pending.
+The optional benchmark batch cache preserves original retrieval evidence and
+shares a durable local adapter-call allowance across processes. Unified live
+refresh, approved benchmarks, complete/current benchmark coverage and company
+KPI evidence remain pending.
 
 ## Phase 3 — sector intelligence and email assembly
 

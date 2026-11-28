@@ -3,6 +3,8 @@
 `benchmark_prices.py` is an explicit, bounded collector for supported stocks and
 configured candidate ETFs. `benchmark_review.py` consumes its retained bundle
 offline and builds a JSON/Markdown review across the eight product-default groups.
+An optional exact-batch cache and local adapter-call allowance are available via
+`benchmark_cache.py`; see [BENCHMARK_CACHE.md](BENCHMARK_CACHE.md).
 These tools are independent of the production collectors, scheduler, report
 archive, email sender and delivery ledger. They do not activate a benchmark or
 attach returns to sector briefs. Every review has `delivery_ready: false` and
@@ -87,6 +89,6 @@ Yahoo. CI only consumes that fixture and makes no benchmark-provider calls.
 Real-source acceptance is a separate local artifact: CSCO and XLK, historical
 2025-10-01 through 2025-10-08, six observations each. A successful limited capture
 does not validate every instrument or establish production data readiness.
-Formal listing/MIC verification, benchmark selection review, shared budgeted
-refresh/cache, FX conversion, corporate-action methodology, current/full coverage,
+Formal listing/MIC verification, benchmark selection review, unified provider-wide
+refresh budgets and per-instrument cache reuse, FX conversion, corporate-action methodology, current/full coverage,
 sector-brief integration and point-in-time/backtest eligibility remain pending.
